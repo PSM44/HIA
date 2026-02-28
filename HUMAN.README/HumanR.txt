@@ -1,0 +1,435 @@
+==============================
+TANDA 3/3
+ARCHIVO: HumanR.txt
+ACCION: CREAR (archivo nuevo)
+==============================
+
+==========
+00.00_METADATATOS_DEL_DOCUMENTO
+==========
+
+ID_UNICO..........: HUMAN.R.MASTER.0001
+NOMBRE_SUGERIDO...: HumanR.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-02-27
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: <CIUDAD>, <PAIS>
+UBICACION_SISTEMA.: <PROJECT_ROOT>\01_HUMAN\
+AUTOR_HUMANO......: PABLO (ADMIN)
+AUTOR_IA..........: GPT-5.2 Thinking
+
+TITULO............: HUMAN Root — Master (Operación completa del sistema)
+SUBTITULO_MEDIO...: Fases, entregables de término, routing, RADAR, CIS, Git, seguridad, escalamiento.
+SUBTITULO_BAJO....: Documento extenso y académico: integra “lo demás” sin pisar General ni User.
+
+ALCANCE...........:
+- Define el “proceso de trabajo de un proyecto” end-to-end con entregables y criterios de cierre por fase.
+- Define la mecánica exacta de routing (TaskType→ContextLevel→ApplyGate) sin “intuición”.
+- Define política de RADAR (qué corre, cuándo, y qué excluye).
+- Define CIS operacional (contratos de cambios y disciplina de ejecución).
+- Define Git workflow mínimo (checkpoint, branches, hotfix, canon).
+- Define continuidad: baton, migración de chat, snapshots, auditoría.
+
+NO_CUBRE..........:
+- El contenido funcional de un producto específico (eso vive en HUMAN del proyecto).
+- Scripts completos (solo referencias de “cómo deberían comportarse”).
+
+==========
+00.10_INDICE_GENERAL_WBS
+==========
+
+00.00 Metadatos
+00.10 Índice
+00.20 Contexto (por qué este Master existe)
+
+01.00 Proceso completo de proyecto (macro)
+01.10 Visión general por fases (0,1,2,3.1,3.2)
+01.20 Entregables por fase (Definition of Done)
+01.30 Criterios de cierre por fase (gates)
+01.40 Artefactos mínimos y su ubicación
+
+02.00 Routing operativo (qué inyectar y cuándo)
+02.10 Principio: mínimo contexto efectivo
+02.20 Taxonomía: TaskType / ContextLevel / ApplyGate
+02.30 Matriz de routing (plantilla canónica)
+02.40 Excepciones y escalamiento (cuando subir a CORE/FULL)
+
+03.00 RADAR operativo
+03.10 Cuándo correr RADAR (reglas exactas)
+03.20 Qué debe excluir RADAR (política)
+03.30 Qué señales debe producir (salud del repo)
+03.40 Cómo usar RADAR en incidentes y auditoría
+
+04.00 CIS operativo (contratos)
+04.10 Formato canónico de contratos de cambio
+04.20 CREATE / EDIT / MOVE / RENAME / DELETE (delete=quarantine)
+04.30 Apply preflight y postflight (validate + log)
+04.40 Evitar errores típicos (incl. PowerShell verbs)
+
+05.00 Git operativo
+05.10 Baseline, checkpoints, branches
+05.20 CANON: promoción y congelamiento
+05.30 Hotfix CANON
+05.40 Mensajería de commits (mínimo trazable)
+
+06.00 Seguridad y límites (pragmático)
+06.10 Scope root y allowlist/denylist
+06.20 Secrets handling (operación)
+06.30 Dependencias y supply chain (mínimo viable)
+06.40 Auditoría y export (PDF/snapshots)
+
+07.00 Continuidad y performance
+07.10 BATON: estructura mínima
+07.20 Cierre de sesión (ritual corto, no burocracia)
+07.30 Migración de chat (cuando y cómo)
+07.40 Escalamiento de estructura (pocas carpetas, archivos grandes)
+
+08.00 Contras / discrepancias / omisiones comunes
+08.10 Riesgos de sobre-proceso
+08.20 Riesgos de under-process
+08.30 Señales de drift y cómo corregir
+08.40 Roadmap de mejoras
+
+09.00 CHANGELOG
+
+
+==========
+00.20_CONTEXTO
+==========
+
+00.21_POR_QUE_MASTER
+- HumanRGeneral define principios y gobernanza general.
+- HumanRUSER define cómo opera el humano.
+- Este HumanR.txt define el “cómo se ejecuta” el sistema completo para un proyecto real,
+  incluyendo entregables de término por fase y reglas operativas de routing/RADAR/CIS/Git.
+
+00.22_OBJETIVO_REAL
+- Evitar:
+  - “proyectos que nunca cierran fases”,
+  - “definiciones que mutan sin canon”,
+  - “auditorías ruidosas”,
+  - “cambios sin rollback”.
+
+==========
+01.00_PROCESO_COMPLETO_DE_PROYECTO
+==========
+
+01.10_VISION_GENERAL_POR_FASES
+- Fase 0: Filosofía (HUMAN-first)
+- Fase 1: Entorno contextual IA (convergencia sin FS)
+- Fase 2: Entorno local (bootstrap de estructura + herramientas)
+- Fase 3.1: Pre-Coding (setup check)
+- Fase 3.2: Coding (iteración controlada)
+
+01.20_ENTREGABLES_POR_FASE (DoD)
+01.20.01 FASE 0 — Filosofía
+- HUMAN del proyecto (la “catedral conceptual”):
+  - propósito, alcance/no-alcance,
+  - principios,
+  - riesgos top,
+  - definición de éxito,
+  - definición de “terminado” por fase (DoD por fase).
+- Cierre: humano confirma intención y DoD.
+
+01.20.02 FASE 1 — Contexto IA (PLAN_ONLY)
+- BATON inicial (objetivo, bloqueos, decisiones).
+- Workflow adoptado: PLAN→APPLY→VALIDATE→LOG.
+- Routing policy para ese proyecto (TaskType→ContextLevel→Gate).
+- Política de ejecución (scope, denylist, quarantine, rollback, secrets).
+- Decisiones base (qué será CANON, qué queda DRAFT).
+- Cierre: humano aprueba “listo para bootstrap local”.
+
+01.20.03 FASE 2 — Local bootstrap
+- One-shot script para crear estructura (carpetas y archivos).
+- RADAR operativo en el repo (o referenciado oficialmente).
+- Validadores allowlisted (naming, file content, etc.).
+- Primer commit Git: baseline.
+- Cierre: script corre OK + outputs + commit baseline.
+
+01.20.04 FASE 3.1 — Pre-Coding
+- “Setup check”:
+  - stack confirmado,
+  - dependencias instalables definidas,
+  - comando de run local,
+  - smoke test o tests mínimos,
+  - log de validación.
+- Cierre: validate OK con evidencia.
+
+01.20.05 FASE 3.2 — Coding
+- Iteración por cambios:
+  - PLAN (obligatorio),
+  - APPLY (solo con gate),
+  - VALIDATE (mínimo),
+  - LOG (evidencia),
+  - Git commit (trazable).
+- Cierre por feature: DoD + validate OK + commit.
+
+01.30_CRITERIOS_DE_CIERRE_POR_FASE (GATES)
+- Cada fase se cierra cuando:
+  - entregables existen (archivos concretos),
+  - criterios cumplidos,
+  - se registra decisión en BATON,
+  - se crea checkpoint Git cuando corresponde.
+- Si no hay cierre, estás acumulando deuda conceptual.
+
+01.40_ARTEFACTOS_MINIMOS_Y_UBICACION
+- 01_HUMAN: documentos HUMAN (General/User/Master + HUMAN del proyecto).
+- 02_TOOLS: scripts allowlisted (RADAR, validadores).
+- 03_ARTIFACTS: logs, quarantine, snapshots, exports.
+- Nota: preferencia “pocas carpetas, archivos grandes” se respeta manteniendo estas 3–4 carpetas base.
+
+==========
+02.00_ROUTING_OPERATIVO_(QUE_INYECTAR_Y_CUANDO)
+==========
+
+02.10_PRINCIPIO_MINIMO_CONTEXTO_EFECTIVO
+- Regla:
+  - si se puede resolver con L0/L1, no subas a L2/L3.
+- Beneficio:
+  - menos costo,
+  - menos ruido,
+  - menos drift,
+  - mejor consistencia.
+
+02.20_TAXONOMIA
+02.20.01 TaskType (tipos de tarea)
+- PLAN_ARCH: arquitectura/definición/planificación.
+- NAV_FIND: encontrar cosas (paths, archivos, referencias).
+- DOC_CANON: redactar o actualizar documentos canónicos.
+- CODEGEN: generar código/boilerplate.
+- REFACTOR: cambios multi-archivo.
+- DEBUG_TROUBLE: investigar fallos.
+- COST_REPORT: reportar costos/performance.
+- RADAR_REVIEW: revisar estado del repo.
+
+02.20.02 ContextLevel
+- L0: HUMAN/BATON + RADAR_INDEX
+- L1: + snippets selectivos de archivos target
+- L2: RADAR_CORE por módulo
+- L3: RADAR_FULL auditoría puntual
+
+02.20.03 ApplyGate
+- PLAN_ONLY (default)
+- APPLY_APPROVED (solo con aprobación humana)
+
+02.30_MATRIZ_ROUTING (PLANTILLA CANONICA)
+- Para cada TaskType se define:
+  - modelo sugerido (principal/económico),
+  - contexto (L0→L3),
+  - salida mínima (qué debe producir),
+  - gate (PLAN_ONLY vs APPLY_APPROVED).
+
+02.40_ESCALAMIENTO_Y_EXCEPCIONES
+- Subir a L2 solo si:
+  - la tarea es REFACTOR,
+  - o falló por falta de contexto (y se documenta el motivo).
+- L3 solo si:
+  - auditoría puntual,
+  - investigación de anomalía severa,
+  - o preparación de handoff crítico.
+
+==========
+03.00_RADAR_OPERATIVO
+==========
+
+03.10_CUANDO_CORRER_RADAR (REGLAS EXACTAS)
+- Antes de APPLY: mínimo RADAR_LITE.
+- Después de APPLY: mínimo RADAR_LITE.
+- Para navegación: RADAR_INDEX.
+- Para refactor multi-archivo: RADAR_CORE por módulo (no todo el root).
+- RADAR_FULL: solo auditoría puntual.
+
+03.20_EXCLUSIONES (POLITICA)
+- RADAR debe ignorar:
+  - dependencias masivas (node_modules, vendor caches),
+  - caches (.venv, .pytest_cache, .mypy_cache, etc.),
+  - builds (dist/build/out/.next/coverage),
+  - outputs propios de RADAR y logs gigantes,
+  - binarios irrelevantes para análisis de texto.
+- Esta política debe existir en un documento explícito (no implícito).
+
+03.30_SENALES (SALUD DEL REPO)
+- created_files
+- edited_files (hash para texto)
+- moved/renamed (si se detecta)
+- deleted_files (quarantine path)
+- anomalías:
+  - archivos fuera de naming,
+  - duplicados funcionales,
+  - canónicos sin metadatos.
+
+03.40_RADAR_EN_INCIDENTES
+- Si hay FAIL repetido o daño:
+  - capturar RADAR_INDEX + RADAR_LITE como evidencia inmediata,
+  - si es necesario, CORE por módulo,
+  - FULL solo si el humano lo ordena.
+
+==========
+04.00_CIS_OPERATIVO
+==========
+
+04.10_FORMATO_CANONICO (CONTRATO)
+- Cada cambio se declara como:
+  - TASK_ID / MOTIVO / SCOPE
+  - OPERACION (CREATE/EDIT/MOVE/RENAME/DELETE)
+  - PATH exacto
+  - CONTENIDO (bloques completos si aplica)
+  - VALIDACION a ejecutar
+  - ROLLBACK plan (commit id o snapshot)
+- Si falta cualquiera, el cambio no es “ejecutable” (ambigüedad).
+
+04.20_OPERACIONES
+04.20.01 CREATE
+- Define path exacto + contenido inicial + metadatos.
+
+04.20.02 EDIT
+- Para canónicos:
+  - BLOQUE_ORIGINAL + BLOQUE_CORREGIDO (replace).
+- Para código:
+  - patch/diff preferido, o archivo completo si boilerplate.
+
+04.20.03 MOVE/RENAME
+- Declarar origen y destino exactos + motivo + impacto.
+
+04.20.04 DELETE
+- Default: quarantine con timestamp + metadata.
+- Hard delete: solo con orden humana explícita + checkpoint previo.
+
+04.30_PREFLIGHT_Y_POSTFLIGHT
+- Preflight:
+  - scope correcto,
+  - gate aprobado,
+  - rollback listo,
+  - costo/performance aceptable.
+- Postflight:
+  - validate mínimo,
+  - radar post-change,
+  - log OK/FAIL.
+
+04.40_EVITAR_ERRORES_TIPICOS
+- PowerShell:
+  - usar Test-* (evitar Validate-* unapproved verb).
+- Scripts:
+  - exit 0 OK / 1 FAIL,
+  - outputs deben existir para declarar OK.
+
+==========
+05.00_GIT_OPERATIVO
+==========
+
+05.10_BASELINE_Y_CHECKPOINTS
+- Baseline: primer commit después de bootstrap.
+- Antes de APPLY significativo: commit checkpoint.
+- Después de cambio exitoso: commit de cambio.
+
+05.20_CANON_PROMOCION_Y_CONGELAMIENTO
+- Promoción a CANON:
+  - validadores ok,
+  - registrar decisión,
+  - versionar vX.Y-CANON,
+  - commit “CANON: …”.
+- Congelamiento:
+  - no editar CANON directo en main.
+
+05.30_HOTFIX_CANON
+- branch hotfix/<ID>/<YYYYMMDD>
+- cambio mínimo
+- bump versión CANON
+- merge
+
+05.40_MENSAJERIA_DE_COMMITS
+- Debe incluir:
+  - tipo (BOOTSTRAP / FEATURE / REFACTOR / HOTFIX / CANON),
+  - ID y alcance,
+  - resumen de impacto.
+
+==========
+06.00_SEGURIDAD_Y_LIMITES
+==========
+
+06.10_SCOPE_ROOT
+- Todo cambio debe estar dentro PROJECT_ROOT.
+- Fuera del root es denylist por defecto.
+
+06.20_SECRETS
+- Nunca commit de secrets.
+- Si aparece secret:
+  - FAIL, quarantine, incident.
+
+06.30_DEPENDENCIAS
+- Declarar dependencias (versiones) y cómo instalarlas reproduciblemente.
+- Evitar “instala lo que sea” sin control.
+
+06.40_EXPORTS_Y_AUDITORIA
+- Cuando migras chat o haces handoff:
+  - export/snapshot,
+  - baton actualizado,
+  - radar outputs recientes.
+
+==========
+07.00_CONTINUIDAD_Y_PERFORMANCE
+==========
+
+07.10_BATON_ESTRUCTURA_MINIMA
+- Current objective
+- Estado (qué está hecho, qué falta)
+- Decisiones y razones
+- Cambios aplicados (paths)
+- Evidencia (logs/commits)
+- Next actions
+
+07.20_CIERRE_DE_SESION
+- Ritual corto:
+  - actualizar baton,
+  - decidir si TL.Bootstrap cambia,
+  - dejar next actions.
+
+07.30_MIGRACION_DE_CHAT
+- Cuando hay drift/performance baja:
+  - export,
+  - baton,
+  - nuevo chat.
+
+07.40_ESCALAMIENTO_DE_ESTRUCTURA (POCAS CARPETAS, ARCHIVOS GRANDES)
+- Estrategia:
+  - Partir archivos por “dominio” cuando excedan tamaño/legibilidad.
+  - Mantener WBS/ID y changelog.
+  - Evitar subcarpetas hasta que haya necesidad real.
+
+==========
+08.00_CONTRAS_Y_MEJORAS
+==========
+
+08.10_RIESGO_SOBRE_PROCESO
+- Demasiada ceremonia mata velocidad.
+Mitigación:
+- checklist corto y gates claros, no burocracia infinita.
+
+08.20_RIESGO_UNDER_PROCESS
+- Sin gates, sin logs, sin radar: drift y pérdida de control.
+Mitigación:
+- mínimo no negociable (plan/apply/validate/log + git + quarantine).
+
+08.30_SENALES_DE_DRIFT
+- Se repite contexto,
+- se rompen naming/IDs,
+- se ejecuta FULL sin razón,
+- se hacen hard deletes,
+- no hay evidencia.
+Corrección:
+- volver a L0/L1,
+- reforzar routing,
+- correr validadores,
+- actualizar baton.
+
+08.40_ROADMAP_MEJORAS
+- Formalizar plantilla única de “Decision Record” (decisiones CANON).
+- Formalizar política de exclusiones RADAR por stack (Node/Python/.NET, etc.).
+- Formalizar “handoff package” (baton + radar + snapshot) como export estándar.
+
+==========
+09.00_CHANGELOG
+==========
+
+2026-02-27, v1.0-DRAFT
+- Creación inicial de HUMAN Root Master.

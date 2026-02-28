@@ -1,0 +1,220 @@
+==========
+00.00_METADATOS_DEL_DOCUMENTO
+==========
+
+***test
+
+ID_UNICO..........: HIA.RTG.0001
+NOMBRE_SUGERIDO...: HIA_RTG_0001_ROUTING_POLICY.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-02-26
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: Maria Luisa, Chile
+UBICACION_SISTEMA.: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\
+AUTOR_HUMANO......: PABLO (ADMIN)
+ALCANCE...........:
+Política canónica de routing (consolidada) para HIA:
+- task types,
+- context levels,
+- modelo principal vs económico,
+- plan-only default,
+- escalamiento/reducción de contexto,
+- fallback MVP manual.
+NO_CUBRE..........:
+- No define budgets (ver HIA_CST_0001_COST_CONTROL.txt).
+- No define sandbox (ver HIA_POL_0001_AI_EXECUTION.txt).
+DEPENDENCIAS......:
+04.SKILL.COST_CONTROL.txt
+05.SKILL.ROUTING_POLICY.txt
+09.STANDAR.RADAR_INDEX_CORE_FULL.txt
+HIA_MTH_0001_WORKFLOW.txt
+
+==========
+00.10_INDICE_GENERAL_WBS
+==========
+
+00.00 Metadatos del documento
+00.10 Índice general WBS
+00.20 Contexto y objetivo
+
+01.00 Definiciones (TaskType, ContextLevel, ApplyGate)
+02.00 Modelos (principal, económico) y parámetros
+03.00 Matriz routing (TaskType -> modelo -> contexto -> salida)
+04.00 Reglas de escalamiento y reducción de contexto
+05.00 Reglas Apply vs Plan-only
+06.00 Fallback (MVP manual)
+07.00 Antipatrones
+08.00 Checklist rápido
+09.00 CHANGELOG
+
+==========
+00.20_CONTEXTO_Y_OBJETIVO
+==========
+
+Objetivo:
+- estabilidad + costo controlado + ejecución frecuente segura.
+
+Reglas del MVP:
+- máximo 2 modelos (principal + económico)
+- no comparación multi-model
+- fallback automático: NO (manual por ahora)
+- plan-only default
+
+==========
+01.00_DEFINICIONES
+==========
+
+01.10_TASK_TYPE
+- PLAN_ARCH
+- NAV_FIND
+- DOC_CANON
+- CODEGEN
+- REFACTOR
+- DEBUG_TROUBLE
+- COST_REPORT
+- RADAR_REVIEW
+
+01.20_CONTEXT_LEVEL
+- L0: HUMAN/BATON + RADAR_INDEX
+- L1: + snippets selectivos (archivos target)
+- L2: RADAR_CORE por módulo
+- L3: RADAR_FULL (auditoría puntual)
+
+01.30_APPLY_GATE
+- PLAN_ONLY (default)
+- APPLY_APPROVED (solo tras aprobación humana)
+
+==========
+02.00_MODELOS
+==========
+
+02.10_MODELO_PRINCIPAL
+- Usar para: arquitectura, refactor multi-file, debugging difícil, decisiones.
+- Parámetros sugeridos:
+  - temperature 0.2–0.4
+  - max_tokens según tarea (ver 03.xx)
+
+02.20_MODELO_ECONOMICO
+- Usar para: navegación, resúmenes mecánicos, cost report, boilerplate simple.
+- Parámetros sugeridos:
+  - temperature 0.2–0.5
+  - max_tokens menor
+
+==========
+03.00_MATRIZ_ROUTING
+==========
+
+03.10_PLAN_ARCH
+- modelo: principal
+- contexto: L0 -> L1
+- salida: plan + riesgos + estimate + checklist
+- apply: PLAN_ONLY
+
+03.20_NAV_FIND
+- modelo: económico
+- contexto: L0 (RADAR_INDEX)
+- salida: paths exactos + recomendación de next open
+- apply: PLAN_ONLY
+
+03.30_DOC_CANON
+- modelo: económico para doc mecánica; principal para doctrina
+- contexto: L0/L1
+- salida: secciones completas (FILE_CONTENT)
+- apply: PLAN_ONLY (salvo que sea auto-doc en artifacts)
+
+03.40_CODEGEN
+- modelo: principal si afecta core; económico si boilerplate
+- contexto: L1 (snippets targets)
+- salida: patch + archivos nuevos
+- apply: APPLY_APPROVED
+
+03.50_REFACTOR
+- modelo: principal
+- contexto: L1 -> L2
+- salida: patch + plan de validación + rollback plan
+- apply: APPLY_APPROVED
+
+03.60_DEBUG_TROUBLE
+- modelo: principal
+- contexto: L1 (logs + snippet)
+- salida: hipótesis única + cambio mínimo + prueba (anti-shotgun)
+- apply: APPLY_APPROVED
+
+03.70_COST_REPORT
+- modelo: económico
+- contexto: L0 (logs)
+- salida: report (por task/proj)
+- apply: PLAN_ONLY
+
+03.80_RADAR_REVIEW
+- modelo: económico
+- contexto: L0 (INDEX) o L2 (CORE selectivo)
+- salida: anomalías, duplicados, archivos fuera de naming
+- apply: PLAN_ONLY
+
+==========
+04.00_ESCALAMIENTO_Y_REDUCCION_DE_CONTEXTO
+==========
+
+04.10_ESCALAMIENTO
+- Iniciar L0/L1 por defecto.
+- Subir a L2 solo si:
+  - la tarea es REFACTOR
+  - o falló por falta de contexto (y se documenta)
+- L3 solo auditoría puntual.
+
+04.20_REDUCCION
+- Si el costo sube:
+  - volver a L1
+  - chunk de CORE por módulo
+  - usar modelo económico para NAV/DOC mecánica.
+
+==========
+05.00_APPLY_VS_PLAN_ONLY
+==========
+
+05.10_DEFAULT
+- Todo parte PLAN_ONLY.
+
+05.20_APPLY
+- Apply solo con gate humano + checkpoint + preflight OK.
+
+==========
+06.00_FALLBACK_(MVP_MANUAL)
+==========
+
+- Si el modelo principal falla:
+  - registrar TROUBLE
+  - humano decide:
+    - reintentar con más contexto
+    - o pasar a económico (si tarea lo permite)
+- No fallback automático en MVP.
+
+==========
+07.00_ANTIPATRONES
+==========
+
+- FULL (L3) por defecto.
+- Modelo caro para NAV_FIND.
+- Apply sin plan.
+- Más de 2 modelos en MVP.
+- Mezclar routing policies duplicadas.
+
+==========
+08.00_CHECKLIST_RAPIDO
+==========
+
+[ ] 2 modelos definidos
+[ ] L0/L1 default
+[ ] L2/L3 controlado
+[ ] Plan-only default
+[ ] Apply con gate humano
+[ ] Logs en fallos
+
+==========
+09.00_CHANGELOG
+==========
+
+2026-02-26, v1.0-DRAFT
+- Consolidación completa de routing policy (un solo canon).
+- Enfoque MVP: estabilidad, 2 modelos, fallback manual.

@@ -1,0 +1,139 @@
+==========
+00.00_METADATOS_DEL_DOCUMENTO
+==========
+
+ID_UNICO..........: HIA.TOO.0001
+NOMBRE_SUGERIDO...: HIA_TOO_0001_VALIDATORS_SPEC.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-02-26
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: Maria Luisa, Chile
+UBICACION_SISTEMA.: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\
+AUTOR_HUMANO......: PABLO (ADMIN)
+ALCANCE...........:
+Especificación de 2 validadores mínimos allowlisted para HIA:
+- Test-HIAFileContent
+- Test-HIAIdsAndNames
+Incluye entradas/salidas, checks mínimos, y exit code binario OK/FAIL.
+NO_CUBRE..........:
+- No incluye implementación todavía (eso va en 02_TOOLS como .ps1).
+DEPENDENCIAS......:
+07.STANDAR.FILE_CONTENT.txt
+06.STANDAR.WBS_ID.txt
+08.STANDAR.PROBLEM_TROUBLE_INCIDENTS.txt
+HIA_MTH_0001_WORKFLOW.txt
+
+==========
+00.10_INDICE_GENERAL_WBS
+==========
+
+00.00 Metadatos del documento
+00.10 Índice general WBS
+00.20 Contexto
+
+01.00 Reglas generales (OK/FAIL, verbos aprobados)
+02.00 Validador 1: Test-HIAFileContent (spec)
+03.00 Validador 2: Test-HIAIdsAndNames (spec)
+04.00 Severidad y salida (WARN vs FAIL)
+05.00 Checklist rápido
+06.00 CHANGELOG
+
+==========
+00.20_CONTEXTO
+==========
+
+Sin validadores, tu sistema deriva a drift:
+- naming roto
+- CANON falso
+- duplicados
+- headers incompletos
+
+==========
+01.00_REGLAS_GENERALES
+==========
+
+01.10_VERBOS_APROBADOS
+- Prohibido: Validate-*
+- Usar: Test-*, Get-*, Set-*, New-*, Remove-*, Invoke-*, Export-*
+
+01.20_OK_FAIL_BINARIO
+- Exit 0 solo si:
+  - checks pasan
+  - no hay errores críticos
+- Exit 1 si:
+  - falta metadato crítico
+  - naming inválido
+  - duplicidad canónica detectada
+
+01.30_OUTPUT
+- Salida humana en consola + archivo en 03_ARTIFACTS\LOGS
+
+==========
+02.00_TEST_HIAFILECONTENT_(SPEC)
+==========
+
+02.10_INPUT
+- RootPath (default: PROJECT_ROOT)
+- Mode: DRAFT | CANON (default DRAFT)
+
+02.20_CHECKS_MINIMOS
+- Existe bloque "00.00_METADATOS_DEL_DOCUMENTO"
+- Campos mínimos:
+  ID_UNICO, NOMBRE_SUGERIDO, VERSION, FECHA, CIUDAD, UBICACION_SISTEMA, ALCANCE, NO_CUBRE, DEPENDENCIAS
+- Existe "00.10_INDICE_GENERAL_WBS"
+- Existe "CHANGELOG" cuando VERSION contiene "-CANON"
+- Títulos 10x (====, ----, ++++, ****)
+
+02.30_SALIDA
+- Lista de archivos OK
+- Lista de archivos FAIL (con motivo)
+- Exit code según reglas
+
+==========
+03.00_TEST_HIAIDSANDNAMES_(SPEC)
+==========
+
+03.10_INPUT
+- RootPath
+- RegexNaming
+- Allowlist de extensiones (default: .txt, .ps1)
+
+03.20_CHECKS_MINIMOS
+- Todo .txt en root cumple:
+  ^HIA_[A-Z]{3}_[0-9]{4}_[A-Z0-9_]{2,50}\.txt$
+- No hay espacios/tildes/ñ
+- No hay duplicados funcionales:
+  - ejemplo: dos routing policy “canónicas”
+  - ejemplo: dos cost control “canónicas”
+- 02_TOOLS solo scripts allowlisted
+
+03.30_SALIDA
+- Reporte + exit code
+
+==========
+04.00_WARN_VS_FAIL
+==========
+
+- En DRAFT:
+  - naming raro => WARN (no bloquea)
+  - falta CHANGELOG => WARN
+- En CANON:
+  - naming inválido => FAIL
+  - falta CHANGELOG => FAIL
+  - duplicado policy canon => FAIL
+
+==========
+05.00_CHECKLIST_RAPIDO
+==========
+
+[ ] 2 validadores definidos
+[ ] verbos aprobados (Test-*)
+[ ] exit code binario
+[ ] modo DRAFT vs CANON
+
+==========
+06.00_CHANGELOG
+==========
+
+2026-02-26, v1.0-DRAFT
+- Spec inicial de validadores mínimos HIA.

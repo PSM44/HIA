@@ -1,0 +1,108 @@
+==========
+00.00_METADATOS_DEL_DOCUMENTO
+==========
+
+ID_UNICO..........: HIA.SYN.0001
+NOMBRE_SUGERIDO...: HIA_SYN_0001_SYNC_MANIFEST.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-02-27
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: <CIUDAD>, <PAIS>
+UBICACION_SISTEMA.: <TL_BOOTSTRAP_ROOT>\
+AUTOR_HUMANO......: PABLO (ADMIN)
+AUTOR_IA..........: GPT-5.2 Thinking
+
+TITULO............: HIA — SYNC Manifest (Fuente → Destinos, FULL-copy)
+SUBTITULO_MEDIO...: Manifiesto declarativo para replicación automática de bloques DERIVED en archivos HUMAN.
+SUBTITULO_BAJO....: DRAFT. No ejecuta nada; solo declara qué se sincroniza.
+
+ALCANCE...........:
+- Declara sincronización de bloques DERIVED (FULL-copy) desde fuentes canónicas.
+- Define entradas Fuente→Destino con IDs estables.
+- Es consumido por el futuro SYNC.RUNNER (script).
+
+NO_CUBRE..........:
+- No ejecuta cambios.
+- No decide canonicidad.
+- No reemplaza Git/RADAR/BATON.
+
+DEPENDENCIAS......:
+HUMAN.README\HUMAN.MASTER.txt
+HUMAN.README\HUMAN.PF0.0001.txt
+HUMAN.README\HUMAN.USER.0001.txt
+( + HUMAN.BATON / HUMAN.RADAR / HUMAN.CIS cuando queden canónicos )
+
+==========
+00.10_INDICE_GENERAL_WBS
+==========
+
+01.00 Reglas del manifest
+02.00 Entradas SYNC (DRAFT)
+03.00 CHANGELOG
+
+==========
+01.00_REGLAS_DEL_MANIFEST
+==========
+
+01.10_MODO
+- MODE=FULL significa copia completa (no resumen).
+- MODE=OVERRIDE bloquea reemplazo automático y marca DIRTY.
+
+01.20_BEHAVIOR
+- El runner reemplaza solo entre:
+  <<<DERIVED_BEGIN ...>>>
+  <<<DERIVED_END ...>>>
+
+01.30_REFERENCIAS
+- SOURCE se identifica por: SOURCE_DOC_ID + SOURCE_SECTION_WBS
+
+==========
+02.00_ENTRADAS_SYNC_(DRAFT)
+==========
+
+SYNC_ENTRY_ID.......: SYNC.PF0.RITUALS.USER.0001
+SOURCE_DOC_ID........: HUMAN.PF0.0001
+SOURCE_SECTION_WBS...: 04.00
+TARGET_FILE..........: HUMAN.README\HUMAN.USER.0001.txt
+DERIVED_BLOCK_ID.....: DERIVED.PF0.RITUALS.USER.0001
+MODE.................: FULL
+NOTES................: PF.0 rituales completos en USER.
+
+SYNC_ENTRY_ID.......: SYNC.PF0.MB.USER.0001
+SOURCE_DOC_ID........: HUMAN.PF0.0001
+SOURCE_SECTION_WBS...: 05.00
+TARGET_FILE..........: HUMAN.README\HUMAN.USER.0001.txt
+DERIVED_BLOCK_ID.....: DERIVED.PF0.MB.USER.0001
+MODE.................: FULL
+NOTES................: PF.0 MiniBattles completas en USER.
+
+SYNC_ENTRY_ID.......: SYNC.PF0.RITUALS.MASTER.0001
+SOURCE_DOC_ID........: HUMAN.PF0.0001
+SOURCE_SECTION_WBS...: 04.00
+TARGET_FILE..........: HUMAN.README\HUMAN.MASTER.txt
+DERIVED_BLOCK_ID.....: DERIVED.PF0.RITUALS.MASTER.0001
+MODE.................: FULL
+NOTES................: PF.0 rituales completos en MASTER.
+
+SYNC_ENTRY_ID.......: SYNC.BATON.TEMPLATE.USER.0001
+SOURCE_DOC_ID........: HUMAN.BATON.0001
+SOURCE_SECTION_WBS...: 02.00
+TARGET_FILE..........: HUMAN.README\HUMAN.USER.0001.txt
+DERIVED_BLOCK_ID.....: DERIVED.BATON.TEMPLATE.USER.0001
+MODE.................: FULL
+NOTES................: Plantilla BATON completa en USER (pendiente de ID/WBS final BATON).
+
+SYNC_ENTRY_ID.......: SYNC.RADAR.LEVELS.MASTER.0001
+SOURCE_DOC_ID........: HUMAN.RADAR.0001
+SOURCE_SECTION_WBS...: 02.00
+TARGET_FILE..........: HUMAN.README\HUMAN.MASTER.txt
+DERIVED_BLOCK_ID.....: DERIVED.RADAR.LEVELS.MASTER.0001
+MODE.................: FULL
+NOTES................: Definiciones RADAR completas en MASTER (pendiente de ID/WBS final RADAR).
+
+==========
+03.00_CHANGELOG
+==========
+
+2026-02-27, v1.0-DRAFT
+- Creación inicial del SYNC manifest (FULL-copy).

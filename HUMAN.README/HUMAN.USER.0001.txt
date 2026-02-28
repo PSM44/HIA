@@ -1,0 +1,429 @@
+==============================
+ARCHIVO: human.User.txt
+ACCION: CREAR (archivo nuevo)
+==============================
+
+==========
+00.00_METADATOS_DEL_DOCUMENTO
+==========
+
+ID_UNICO..........: HUMAN.USER.0001
+NOMBRE_SUGERIDO...: human.User.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-02-27
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: <CIUDAD>, <PAIS>
+UBICACION_SISTEMA.: <PROJECT_ROOT>\01_HUMAN\
+AUTOR_HUMANO......: PABLO (ADMIN)
+AUTOR_IA..........: GPT-5.2 Thinking
+
+TITULO............: HUMAN — User Operating Model (Cómo opera el usuario)
+SUBTITULO_MEDIO...: Rituales, minibattles, MVP, approvals, cierre/inicio de sesión, control de cambios.
+SUBTITULO_BAJO....: Peatón-first. La IA es segunda. El humano manda.
+
+ALCANCE...........:
+- Define cómo el usuario opera el proyecto día a día con IA.
+- Define cómo iniciar sesión, cerrar sesión, y mantener continuidad (BATON).
+- Define cómo se aprueban cambios (Gate), cómo se valida (VALIDATE) y cómo se registra evidencia (LOG).
+- Define cómo se planifican y cierran Minibattles (MB = MiniBattles).
+- Define cómo se gobierna MVP (Minimum Viable Product) y decisiones CANON.
+
+NO_CUBRE..........:
+- Arquitectura técnica específica.
+- Implementación de scripts (vive en TOOLS/SKILLS).
+
+==========
+00.10_GLOSARIO_MINIMO
+==========
+
+TL.Bootstrap (Tooling & Lifecycle Bootstrap): conjunto transversal de métodos/sistemas (RADAR, BATON, CIS, SKILLS, estructura, HUMAN, etc.)
+RADAR (Inventario/Auditoría): “foto” del filesystem; niveles LITE/INDEX/CORE/FULL.
+RADAR_LITE (Delta): indica qué cambió desde la última corrida relevante.
+RADAR_CORE (Consolidado relevante): texto/código/config relevante para que IA entienda el sistema.
+BATON (Estado operativo): continuidad/handoff entre sesiones/chats.
+CIS (Content Injection System): contrato explícito de cambios (CREATE/EDIT/MOVE/RENAME/DELETE).
+Gate (Aprobación humana): decisión explícita para permitir APPLY.
+PLAN_ONLY (Solo plan): modo por defecto; no se toca filesystem.
+APPLY (Ejecución): cambios en filesystem (solo con Gate).
+VALIDATE (Validación): tests/smoke/runner + verificación outputs.
+LOG (Evidencia): registro de OK/FAIL, cambios y next actions.
+MB (MiniBattle): unidad mínima de avance verificable.
+MVP (Minimum Viable Product): alcance mínimo viable priorizado.
+CANON (Cierre oficial): decisión/documento congelado; no se edita directo.
+Quarantine (Borrado seguro): zona donde van “deletes” por defecto.
+
+==========
+00.20_INDICE_GENERAL_WBS
+==========
+
+01.00 Rol del usuario (autoridad y responsabilidades)
+02.00 Ritual de inicio de sesión (Start Ritual)
+03.00 Minibattles (MB): definición, diseño, ejecución, cierre
+04.00 MVP: cómo definir, priorizar y controlar scope
+05.00 Cómo pedir trabajo a la IA (prompts operativos)
+06.00 Gates y approvals (cuándo permitir APPLY)
+07.00 Validación y evidencia (VALIDATE + LOG)
+08.00 Cierre de sesión (End Ritual) y continuidad (BATON)
+09.00 Manejo de discrepancias/omisiones/conflictos
+10.00 Reglas de seguridad operativa (scope, secretos, quarantine)
+11.00 Gestión CANON (cómo cerrar asuntos sin congelarte)
+12.00 Checklist diario (operativo)
+13.00 CHANGELOG
+
+==========
+00.30_DERIVED_BLOCKS_(FULL-COPY_SYNC_TARGETS)
+==========
+
+00.30.10_NOTA_IMPORTANTE
+- Bloques DERIVED (Derivados) sincronizados automáticamente desde fuentes canónicas.
+- NO editar manualmente dentro de BEGIN/END.
+- Modo FULL (copia completa), no resumen.
+
+00.30.20_PF0_RITUALES_(DERIVED)
+<<<DERIVED_BEGIN ID=DERIVED.PF0.RITUALS.USER.0001 SOURCE=HUMAN.PF0.0001::04.00 MODE=FULL>>>
+04.10_RITUAL_DE_INICIO_(START_RITUAL)
+Objetivo:
+- arrancar sin re-explicar el universo y sin drift.
+
+Pasos:
+04.10.01 Leer BATON
+- revisar objetivo actual, decisiones (DRAFT/CANON), bloqueos, next actions.
+
+04.10.02 Seleccionar MiniBattles
+- elegir 1–3 MiniBattles con outputs claros.
+
+04.10.03 Definir modo (Gate)
+- Default: PLAN_ONLY.
+- Si una MiniBattle requiere APPLY:
+  - exigir plan, lista exacta de archivos, rollback, validación.
+
+04.10.04 Confirmar Scope
+- declarar qué paths se pueden tocar.
+- confirmar que PROJECT_ROOT es frontera por defecto.
+
+04.10.05 Confirmar APP_SCOPE (si hay RADAR_CORE)
+- si la MiniBattle implica “comprensión total de aplicación”:
+  - confirmar APP_SCOPE actualizado (por proyecto) para que CORE tome solo lo relevante.
+
+04.20_RITUAL_DE_CIERRE_(END_RITUAL)
+Objetivo:
+- continuidad y trazabilidad.
+
+Pasos:
+04.20.01 Actualizar BATON
+- objetivo actual, decisiones, cambios aplicados, evidencia, next actions.
+
+04.20.02 Evidencia mínima
+- adjuntar/registrar logs y commits.
+- confirmar RADAR_LITE post-APPLY si hubo cambios.
+
+04.20.03 Decidir TL.Bootstrap update
+- solo si:
+  - descubriste patrón reusable,
+  - cambiaste método,
+  - o mejoraste control/seguridad transversal.
+- Si fue solo trabajo del proyecto, NO contamina TL.Bootstrap.
+
+04.20.04 Preparar handoff si aplica
+- si se migrará chat/IA:
+  - BATON + RADAR_INDEX + RADAR_LITE (+ RADAR_CORE si necesario).
+
+<<<DERIVED_END ID=DERIVED.PF0.RITUALS.USER.0001>>>
+
+00.30.30_PF0_MINIBATTLES_(DERIVED)
+<<<DERIVED_BEGIN ID=DERIVED.PF0.MB.USER.0001 SOURCE=HUMAN.PF0.0001::05.00 MODE=FULL>>>
+05.10_DEFINICION
+- MiniBattle (Minibattle, MB) = unidad mínima de avance verificable.
+- Debe terminar en:
+  - DONE (terminada) o
+  - BLOCKED (bloqueada con causa explícita y next action).
+
+05.20_COMPONENTES_OBLIGATORIOS_DE_UNA_MB
+- MB_ID (ID único WBS-friendly)
+- Objetivo (qué cambia en el mundo)
+- Inputs requeridos (qué necesito)
+- Plan (pasos)
+- Output (artefacto verificable)
+- Gate requerido (PLAN_ONLY o APPLY_APPROVED)
+- Validación (qué prueba lo confirma)
+- Evidencia (log/commit/radar)
+- Estado (OPEN/DONE/BLOCKED)
+- Riesgo principal y mitigación (1 línea mínima)
+
+05.30_TIPOS_DE_MB (para routing)
+- MB.DOC: documentación HUMAN/TL.Bootstrap
+- MB.TOOL: tooling/scripts/validadores
+- MB.CODE: código de aplicación
+- MB.DEBUG: troubleshooting
+- MB.AUDIT: auditoría (RADAR_CORE/FULL, etc.)
+
+05.40_CIERRE_DE_MB (DoD de MB)
+- DONE si:
+  - output existe,
+  - validación OK o criterio equivalente,
+  - evidencia registrada,
+  - next action actualizada si corresponde.
+
+- BLOCKED si:
+  - falta dato duro,
+  - falta decisión humana,
+  - o hay fallo técnico sin hipótesis clara.
+  Debe registrar:
+  - causa,
+  - plan para desbloquear,
+  - next action.
+
+<<<DERIVED_END ID=DERIVED.PF0.MB.USER.0001>>>
+
+00.30.40_BATON_TEMPLATE_(DERIVED)
+<<<DERIVED_BEGIN ID=DERIVED.BATON.TEMPLATE.USER.0001 SOURCE=HUMAN.BATON.0001::02.00 MODE=FULL>>>
+02.10_CURRENT_OBJECTIVE
+- Qué objetivo se está atacando ahora.
+- Debe ser concreto, medible y acotado.
+
+02.20_STATE_SUMMARY
+- Hecho:
+  - hitos completados
+- En progreso:
+  - piezas activas
+- Bloqueos:
+  - qué impide avanzar (datos faltantes, dependencias, decisiones)
+
+02.30_DECISIONS
+Por cada decisión:
+- ID (WBS/único)
+- Qué se decidió (texto corto)
+- Por qué (razón)
+- Estado:
+  - DRAFT (aún discutible)
+  - CANON (cerrado oficialmente)
+- Evidencia:
+  - link a archivo, commit, o sección
+
+02.40_CHANGES_APPLIED
+- Lista de cambios aplicados en filesystem:
+  - operación (CREATE/EDIT/MOVE/RENAME/DELETE)
+  - paths
+  - commit id (si aplica)
+  - quarantine path (si aplica)
+
+02.50_VALIDATION_EVIDENCE
+- OK/FAIL + evidencia:
+  - logs
+  - outputs esperados
+  - comandos ejecutados
+- Sin evidencia no hay “OK”.
+
+02.60_RISKS_AND_ASSUMPTIONS
+- Riesgos abiertos (top 5–10)
+- Supuestos activos (lo que se asumió por falta de datos)
+- Plan para validar supuestos (cómo se obtiene dato duro)
+
+02.70_NEXT_ACTIONS
+- Lista WBS:
+  - prioridad (P0/P1/P2)
+  - owner (humano/IA planner/IA executor)
+  - prerequisitos
+  - definición de terminado de cada acción
+
+02.80_HANDOFF_PACKAGE
+- Al migrar chat/IA:
+  - BATON actualizado
+  - RADAR_INDEX + RADAR_LITE recientes
+  - Si se necesita “IA omnisciente”: RADAR_CORE por APP o módulo
+  - Snapshot/export (si aplica)
+  - Último commit id
+
+<<<DERIVED_END ID=DERIVED.BATON.TEMPLATE.USER.0001>>>
+
+==========
+01.00_ROL_DEL_USUARIO
+==========
+
+01.10_AUTORIDAD
+- El usuario define intención, prioridades y restricciones.
+- El usuario decide el Gate (PLAN_ONLY vs APPLY).
+- El usuario promueve a CANON (la IA no promueve).
+
+01.20_RESPONSABILIDAD
+- Si el input es ambiguo, el output será inestable.
+- El usuario debe exigir: supuestos explícitos, riesgos, y entregables verificables.
+
+01.30_DELEGACION_CONTROLADA
+- Se delega a la IA: planes, propuestas, borradores, scripts sugeridos, revisiones de consistencia.
+- No se delega: ejecución sin gate, decisiones de negocio, seguridad, CANON.
+
+==========
+02.00_START_RITUAL_(INICIO_DE_SESION)
+==========
+
+02.10 PASO 1: Leer BATON (Estado operativo)
+- Revisar objetivo actual, decisiones, pendientes, riesgos.
+
+02.20 PASO 2: Elegir 1–3 Minibattles (MB)
+- Cada MB debe tener output verificable.
+
+02.30 PASO 3: Confirmar modo
+- Default: PLAN_ONLY.
+- Si habrá APPLY: exigir plan + lista de archivos + rollback + validación.
+
+02.40 PASO 4: Confirmar scope (paths permitidos)
+- Declarar qué carpetas se pueden tocar.
+- Declarar qué NO se toca (denylist).
+
+==========
+03.00_MINIBATTLES_(MB)
+==========
+
+03.10 DEFINICION
+- MB es la unidad mínima de avance verificable.
+- Duración recomendada: 1–4 horas.
+
+03.20 ESTRUCTURA CANONICA DE UNA MB
+- MB_ID (WBS/único)
+- Objetivo
+- Inputs requeridos
+- Plan (pasos)
+- Output (artefacto)
+- Validación (cómo se verifica)
+- Evidencia (log/commit/archivo)
+- Estado: OPEN / DONE / BLOCKED
+
+03.30 REGLA DE CIERRE
+- No cerrar sesión sin:
+  - al menos 1 MB DONE, o
+  - BATON actualizado explicando por qué quedó BLOCKED.
+
+==========
+04.00_MVP
+==========
+
+04.10 DEFINICION
+- MVP = lo mínimo que entrega valor verificable.
+
+04.20 PRIORIDAD
+- P0 (must): sin esto no existe producto
+- P1 (should): mejora fuerte
+- P2 (could): nice-to-have
+
+04.30 CONTROL DE SCOPE
+- Cualquier feature fuera del MVP requiere:
+  - decisión explícita,
+  - impacto (tiempo/costo),
+  - y update del MVP.
+
+==========
+05.00_COMO_PEDIR_TRABAJO_A_LA_IA
+==========
+
+05.10 PROMPT OPERATIVO MINIMO
+Siempre incluir:
+- Objetivo
+- Scope (paths/módulo)
+- Constraints (no tocar X)
+- Modo: PLAN_ONLY o APPLY (con gate)
+- Output esperado (archivos, bloques, scripts)
+- Validación requerida
+
+05.20 REGLA ANTI-ALUCINACION
+- Si no hay dato duro, la IA debe declarar supuesto y proponer cómo validarlo.
+
+==========
+06.00_GATES_Y_APPROVALS
+==========
+
+06.10 PLAN_ONLY DEFAULT
+- No toca filesystem.
+- Solo produce: plan, borradores, propuestas.
+
+06.20 APPLY APPROVED (solo con gate)
+Antes de aprobar exigir:
+- plan paso a paso,
+- lista exacta de archivos a tocar,
+- rollback (Git commit),
+- validación post-change,
+- RADAR_LITE antes/después.
+
+==========
+07.00_VALIDACION_Y_EVIDENCIA
+==========
+
+07.10 VALIDATE MINIMO
+- Si hay tests/lint/build: correr runner.
+- Si no: smoke test mínimo (compila/arranca).
+
+07.20 LOG OBLIGATORIO
+- OK/FAIL con evidencia reproducible:
+  - logs,
+  - outputs,
+  - commit id.
+
+==========
+08.00_END_RITUAL_(CIERRE_DE_SESION)_Y_BATON
+==========
+
+08.10 PASO 1: Actualizar BATON
+- Objetivo actual
+- Decisiones tomadas (DRAFT/CANON)
+- Cambios aplicados (paths)
+- Evidencia (OK/FAIL)
+- Next actions (WBS + prioridad)
+
+08.20 PASO 2: Decidir TL.Bootstrap update
+- Solo si hubo patrón reutilizable o cambio de método.
+- Si fue “solo feature”, NO contamina TL.Bootstrap.
+
+08.30 PASO 3: Migración de chat (si aplica)
+- Si hay drift/performance:
+  - snapshot/export,
+  - BATON + RADAR_INDEX + RADAR_LITE (+ CORE si necesario),
+  - nuevo chat.
+
+==========
+09.00_DISCREPANCIAS_OMISIONES_CONFLICTOS
+==========
+
+09.10 QUIEN MANDA
+- Manda HUMAN más aguas arriba del conflicto.
+
+09.20 FORZAR CLARIDAD
+- Exigir lista explícita de dudas, omisiones y supuestos.
+
+==========
+10.00_SEGURIDAD_OPERATIVA
+==========
+
+10.10 SCOPE
+- Cambios solo dentro PROJECT_ROOT.
+
+10.20 SECRETS
+- Nunca en repo; si aparecen: FAIL + quarantine + incidente.
+
+10.30 DELETE POLICY
+- Delete por defecto => quarantine.
+
+==========
+11.00_CANON
+==========
+
+11.10 CUANDO CERRAR A CANON
+- Cuando el asunto esté completo (cabos sueltos cerrados) y validado mínimo.
+- CANON no se edita directo; hotfix por branch.
+
+==========
+12.00_CHECKLIST_DIARIO
+==========
+
+[ ] Leí BATON
+[ ] Definí 1–3 MB
+[ ] Confirmé PLAN_ONLY o APPLY (gate)
+[ ] Si APPLY: plan+lista+rollback+validate+RADAR_LITE
+[ ] Registré evidencia
+[ ] Actualicé BATON al cerrar
+
+==========
+13.00_CHANGELOG
+==========
+
+2026-02-27, v1.0-DRAFT
+- Creación inicial de human.User.txt

@@ -1,0 +1,431 @@
+==============================
+ARCHIVO: HUMAN.CIS.txt
+ACCION: CREAR (archivo nuevo)
+==============================
+
+==========
+00.00_METADATOS_DEL_DOCUMENTO
+==========
+
+ID_UNICO..........: HUMAN.CIS.0001
+NOMBRE_SUGERIDO...: HUMAN.CIS.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-02-27
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: <CIUDAD>, <PAIS>
+UBICACION_SISTEMA.: <TL_BOOTSTRAP_ROOT>\01_HUMAN\
+AUTOR_HUMANO......: PABLO (ADMIN)
+AUTOR_IA..........: GPT-5.2 Thinking
+
+TITULO............: HUMAN — CIS (Content Injection System) — Contratos de Cambio y Ejecución Controlada
+SUBTITULO_MEDIO...: Método determinista para declarar y aplicar cambios en filesystem (FS) bajo gate humano: CREATE/EDIT/MOVE/RENAME/DELETE.
+SUBTITULO_BAJO....: Peatón-first. Académico. Sin abreviaciones sin explicar. Evita drift, evita sorpresas.
+
+DOMINIO_DUENO......: CIS (Content Injection System: contrato explícito de cambios)
+AUTORIDAD..........: Este archivo manda en CIS. Si hay conflicto sobre contratos/ejecución/edición, manda este documento.
+ESTADO_CANON........: DRAFT (no oficial hasta promoción humana)
+
+DEPENDENCIAS.......:
+- HUMAN.MASTER (authority map + canon registry + sync manifest spec)
+- HUMAN.PF0 (rituales, minibattles, gates)
+- HUMAN.RADAR (evidencia foto/delta)
+- HUMAN.BATON (continuidad/handoff)
+- Git (rollback)
+- TOOLS/SKILLS (scripts de runner, validadores; no definidos aquí)
+
+==========
+00.10_GLOSARIO_MINIMO_(ABREVIACIONES_EXPLICADAS)
+==========
+
+CIS (Content Injection System): sistema de contratos para declarar cambios de forma inequívoca y ejecutable.
+FS (Filesystem): sistema de archivos (carpetas/archivos) local del proyecto.
+Planner (Planificador): rol (IA o humano) que redacta el contrato CIS; NO aplica cambios por defecto.
+Executor (Ejecutor): rol (IA o humano) que aplica el contrato CIS bajo Gate.
+Gate (Aprobación humana): permiso explícito para pasar de PLAN_ONLY a APPLY.
+PLAN_ONLY (Solo plan): modo por defecto; produce contratos, no aplica.
+APPLY (Aplicar): ejecución de cambios en FS; solo con gate humano.
+VALIDATE (Validación): pruebas mínimas + verificación outputs.
+LOG (Registro/Evidencia): log reproducible de OK/FAIL + cambios aplicados + referencias.
+Quarantine (Cuarentena): destino por defecto para “deletes” (no hard delete).
+CANON (Cierre oficial): estado congelado; cambios por hotfix/branch, no edición directa.
+SYNC (Sincronización): replicación automática de bloques DERIVED; es un caso especial de cambios CIS.
+DERIVED (Derivado): contenido generado/reemplazado por sync; no se edita manualmente.
+
+==========
+00.20_INDICE_GENERAL_WBS
+==========
+
+01.00 Propósito y mental model de CIS
+02.00 Roles y separación obligatoria (Planner vs Executor)
+03.00 Gates y estados (PLAN_ONLY / APPLY_APPROVED)
+04.00 Operaciones CIS (CREATE/EDIT/MOVE/RENAME/DELETE)
+05.00 Formato canónico del contrato CIS (plantilla)
+06.00 Reglas de ejecución (preflight, apply, postflight)
+07.00 Evidencia obligatoria (RADAR, Git, logs)
+08.00 Política delete=quarantine (hard delete excepcional)
+09.00 CIS para documentación y SYNC (bloques DERIVED)
+10.00 Manejo de conflictos, errores y rollback
+11.00 Seguridad operativa (scope, secretos, límites)
+12.00 Plantillas (templates) completas
+13.00 Checklist CIS (operativo)
+14.00 CHANGELOG
+
+
+==========
+01.00_PROPOSITO_Y_MENTAL_MODEL
+==========
+
+01.10_PROPOSITO
+- CIS existe para resolver un problema práctico:
+  “Cuando una IA y un humano colaboran, el riesgo es drift, sorpresas y cambios invisibles”.
+- CIS fuerza que todo cambio en filesystem (FS) sea:
+  - explícito,
+  - revisable,
+  - aprobable (gate),
+  - ejecutable,
+  - reversible (rollback),
+  - y auditable (evidencia).
+
+01.20_MENTAL_MODEL
+- CIS es un contrato. Un contrato tiene:
+  - alcance (scope),
+  - operaciones (qué se hará),
+  - contenido (qué se insertará),
+  - validación (cómo se confirma),
+  - evidencia (cómo se registra),
+  - rollback (cómo se revierte).
+- Si el contrato es ambiguo, CIS falla a propósito (fail-fast). La ambigüedad es el enemigo.
+
+01.30_LO_QUE_CIS_NO_ES
+- CIS NO es “la IA haciendo magia”.
+- CIS NO decide intención.
+- CIS NO reemplaza Git ni RADAR.
+- CIS NO elimina la necesidad de validar (tests/smoke) el funcionamiento real.
+
+==========
+02.00_ROLES_Y_SEPARACION_OBLIGATORIA
+==========
+
+02.10_PLANNER (PLANIFICADOR)
+Responsabilidades:
+- redacta el contrato CIS con precisión.
+- declara supuestos y riesgos.
+- propone scope y lista exacta de archivos a tocar.
+- define validación mínima.
+Prohibición por defecto:
+- no aplica cambios (PLAN_ONLY).
+
+02.20_EXECUTOR (EJECUTOR)
+Responsabilidades:
+- aplica el contrato CIS exactamente como está escrito.
+- no inventa pasos.
+- ejecuta preflight y postflight.
+- registra evidencia.
+Requisito:
+- gate humano explícito (APPLY_APPROVED).
+
+02.30_POR_QUE_SEPARAR
+- Sin separación:
+  - se confunde “decisión” con “ejecución”,
+  - se pierde trazabilidad,
+  - el humano no puede auditar qué fue planeado vs qué fue aplicado.
+
+==========
+03.00_GATES_Y_ESTADOS
+==========
+
+03.10_PLAN_ONLY (DEFAULT)
+- Estado por defecto.
+- Se permite:
+  - diseñar el contrato,
+  - generar propuestas,
+  - preparar scripts,
+  - preparar patches y bloques.
+- No se permite:
+  - modificar filesystem,
+  - borrar,
+  - mover,
+  - renombrar.
+
+03.20_APPLY_APPROVED (SOLO CON GATE HUMANO)
+- Se permite aplicar cambios.
+- Requisitos:
+  - contrato completo y validable,
+  - rollback preparado (Git checkpoint),
+  - scope confirmado,
+  - evidencia definida,
+  - preflight OK.
+
+03.30_ESTADOS_DE_EJECUCION (RUN STATES)
+- READY: contrato completo y aprobado.
+- RUNNING: ejecución en curso.
+- OK: ejecución finaliza y validación mínima OK.
+- FAIL: ejecución o validación falla; rollback requerido.
+
+==========
+04.00_OPERACIONES_CIS
+==========
+
+04.10_CREATE (CREAR)
+- Crear archivo/carpeta nueva.
+- Debe incluir:
+  - path exacto,
+  - contenido inicial (si es archivo),
+  - metadatos mínimos (si es canónico).
+
+04.20_EDIT (EDITAR)
+- Editar parte o todo un archivo.
+- Para HUMAN canónico: preferir “replace por bloque”:
+  - BLOQUE_ORIGINAL completo
+  - BLOQUE_CORREGIDO completo
+- Para código:
+  - patch/diff preferido si es pequeño,
+  - archivo completo si es boilerplate o refactor masivo.
+
+04.30_MOVE (MOVER)
+- Mover archivo/carpeta de origen a destino.
+- Debe incluir:
+  - path origen,
+  - path destino,
+  - impacto esperado,
+  - update a referencias/manifest si aplica.
+
+04.40_RENAME (RENOMBRAR)
+- Renombrar archivo/carpeta.
+- Debe incluir:
+  - nombre anterior,
+  - nombre nuevo,
+  - update de IDs y registros si aplica.
+
+04.50_DELETE (ELIMINAR) — POR DEFECTO QUARANTINE
+- Default:
+  - mover a QUARANTINE con timestamp y metadata.
+- Hard delete:
+  - solo con orden humana explícita,
+  - con checkpoint Git previo,
+  - y con evidencia de por qué era seguro.
+
+==========
+05.00_FORMATO_CANONICO_DEL_CONTRATO_CIS
+==========
+
+05.10_CONTRATO_CIS (PLANTILLA MINIMA)
+Un contrato CIS debe contener SIEMPRE:
+
+- CIS_TASK_ID (ID único, WBS-friendly)
+- TIPO (DOC / TOOL / CODE / AUDIT)
+- OBJETIVO (qué cambia en el mundo)
+- MODO (PLAN_ONLY / APPLY_APPROVED)
+- SCOPE (paths permitidos + denylist si aplica)
+- IMPACTO (qué archivos se tocarán y por qué)
+- OPERACIONES (lista de CREATE/EDIT/MOVE/RENAME/DELETE)
+- VALIDACION (comandos o checks)
+- EVIDENCIA (logs/commits/radar outputs)
+- ROLLBACK (plan Git / snapshot)
+- RIESGOS (top 1–3)
+- SUPUESTOS (si falta dato duro)
+
+05.20_REGLA_DE_COMPLETITUD
+- Si falta alguno de estos campos, el contrato NO es ejecutable (fail-fast).
+
+==========
+06.00_REGLAS_DE_EJECUCION
+==========
+
+06.10_PREFLIGHT (ANTES DE APPLY)
+Checklist mínimo:
+- 06.10.01 Gate humano confirmado (APPLY_APPROVED explícito).
+- 06.10.02 Scope confirmado (no tocar fuera del root).
+- 06.10.03 Git checkpoint creado (si habrá cambios).
+- 06.10.04 RADAR_LITE pre-change ejecutado (delta base).
+- 06.10.05 Validación definida y ejecutable.
+- 06.10.06 Secrets handling confirmado (no escribir secretos en repo).
+
+06.20_APPLY (EJECUCION)
+- Ejecutar operaciones en el orden declarado.
+- Prohibido:
+  - inventar pasos,
+  - tocar fuera de scope,
+  - “optimizar” por intuición.
+
+06.30_POSTFLIGHT (DESPUES DE APPLY)
+Checklist mínimo:
+- 06.30.01 RADAR_LITE post-change ejecutado.
+- 06.30.02 VALIDATE ejecutado (tests/smoke).
+- 06.30.03 LOG generado con OK/FAIL y evidencia.
+- 06.30.04 BATON actualizado si el cambio es significativo.
+- 06.30.05 Commit Git con mensaje trazable (si OK).
+
+06.40_FAIL_HANDLING
+- Si FAIL:
+  - detener cambios adicionales,
+  - registrar evidencia del fallo,
+  - ejecutar rollback (Git) si corresponde,
+  - registrar TROUBLE/INCIDENT (según severidad).
+
+==========
+07.00_EVIDENCIA_OBLIGATORIA
+==========
+
+07.10_RADAR_EVIDENCE
+- RADAR_LITE pre/post APPLY es obligatorio para deltas.
+- RADAR_INDEX/CORE se usan según necesidad:
+  - CORE cuando la IA necesita comprensión “total de aplicación” (APP_SCOPE definido por proyecto).
+
+07.20_GIT_EVIDENCE
+- Checkpoint antes de cambios grandes.
+- Commit después de OK.
+- Branch para hotfix (especialmente en CANON).
+
+07.30_LOG_EVIDENCE
+- Logs deben ser reproducibles:
+  - comandos ejecutados,
+  - outputs esperados,
+  - timestamps,
+  - OK/FAIL.
+
+==========
+08.00_DELETE=QUARANTINE (POLITICA)
+==========
+
+08.10_QUARANTINE_DEFAULT
+- Delete por defecto = MOVE a QUARANTINE.
+- El registro debe incluir:
+  - motivo,
+  - CIS_TASK_ID,
+  - fecha/hora,
+  - path original,
+  - path quarantine.
+
+08.20_HARD_DELETE_EXCEPCIONAL
+- Solo con:
+  - orden humana explícita,
+  - checkpoint Git previo,
+  - evidencia de que no se requiere historial.
+
+==========
+09.00_CIS_PARA_DOCUMENTACION_Y_SYNC
+==========
+
+09.10_CASO_ESPECIAL: SYNC
+- SYNC es un tipo de operación CIS:
+  - toma fuente canónica y reemplaza bloques DERIVED en destinos.
+- Reglas:
+  - solo reemplaza entre marcadores DERIVED_BEGIN/DERIVED_END.
+  - MODE=FULL significa copia completa (no resumen).
+  - MODE=OVERRIDE bloquea reemplazo y marca DIRTY.
+
+09.20_MARCADORES_DERIVED (ESTANDAR)
+Inicio:
+<<<DERIVED_BEGIN ID=<DERIVED_BLOCK_ID> SOURCE=<SOURCE_DOC_ID>::<SOURCE_WBS> MODE=FULL>>>
+Fin:
+<<<DERIVED_END ID=<DERIVED_BLOCK_ID>>>
+
+09.30_DIRTY_DETECTION
+- Si el contenido entre marcadores fue alterado manualmente:
+  - el runner debe detectarlo (hash antes/después) y marcar DIRTY,
+  - o reemplazar igual y loguear override si corresponde.
+
+==========
+10.00_CONFLICTOS_ERRORES_Y_ROLLBACK
+==========
+
+10.10_CONFLICTO: DOS FUENTES CANONICAS
+- Se resuelve por DOC.AUTHORITY.MAP (MASTER manda en meta; dominio manda en contenido).
+
+10.20_ERROR: CONTRATO INCOMPLETO
+- Fail-fast: no ejecutar.
+- Registrar qué campo faltó.
+
+10.30_ERROR: VALIDACION NO EJECUTABLE
+- Fail-fast: si no puedes validar, no puedes declarar OK.
+
+10.40_ROLLBACK
+- Preferido: Git reset/checkout según checkpoint.
+- Fallback: snapshot si Git no aplica.
+
+==========
+11.00_SEGURIDAD_OPERATIVA
+==========
+
+11.10_SCOPE
+- Scope por defecto: PROJECT_ROOT.
+- Denylist: fuera del root.
+
+11.20_SECRETS
+- Nunca guardar secretos en repo.
+- Si aparece secreto:
+  - FAIL + quarantine + incidente mínimo.
+
+11.30_EJECUCION_SCRIPT
+- Scripts deben usar verbos aprobados en PowerShell:
+  - evitar Validate-* (unapproved verb).
+  - preferir Test-* para validadores.
+- Exit codes binarios:
+  - 0 OK, 1 FAIL.
+
+==========
+12.00_PLANTILLAS_(TEMPLATES)_COMPLETAS
+==========
+
+12.10_TEMPLATE_CONTRATO_CIS
+CIS_TASK_ID........:
+TIPO...............: <DOC/TOOL/CODE/AUDIT>
+OBJETIVO...........:
+MODO...............: <PLAN_ONLY/APPLY_APPROVED>
+SCOPE..............:
+IMPACTO............:
+OPERACIONES.........:
+  - OP.............: <CREATE/EDIT/MOVE/RENAME/DELETE>
+    PATH............:
+    DETALLE.........:
+    CONTENIDO.......: <si aplica>
+VALIDACION..........:
+EVIDENCIA...........:
+ROLLBACK............:
+RIESGOS.............:
+SUPUESTOS...........:
+APROBACION_HUMANA...: <SI/NO + timestamp>
+
+12.20_TEMPLATE_OPERACION_EDIT_(BLOQUES)
+ARCHIVO............:
+SECCION_WBS.........:
+BLOQUE_ORIGINAL.....:
+<texto>
+BLOQUE_CORREGIDO....:
+<texto>
+
+12.30_TEMPLATE_DELETE_QUARANTINE
+ORIGEN_PATH.........:
+DESTINO_QUARANTINE..:
+MOTIVO..............:
+CIS_TASK_ID.........:
+FECHA_HORA..........:
+
+==========
+13.00_CHECKLIST_CIS
+==========
+
+[ ] Contrato completo (05.10)
+[ ] Gate humano explícito (APPLY_APPROVED) si aplica
+[ ] Scope confirmado (root + denylist)
+[ ] Git checkpoint listo
+[ ] RADAR_LITE pre-change
+[ ] APPLY exacto según contrato
+[ ] RADAR_LITE post-change
+[ ] VALIDATE ejecutado
+[ ] LOG generado OK/FAIL
+[ ] BATON actualizado (si corresponde)
+[ ] Commit Git (si OK)
+
+
+==========
+14.00_CHANGELOG
+==========
+
+14.10_2026-02-27_v1.0-DRAFT
+- Creación inicial del dominio CIS (Content Injection System: contrato explícito de cambios) con:
+  - contratos CREATE/EDIT/MOVE/RENAME/DELETE (crear/editar/mover/renombrar/eliminar),
+  - gates (aprobación humana) para APPLY (aplicar),
+  - evidencia obligatoria (RADAR_LITE delta + Git + logs),
+  - readiness para SYNC (Sincronización) con marcadores DERIVED_BEGIN/DERIVED_END.

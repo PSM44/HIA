@@ -1,0 +1,521 @@
+==============================
+TANDA 1/3
+ARCHIVO: HumanRGeneral.txt
+ACCION: CREAR (archivo nuevo)
+==============================
+
+==========
+00.00_METADATOS_DEL_DOCUMENTO
+==========
+
+ID_UNICO..........: HUMAN.R.GENERAL.0001
+NOMBRE_SUGERIDO...: HumanRGeneral.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-02-27
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: <CIUDAD>, <PAIS>
+UBICACION_SISTEMA.: <PROJECT_ROOT>\01_HUMAN\
+AUTOR_HUMANO......: PABLO (ADMIN)
+AUTOR_IA..........: GPT-5.2 Thinking
+
+TITULO............: HUMAN Root — Marco General (General Operating Model)
+SUBTITULO_MEDIO...: Filosofía, gobernanza, fases, gates, CANON, RADAR, CIS, Git, continuidad.
+SUBTITULO_BAJO....: Documento para peatones primero. IA segundo. No recorta conceptos.
+
+ALCANCE...........:
+- Define el marco general (no específico de un proyecto particular) para operar proyectos TI con soporte de IA.
+- Establece la “pirámide” de autoridad: HUMAN arriba (máxima definición).
+- Define fases end-to-end (0 → 3.2 + transversal), y Definition of Done (DoD) por fase.
+- Define gobernanza operacional: PLAN→APPLY→VALIDATE→LOG, gates humanos, CANON, delete=quarantine, Git.
+- Define disciplina de archivos .txt: WBS/ID, metadatos, índices, replace por bloques (VS Code).
+- Define el rol de RADAR y CIS como mecanismos de trazabilidad y control.
+
+NO_CUBRE..........:
+- Arquitectura técnica específica (stack, frameworks, servicios concretos).
+- Diseño UI/UX o requisitos funcionales detallados de una app específica.
+- Implementación de scripts concretos (eso vive en TOOLS / SKILLS).
+
+DEPENDENCIAS......:
+- (Conceptual) Política de ejecución: PLAN_ONLY default y APPLY con gate humano.
+- (Conceptual) RADAR: niveles LITE/INDEX/CORE/FULL, y exclusiones.
+- (Conceptual) CIS: contrato de inyección/edición; diferencia Planner vs Executor.
+- (Conceptual) Git: checkpoints y rollback.
+
+==========
+00.10_INDICE_GENERAL_WBS
+==========
+
+00.00 Metadatos del documento
+00.10 Índice general WBS
+00.20 Contexto y propósito (para qué existe HUMAN Root)
+00.30 Definiciones base (términos y taxonomía mínima)
+
+01.00 Filosofía y principios (la “constitución”)
+01.10 No-negociables
+01.20 Anti-objetivos (lo que NO optimizamos)
+01.30 Pirámide de autoridad (HUMAN arriba)
+01.40 Principio de trazabilidad y evidencia
+
+02.00 Gobernanza operacional (cómo se trabaja de verdad)
+02.10 Roles: Humano / IA Planner / IA Executor
+02.20 Gates: PLAN_ONLY vs APPLY_APPROVED
+02.30 Ciclo operativo: PLAN → APPLY → VALIDATE → LOG
+02.40 Política de costo/performance (contexto por niveles)
+
+03.00 Gestión de documentos y archivos (txt-first)
+03.10 Estándar mínimo de archivo .txt (metadatos + índice + WBS)
+03.20 WBS/ID: unicidad y compatibilidad DB (RADAR-friendly)
+03.30 Reglas de edición: replace por bloques (VS Code)
+03.40 CANON: definición operativa, promoción, congelamiento y hotfix
+
+04.00 Control de entorno y cambios (seguridad operativa)
+04.10 Sandbox boundary (scope + allowlist + denylist)
+04.20 Delete policy: quarantine por defecto
+04.30 Rollback: Git preferido, snapshot fallback
+04.40 Secrets handling: fuera del repo, redaction, fail-fast
+
+05.00 RADAR (inventario y auditoría)
+05.10 Propósito y niveles: LITE / INDEX / CORE / FULL
+05.20 Cuándo ejecutar RADAR (mínimo antes/después de APPLY)
+05.30 Exclusiones (lo irrelevante para desarrollo)
+05.40 Señales: edited / created / deleted / moved / anomalías
+
+06.00 CIS (Content Injection System)
+06.10 Qué es CIS (contrato de edición) vs qué NO es (magia)
+06.20 Planner vs Executor (separación obligatoria)
+06.30 Contratos de cambio: CREATE / EDIT / MOVE / RENAME / DELETE
+06.40 Validación y prevención de errores recurrentes (incl. PowerShell verbs)
+
+07.00 Fases de un proyecto (end-to-end)
+07.10 Fase 0: Filosofía (HUMAN-first)
+07.20 Fase 1: Entorno contextual IA (convergencia y cierre)
+07.30 Fase 2: Entorno local (bootstrap + estructura + herramientas)
+07.40 Fase 3.1: Pre-Coding (setup check)
+07.50 Fase 3.2: Coding (iteración controlada)
+
+08.00 Transversal (siempre activo)
+08.10 Cierre de sesión (BATON + logs + decisión TL.Bootstrap)
+08.20 Gestión de performance (context drift, migración de chat)
+08.30 Escalamiento futuro (pocas carpetas, archivos grandes, estrategia)
+08.40 Checklist ejecutivo (rápido)
+
+09.00 Riesgos / contradicciones típicas / omisiones frecuentes
+09.10 Riesgos de sobre-inyección de contexto
+09.20 Riesgos de automatización sin gates
+09.30 Riesgos de auditoría “ruidosa” (RADAR sin exclusiones)
+09.40 Oportunidades de mejora (sin cambiar filosofía)
+
+10.00 CHANGELOG
+
+
+==========
+00.20_CONTEXTO_Y_PROPOSITO
+==========
+
+00.21_PROPOSITO_GENERAL
+- Este documento existe porque “trabajar con IA” sin método es equivalente a improvisar:
+  obtienes velocidad puntual, pero acumulas deuda y pierdes trazabilidad.
+- HUMAN Root define el “sistema operativo conceptual” del trabajo.
+- HUMAN Root debe ser comprensible para:
+  (1) una persona sin contexto (“peatón”),
+  (2) tu “yo del futuro”,
+  (3) una IA que se inicializa en blanco.
+
+00.22_POR_QUE_TXT_FIRST
+- TXT primero (no markdown) por pragmatismo: edición simple, replace por bloques, control y compatibilidad.
+- TXT reduce el riesgo de formatos rotos, render ambiguo, o tooling que “interpreta” markdown de forma distinta.
+- Convertir a .md es futuro opcional, no requisito.
+
+00.23_PRINCIPIO_DE_NO_PERDIDA_DE_CONTEXTO
+- HUMAN Root no se recorta. Se complementa y perfecciona.
+- Si algo queda obsoleto, se marca como “DEPRECATED” o se mueve a historial/quarantine con registro.
+- “La nueva versión no debe tener menos puntos” salvo que se justifique por consolidación explícita.
+
+==========
+00.30_DEFINICIONES_BASE
+==========
+
+00.31_DEFINICION_DE_CAMBIO
+- Cambio = crear, editar, renombrar, mover, eliminar (archivo o carpeta), o modificar partes de un archivo.
+
+00.32_DEFINICION_DE_TL_BOOTSTRAP
+- TL.Bootstrap = conjunto de métodos y sistemas transversales reutilizables:
+  PFundations, Skills, RADAR, CIS, BATON, StarterKit, políticas de ejecución, validadores, etc.
+- Un proyecto concreto consume TL.Bootstrap, pero NO lo reescribe “por accidente”.
+
+00.33_DEFINICION_DE_CANON
+- CANON = “cierre oficial” de un asunto (criterio, definición, acuerdo, documento).
+- CANON implica: coherencia, cabos sueltos cerrados, validación mínima, y congelamiento (no editar directo en main).
+
+00.34_DEFINICION_DE_GATES
+- Gate = punto de control humano que decide si una acción pasa de PLAN (intención) a APPLY (acción).
+- Sin gate, no hay ejecución que modifique filesystem (FS).
+
+00.35_DEFINICION_DE_CONTEXT_LEVEL
+- Context Level = cuánto contexto se entrega a la IA.
+- Regla general: iniciar con el mínimo efectivo y escalar solo cuando sea necesario.
+
+==========
+01.00_FILOSOFIA_Y_PRINCIPIOS
+==========
+
+01.10_NO_NEGOCIABLES
+01.10.01 HUMAN manda
+- HUMAN es la cima de la pirámide: máxima definición, máxima prioridad, máxima preservación conceptual.
+- Si hay conflicto entre documentos, manda HUMAN “aguas arriba” del conflicto.
+
+01.10.02 PLAN→APPLY→VALIDATE→LOG (siempre)
+- PLAN obligatorio: intención, pasos, riesgos, supuestos, alcance, estimación.
+- APPLY solo con aprobación humana explícita (gate).
+- VALIDATE mínimo: pruebas o smoke test, y verificación de outputs.
+- LOG obligatorio: evidencia OK/FAIL, cambios hechos, y next actions.
+
+01.10.03 Git siempre
+- Cada cambio material importante debe tener rollback simple:
+  - commit checkpoint antes de APPLY,
+  - commit después si el cambio quedó,
+  - branches para hotfix y cambios a CANON.
+
+01.10.04 Delete = quarantine (por defecto)
+- Borrar es irreversible; por tanto se prohíbe hard delete como default.
+- Hard delete solo con orden humana + checkpoint previo.
+
+01.10.05 No “magia”
+- La IA no “adivina” intención, no inventa datos, no decide por intuición:
+  propone y explica; el humano decide.
+- Si faltan datos, se declara explícitamente y se propone cómo conseguirlos.
+
+01.20_ANTI_OBJETIVOS
+- No optimizamos por:
+  - “automatización total sin gates”,
+  - “inyectar todo siempre” (costoso, ruidoso, y degrada performance),
+  - “Frankenstein de herramientas” (plugins por ansiedad),
+  - “reemplazos totales” cuando basta patch/replace por bloques.
+
+01.30_PIRAMIDE_DE_AUTORIDAD
+- Nivel 0 (máximo): HUMAN (conceptos y decisiones).
+- Nivel 1: Políticas (gates, ejecución, seguridad, canon).
+- Nivel 2: Métodos (workflow, routing, checklist).
+- Nivel 3: Tools/Skills (scripts, validadores, RADAR).
+- Nivel 4: Código de aplicación (features, tests, etc.).
+- Nivel 5: Artefactos (logs, snapshots, exports).
+
+01.40_EVIDENCIA_Y_AUDITORIA
+- Cada decisión importante debe tener:
+  - qué se decidió,
+  - por qué,
+  - cuándo,
+  - quién aprobó,
+  - evidencia mínima (log/commit/reporte).
+- Sin evidencia, el sistema no es reproducible (y el “yo del futuro” sufre).
+
+==========
+02.00_GOBERNANZA_OPERACIONAL
+==========
+
+02.10_ROLES
+02.10.01 HUMANO
+- Define objetivos, prioridades, restricciones, y criterios de cierre.
+- Aprueba APPLY que modifica filesystem.
+- Promueve documentos a CANON.
+- Decide escalamiento de contexto cuando el costo/performance se degrada.
+
+02.10.02 IA_PLANNER
+- Produce planes, riesgos, supuestos, diseños, patches propuestos.
+- Default: NO toca filesystem.
+- Debe declarar: TaskType, ContextLevel sugerido, y ApplyGate.
+
+02.10.03 IA_EXECUTOR
+- Aplica cambios en filesystem SOLO bajo:
+  - gate humano explícito,
+  - sandbox scope definido,
+  - checkpoint/rollback listo,
+  - validación post-run.
+
+02.20_GATES
+02.20.01 PLAN_ONLY (default)
+- Todo parte como PLAN_ONLY.
+- No hay cambios en FS.
+- Solo se generan: planes, propuestas, borradores, scripts sugeridos, y checklists.
+
+02.20.02 APPLY_APPROVED (solo con aprobación humana)
+- Se permite aplicar cambios en FS, siguiendo CIS (contrato explícito).
+- Siempre: preflight + checkpoint + radar mínimo + validate + log.
+
+02.30_CICLO_OPERATIVO
+02.30.01 PLAN (obligatorio)
+Input mínimo:
+- objetivo,
+- scope (paths, módulo, o límites),
+- constraints,
+- definición de éxito.
+Output mínimo:
+- plan paso a paso,
+- riesgos y supuestos,
+- impacto en TL.Bootstrap (si aplica),
+- propuesta de cambio (patch o bloques),
+- validación a ejecutar.
+
+02.30.02 APPLY (con gate)
+- Solo si el humano aprueba.
+- Acciones explícitas: CREATE/EDIT/MOVE/RENAME/DELETE (delete=quarantine).
+- Sin sorpresas: la IA ejecuta lo que dijo que ejecutaría.
+
+02.30.03 VALIDATE (mínimo)
+- Si hay tests/lint/build: ejecutar runner allowlisted.
+- Si no: smoke test mínimo (compile/parse/start).
+- Validación incluye: RADAR post-change (mínimo LITE) y outputs existentes.
+
+02.30.04 LOG (obligatorio)
+- OK: evidencia mínima + resumen de cambios + commit id.
+- FAIL: evidencia reproducible + rollback + TROUBLE/INCIDENT si aplica.
+
+02.40_POLITICA_COSTO_PERFORMANCE (Context Levels)
+- L0 default: HUMAN/BATON + RADAR_INDEX (inventario) como base.
+- L1: snippets selectivos de archivos target.
+- L2: RADAR_CORE por módulo (no todo el root).
+- L3: RADAR_FULL solo auditoría puntual (prohibido como default).
+
+==========
+03.00_GESTION_DE_DOCUMENTOS_Y_ARCHIVOS_(TXT_FIRST)
+==========
+
+03.10_ESTANDAR_MINIMO_DE_ARCHIVO_TXT
+Todo archivo .txt canónico debe tener:
+- Metadatos (ID, nombre, versión, fecha/hora, ciudad, ubicación sistema, autores).
+- Índice general WBS.
+- Contexto y propósito.
+- Secciones WBS con títulos claros.
+- “Cómo ejecutar” si aplica (scripts, comandos, rutas).
+- Checklist y changelog cuando corresponde.
+
+03.20_WBS_ID_UNICIDAD_Y_COMPATIBILIDAD_DB
+- Cada archivo y sección debe tener codificación WBS y un ID único.
+- Reglas:
+  - ASCII-friendly cuando sea posible (evitar tildes/ñ en nombres técnicos).
+  - Versiones explícitas: vX.Y-DRAFT o vX.Y-CANON.
+  - Mantener consistencia para RADAR e ingestión a BD.
+
+03.30_REGLAS_DE_EDICION_(REPLACE_POR_BLOQUES)
+- Cuando se corrige un documento canónico:
+  - Identificar el TÍTULO/SUBTÍTULO y el contenido completo actual (BLOQUE_ORIGINAL).
+  - Proporcionar el contenido completo corregido (BLOQUE_CORREGIDO).
+  - El usuario usa VS Code Replace (sin ambigüedad).
+- Evitar “parches parciales” en chat si el usuario pide replace por bloques.
+- No recortar conceptual en HUMAN.
+
+03.40_CANON_GOBERNANZA
+03.40.01 Definición operativa (para promover a CANON)
+Un documento es CANON cuando:
+(1) Cumple el estándar de contenido al 100%.
+(2) No contradice HUMAN root.
+(3) Pasa validadores allowlisted.
+(4) VERSION = vX.Y-CANON
+(5) CHANGELOG completo.
+
+03.40.02 Regla de promoción
+- IA no promueve a CANON.
+- Humano promueve.
+
+03.40.03 Congelamiento y hotfix
+- CANON no se edita directo en main.
+- Hotfix:
+  - branch hotfix/<ID>/<YYYYMMDD>
+  - cambio mínimo (bloque)
+  - subir versión CANON
+  - merge con evidencia
+
+==========
+04.00_CONTROL_DE_ENTORNO_Y_CAMBIOS
+==========
+
+04.10_SANDBOX_BOUNDARY (scope)
+- PROJECT_ROOT es el único universo de escritura permitido por defecto.
+- Allowlist: carpetas específicas dentro de PROJECT_ROOT.
+- Denylist: secretos, fuera del root, y ejecuciones OS arbitrarias.
+
+04.20_DELETE_POLICY (quarantine)
+- Delete por defecto => mover a QUARANTINE con timestamp y metadata:
+  motivo, task id, checkpoint id.
+- Hard delete solo con orden humana explícita + checkpoint.
+
+04.30_ROLLBACK
+- Git preferido:
+  - commit checkpoint antes de APPLY,
+  - rollback por reset/checkout.
+- Snapshot fallback si Git no está disponible.
+
+04.40_SECRETS_HANDLING
+- Secrets fuera del repo.
+- Logs con redaction.
+- Si aparece secret en archivo: FAIL + quarantine + INCIDENT mínimo ALTA.
+
+==========
+05.00_RADAR
+==========
+
+05.10_PROPOSITO
+- RADAR es el inventario/auditoría operacional.
+- Sirve para responder:
+  - qué existe,
+  - dónde está,
+  - qué cambió,
+  - qué es canónico,
+  - qué está fuera de estándar,
+  - qué es ruido.
+
+05.20_NIVELES
+- LITE: cambios y señales rápidas (ideal antes/después de APPLY).
+- INDEX: inventario y rutas, tamaños, timestamps (rápido para navegación).
+- CORE: contenido de texto “legible” por módulo (no binarios; size limits).
+- FULL: auditoría completa (costo/ruido alto). Solo puntual.
+
+05.30_EXCLUSIONES (obligatorias)
+- RADAR no debe considerar irrelevante para desarrollo:
+  - caches, builds, dependencias masivas, outputs propios de RADAR, logs gigantes, etc.
+- Regla: exclusiones = política explícita y revisable.
+
+05.40_HASH_VS_TIMESTAMPS
+- Texto: hash es más confiable.
+- Binarios: fallback por tamaño/timestamp.
+- Evitar hash “All” en repos con dependencias masivas salvo auditoría puntual.
+
+==========
+06.00_CIS_(CONTENT_INJECTION_SYSTEM)
+==========
+
+06.10_QUE_ES_CIS
+- CIS es el “contrato” de edición: define cómo declarar cambios sin ambigüedad.
+- CIS exige operaciones explícitas:
+  CREATE / EDIT / MOVE / RENAME / DELETE
+- CIS no interpreta intención: ejecuta lo escrito.
+
+06.20_PLANNER_VS_EXECUTOR (separación obligatoria)
+- Planner:
+  - redacta el contrato CIS (qué se hará).
+  - no ejecuta.
+- Executor:
+  - aplica el contrato CIS bajo gate humano.
+  - valida, loguea, y hace rollback si falla.
+- Si se mezcla, la auditoría se rompe (no hay “quién decidió” vs “quién aplicó”).
+
+06.30_VALIDACION_Y_PREVENCION_DE_ERRORES
+- PowerShell verbs:
+  - usar Test-* en vez de Validate-* para evitar warnings “unapproved verb”.
+- Scripts deben tener exit code binario 0/1.
+- Outputs “OK” solo si existen outputs y no hubo error silencioso.
+
+==========
+07.00_FASES_DE_UN_PROYECTO_(END_TO_END)
+==========
+
+07.10_FASE_0_FILOSOFIA (HUMAN-first)
+Objetivo:
+- fijar intención, principios, no-negociables y definición de éxito.
+
+Entregables de término:
+- Filosofía, alcance/no-alcance, riesgos top, y DoD por fase.
+
+Cierre:
+- humano confirma intención y DoD.
+
+07.20_FASE_1_ENTORNO_CONTEXTUAL_IA
+Objetivo:
+- converger definiciones y preparar el marco (sin tocar FS).
+
+Entregables de término:
+- BATON inicial, workflow, routing policy, políticas de ejecución, y decisiones base.
+
+Cierre:
+- humano aprueba “listo para bootstrap local”.
+
+07.30_FASE_2_ENTORNO_LOCAL (bootstrap)
+Objetivo:
+- crear estructura local, archivos canónicos, tools y validadores.
+
+Entregables de término:
+- one-shot bootstrap, RADAR operativo, validadores allowlisted, primer commit baseline.
+
+Cierre:
+- bootstrap corre OK + radar outputs + commit baseline.
+
+07.40_FASE_3_1_PRE_CODING (setup check)
+Objetivo:
+- comprobar que el stack y setup están listos (interacción con IA como checklist de validación).
+
+Entregables de término:
+- guía de run local, smoke/test mínimo OK, logs.
+
+Cierre:
+- validate OK con evidencia.
+
+07.50_FASE_3_2_CODING (iteración controlada)
+Objetivo:
+- construir con disciplina: plan/aprobación/apply/validate/log.
+
+Cierre por feature:
+- DoD cumplido + validate OK + commit.
+
+==========
+08.00_TRANSVERSAL
+==========
+
+08.10_CIERRE_DE_SESION
+- Siempre:
+  - actualizar BATON (estado, decisiones, cambios, pendientes, riesgos).
+- TL.Bootstrap:
+  - se actualiza solo si se descubrió patrón reutilizable o cambió la forma de operar.
+
+08.20_PERFORMANCE_Y_MIGRACION_DE_CHAT
+- Si se detecta drift (repetición de contexto, outputs inconsistentes, fatiga):
+  - snapshot/export (pdf o equivalente),
+  - BATON actualizado,
+  - nuevo chat en el proyecto.
+
+08.30_ESCALAMIENTO_FUTURO
+- Preferencia: pocas carpetas, archivos grandes.
+- Aun así, debe quedar registrada la estrategia de escalamiento:
+  - cuándo dividir archivos por tamaño,
+  - cuándo crear subcarpetas por módulo,
+  - cómo mantener WBS/ID coherente.
+
+08.40_CHECKLIST_EJECUTIVO_RAPIDO
+[ ] HUMAN definido (principios + DoD)
+[ ] Routing policy clara (TaskType→ContextLevel→Gate)
+[ ] PLAN_ONLY default, APPLY con gate
+[ ] Git checkpoints listos
+[ ] Delete=quarantine
+[ ] RADAR exclusions definidas
+[ ] Validación mínima y logs
+[ ] BATON actualizado al cierre
+
+==========
+09.00_RIESGOS_Y_MEJORAS
+==========
+
+09.10_RIESGO_SOBRE_INYECCION
+- Inyectar “todo siempre” degrada performance, aumenta costo y mete ruido.
+Mitigación:
+- routing determinista + escalamiento por niveles.
+
+09.20_RIESGO_AUTOMATIZACION_SIN_GATES
+- Sin gate, el sistema se vuelve no-auditado y rompe reversibilidad.
+Mitigación:
+- PLAN_ONLY default; APPLY con aprobación humana.
+
+09.30_RIESGO_RADAR_RUIDOSO
+- Sin exclusiones, RADAR pierde utilidad.
+Mitigación:
+- política de exclusión explícita + CORE por módulo + FULL solo puntual.
+
+09.40_OPCIONES_DE_MEJORA (sin cambiar filosofía)
+- Definir un “glosario” canónico (términos) para evitar discusiones semánticas.
+- Definir “plantillas” de decisiones y logs para que el cierre de sesión sea mecánico.
+- Definir umbrales de tamaño (cuando partir archivos en tandas).
+
+==========
+10.00_CHANGELOG
+==========
+
+2026-02-27, v1.0-DRAFT
+- Creación inicial de HUMAN Root General.

@@ -1,0 +1,317 @@
+==============================
+TANDA 1/2
+ARCHIVO:  03.00_HUMAN.RADAR.txt
+ACCION: CREAR (archivo nuevo)
+==============================
+
+==========
+00.00_METADATOS_DEL_DOCUMENTO
+==========
+
+ID_UNICO..........: HUMAN.RADAR.0001
+NOMBRE_SUGERIDO...: 03.00_HUMAN.RADAR.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-02-27
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: <CIUDAD>, <PAIS>
+UBICACION_SISTEMA.: <TL_BOOTSTRAP_ROOT>\01_HUMAN\
+AUTOR_HUMANO......: PABLO (ADMIN)
+AUTOR_IA..........: GPT-5.2 Thinking
+
+TITULO............: HUMAN Root — RADAR (Inventario, Foto y Delta)
+SUBTITULO_MEDIO...: Qué es RADAR, niveles (LITE/INDEX/CORE/FULL), exclusiones, señales, evidencias.
+SUBTITULO_BAJO....: Peatón primero: que cualquiera entienda “qué cambió, dónde está, y qué es relevante”.
+
+ALCANCE...........:
+- Definir RADAR como sistema de inventario y auditoría operacional.
+- Definir niveles: RADAR_LITE (delta), RADAR_INDEX (foto inventario), RADAR_CORE (consolidado relevante), RADAR_FULL (auditoría completa).
+- Definir reglas de exclusión e inclusión (relevancia) para evitar ruido.
+- Definir cuándo ejecutar RADAR y cómo usarlo con gates y Git.
+- Definir señales estándar (created/edited/moved/deleted/anomalies) y outputs esperados.
+
+NO_CUBRE..........:
+- Implementación del script RADAR (eso está en TOOLS/SKILLS).
+- Arquitectura de software del producto (eso está en HUMAN del proyecto).
+
+PRINCIPIO_CANON...:
+- Este documento define reglas generales de RADAR (TL.Bootstrap).
+- Un proyecto puede extenderlo (HUMAN del proyecto) pero no contradecirlo sin decisión explícita.
+
+==========
+00.10_INDICE_GENERAL_WBS
+==========
+
+00.00 Metadatos
+00.10 Índice
+00.20 Propósito y mental model (RADAR como “foto” y “delta”)
+00.30 Definiciones base (terminología)
+
+01.00 Qué es RADAR (y qué NO es)
+01.10 RADAR como foto (snapshot) del filesystem
+01.20 RADAR como delta (RADAR_LITE)
+01.30 RADAR no reemplaza tests ni CI
+
+02.00 Niveles RADAR (LITE / INDEX / CORE / FULL)
+02.10 RADAR_LITE (delta operativo)
+02.20 RADAR_INDEX (foto inventario)
+02.30 RADAR_CORE (consolidado relevante para IA)
+02.40 RADAR_FULL (auditoría completa)
+
+03.00 Relevancia y exclusiones (la clave para que no se pudra)
+03.10 Problema: ruido operacional y costos
+03.20 Política CORE_SCOPE (APP / REPO / MODULE)
+03.30 IncludeList y ExcludeList (por stack)
+03.40 Tratamiento de binarios y límites de tamaño
+
+04.00 Señales y outputs (lo que debe entregar RADAR)
+04.10 Señales mínimas: created/edited/deleted/moved
+04.20 Señales de anomalía: naming/duplicados/out-of-scope
+04.30 Evidencia: logs, hashes, timestamps
+
+05.00 Ejecución (cuándo correr y con qué gate)
+05.10 Antes y después de APPLY (mínimo)
+05.20 Navegación y handoff (INDEX/CORE)
+05.30 Auditorías e incidentes (FULL controlado)
+
+06.00 Integración con Git, CANON y Quarantine
+06.10 Git checkpoints y RADAR
+06.20 Delete=quarantine y trazabilidad
+06.30 CANON: cómo RADAR ayuda a congelar
+
+07.00 Checklist operativo (peatón-friendly)
+08.00 CHANGELOG
+
+
+==========
+00.20_PROPOSITO_Y_MENTAL_MODEL
+==========
+
+00.21_MENTAL_MODEL_SIMPLE
+- RADAR es un sistema para responder 3 preguntas:
+  (1) ¿Qué existe? (inventario)
+  (2) ¿Qué cambió? (delta)
+  (3) ¿Qué es relevante? (scope e inclusión/exclusión)
+
+00.22_DOS_SALIDAS_DISTINTAS
+- FOTO: muestra el estado actual (snapshot).
+- DELTA: muestra cambios desde la última “foto” relevante.
+
+00.23_POR_QUE_IMPORTA
+- Sin inventario: no hay navegación ni control.
+- Sin delta: no hay disciplina (drift).
+- Sin relevancia: RADAR se convierte en ruido y deja de servir.
+
+==========
+00.30_DEFINICIONES_BASE
+==========
+
+00.31_FOTO_(SNAPSHOT)
+- Estado actual del filesystem (FS) dentro de un scope definido.
+
+00.32_DELTA
+- Comparación entre “estado anterior” y “estado actual” para listar cambios.
+
+00.33_RELEVANTE
+- “Relevante” = útil para entender, mantener y validar la aplicación:
+  - código,
+  - configuración,
+  - infraestructura declarativa (si aplica),
+  - tests,
+  - scripts del proyecto necesarios para operar.
+
+00.34_IRRELEVANTE
+- “Irrelevante” = alto volumen o bajo valor para entender el sistema:
+  - dependencias masivas,
+  - caches,
+  - builds/outputs,
+  - logs,
+  - artefactos generados automáticamente,
+  - binarios no interpretables.
+
+==========
+01.00_QUE_ES_RADAR_(Y_QUE_NO_ES)
+==========
+
+01.10_RADAR_COMO_FOTO
+- RADAR_INDEX / RADAR_CORE / RADAR_FULL generan “fotos” (snapshots).
+- Una foto depende de:
+  - scope,
+  - política de relevancia,
+  - exclusiones e inclusiones.
+
+01.20_RADAR_COMO_DELTA (RADAR_LITE)
+- RADAR_LITE NO es “foto completa”.
+- RADAR_LITE responde: “qué cambió” desde la corrida anterior.
+- Es el “instrumento diario” para validar que el APPLY hizo lo que prometía.
+
+01.30_RADAR_NO_REEMPLAZA_TESTS
+- RADAR no prueba semántica del software.
+- RADAR prueba trazabilidad del filesystem:
+  - qué se tocó,
+  - qué se movió,
+  - qué se eliminó,
+  - qué se creó,
+  - si hay anomalías de estructura.
+
+==========
+02.00_NIVELES_RADAR
+==========
+
+02.10_RADAR_LITE_(DELTA_OPERATIVO)
+Objetivo:
+- detectar cambios rápidamente con bajo costo.
+
+Salida mínima:
+- lista de archivos creados/editar/eliminados/movidos (según detección)
+- rutas + timestamps + tamaño (mínimo)
+- hash para texto si aplica y es costo-efectivo
+
+Uso:
+- antes y después de APPLY (mínimo obligatorio).
+
+02.20_RADAR_INDEX_(FOTO_INVENTARIO)
+Objetivo:
+- inventario navegable del repo/proyecto.
+
+Salida mínima:
+- tree/listado de rutas relevantes
+- metadatos (size, modified, created)
+- hash opcional para texto según política
+
+Uso:
+- navegación,
+- handoff,
+- revisión de estructura.
+
+02.30_RADAR_CORE_(FOTO_CONTENIDO_RELEVANTE_PARA_IA)
+Objetivo:
+- consolidar el contenido legible RELEVANTE (código+config+tests según política),
+  para que una IA “sepa el sistema” y pueda:
+  - detectar inconsistencias,
+  - corroborar coherencia,
+  - ubicar responsabilidades,
+  - apoyar refactor/debug (siempre con validate externo).
+
+Reglas:
+- CORE NO incluye binarios.
+- CORE se ejecuta por scope:
+  - CORE_SCOPE=APP (recomendado default)
+  - CORE_SCOPE=MODULE:<x> para refactor puntual
+  - CORE_SCOPE=REPO solo si es razonable y con exclusiones fuertes
+- CORE tiene size limits por archivo y total consolidado (para evitar colapsar).
+
+02.40_RADAR_FULL_(FOTO_AUDITORIA_COMPLETA)
+Objetivo:
+- auditoría completa (alto costo, alto ruido) para:
+  - incidentes severos,
+  - auditorías manuales,
+  - preparación de export/handoff “forensic”.
+
+Reglas:
+- FULL solo bajo orden explícita del humano (no default).
+- FULL requiere exclusiones estrictas, o el sistema deja de ser útil.
+
+==========
+03.00_RELEVANCIA_Y_EXCLUSIONES
+==========
+
+03.10_EL_PROBLEMA_REAL
+- Si CORE/FULL incluyen todo lo legible, se pudre:
+  - logs, dumps, outputs, caches => ruido
+  - la IA aprende basura y se confunde
+  - suben costos y tiempos
+
+03.20_CORE_SCOPE (CANON)
+- CORE_SCOPE=APP:
+  - solo carpetas de aplicación (ej. src/, app/, server/, config/, tests/)
+- CORE_SCOPE=MODULE:<x>:
+  - solo el módulo objetivo (refactor/debug)
+- CORE_SCOPE=REPO:
+  - todo el repo con exclusiones fuertes (solo si el repo es “limpio”)
+
+03.30_INCLUDELIST_Y_EXCLUDELIST
+- INCLUDELIST define el lente (qué sí importa).
+- EXCLUDELIST define el filtro (qué nunca importa).
+- Estas listas deben existir por stack (Node/Python/.NET/etc.) y por proyecto.
+
+03.40_BINARIOS_Y_LIMITES
+- Binarios: se indexan como metadata (nombre/size/timestamp) pero no se consolidan.
+- Límite por archivo:
+  - evita consolidar artefactos gigantes o minificados.
+- Límite total:
+  - evita outputs imposibles de consumir por IA.
+
+==========
+04.00_SENALES_Y_OUTPUTS
+==========
+
+04.10_SENALES_MINIMAS
+- created_files
+- edited_files
+- moved_or_renamed_files (si se detecta)
+- deleted_files (con referencia a quarantine si aplica)
+
+04.20_ANOMALIAS
+- naming fuera de estándar WBS/ID
+- duplicados funcionales
+- archivos fuera de scope o fuera del root
+- canónicos sin metadatos/índice
+
+04.30_EVIDENCIA
+- logs con OK/FAIL
+- hashes (texto) preferidos vs timestamps (más débiles)
+- commits Git como evidencia de cambios
+
+==========
+05.00_EJECUCION
+==========
+
+05.10_MINIMO_OBLIGATORIO
+- Antes de APPLY: RADAR_LITE
+- Después de APPLY: RADAR_LITE
+
+05.20_NAVEGACION_Y_HANDOFF
+- Para ubicar cosas: RADAR_INDEX
+- Para “alimentar IA” con código/config: RADAR_CORE (por APP o módulo)
+
+05.30_INCIDENTES_Y_AUDITORIA
+- Full solo bajo orden humana.
+- Core por módulo suele ser suficiente para debug/refactor.
+
+==========
+06.00_INTEGRACION_CON_GIT_CANON_QUARANTINE
+==========
+
+06.10_GIT_CHECKPOINTS
+- Antes de APPLY significativo: commit checkpoint
+- Después de éxito: commit de cambio
+- RADAR_LITE ayuda a verificar que lo tocado coincide con lo planeado.
+
+06.20_DELETE_QUARANTINE
+- Delete por defecto => mover a quarantine.
+- RADAR debe registrar esa “eliminación” como moved/deleted + destino quarantine.
+
+06.30_CANON
+- RADAR ayuda a congelar:
+  - detecta drift,
+  - detecta modificaciones inesperadas en canónicos,
+  - facilita auditoría previa a promoción CANON.
+
+==========
+07.00_CHECKLIST_OPERATIVO
+==========
+
+[ ] Tengo CORE_SCOPE definido (APP/MODULE/REPO)
+[ ] Tengo EXCLUDELIST definida (caches/deps/build/logs/etc.)
+[ ] Antes de APPLY corrí RADAR_LITE
+[ ] Después de APPLY corrí RADAR_LITE
+[ ] Para navegación tengo RADAR_INDEX actualizado
+[ ] Si necesito “IA omnisciente del repo”, genero RADAR_CORE por APP o módulo
+[ ] FULL solo si el humano lo ordenó (auditoría)
+
+==========
+08.00_CHANGELOG
+==========
+
+2026-02-27, v1.0-DRAFT
+- Creación inicial de HUMAN Root RADAR.
