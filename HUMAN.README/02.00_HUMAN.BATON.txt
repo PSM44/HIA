@@ -1,0 +1,244 @@
+==============================
+TANDA 2/2
+ARCHIVO:  02.00_HUMAN.BATON.txt
+ACCION: CREAR (archivo nuevo)
+==============================
+
+==========
+00.00_METADATOS_DEL_DOCUMENTO
+==========
+
+ID_UNICO..........: HUMAN.BATON.0001
+NOMBRE_SUGERIDO...: 02.00_HUMAN.BATON.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-02-27
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: <CIUDAD>, <PAIS>
+UBICACION_SISTEMA.: <TL_BOOTSTRAP_ROOT>\01_HUMAN\
+AUTOR_HUMANO......: PABLO (ADMIN)
+AUTOR_IA..........: GPT-5.2 Thinking
+
+TITULO............: HUMAN Root — BATON (Continuidad y Hand-off)
+SUBTITULO_MEDIO...: Qué es BATON, qué contiene, cuándo se actualiza, cómo se usa al migrar chats/IA.
+SUBTITULO_BAJO....: Peatón primero: “si cierro hoy, mañana puedo seguir sin perder nada”.
+
+ALCANCE...........:
+- Definir BATON como “estado operativo” para continuidad y handoff.
+- Definir estructura mínima de BATON y reglas de actualización.
+- Definir relación BATON ↔ RADAR ↔ Git ↔ Logs.
+- Definir criterios de cierre de sesión y migración de chat (performance/drift).
+- Definir disciplina de decisiones (CANON vs DRAFT) y registro de supuestos.
+
+NO_CUBRE..........:
+- Contenido de HUMAN del proyecto (BATON no reemplaza filosofía).
+- Implementación de export/pdf (solo define qué debe quedar).
+
+==========
+00.10_INDICE_GENERAL_WBS
+==========
+
+00.00 Metadatos
+00.10 Índice
+00.20 Propósito y mental model (BATON como “estado operativo”)
+
+01.00 Qué es BATON (y qué NO es)
+01.10 BATON no es documentación conceptual
+01.20 BATON es continuidad: estado, decisiones, pendientes
+
+02.00 Estructura mínima de BATON (plantilla)
+02.10 Current Objective (objetivo actual)
+02.20 State Summary (qué está hecho y qué falta)
+02.30 Decisions (decisiones + razones + status CANON/DRAFT)
+02.40 Changes Applied (cambios aplicados + evidencia)
+02.50 Validation Evidence (OK/FAIL + logs)
+02.60 Risks & Assumptions (riesgos y supuestos)
+02.70 Next Actions (WBS + owner + prioridad)
+02.80 Handoff Package (qué adjuntar para nueva IA/chat)
+
+03.00 Cuándo actualizar BATON
+03.10 Regla: al cierre de cada sesión
+03.20 Regla: antes/después de APPLY significativo
+03.30 Regla: antes de migrar chat o export
+
+04.00 BATON y el control del cambio
+04.10 BATON con Git (commits y rollback)
+04.20 BATON con RADAR (foto y delta)
+04.30 BATON con CIS (contratos ejecutados)
+
+05.00 Migración de chat / IA en blanco
+05.10 Señales de performance baja y drift
+05.20 Procedimiento de migración (paso a paso)
+05.30 Qué se conserva y qué se evita (no duplicar basura)
+
+06.00 Checklist operativo
+07.00 CHANGELOG
+
+
+==========
+00.20_PROPOSITO_Y_MENTAL_MODEL
+==========
+
+00.21_MENTAL_MODEL_SIMPLE
+- BATON es el “estado operativo” del proyecto:
+  si hoy cierras, mañana puedes continuar en otro chat o con otra IA sin perder control.
+
+00.22_POR_QUE_EXISTE
+- Los chats se degradan (performance, drift, confusión).
+- La continuidad no puede depender de memoria o de “historial del chat”.
+- BATON es el puente: handoff determinista.
+
+==========
+01.00_QUE_ES_BATON_(Y_QUE_NO_ES)
+==========
+
+01.10_BATON_NO_ES_HUMAN
+- HUMAN = filosofía, principios, intención, y definiciones canónicas conceptuales.
+- BATON = estado operativo: qué está ocurriendo y qué falta.
+
+01.20_BATON_ES_CONTINUIDAD
+- BATON debe permitir:
+  - retomar trabajo sin re-explicar todo,
+  - identificar decisiones y pendientes,
+  - evitar repetir errores,
+  - ubicar evidencias (logs, commits, RADAR outputs).
+
+==========
+02.00_ESTRUCTURA_MINIMA_DE_BATON_(PLANTILLA)
+==========
+
+02.10_CURRENT_OBJECTIVE
+- Qué objetivo se está atacando ahora.
+- Debe ser concreto, medible y acotado.
+
+02.20_STATE_SUMMARY
+- Hecho:
+  - hitos completados
+- En progreso:
+  - piezas activas
+- Bloqueos:
+  - qué impide avanzar (datos faltantes, dependencias, decisiones)
+
+02.30_DECISIONS
+Por cada decisión:
+- ID (WBS/único)
+- Qué se decidió (texto corto)
+- Por qué (razón)
+- Estado:
+  - DRAFT (aún discutible)
+  - CANON (cerrado oficialmente)
+- Evidencia:
+  - link a archivo, commit, o sección
+
+02.40_CHANGES_APPLIED
+- Lista de cambios aplicados en filesystem:
+  - operación (CREATE/EDIT/MOVE/RENAME/DELETE)
+  - paths
+  - commit id (si aplica)
+  - quarantine path (si aplica)
+
+02.50_VALIDATION_EVIDENCE
+- OK/FAIL + evidencia:
+  - logs
+  - outputs esperados
+  - comandos ejecutados
+- Sin evidencia no hay “OK”.
+
+02.60_RISKS_AND_ASSUMPTIONS
+- Riesgos abiertos (top 5–10)
+- Supuestos activos (lo que se asumió por falta de datos)
+- Plan para validar supuestos (cómo se obtiene dato duro)
+
+02.70_NEXT_ACTIONS
+- Lista WBS:
+  - prioridad (P0/P1/P2)
+  - owner (humano/IA planner/IA executor)
+  - prerequisitos
+  - definición de terminado de cada acción
+
+02.80_HANDOFF_PACKAGE
+- Al migrar chat/IA:
+  - BATON actualizado
+  - RADAR_INDEX + RADAR_LITE recientes
+  - Si se necesita “IA omnisciente”: RADAR_CORE por APP o módulo
+  - Snapshot/export (si aplica)
+  - Último commit id
+
+==========
+03.00_CUANDO_ACTUALIZAR_BATON
+==========
+
+03.10_AL_CIERRE_DE_CADA_SESION (OBLIGATORIO)
+- mínimo:
+  objective + decisions + changes + validation + next actions
+
+03.20_ANTES_Y_DESPUES_DE_APPLY_SIGNIFICATIVO
+- Antes:
+  - registrar intención y scope
+- Después:
+  - registrar resultados y evidencia
+
+03.30_ANTES_DE_MIGRAR_CHAT
+- Si migras sin baton, pierdes continuidad (y repites trabajo).
+
+==========
+04.00_BATON_Y_CONTROL_DE_CAMBIO
+==========
+
+04.10_BATON_CON_GIT
+- Git provee rollback.
+- BATON apunta a commits como evidencia.
+
+04.20_BATON_CON_RADAR
+- RADAR_INDEX da mapa del repo.
+- RADAR_LITE da delta de cambios.
+- RADAR_CORE alimenta IA para comprensión del sistema (si se requiere).
+
+04.30_BATON_CON_CIS
+- BATON debe referenciar contratos CIS ejecutados:
+  - qué se ejecutó,
+  - qué se validó,
+  - dónde está la evidencia.
+
+==========
+05.00_MIGRACION_DE_CHAT_IA_EN_BLANCO
+==========
+
+05.10_SENALES_DE_DRIFT
+- repetir contexto varias veces
+- outputs inconsistentes
+- confusión de paths o reglas
+- “olvidos” operativos dentro de la sesión
+- costo/tiempo sube sin progreso
+
+05.20_PROCEDIMIENTO_DE_MIGRACION
+Paso 1: Actualizar BATON (estado completo)
+Paso 2: Ejecutar RADAR_INDEX + RADAR_LITE (foto + delta)
+Paso 3: Si es necesario, RADAR_CORE por APP o módulo
+Paso 4: Crear snapshot/export (si se requiere)
+Paso 5: Abrir nuevo chat y “inyectar” solo:
+        - BATON
+        - RADAR_INDEX (+ LITE)
+        - CORE solo si la tarea lo exige
+
+05.30_QUE_EVITAR
+- no pegar “todo el repo” sin necesidad
+- no re-inyectar FULL como default
+- no duplicar logs y basura (mantener relevancia)
+
+==========
+06.00_CHECKLIST_OPERATIVO
+==========
+
+[ ] Al cierre de sesión actualicé BATON
+[ ] Registré decisiones y su estado (DRAFT/CANON)
+[ ] Registré cambios aplicados con paths y evidencia
+[ ] Registré validación OK/FAIL con logs
+[ ] Dejé next actions con WBS y prioridad
+[ ] Si migré chat, adjunté RADAR_INDEX + RADAR_LITE (+ CORE si aplica)
+
+==========
+07.00_CHANGELOG
+==========
+
+2026-02-27, v1.0-DRAFT
+- Creación inicial de HUMAN Root BATON.

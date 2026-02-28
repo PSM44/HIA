@@ -1,0 +1,146 @@
+==========
+00.00_METADATOS_DEL_DOCUMENTO
+==========
+
+ID_UNICO..........: HIA.POL.0001
+NOMBRE_SUGERIDO...: HIA_POL_0001_AI_EXECUTION.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-02-26
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: Maria Luisa, Chile
+UBICACION_SISTEMA.: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\
+AUTOR_HUMANO......: PABLO (ADMIN)
+ALCANCE...........:
+Política operativa para ejecución asistida por IA dentro de HIA:
+- scope por defecto,
+- gates humanos,
+- delete=quarantine,
+- rollback obligatorio,
+- no OS arbitrary.
+NO_CUBRE..........:
+- No define budgets (ver HIA_CST_*).
+- No define routing (ver HIA_RTG_*).
+DEPENDENCIAS......:
+HIA_MTH_0001_WORKFLOW.txt
+03.SKILL.SANDBOX_BOUNDARY.txt
+02.SKILL.AGENT_EXECUTION_POLICY.txt
+16.SKILL.CHECKPOINT_ROLLBACK.txt
+17.SKILL.SECRETS_HANDLING.txt
+
+==========
+00.10_INDICE_GENERAL_WBS
+==========
+
+00.00 Metadatos del documento
+00.10 Índice general WBS
+00.20 Contexto
+
+01.00 Scope default
+02.00 Gates humanos (Plan-only / Apply)
+03.00 Operaciones permitidas y prohibidas
+04.00 Delete policy (quarantine)
+05.00 Rollback (Git preferido)
+06.00 Handling secretos
+07.00 Checklist rápido
+08.00 CHANGELOG
+
+==========
+00.20_CONTEXTO
+==========
+
+Objetivo:
+- que la IA pueda crear/editar/eliminar dentro del proyecto,
+  sin exposición al OS, y con reversibilidad.
+
+==========
+01.00_SCOPE_DEFAULT
+==========
+
+01.10_PROJECT_ROOT
+- PROJECT_ROOT = C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
+
+01.20_ALLOWLIST
+- Escritura permitida:
+  - PROJECT_ROOT (archivos .txt canónicos)
+  - PROJECT_ROOT\02_TOOLS (solo si se aprueba explícitamente)
+  - PROJECT_ROOT\03_ARTIFACTS
+
+01.30_DENYLIST
+- Bloquear:
+  - secretos (.env, *.key, *.pem, etc.)
+  - cualquier path fuera del PROJECT_ROOT
+  - ejecuciones OS arbitrarias
+
+==========
+02.00_GATES_HUMANOS
+==========
+
+02.10_PLAN_ONLY_DEFAULT
+- Toda tarea parte como PLAN.
+
+02.20_APPLY_CON_GATE
+- Apply solo con:
+  - aprobación humana,
+  - checkpoint listo,
+  - preflight costo dentro budget.
+
+==========
+03.00_OPERACIONES
+==========
+
+03.10_PERMITIDAS
+- Create/Edit/Rename/Move dentro del root.
+- Ejecutar solo scripts allowlisted en 02_TOOLS.
+
+03.20_PROHIBIDAS
+- Instalar software.
+- Cambiar PATH/registry/services.
+- Hacer network calls arbitrarias.
+- Tocar fuera del root.
+
+==========
+04.00_DELETE_POLICY
+==========
+
+04.10_SOFT_DELETE_DEFAULT
+- Delete => mover a:
+  PROJECT_ROOT\03_ARTIFACTS\QUARANTINE\YYYYMMDD_HHMM\<path_rel>\
+
+04.20_HARD_DELETE
+- Solo con orden humana explícita + checkpoint previo.
+
+==========
+05.00_ROLLBACK
+==========
+
+- Git preferido:
+  - commit checkpoint antes de APPLY
+  - rollback por reset/checkout al commit
+- Fallback snapshot si Git no disponible
+
+==========
+06.00_SECRETOS
+==========
+
+- Secrets fuera del repo.
+- Logs con redaction.
+- Si aparece secret en un archivo => FAIL + quarantine + INCIDENT (ALTA mínimo).
+
+==========
+07.00_CHECKLIST_RAPIDO
+==========
+
+[ ] Scope = PROJECT_ROOT
+[ ] Plan-only default
+[ ] Apply con gate humano
+[ ] Delete = quarantine
+[ ] Rollback obligatorio
+[ ] No OS arbitrary
+[ ] Secrets fuera del repo
+
+==========
+08.00_CHANGELOG
+==========
+
+2026-02-26, v1.0-DRAFT
+- Creación inicial policy ejecución IA HIA.

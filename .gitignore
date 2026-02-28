@@ -1,0 +1,12 @@
+# Artifacts
+03_ARTIFACTS/
+
+# OS / IDE
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Temp
+*.tmp
+*.bak
