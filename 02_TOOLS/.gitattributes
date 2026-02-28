@@ -1,0 +1,12 @@
+# Line endings policy (Windows-friendly, repo-stable)
+* text=auto
+
+# Force LF for scripts (optional but recommended)
+*.ps1 text eol=lf
+*.sh  text eol=lf
+*.py  text eol=lf
+*.js  text eol=lf
+*.ts  text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
