@@ -1,0 +1,54 @@
+01.00_INTRO
+Documento académico: define la política de finales de línea (EOL) para HIA.
+Este archivo NO reemplaza al operacional `.gitattributes` en el root (Git exige ese nombre).
+
+02.00_OBJETIVO
+- Evitar warnings CRLF/LF y diffs ruidosos.
+- Estabilizar edición en Windows sin drift.
+
+03.00_IMPLEMENTACION
+03.01 Archivo operacional requerido:
+- ROOT\.gitattributes
+
+03.02 Reglas recomendadas:
+- * text=auto
+- *.ps1 text eol=crlf
+- *.txt text eol=crlf
+- *.pdf binary
+
+04.00_EVIDENCIA
+- Cambios a .gitattributes se evidencian con: RADAR + commit + tag.
+
+
+
+
+DATE......: 2026-03-01
+TIME......: 18:55
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION......: 0.1
+ID_HINT...: HIA_GIT_0001
+# HIA_GIT_0001 - Line endings policy
+# DATE......: 2026-03-01
+# TIME......: 18:40
+# TZ........: America/Santiago
+# CITY......: Santiago, Chile
+# VERSION...: 0.1
+# PURPOSE...: Estabilizar CRLF/LF para diffs limpios en equipos Windows.
+
+# Default: text files normalized
+* text=auto
+
+# PowerShell scripts: keep CRLF on checkout in Windows, normalize in repo
+*.ps1 text eol=crlf
+*.psm1 text eol=crlf
+*.psd1 text eol=crlf
+
+# Txt governance docs: keep CRLF for Windows editing
+*.txt text eol=crlf
+
+# PDFs/binaries
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
