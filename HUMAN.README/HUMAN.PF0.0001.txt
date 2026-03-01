@@ -1,3 +1,11 @@
+00.00_METADATA_ADDED
+DATE......: 2026-03-01
+TIME......: 18:55
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION......: 0.1
+NOTE......: Metadata agregado en modo office. No altera el contenido conceptual HUMAN.
+ID_HINT...: 
 ==============================
 ARCHIVO: HUMAN.PF0.txt
 ACCION: CREAR (archivo nuevo)

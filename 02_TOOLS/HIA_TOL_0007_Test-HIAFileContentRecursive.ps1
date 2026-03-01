@@ -55,15 +55,20 @@ function Test-TxtMetadata {
 
   $raw = Get-Content $FullPath -Raw -Encoding utf8
 
-  # Reglas mínimas (no “manual frío”, solo estructura de supervivencia)
+  # Reglas mínimas: aceptar 3+ puntos en metadata (DATE...: o DATE......:)
+  # Esto evita drift por estilos de header y reduce WARN falsos.
   $needs = @("DATE", "TIME", "VERSION")
+
   foreach ($n in $needs) {
-    if ($raw -notmatch "(?im)^\s*$n\.\.\.\.\.\.:") {
-      Write-Result "WARN" $RelPath "Falta metadata '$n......:'"
-      return
+    # ^\s*DATE\.{3,}\s*:
+    $rx = "(?im)^\s*$n\.{3,}\s*:"
+    if ($raw -notmatch $rx) {
+      Write-Result "WARN" $RelPath "Falta metadata '$n...:' (acepta 3+ puntos, ej: $n......:)"
+      # Nota: NO return inmediato; reporta las 3 faltas si aplica
     }
   }
 
+  # WBS base recomendada (no bloqueante)
   if ($raw -notmatch "(?im)^\s*01\.00_") {
     Write-Result "WARN" $RelPath "No se detecta WBS base (ej. 01.00_...)."
   }

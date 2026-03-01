@@ -3,7 +3,7 @@ DATE......: 2026-03-01
 TIME......: 18:06
 TZ........: America/Santiago
 CITY......: Santiago, Chile
-VERSION...: 0.1
+VERSION......: 0.1
 
 01.00_PURPOSE
 Registro canónico BD-friendly: Path -> ID -> Type -> Size -> LastWrite -> Hash(optional)

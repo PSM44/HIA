@@ -1,3 +1,9 @@
+DATE......: 2026-03-01
+TIME......: 18:55
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION......: 0.1
+ID_HINT...: HIA_POL_0001
 ==========
 00.00_METADATOS_DEL_DOCUMENTO
 ==========

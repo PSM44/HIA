@@ -110,7 +110,7 @@ function Add-HumanChangelogEntry {
       "TIME......: 18:06"
       "TZ........: America/Santiago"
       "CITY......: Santiago, Chile"
-      "VERSION...: 0.1"
+      "VERSION......: 0.1"
       ""
       "01.00_INTRO"
       "Este archivo es append-only. Registra cambios modo office: qué se hizo, por qué y evidencia."
@@ -250,7 +250,7 @@ DATE......: 2026-03-01
 TIME......: 18:06
 TZ........: America/Santiago
 CITY......: Santiago, Chile
-VERSION...: 0.1
+VERSION......: 0.1
 OWNER.....: HUMAN (concepto) / SYSTEM (operación)
 SCOPE.....: HIA (framework)
 
@@ -286,7 +286,7 @@ DATE......: 2026-03-01
 TIME......: 18:06
 TZ........: America/Santiago
 CITY......: Santiago, Chile
-VERSION...: 0.1
+VERSION......: 0.1
 
 01.00_CURRENT_OBJECTIVE
 - (RELLENAR) Objetivo activo del proyecto HIA.
@@ -314,7 +314,7 @@ DATE......: 2026-03-01
 TIME......: 18:06
 TZ........: America/Santiago
 CITY......: Santiago, Chile
-VERSION...: 0.1
+VERSION......: 0.1
 
 01.00_PURPOSE
 Bitácora consolidada. Append-only. Registra decisiones, cambios y evidencia.
@@ -330,7 +330,7 @@ DATE......: 2026-03-01
 TIME......: 18:06
 TZ........: America/Santiago
 CITY......: Santiago, Chile
-VERSION...: 0.1
+VERSION......: 0.1
 
 01.00_PURPOSE
 Registro canónico BD-friendly: Path -> ID -> Type -> Size -> LastWrite -> Hash(optional)
