@@ -1,0 +1,33 @@
+HIA_COR_0001_HIA.CORE.txt
+DATE......: 2026-03-01
+TIME......: 18:06
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION...: 0.1
+OWNER.....: HUMAN (concepto) / SYSTEM (operación)
+SCOPE.....: HIA (framework)
+
+01.00_INTRO
+Definición operativa de HIA. Este archivo es canónico y estable. Cambios solo por modo office con evidencia.
+
+02.00_PRINCIPIOS
+02.01 PLAN -> APPLY -> VALIDATE -> LOG
+02.02 PLAN_ONLY por defecto; APPLY requiere gate humano + checkpoint + preflight.
+02.03 Quarantine por defecto. Hard delete solo con orden humana y evidencia.
+02.04 No usar cmdlets 'Validate-*' (verbos no aprobados). Preferir 'Test-*' / 'Get-*' / 'Set-*' / 'New-*'.
+02.05 Evidencia obligatoria: RADAR pre/post, logs, y Git cuando exista.
+
+03.00_FASES (RESUMEN)
+03.01 FASE 0: Filosofía / Human-first (intención, DoD, constraints, no-alcance)
+03.02 FASE 1: Políticas + routing + ejecución IA (sin tocar FS)
+03.03 FASE 2: Bootstrap local (estructura, runners, artifacts)
+03.04 FASE 3.1: Pre-coding (smoke)
+03.05 FASE 3.2: Coding iterativo con gates
+
+04.00_ROUTING (HIGH-LEVEL)
+04.01 TaskType: ANALYZE (no changes), PLAN (no changes), APPLY (changes), VALIDATE (evidence)
+04.02 Todas las acciones APPLY requieren: (a) PLAN explícito, (b) backup/quarantine, (c) post-validate
+
+05.00_BACKLOG / ESCALAMIENTO
+Registrar escalamiento futuro aquí (estructura, DB, RADAR). Mantener pocas carpetas; escalar por archivos grandes y registry por path.
+

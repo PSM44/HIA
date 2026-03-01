@@ -1,0 +1,21 @@
+HIA_HUM_0003_OFFICE.CHANGELOG.txt
+DATE......: 2026-03-01
+TIME......: 18:06
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION...: 0.1
+
+01.00_INTRO
+Este archivo es append-only. Registra cambios modo office: qué se hizo, por qué y evidencia.
+
+02.00_LOG
+-----
+
+ENTRY_TS: 2026-03-01 18:38:05
+01.00_CHANGE_SUMMARY
+Acción: Office refactor baseline.
+Movimientos a DeadHistory: 
+20260227_Invoke-HIASync.ps1, 20260227_RADAR.ps1
+Creación canónicos (si faltaban): HIA_COR_0001, HIA_STA_0001, HIA_STA_0002, HIA_IDR_0001
+Evidencia: (pendiente) Ejecutar RADAR pre/post y commitear.
+-----

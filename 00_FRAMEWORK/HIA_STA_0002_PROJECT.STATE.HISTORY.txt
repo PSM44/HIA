@@ -1,0 +1,13 @@
+HIA_STA_0002_PROJECT.STATE.HISTORY.txt
+DATE......: 2026-03-01
+TIME......: 18:06
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION...: 0.1
+
+01.00_PURPOSE
+Bitácora consolidada. Append-only. Registra decisiones, cambios y evidencia.
+
+02.00_LOG
+-----
+
