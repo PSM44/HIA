@@ -1,7 +1,6 @@
 ==============================
-TANDA 2/3
 ARCHIVO: HumanRUSER.txt
-ACCION: CREAR (archivo nuevo)
+ACCION: REEMPLAZAR (archivo completo)
 ==============================
 
 ==========
@@ -10,11 +9,11 @@ ACCION: CREAR (archivo nuevo)
 
 ID_UNICO..........: HUMAN.R.USER.0001
 NOMBRE_SUGERIDO...: HumanRUSER.txt
-VERSION...........: v1.0-DRAFT
-FECHA.............: 2026-02-27
+VERSION...........: v1.1-DRAFT
+FECHA.............: 2026-02-28
 HORA..............: HH:MM (America/Santiago)
 CIUDAD............: <CIUDAD>, <PAIS>
-UBICACION_SISTEMA.: <PROJECT_ROOT>\01_HUMAN\
+UBICACION_SISTEMA.: <TL_BOOTSTRAP_ROOT>\HUMAN.README\
 AUTOR_HUMANO......: PABLO (ADMIN)
 AUTOR_IA..........: GPT-5.2 Thinking
 
@@ -23,53 +22,26 @@ SUBTITULO_MEDIO...: Rutina práctica, decisiones, approvals, comunicación, cali
 SUBTITULO_BAJO....: Manual humano-amigable (no “frío”): explica por qué, no solo qué.
 
 ALCANCE...........:
-- Define el rol del usuario/humano dentro del sistema: cómo inicia, cómo aprueba, cómo cierra.
-- Define cómo interactuar con IA sin perder control (gates y disciplina).
-- Define cómo usar Git y RADAR desde la perspectiva operativa del humano.
-- Define cómo resolver desacuerdos, dudas, omisiones y conflictos de contexto.
+- Rol del humano: cómo inicia, aprueba, valida y cierra.
+- Cómo interactuar con IA sin perder control.
+- Cómo usar Git y RADAR desde operación humana.
+- Cómo resolver discrepancias, dudas y omisiones.
 
 NO_CUBRE..........:
-- Detalle técnico de scripts/validadores (eso vive en TOOLS/SKILLS).
-- Reglas internas de IA (eso vive en HumanRGeneral/HumanR).
+- Detalle técnico de scripts/validadores (TOOLS).
+- Filosofía completa del sistema (HumanRGeneral / PF.0).
 
 ==========
 00.10_INDICE_GENERAL_WBS
 ==========
 
-00.00 Metadatos
-00.10 Índice
-
-01.00 Rol del HUMANO (qué decide y por qué)
-01.10 Autoridad y responsabilidad
-01.20 Qué no delega el humano
-01.30 Qué sí delega (con control)
-
-02.00 Rutina de inicio de proyecto (desde cero)
-02.10 Preparación mental: objetivo y restricciones
-02.20 Primera interacción con IA (PLAN_ONLY)
-02.30 Señales de mala definición (y cómo corregir)
-
-03.00 Rutina de cambio (cuando ya existe proyecto)
-03.10 Cómo pedir cambios (scope y constraints)
-03.20 Cómo aprobar APPLY (gate humano)
-03.30 Cómo pedir correcciones por replace-bloques (VS Code)
-
+01.00 Rol del HUMANO
+02.00 Rutina de inicio de proyecto
+03.00 Rutina de cambio en proyecto existente
 04.00 Rutina de validación y calidad
-04.10 Qué validar mínimo
-04.20 Cómo interpretar FAIL y qué hacer
-04.30 Cómo evitar “falsos OK”
-
 05.00 Rutina de cierre de sesión
-05.10 Qué se escribe en BATON
-05.20 Cuándo actualizar TL.Bootstrap
-05.30 Cuándo migrar de chat (performance)
-
 06.00 Gestión de discrepancias y conflictos
-06.10 Conflictos de contexto (quién manda)
-06.20 Dudas y omisiones: cómo forzar claridad
-06.30 Decisiones: cómo cerrarlas a CANON
-
-07.00 Checklist del usuario (operativo)
+07.00 Checklist del usuario
 08.00 CHANGELOG
 
 
@@ -79,192 +51,173 @@ NO_CUBRE..........:
 
 01.10_AUTORIDAD_Y_RESPONSABILIDAD
 - El humano es dueño de:
-  - el objetivo,
-  - el “por qué”,
-  - las restricciones y límites,
-  - la promoción a CANON,
-  - y los gates de ejecución.
-- El humano NO puede “culpar a la IA” por falta de intención o definición:
-  si el input es ambiguo, el output será inestable.
+  - objetivo,
+  - restricciones,
+  - gates de ejecución,
+  - y promoción a CANON.
+- Si el input es ambiguo, el output será inestable (no es culpa de “la IA”, es un problema de definición).
 
 01.20_QUE_NO_SE_DELEGA
 - No se delega:
-  - aprobación de APPLY,
-  - decisiones de negocio,
-  - definición de éxito,
+  - aprobación APPLY,
   - decisiones CANON,
-  - definición de scope (qué tocar / qué no tocar),
-  - decisiones de seguridad (secretos, accesos, etc.).
+  - seguridad,
+  - scope,
+  - decisión de éxito/fracaso.
 
 01.30_QUE_SI_SE_DELEGA (CON_CONTROL)
 - Sí se delega:
-  - redacción de planes,
-  - propuestas de estructura,
-  - borradores de archivos .txt,
-  - generación de scripts (que el humano ejecuta),
-  - análisis de riesgos y checklist,
-  - revisión de consistencia y anomalías via RADAR.
+  - planes,
+  - borradores,
+  - scripts sugeridos,
+  - análisis de riesgos,
+  - revisión de consistencia (RADAR),
+  - contratos CIS para aprobar.
 
 ==========
 02.00_RUTINA_DE_INICIO_DE_PROYECTO
 ==========
 
-02.10_PREPARACION (ANTES DE HABLAR CON IA)
-- Escribir (aunque sea bullet):
+02.10_PREPARACION
+- Escribir bullets:
   - objetivo,
-  - quién lo usa,
-  - qué problema resuelve,
-  - qué es éxito,
-  - qué es fracaso,
-  - qué está fuera de alcance.
+  - usuario objetivo,
+  - éxito,
+  - fracaso,
+  - fuera de alcance.
 
 02.20_PRIMERA_INTERACCION_CON_IA (PLAN_ONLY)
 - Pedir:
   - plan por fases,
   - riesgos,
   - supuestos,
-  - entregables y criterios de término.
+  - entregables de término por fase.
 - Prohibido:
   - “hazlo todo” sin scope,
-  - “inyecta todo” sin necesidad,
-  - “aplica cambios” sin gate.
+  - APPLY sin gate.
 
 02.30_SENALES_DE_MALA_DEFINICION
-- Señales:
-  - la IA hace muchas preguntas porque falta contexto esencial,
-  - el plan cambia radicalmente en cada iteración,
-  - no hay DoD,
-  - scope se expande sin control.
-- Corrección:
-  - volver a HUMAN (Fase 0),
-  - cerrar definiciones base,
-  - declarar explícitamente supuestos.
+- Plan cambia radicalmente cada iteración.
+- No hay DoD.
+- Scope se expande sin control.
+Corrección:
+- volver a Filosofía (Fase 0),
+- cerrar definiciones base,
+- declarar supuestos.
 
 ==========
 03.00_RUTINA_DE_CAMBIO_EN_PROYECTO_EXISTENTE
 ==========
 
 03.10_COMO_PEDIR_CAMBIOS
-- Siempre incluir:
-  - objetivo del cambio,
-  - alcance exacto (paths/módulo),
-  - constraints (no tocar X),
-  - definición de éxito,
-  - si se permite APPLY o solo PLAN.
+Siempre incluir:
+- objetivo del cambio,
+- scope exacto (paths/módulo),
+- constraints (no tocar X),
+- definición de éxito,
+- PLAN_ONLY o APPLY (si se permitirá).
 
 03.20_COMO_APROBAR_APPLY
-- Antes de aprobar, exigir:
-  - plan paso a paso,
-  - lista de archivos a tocar,
-  - rollback plan (git commit),
-  - validación post-change,
-  - radar pre/post (mínimo LITE).
-- Gate humano = “sí, aplica exactamente eso”.
+Antes de aprobar exigir:
+- plan paso a paso,
+- lista de archivos a tocar,
+- rollback (commit checkpoint),
+- validación post-change,
+- RADAR_LITE pre/post.
 
-03.30_CORRECCION_POR_REPLACE_BLOQUES (VS CODE)
-- Cuando pidas corrección de un archivo:
-  - la IA debe entregar:
-    (1) BLOQUE_ORIGINAL (título/subtítulo + contenido completo)
-    (2) BLOQUE_CORREGIDO (mismo título/subtítulo + contenido completo corregido)
-- Tú aplicas Replace en VS Code, sin editar a mano (evita drift).
+03.30_REPLACE_POR_BLOQUES (VS CODE)
+- La IA debe entregar:
+  (1) BLOQUE_ORIGINAL (título/subtítulo + contenido completo)
+  (2) BLOQUE_CORREGIDO (mismo título/subtítulo + contenido completo corregido)
+- Tú haces Replace (sin edición manual intermedia).
 
 ==========
 04.00_RUTINA_DE_VALIDACION_Y_CALIDAD
 ==========
 
 04.10_VALIDACION_MINIMA
-- Si hay tests/lint/build: correr lo allowlisted.
+- Tests/lint/build allowlisted si existen.
 - Si no: smoke test mínimo (compila/arranca).
-- Siempre:
-  - revisar logs,
-  - confirmar outputs esperados,
-  - confirmar no se tocó fuera de scope.
+- Siempre: revisar logs, outputs y scope.
 
-04.20_QUE_HACER_ANTE_FAIL
-- No “arreglar 10 cosas”:
-  - regla anti-shotgun: 1 hipótesis, 1 cambio, 1 prueba.
-- Si el fallo afecta tooling (RADAR/validadores):
-  - registrar TROUBLE mínimo,
-  - rollback si contaminó el repo.
+04.20_ANTE_FAIL
+- Regla anti-shotgun:
+  - 1 hipótesis,
+  - 1 cambio,
+  - 1 prueba.
+- Si el fallo es tooling:
+  - registrar TROUBLE,
+  - rollback si contaminó repo.
 
 04.30_EVITAR_FALSOS_OK
-- “OK” solo si:
+- OK solo si:
   - evidencia existe (log/commit/outputs),
   - validación pasó,
   - scope respetado,
-  - radar post-change no muestra anomalías.
+  - RADAR post no muestra anomalías.
 
 ==========
 05.00_RUTINA_DE_CIERRE_DE_SESION
 ==========
 
-05.10_QUE_SE_ESCRIBE_EN_BATON
-- Objetivo actual
-- Decisiones tomadas (y por qué)
-- Cambios aplicados (paths)
-- Validación (OK/FAIL) y evidencia
-- Pendientes (next actions)
-- Riesgos abiertos y supuestos
+05.10_BATON
+Debe quedar:
+- objetivo actual,
+- decisiones (DRAFT/CANON),
+- cambios aplicados (paths),
+- validación + evidencia,
+- next actions,
+- riesgos y supuestos.
 
 05.20_CUANDO_ACTUALIZAR_TL_BOOTSTRAP
-- Solo si:
-  - descubriste un patrón reutilizable,
-  - corregiste una política,
-  - ajustaste un validador,
-  - cambió tu forma de operar.
-- Si fue “solo un feature de app”, NO contamina TL.Bootstrap.
+- Solo si el cambio es reutilizable como método/política/tool.
+- Si fue “solo feature”, NO contamina.
 
-05.30_CUANDO_MIGRAR_DE_CHAT (PERFORMANCE)
+05.30_CUANDO_MIGRAR_DE_CHAT
 - Migrar si:
   - repites contexto 3 veces,
-  - la IA confunde paths o reglas,
-  - el output se vuelve inconsistente,
-  - el costo/tiempo crece sin progreso.
-- Antes de migrar:
-  - snapshot/export,
-  - actualizar BATON,
-  - nuevo chat en carpeta del proyecto.
+  - IA confunde paths o reglas,
+  - output inconsistente,
+  - costo sube sin progreso.
+Antes:
+- export/snapshot,
+- BATON actualizado,
+- RADAR_INDEX + RADAR_LITE (CORE solo si hace falta).
 
 ==========
 06.00_GESTION_DE_DISCREPANCIAS_Y_CONFLICTOS
 ==========
 
-06.10_CONFLICTOS_DE_CONTEXTO
-- Si hay conflicto:
-  manda el documento más “arriba” del conflicto (HUMAN).
-- Si la IA contradice HUMAN:
-  se corrige la IA (no HUMAN).
+06.10_QUIEN_MANDA
+- Manda el documento más arriba del conflicto.
 
-06.20_DUDAS_Y_OMISIONES
-- Exigir:
-  - lista explícita de dudas,
-  - lista de omisiones,
-  - supuestos declarados.
-- Si algo no se sabe:
-  la IA debe decir “no hay dato duro” y proponer cómo obtenerlo.
+06.20_FORZAR_CLARIDAD
+- Exigir lista explícita de:
+  - dudas,
+  - omisiones,
+  - supuestos,
+  - riesgos.
 
-06.30_CERRAR_DECISIONES_A_CANON
-- Para cerrar:
-  - resolver cabos sueltos,
-  - validar mínimo,
-  - versionar a CANON,
-  - commit Git con mensaje “CANON: …”.
+06.30_CERRAR_A_CANON
+- Resolver cabos sueltos + validar mínimo + versionar CANON + commit “CANON: …”.
 
 ==========
 07.00_CHECKLIST_USUARIO
 ==========
 
-[ ] Tengo objetivo + restricciones (scope/constraints)
-[ ] Pedí PLAN antes de APPLY
-[ ] Revisé plan/archivos/rollback/validación
-[ ] Aprobé APPLY explícitamente (si corresponde)
-[ ] Validé y guardé evidencia
-[ ] Actualicé BATON al cierre
-[ ] Decidí si TL.Bootstrap se actualiza o no
+[ ] objetivo + constraints
+[ ] PLAN antes de APPLY
+[ ] plan/archivos/rollback/validación revisados
+[ ] APPLY aprobado explícitamente (si aplica)
+[ ] validate + evidencia
+[ ] BATON actualizado
+[ ] decisión TL.Bootstrap (sí/no)
 
 ==========
 08.00_CHANGELOG
 ==========
 
+2026-02-28, v1.1-DRAFT
+- Se alinea con gates, RADAR exclusiones P0 y CIS atomic apply.
 2026-02-27, v1.0-DRAFT
-- Creación inicial de HUMAN Root Usuario.
+- Creación inicial.

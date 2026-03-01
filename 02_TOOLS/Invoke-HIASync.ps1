@@ -1,38 +1,34 @@
 <# 
 ========================================================================================
 SCRIPT:      Invoke-HIASync.ps1
-ID_UNICO:    HIA.TOOL.SYNC.0001
-VERSION:     v1.0-DRAFT
-FECHA:       2026-02-27
+ID_UNICO:    HIA.TOOL.SYNC.0002
+VERSION:     v1.1-DRAFT
+FECHA:       2026-02-28
+HORA:        HH:MM (America/Santiago)
 CIUDAD:      <CIUDAD>, <PAIS>
 
 OBJETIVO:
-  Ejecutar sincronización FULL-copy de bloques DERIVED en archivos HUMAN, consumiendo
-  HUMAN.README\HIA_SYN_0001_SYNC_MANIFEST.txt.
+  Ejecutar sincronización FULL-copy de bloques DERIVED en archivos HUMAN, consumiendo:
+  HUMAN.README\HIA_SYN_0001_SYNC_MANIFEST.txt
 
-COMPORTAMIENTO:
-  - Por cada SYNC_ENTRY:
-    1) Carga el SOURCE_DOC_ID + SOURCE_SECTION_WBS desde el manifiesto
-    2) Resuelve archivo fuente buscando en HUMAN.README por "ID_UNICO..........: <SOURCE_DOC_ID>"
-    3) Extrae el bloque fuente por WBS (ej. 04.00) usando delimitadores "=========="
-    4) Reemplaza el bloque destino entre:
-         <<<DERIVED_BEGIN ID=<DERIVED_BLOCK_ID> ...>>>
-         <<<DERIVED_END   ID=<DERIVED_BLOCK_ID>>>
-       con el contenido fuente (FULL-copy)
-  - Registra log detallado en 03_ARTIFACTS\LOGS\SYNC.RUNNER.<timestamp>.txt
-  - Soporta -WhatIf
+CAMBIOS CLAVE (v1.1):
+  - APPLY atómico por target: valida todos los DERIVED blocks primero, luego aplica en memoria y escribe 1 vez por archivo.
+  - Evita APPLY parcial (tu bug de "aplica 2 y falla en el 3°").
+  - Resolver SOURCE_DOC_ID tolerante: ID_UNICO\.+: (padding de puntos variable) y valor en misma línea o siguiente.
 
-REQUISITOS:
-  - Archivos canónicos deben tener secciones WBS delimitadas por:
-      ==========
-      04.00_TITULO
-      ==========
-  - Bloques DERIVED en targets deben tener BEGIN/END con el mismo DERIVED_BLOCK_ID.
+REGLAS:
+  - MODE=FULL => copia completa del bloque fuente (no resumen).
+  - Solo reemplaza contenido entre:
+      <<<DERIVED_BEGIN ID=<DERIVED_BLOCK_ID> ... >>>
+      <<<DERIVED_END ID=<DERIVED_BLOCK_ID>>>
+  - Fail-fast si falta BEGIN/END, si no existe source por ID_UNICO, o no existe WBS en source.
 
 COMO EJECUTAR:
   pwsh -NoProfile -File .\02_TOOLS\Invoke-HIASync.ps1 -ProjectRoot "C:\...\HIA"
   (simular) agregar: -WhatIf
 
+EXIT:
+  0 OK / 1 FAIL
 ========================================================================================
 #>
 
@@ -49,254 +45,213 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-# ---------- 00.10 Normalize root ----------
-$ProjectRoot = [System.IO.Path]::GetFullPath($ProjectRoot)
-
-# ---------- 00.20 Paths ----------
-$HumanDir   = Join-Path $ProjectRoot "HUMAN.README"
-$Artifacts  = Join-Path $ProjectRoot "03_ARTIFACTS"
-$LogsDir    = Join-Path $Artifacts "LOGS"
-$Manifest   = Join-Path $ProjectRoot $ManifestRelativePath
-
-# ---------- 00.30 Logging ----------
-$ts = Get-Date -Format "yyyyMMdd_HHmmss"
-$RunLog = Join-Path $LogsDir "SYNC.RUNNER.$ts.txt"
-
-function Write-Log {
-  param([Parameter(Mandatory=$true)][string]$Message)
-  $line = "[{0}] {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $Message
-  Write-Host $line
-  Add-Content -Path $RunLog -Value $line
-}
-
-function Fail([string]$msg) {
-  Write-Log "FAIL: $msg"
-  throw $msg
-}
-
 function Ensure-Dir([string]$path) {
   if (-not (Test-Path -Path $path)) {
     New-Item -ItemType Directory -Path $path -Force | Out-Null
   }
 }
 
-# ---------- 01.00 Preflight ----------
-if (-not (Test-Path -Path $ProjectRoot)) { throw "ProjectRoot no existe: $ProjectRoot" }
-Ensure-Dir $Artifacts
-Ensure-Dir $LogsDir
-
-New-Item -ItemType File -Path $RunLog -Force | Out-Null
-Write-Log "RUN_START: ProjectRoot=$ProjectRoot"
-Write-Log "MANIFEST: $Manifest"
-
-if (-not (Test-Path -Path $Manifest)) {
-  Fail "Manifest no existe: $Manifest"
+function Write-RunLog([string]$file, [string]$msg) {
+  $line = "[{0}] {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $msg
+  Write-Host $line
+  Add-Content -Path $file -Value $line
 }
 
-# ---------- 02.00 Parse manifest ----------
-# Manifest format: repeated blocks with lines like:
-# SOURCE_DOC_ID........: HUMAN.PF0.0001
-# SOURCE_SECTION_WBS...: 04.00
-# TARGET_FILE..........: HUMAN.README\HUMAN.USER.0001.txt
-# DERIVED_BLOCK_ID.....: DERIVED.PF0.RITUALS.USER.0001
-# MODE.................: FULL
+function Fail([string]$log, [string]$msg) {
+  Write-RunLog $log "FAIL: $msg"
+  throw $msg
+}
 
-function Parse-Manifest([string]$manifestPath) {
-  $lines = Get-Content -Path $manifestPath
+$ProjectRoot = [System.IO.Path]::GetFullPath($ProjectRoot)
+
+$HumanDir = Join-Path $ProjectRoot "HUMAN.README"
+$ArtifactsDir = Join-Path $ProjectRoot "03_ARTIFACTS"
+$LogsDir = Join-Path $ArtifactsDir "LOGS"
+Ensure-Dir $ArtifactsDir
+Ensure-Dir $LogsDir
+
+$ts = Get-Date -Format "yyyyMMdd_HHmmss"
+$runLog = Join-Path $LogsDir ("SYNC.RUNNER.{0}.txt" -f $ts)
+New-Item -ItemType File -Path $runLog -Force | Out-Null
+
+$manifestPath = Join-Path $ProjectRoot $ManifestRelativePath
+Write-RunLog $runLog "RUN_START: ProjectRoot=$ProjectRoot"
+Write-RunLog $runLog "MANIFEST: $manifestPath"
+
+if (-not (Test-Path -Path $manifestPath)) {
+  Fail $runLog "Manifest no existe: $manifestPath"
+}
+
+function Parse-Manifest([string]$path) {
+  $lines = Get-Content -Path $path
   $entries = New-Object System.Collections.Generic.List[hashtable]
+  $cur = @{}
 
-  $current = @{}
   foreach ($ln in $lines) {
     $line = $ln.TrimEnd()
 
     if ($line -match '^SYNC_ENTRY_ID') {
-      if ($current.ContainsKey('SYNC_ENTRY_ID')) {
-        # commit previous
-        $entries.Add($current)
-        $current = @{}
+      if ($cur.ContainsKey('SYNC_ENTRY_ID')) {
+        $entries.Add($cur) | Out-Null
+        $cur = @{}
       }
-      $current['SYNC_ENTRY_ID'] = ($line -split ':\s*',2)[1].Trim()
+      $cur['SYNC_ENTRY_ID'] = ($line -split ':\s*',2)[1].Trim()
       continue
     }
 
     foreach ($k in @('SOURCE_DOC_ID','SOURCE_SECTION_WBS','TARGET_FILE','DERIVED_BLOCK_ID','MODE','NOTES')) {
       if ($line -match ("^" + [regex]::Escape($k) + "\.+:\s*")) {
-        $current[$k] = ($line -split ':\s*',2)[1].Trim()
+        $cur[$k] = ($line -split ':\s*',2)[1].Trim()
       }
     }
   }
 
-  if ($current.ContainsKey('SYNC_ENTRY_ID')) { $entries.Add($current) }
-
+  if ($cur.ContainsKey('SYNC_ENTRY_ID')) { $entries.Add($cur) | Out-Null }
   return $entries
 }
 
-$entries = Parse-Manifest $Manifest
-if ($entries.Count -eq 0) { Fail "No se encontraron SYNC entries en manifest." }
-
-Write-Log "ENTRIES_COUNT: $($entries.Count)"
-
-# ---------- 03.00 Resolve source doc id -> file path ----------
 function Find-FileByDocId([string]$docId, [string]$searchDir) {
   $files = Get-ChildItem -Path $searchDir -File -Filter "*.txt" -Recurse -ErrorAction Stop
   foreach ($f in $files) {
     try {
       $raw = Get-Content -Path $f.FullName -Raw -ErrorAction Stop
-if ($raw -match ("(?ms)^ID_UNICO\.+:\s*(?:\r?\n\s*)?" + [regex]::Escape($docId) + "\s*$")) {
-  return $f.FullName
-}
-    } catch {
-      # ignore unreadable
-    }
+      if ($raw -match ("(?ms)^ID_UNICO\.+:\s*(?:\r?\n\s*)?" + [regex]::Escape($docId) + "\s*$")) {
+        return $f.FullName
+      }
+    } catch { }
   }
   return $null
 }
 
-# ---------- 04.00 Extract WBS section from a canonical file ----------
-function Extract-WbsSection([string]$filePath, [string]$wbs) {
+function Extract-WbsSection([string]$filePath, [string]$wbs, [string]$log) {
   $raw = Get-Content -Path $filePath -Raw
 
-  # Find the header: ==========\n<wbs>_<anything>\n========== 
   $patternStart = "(?ms)^={10,}\s*\r?\n" + [regex]::Escape($wbs) + "_.*?\r?\n={10,}\s*\r?\n"
   $m = [regex]::Match($raw, $patternStart)
   if (-not $m.Success) {
-    Fail "No se encontró sección WBS '$wbs' en source: $filePath (esperado: '==========', '$wbs_...', '==========')."
+    Fail $log "No se encontró sección WBS '$wbs' en source: $filePath"
   }
 
   $startIndex = $m.Index + $m.Length
-
-  # Find next section header (==========\nNN.NN_...)
   $patternNext = "(?ms)^={10,}\s*\r?\n\d{2}\.\d{2}_.*?\r?\n={10,}\s*\r?\n"
-  $m2 = [regex]::Match($raw, $patternNext, [System.Text.RegularExpressions.RegexOptions]::Multiline, $startIndex)
-  if ($m2.Success) {
-    $len = $m2.Index - $startIndex
-    return $raw.Substring($startIndex, $len).TrimEnd()
-  }
-
-  # If none, take to end
+  $m2 = [regex]::Match($raw.Substring($startIndex), $patternNext)
+  if ($m2.Success) { return $raw.Substring($startIndex, $m2.Index).TrimEnd() }
   return $raw.Substring($startIndex).TrimEnd()
 }
 
-
-# ---------- 04.00 Extract WBS section from a canonical file (NO Add-Type) ----------
-function Extract-WbsSectionSafe {
-  param(
-    [Parameter(Mandatory=$true)][string]$FilePath,
-    [Parameter(Mandatory=$true)][string]$Wbs
-  )
-
-  $raw = Get-Content -Path $FilePath -Raw
-
-  # Start header: ==========\n<WBS>_<anything>\n==========
-  $patternStart = "(?ms)^={10,}\s*\r?\n" + [regex]::Escape($Wbs) + "_.*?\r?\n={10,}\s*\r?\n"
-  $m = [regex]::Match($raw, $patternStart)
-  if (-not $m.Success) {
-    Fail "No se encontró sección WBS '$Wbs' en source: $FilePath (esperado: '==========', '$Wbs_...', '==========')."
+function Require-DerivedMarkers([string]$raw, [string]$derivedId, [string]$targetPath, [string]$log) {
+  $beginNeed = "<<<DERIVED_BEGIN ID=$derivedId"
+  $endNeed   = "<<<DERIVED_END ID=$derivedId"
+  if ($raw -notmatch [regex]::Escape($beginNeed)) {
+    Fail $log "No se encontró DERIVED_BEGIN para ID=$derivedId en $targetPath"
   }
-
-  $startIndex = $m.Index + $m.Length
-
-  # Next header (from startIndex) by substring match
-  $patternNext = "(?ms)^={10,}\s*\r?\n\d{2}\.\d{2}_.*?\r?\n={10,}\s*\r?\n"
-  $sub = $raw.Substring($startIndex)
-  $m2 = [regex]::Match($sub, $patternNext)
-
-  if ($m2.Success) {
-    $endIndex = $startIndex + $m2.Index
-    return $raw.Substring($startIndex, $endIndex - $startIndex).TrimEnd()
+  if ($raw -notmatch [regex]::Escape($endNeed)) {
+    Fail $log "No se encontró DERIVED_END para ID=$derivedId en $targetPath"
   }
-
-  # No next header => to end
-  return $raw.Substring($startIndex).TrimEnd()
 }
 
-# ---------- 05.00 Replace derived block in target ----------
-function Replace-DerivedBlock {
-  param(
-    [Parameter(Mandatory=$true)][string]$targetPath,
-    [Parameter(Mandatory=$true)][string]$derivedId,
-    [Parameter(Mandatory=$true)][string]$sourceDocId,
-    [Parameter(Mandatory=$true)][string]$sourceWbs,
-    [Parameter(Mandatory=$true)][string]$mode,
-    [Parameter(Mandatory=$true)][string]$payload
-  )
-
-  if (-not (Test-Path -Path $targetPath)) {
-    Fail "Target no existe: $targetPath"
-  }
-
-  $raw = Get-Content -Path $targetPath -Raw
+function Replace-DerivedInText([string]$raw, [string]$derivedId, [string]$payload, [string]$mode, [string]$log) {
+  if ($mode -ne "FULL") { return @{ changed=$false; text=$raw } }
 
   $beginPattern = "<<<DERIVED_BEGIN\s+ID=" + [regex]::Escape($derivedId) + "\s+SOURCE=.*?MODE=.*?>>>\s*\r?\n"
   $endPattern   = "\r?\n<<<DERIVED_END\s+ID=" + [regex]::Escape($derivedId) + ">>>"
 
   $begin = [regex]::Match($raw, $beginPattern)
-  if (-not $begin.Success) { Fail "No se encontró DERIVED_BEGIN para ID=$derivedId en $targetPath" }
+  if (-not $begin.Success) { Fail $log "No se encontró DERIVED_BEGIN para ID=$derivedId" }
 
   $end = [regex]::Match($raw, $endPattern)
-  if (-not $end.Success) { Fail "No se encontró DERIVED_END para ID=$derivedId en $targetPath" }
-
-  if ($mode -ne "FULL") {
-    Write-Log "SKIP_MODE_NOT_FULL: target=$targetPath id=$derivedId mode=$mode"
-    return $false
-  }
+  if (-not $end.Success) { Fail $log "No se encontró DERIVED_END para ID=$derivedId" }
 
   $start = $begin.Index + $begin.Length
   $stop  = $end.Index
-
-  if ($stop -lt $start) { Fail "DERIVED_END antes de DERIVED_BEGIN para ID=$derivedId en $targetPath" }
+  if ($stop -lt $start) { Fail $log "DERIVED_END antes de DERIVED_BEGIN para ID=$derivedId" }
 
   $before = $raw.Substring(0, $start)
   $after  = $raw.Substring($stop)
-
   $newPayload = $payload.TrimEnd() + "`r`n"
   $newRaw = $before + $newPayload + $after
-
-  if ($newRaw -eq $raw) {
-    Write-Log "NOCHANGE: target=$targetPath id=$derivedId"
-    return $false
-  }
-
-  if ($PSCmdlet.ShouldProcess($targetPath, "Replace DERIVED block ID=$derivedId from $sourceDocId::$sourceWbs")) {
-    Set-Content -Path $targetPath -Value $newRaw -NoNewline
-    Write-Log "APPLY: target=$targetPath id=$derivedId source=$sourceDocId::$sourceWbs bytes=$($newPayload.Length)"
-    return $true
-  }
-
-  Write-Log "WHATIF: target=$targetPath id=$derivedId source=$sourceDocId::$sourceWbs"
-  return $false
+  return @{ changed=($newRaw -ne $raw); text=$newRaw }
 }
 
-# ---------- 06.00 Run entries ----------
+$entries = Parse-Manifest $manifestPath
+if ($entries.Count -eq 0) { Fail $runLog "Manifest sin entries." }
+Write-RunLog $runLog ("ENTRIES_COUNT: {0}" -f $entries.Count)
+
+# Group entries by TARGET_FILE
+$byTarget = @{}
+foreach ($e in $entries) {
+  $id   = $e['SYNC_ENTRY_ID']
+  $src  = $e['SOURCE_DOC_ID']
+  $wbs  = $e['SOURCE_SECTION_WBS']
+  $tgt  = $e['TARGET_FILE']
+  $did  = $e['DERIVED_BLOCK_ID']
+  $mode = $e['MODE']
+
+  if ([string]::IsNullOrWhiteSpace($src) -or [string]::IsNullOrWhiteSpace($wbs) -or [string]::IsNullOrWhiteSpace($tgt) -or [string]::IsNullOrWhiteSpace($did)) {
+    Fail $runLog "Entry incompleta: $id"
+  }
+
+  if (-not $byTarget.ContainsKey($tgt)) {
+    $byTarget[$tgt] = New-Object System.Collections.Generic.List[hashtable]
+  }
+  $byTarget[$tgt].Add($e) | Out-Null
+}
+
+# PRE-VALIDATION: verify all targets contain all DERIVED markers BEFORE any write
+foreach ($tgt in $byTarget.Keys) {
+  $tgtPath = Join-Path $ProjectRoot $tgt
+  if (-not (Test-Path -Path $tgtPath)) { Fail $runLog "Target no existe: $tgtPath" }
+  $raw = Get-Content -Path $tgtPath -Raw
+  foreach ($e in $byTarget[$tgt]) {
+    Require-DerivedMarkers -raw $raw -derivedId $e['DERIVED_BLOCK_ID'] -targetPath $tgtPath -log $runLog
+  }
+}
+
 $applied = 0
 $skipped = 0
 
-foreach ($e in $entries) {
-  $id    = $e['SYNC_ENTRY_ID']
-  $srcId = $e['SOURCE_DOC_ID']
-  $wbs   = $e['SOURCE_SECTION_WBS']
-  $tgt   = $e['TARGET_FILE']
-  $did   = $e['DERIVED_BLOCK_ID']
-  $mode  = $e['MODE']
+foreach ($tgt in ($byTarget.Keys | Sort-Object)) {
+  $tgtPath = Join-Path $ProjectRoot $tgt
+  $raw = Get-Content -Path $tgtPath -Raw
+  $newRaw = $raw
+  $changedAny = $false
 
-  if ([string]::IsNullOrWhiteSpace($srcId) -or [string]::IsNullOrWhiteSpace($wbs) -or [string]::IsNullOrWhiteSpace($tgt) -or [string]::IsNullOrWhiteSpace($did)) {
-    Fail "Entry incompleta: $id"
+  foreach ($e in $byTarget[$tgt]) {
+    $id   = $e['SYNC_ENTRY_ID']
+    $src  = $e['SOURCE_DOC_ID']
+    $wbs  = $e['SOURCE_SECTION_WBS']
+    $did  = $e['DERIVED_BLOCK_ID']
+    $mode = $e['MODE']
+
+    Write-RunLog $runLog "ENTRY: $id source=$src::$wbs target=$tgt did=$did mode=$mode"
+
+    $srcFile = Find-FileByDocId -docId $src -searchDir $HumanDir
+    if (-not $srcFile) { Fail $runLog "No se encontró archivo fuente por ID_UNICO=$src en $HumanDir" }
+
+    $payload = Extract-WbsSection -filePath $srcFile -wbs $wbs -log $runLog
+    $r = Replace-DerivedInText -raw $newRaw -derivedId $did -payload $payload -mode $mode -log $runLog
+    $newRaw = $r.text
+
+    if ($r.changed) {
+      $changedAny = $true
+      $applied++
+      Write-RunLog $runLog "PLANNED_APPLY: target=$tgtPath id=$did source=$src::$wbs bytes=$($payload.Length)"
+    } else {
+      $skipped++
+      Write-RunLog $runLog "NOCHANGE: target=$tgtPath id=$did"
+    }
   }
 
-  $tgtPath = Join-Path $ProjectRoot $tgt
-
-  Write-Log "ENTRY: $id source=$srcId::$wbs target=$tgt did=$did mode=$mode"
-
-  $srcFile = Find-FileByDocId -docId $srcId -searchDir $HumanDir
-  if (-not $srcFile) { Fail "No se encontró archivo fuente por ID_UNICO=$srcId en $HumanDir" }
-
-  $payload = Extract-WbsSectionSafe -filePath $srcFile -wbs $wbs
-
-  $changed = Replace-DerivedBlock -targetPath $tgtPath -derivedId $did -sourceDocId $srcId -sourceWbs $wbs -mode $mode -payload $payload
-
-  if ($changed) { $applied++ } else { $skipped++ }
+  if ($changedAny) {
+    if ($PSCmdlet.ShouldProcess($tgtPath, "Write updated target file (atomic)")) {
+      Set-Content -Path $tgtPath -Value $newRaw -NoNewline
+      Write-RunLog $runLog "APPLY: target=$tgtPath"
+    } else {
+      Write-RunLog $runLog "WHATIF: target=$tgtPath"
+    }
+  }
 }
 
-Write-Log "SUMMARY: applied=$applied skipped=$skipped entries=$($entries.Count)"
-Write-Log "RUN_END: OK"
+Write-RunLog $runLog "SUMMARY: applied=$applied skipped=$skipped entries=$($entries.Count)"
+Write-RunLog $runLog "RUN_END: OK"
 exit 0

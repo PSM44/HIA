@@ -1,7 +1,7 @@
 ==============================
-TANDA 2/2
+TANDA 1/6
 ARCHIVO:  02.00_HUMAN.BATON.txt
-ACCION: CREAR (archivo nuevo)
+ACCION: REEMPLAZAR (archivo completo)
 ==============================
 
 ==========
@@ -10,11 +10,11 @@ ACCION: CREAR (archivo nuevo)
 
 ID_UNICO..........: HUMAN.BATON.0001
 NOMBRE_SUGERIDO...: 02.00_HUMAN.BATON.txt
-VERSION...........: v1.0-DRAFT
-FECHA.............: 2026-02-27
+VERSION...........: v1.1-DRAFT
+FECHA.............: 2026-02-28
 HORA..............: HH:MM (America/Santiago)
 CIUDAD............: <CIUDAD>, <PAIS>
-UBICACION_SISTEMA.: <TL_BOOTSTRAP_ROOT>\01_HUMAN\
+UBICACION_SISTEMA.: <TL_BOOTSTRAP_ROOT>\HUMAN.README\
 AUTOR_HUMANO......: PABLO (ADMIN)
 AUTOR_IA..........: GPT-5.2 Thinking
 
@@ -28,17 +28,22 @@ ALCANCE...........:
 - Definir relación BATON ↔ RADAR ↔ Git ↔ Logs.
 - Definir criterios de cierre de sesión y migración de chat (performance/drift).
 - Definir disciplina de decisiones (CANON vs DRAFT) y registro de supuestos.
+- Definir “Handoff Package” por nivel de contexto (ContextLevel).
 
 NO_CUBRE..........:
-- Contenido de HUMAN del proyecto (BATON no reemplaza filosofía).
+- Contenido conceptual de HUMAN del sistema/proyecto (BATON no reemplaza filosofía).
 - Implementación de export/pdf (solo define qué debe quedar).
+
+DEPENDENCIAS......:
+- HUMAN.RADAR (foto/delta + exclusiones)
+- Git (rollback y evidencia)
+- CIS (contratos ejecutados)
+- LOGS (evidencia, pero no “basura” replicada)
 
 ==========
 00.10_INDICE_GENERAL_WBS
 ==========
 
-00.00 Metadatos
-00.10 Índice
 00.20 Propósito y mental model (BATON como “estado operativo”)
 
 01.00 Qué es BATON (y qué NO es)
@@ -48,12 +53,13 @@ NO_CUBRE..........:
 02.00 Estructura mínima de BATON (plantilla)
 02.10 Current Objective (objetivo actual)
 02.20 State Summary (qué está hecho y qué falta)
-02.30 Decisions (decisiones + razones + status CANON/DRAFT)
-02.40 Changes Applied (cambios aplicados + evidencia)
-02.50 Validation Evidence (OK/FAIL + logs)
-02.60 Risks & Assumptions (riesgos y supuestos)
-02.70 Next Actions (WBS + owner + prioridad)
-02.80 Handoff Package (qué adjuntar para nueva IA/chat)
+02.30 Scope & Exclusions (qué se puede tocar + qué se excluye)
+02.40 Decisions (decisiones + razones + status CANON/DRAFT)
+02.50 Changes Applied (cambios aplicados + evidencia)
+02.60 Validation Evidence (OK/FAIL + logs)
+02.70 Risks & Assumptions (riesgos y supuestos)
+02.80 Next Actions (WBS + owner + prioridad)
+02.90 Handoff Package (qué adjuntar para nueva IA/chat)
 
 03.00 Cuándo actualizar BATON
 03.10 Regla: al cierre de cada sesión
@@ -70,8 +76,9 @@ NO_CUBRE..........:
 05.20 Procedimiento de migración (paso a paso)
 05.30 Qué se conserva y qué se evita (no duplicar basura)
 
-06.00 Checklist operativo
-07.00 CHANGELOG
+06.00 DoD (Definition of Done) de sesión
+07.00 Checklist operativo
+08.00 CHANGELOG
 
 
 ==========
@@ -86,6 +93,10 @@ NO_CUBRE..........:
 - Los chats se degradan (performance, drift, confusión).
 - La continuidad no puede depender de memoria o de “historial del chat”.
 - BATON es el puente: handoff determinista.
+
+00.23_REGLA_DE_ORO
+- Si BATON está malo o incompleto:
+  mañana repites trabajo, o peor: aplicas cambios con contexto falso.
 
 ==========
 01.00_QUE_ES_BATON_(Y_QUE_NO_ES)
@@ -118,7 +129,18 @@ NO_CUBRE..........:
 - Bloqueos:
   - qué impide avanzar (datos faltantes, dependencias, decisiones)
 
-02.30_DECISIONS
+02.30_SCOPE_AND_EXCLUSIONS (P0)
+- Scope (qué se puede tocar):
+  - PROJECT_ROOT por defecto
+  - allowlist/denylist si aplica
+- Exclusiones RADAR (P0):
+  - RADAR_LITE y RADAR_CORE NO deben revisar:
+    - <PROJECT_ROOT>\Raw\
+    - <PROJECT_ROOT>\03_ARTIFACTS\ (incluye LOGS, RADAR\old, DeadHistory)
+  - Implementación práctica recomendada:
+    - excluir \Raw\ y \03_ARTIFACTS\ completo para CORE/LITE
+
+02.40_DECISIONS
 Por cada decisión:
 - ID (WBS/único)
 - Qué se decidió (texto corto)
@@ -129,39 +151,43 @@ Por cada decisión:
 - Evidencia:
   - link a archivo, commit, o sección
 
-02.40_CHANGES_APPLIED
+02.50_CHANGES_APPLIED
 - Lista de cambios aplicados en filesystem:
   - operación (CREATE/EDIT/MOVE/RENAME/DELETE)
   - paths
   - commit id (si aplica)
   - quarantine path (si aplica)
 
-02.50_VALIDATION_EVIDENCE
+02.60_VALIDATION_EVIDENCE
 - OK/FAIL + evidencia:
   - logs
   - outputs esperados
   - comandos ejecutados
 - Sin evidencia no hay “OK”.
 
-02.60_RISKS_AND_ASSUMPTIONS
+02.70_RISKS_AND_ASSUMPTIONS
 - Riesgos abiertos (top 5–10)
 - Supuestos activos (lo que se asumió por falta de datos)
 - Plan para validar supuestos (cómo se obtiene dato duro)
 
-02.70_NEXT_ACTIONS
+02.80_NEXT_ACTIONS
 - Lista WBS:
   - prioridad (P0/P1/P2)
   - owner (humano/IA planner/IA executor)
   - prerequisitos
   - definición de terminado de cada acción
 
-02.80_HANDOFF_PACKAGE
+02.90_HANDOFF_PACKAGE (por ContextLevel)
 - Al migrar chat/IA:
-  - BATON actualizado
-  - RADAR_INDEX + RADAR_LITE recientes
-  - Si se necesita “IA omnisciente”: RADAR_CORE por APP o módulo
-  - Snapshot/export (si aplica)
-  - Último commit id
+  - Siempre:
+    - BATON actualizado
+    - Último commit id (si existe)
+    - RADAR_INDEX + RADAR_LITE recientes (si existen)
+  - Solo si la tarea lo exige (no por defecto):
+    - RADAR_CORE por APP_SCOPE o módulo
+  - Evitar:
+    - pegar Raw / logs / artifacts completos
+    - re-inyectar FULL sin razón (ruido y costo)
 
 ==========
 03.00_CUANDO_ACTUALIZAR_BATON
@@ -169,7 +195,7 @@ Por cada decisión:
 
 03.10_AL_CIERRE_DE_CADA_SESION (OBLIGATORIO)
 - mínimo:
-  objective + decisions + changes + validation + next actions
+  objective + decisions + changes + validation + next actions + scope/exclusions
 
 03.20_ANTES_Y_DESPUES_DE_APPLY_SIGNIFICATIVO
 - Antes:
@@ -191,7 +217,7 @@ Por cada decisión:
 04.20_BATON_CON_RADAR
 - RADAR_INDEX da mapa del repo.
 - RADAR_LITE da delta de cambios.
-- RADAR_CORE alimenta IA para comprensión del sistema (si se requiere).
+- RADAR_CORE alimenta IA para comprensión del sistema (si se requiere y por scope).
 
 04.30_BATON_CON_CIS
 - BATON debe referenciar contratos CIS ejecutados:
@@ -213,7 +239,7 @@ Por cada decisión:
 05.20_PROCEDIMIENTO_DE_MIGRACION
 Paso 1: Actualizar BATON (estado completo)
 Paso 2: Ejecutar RADAR_INDEX + RADAR_LITE (foto + delta)
-Paso 3: Si es necesario, RADAR_CORE por APP o módulo
+Paso 3: Si es necesario, RADAR_CORE por APP_SCOPE o módulo
 Paso 4: Crear snapshot/export (si se requiere)
 Paso 5: Abrir nuevo chat y “inyectar” solo:
         - BATON
@@ -224,12 +250,27 @@ Paso 5: Abrir nuevo chat y “inyectar” solo:
 - no pegar “todo el repo” sin necesidad
 - no re-inyectar FULL como default
 - no duplicar logs y basura (mantener relevancia)
+- no incluir Raw / artifacts en CORE/LITE (P0)
 
 ==========
-06.00_CHECKLIST_OPERATIVO
+06.00_DOD_DE_SESION_(DEFINITION_OF_DONE)
+==========
+
+Sesión “DONE” si:
+- BATON actualizado (02.00 completo)
+- Evidencia mínima:
+  - VALIDATE OK o FAIL explícito con logs
+- Next actions claras (WBS + prioridad + owner)
+- Si hubo APPLY:
+  - commit id registrado
+  - RADAR_LITE pre/post registrado (si aplica)
+
+==========
+07.00_CHECKLIST_OPERATIVO
 ==========
 
 [ ] Al cierre de sesión actualicé BATON
+[ ] Registré scope + exclusiones (P0)
 [ ] Registré decisiones y su estado (DRAFT/CANON)
 [ ] Registré cambios aplicados con paths y evidencia
 [ ] Registré validación OK/FAIL con logs
@@ -237,8 +278,11 @@ Paso 5: Abrir nuevo chat y “inyectar” solo:
 [ ] Si migré chat, adjunté RADAR_INDEX + RADAR_LITE (+ CORE si aplica)
 
 ==========
-07.00_CHANGELOG
+08.00_CHANGELOG
 ==========
 
+2026-02-28, v1.1-DRAFT
+- Agrega sección Scope & Exclusions (P0) para evitar contaminar RADAR_CORE/LITE con Raw/Artifacts.
+- Agrega DoD de sesión y handoff package por ContextLevel.
 2026-02-27, v1.0-DRAFT
 - Creación inicial de HUMAN Root BATON.
