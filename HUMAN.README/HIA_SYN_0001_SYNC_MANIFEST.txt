@@ -4,40 +4,24 @@
 
 ID_UNICO..........: HIA.SYN.0001
 NOMBRE_SUGERIDO...: HIA_SYN_0001_SYNC_MANIFEST.txt
-VERSION...........: v1.0-DRAFT
-FECHA.............: 2026-02-27
+VERSION...........: v1.1-DRAFT
+FECHA.............: 2026-02-28
 HORA..............: HH:MM (America/Santiago)
 CIUDAD............: <CIUDAD>, <PAIS>
-UBICACION_SISTEMA.: <TL_BOOTSTRAP_ROOT>\
+UBICACION_SISTEMA.: <TL_BOOTSTRAP_ROOT>\HUMAN.README\
 AUTOR_HUMANO......: PABLO (ADMIN)
 AUTOR_IA..........: GPT-5.2 Thinking
 
 TITULO............: HIA — SYNC Manifest (Fuente → Destinos, FULL-copy)
 SUBTITULO_MEDIO...: Manifiesto declarativo para replicación automática de bloques DERIVED en archivos HUMAN.
-SUBTITULO_BAJO....: DRAFT. No ejecuta nada; solo declara qué se sincroniza.
-
-ALCANCE...........:
-- Declara sincronización de bloques DERIVED (FULL-copy) desde fuentes canónicas.
-- Define entradas Fuente→Destino con IDs estables.
-- Es consumido por el futuro SYNC.RUNNER (script).
-
-NO_CUBRE..........:
-- No ejecuta cambios.
-- No decide canonicidad.
-- No reemplaza Git/RADAR/BATON.
-
-DEPENDENCIAS......:
-HUMAN.README\HUMAN.MASTER.txt
-HUMAN.README\HUMAN.PF0.0001.txt
-HUMAN.README\HUMAN.USER.0001.txt
-( + HUMAN.BATON / HUMAN.RADAR / HUMAN.CIS cuando queden canónicos )
+SUBTITULO_BAJO....: DRAFT. Consumido por Invoke-HIASync.ps1.
 
 ==========
 00.10_INDICE_GENERAL_WBS
 ==========
 
 01.00 Reglas del manifest
-02.00 Entradas SYNC (DRAFT)
+02.00 Entradas SYNC (ACTIVE)
 03.00 CHANGELOG
 
 ==========
@@ -45,19 +29,19 @@ HUMAN.README\HUMAN.USER.0001.txt
 ==========
 
 01.10_MODO
-- MODE=FULL significa copia completa (no resumen).
-- MODE=OVERRIDE bloquea reemplazo automático y marca DIRTY.
+- MODE=FULL = copia completa (no resumen).
+- MODE=OVERRIDE = bloque no tocado por sync (no usado en esta versión).
 
 01.20_BEHAVIOR
 - El runner reemplaza solo entre:
   <<<DERIVED_BEGIN ...>>>
   <<<DERIVED_END ...>>>
 
-01.30_REFERENCIAS
-- SOURCE se identifica por: SOURCE_DOC_ID + SOURCE_SECTION_WBS
+01.30_SCOPE
+- El runner resuelve SOURCE_DOC_ID buscando ID_UNICO dentro de HUMAN.README\ (fuentes deben vivir ahí).
 
 ==========
-02.00_ENTRADAS_SYNC_(DRAFT)
+02.00_ENTRADAS_SYNC_(ACTIVE)
 ==========
 
 SYNC_ENTRY_ID.......: SYNC.PF0.RITUALS.USER.0001
@@ -90,7 +74,7 @@ SOURCE_SECTION_WBS...: 02.00
 TARGET_FILE..........: HUMAN.README\HUMAN.USER.0001.txt
 DERIVED_BLOCK_ID.....: DERIVED.BATON.TEMPLATE.USER.0001
 MODE.................: FULL
-NOTES................: Plantilla BATON completa en USER (pendiente de ID/WBS final BATON).
+NOTES................: Plantilla BATON completa en USER.
 
 SYNC_ENTRY_ID.......: SYNC.RADAR.LEVELS.MASTER.0001
 SOURCE_DOC_ID........: HUMAN.RADAR.0001
@@ -98,11 +82,43 @@ SOURCE_SECTION_WBS...: 02.00
 TARGET_FILE..........: HUMAN.README\HUMAN.MASTER.txt
 DERIVED_BLOCK_ID.....: DERIVED.RADAR.LEVELS.MASTER.0001
 MODE.................: FULL
-NOTES................: Definiciones RADAR completas en MASTER (pendiente de ID/WBS final RADAR).
+NOTES................: Definiciones RADAR completas en MASTER.
+
+SYNC_ENTRY_ID.......: SYNC.PF0.TEMPLATES.USER.0001
+SOURCE_DOC_ID........: HUMAN.PF0.0001
+SOURCE_SECTION_WBS...: 11.00
+TARGET_FILE..........: HUMAN.README\HUMAN.USER.0001.txt
+DERIVED_BLOCK_ID.....: DERIVED.PF0.TEMPLATES.USER.0001
+MODE.................: FULL
+NOTES................: PF.0 plantillas completas (FULL-copy) en USER.
+
+SYNC_ENTRY_ID.......: SYNC.PF0.TEMPLATES.MASTER.0001
+SOURCE_DOC_ID........: HUMAN.PF0.0001
+SOURCE_SECTION_WBS...: 11.00
+TARGET_FILE..........: HUMAN.README\HUMAN.MASTER.txt
+DERIVED_BLOCK_ID.....: DERIVED.PF0.TEMPLATES.MASTER.0001
+MODE.................: FULL
+NOTES................: PF.0 plantillas completas (FULL-copy) en MASTER.
+
+SYNC_ENTRY_ID.......: SYNC.CIS.TEMPLATES.USER.0001
+SOURCE_DOC_ID........: HUMAN.CIS.0001
+SOURCE_SECTION_WBS...: 12.00
+TARGET_FILE..........: HUMAN.README\HUMAN.USER.0001.txt
+DERIVED_BLOCK_ID.....: DERIVED.CIS.TEMPLATES.USER.0001
+MODE.................: FULL
+NOTES................: CIS plantillas completas (FULL-copy) en USER.
+
+SYNC_ENTRY_ID.......: SYNC.CIS.TEMPLATES.MASTER.0001
+SOURCE_DOC_ID........: HUMAN.CIS.0001
+SOURCE_SECTION_WBS...: 12.00
+TARGET_FILE..........: HUMAN.README\HUMAN.MASTER.txt
+DERIVED_BLOCK_ID.....: DERIVED.CIS.TEMPLATES.MASTER.0001
+MODE.................: FULL
+NOTES................: CIS plantillas completas (FULL-copy) en MASTER.
 
 ==========
 03.00_CHANGELOG
 ==========
 
-2026-02-27, v1.0-DRAFT
-- Creación inicial del SYNC manifest (FULL-copy).
+03.10_2026-02-28_v1.1-DRAFT
+- Manifest expandido a 9 entradas (PF0 templates + CIS templates FULL-copy).
