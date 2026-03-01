@@ -1,0 +1,25 @@
+HIA_STA_0001_PROJECT.STATE.LIVE.txt
+DATE......: 2026-03-01
+TIME......: 18:06
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION...: 0.1
+
+01.00_CURRENT_OBJECTIVE
+- (RELLENAR) Objetivo activo del proyecto HIA.
+
+02.00_ACTIVE_DOMAINS
+- (RELLENAR) Ej: Tooling, Governance, VSCode setup, etc.
+
+03.00_NEXT_ACTIONS (WBS)
+03.01 (RELLENAR)
+03.02 (RELLENAR)
+
+04.00_GATES
+04.01 Gate de APPLY: requiere PLAN + evidencia + snapshot/RADAR.
+
+05.00_EVIDENCE_POINTERS
+- RADAR: (RELLENAR)
+- Git commit: (RELLENAR)
+- Logs: (RELLENAR)
+
