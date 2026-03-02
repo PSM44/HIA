@@ -1,0 +1,13 @@
+02.0_HUMAN.USE.CASE.txt
+DATE......: 2026-03-02
+TIME......: 01:30
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION......: 0.1
+
+01.00_PURPOSE
+Cadena de mando: Use Cases canónicos.
+Los casos detallados se guardan en HUMAN.README\CASEBOOK\ (HIA_HUM_00xx*).
+
+02.00_INDEX
+- (pendiente) Caso real: Precio x Absorción -> TIR
