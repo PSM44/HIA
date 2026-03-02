@@ -105,13 +105,14 @@ function MoveItem([string]$src, [string]$dst) {
   Log "MOVE: $src -> $dst"
 }
 
+
 function ReplaceRefs([string]$root, [hashtable]$map) {
   $files = Get-ChildItem -Path $root -Recurse -Force -File |
     Where-Object {
-      $_.FullName -notmatch "\\\.git\\"
-      -and $_.FullName -notmatch "\\03_ARTIFACTS\\"
-      -and $_.FullName -notmatch "\\Raw\\"
-      -and ($_.Extension -in @(".ps1",".txt"))
+      ($_.FullName -notmatch "\\\.git\\") -and
+      ($_.FullName -notmatch "\\03_ARTIFACTS\\") -and
+      ($_.FullName -notmatch "\\Raw\\") -and
+      ($_.Extension -in @(".ps1",".txt"))
     }
 
   foreach ($f in $files) {
@@ -126,6 +127,7 @@ function ReplaceRefs([string]$root, [hashtable]$map) {
     }
   }
 }
+
 
 # ---------------- MAIN ----------------
 $ProjectRoot = Norm $ProjectRoot
