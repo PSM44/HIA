@@ -11,7 +11,7 @@ ID_HINT...: HIA_SYN_0001
 ==========
 
 ID_UNICO..........: HIA.SYN.0001
-NOMBRE_SUGERIDO...: HIA_SYN_0001_SYNC_MANIFEST.txt
+NOMBRE_SUGERIDO...: 08.0_HUMAN.SYNC.MANIFEST.txt
 VERSION...........: v1.1-DRAFT
 FECHA.............: 2026-02-28
 HORA..............: HH:MM (America/Santiago)

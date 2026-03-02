@@ -28,35 +28,14 @@ ID_HINT...:
 ==============================
 
 
+==============================
 TANDA 1/6
 
-
-ARCHIVO:  02.00_HUMAN.BATON.txt
-
+ARCHIVO:  04.0_HUMAN.BATON.txt
 
 ACCION: REEMPLAZAR (archivo completo)
-
-
-==============================
-
-
-
-
-
-==========
-
-
-00.00_METADATOS_DEL_DOCUMENTO
-
-
-==========
-
-
-
-
-NOMBRE_SUGERIDO...: 02.00_HUMAN.BATON.txt
-
-
+...
+NOMBRE_SUGERIDO...: 04.0_HUMAN.BATON.txtt
 VERSION...........: v1.1-DRAFT
 
 
@@ -499,7 +478,7 @@ Por cada decisión:
 
 
 
-
+02.80_NEXT_ACTIONS
 
 02.60_VALIDATION_EVIDENCE
 
@@ -521,6 +500,29 @@ Por cada decisión:
 
 
 
+02.65_COST_TRACKING (P0)
+
+
+- Objetivo: que “control de costos” sea real (no PowerPoint).
+- Siempre registrar:
+  - provider/model (si aplica)
+  - tipo de consumo: FIXED (suscripción) vs VARIABLE (API)
+  - costo_estimado_usd (si corresponde)
+  - costo_real_usd (si existe evidencia)
+  - acumulado_periodo_usd (semana/mes)
+- Alertas (MVP):
+  - cada USD 30: registrar “ALERTA_30” + acumulado
+    - ejemplo: “ALERTA_30: se cargaron 30 USD; acumulado=61 USD”
+- Hard-stop (si aplica en este proyecto):
+  - si acumulado_periodo_usd + costo_estimado_tarea > budget_periodo:
+    - NO ejecutar APPLY
+    - permitir PLAN_ONLY / dry-run
+    - registrar decisión humana si se overridea (quién/cuándo/por qué)
+- Backlog permitido:
+  - si no se implementa logging automático hoy, igual se registra manual en BATON.
+
+
+
 
 02.70_RISKS_AND_ASSUMPTIONS
 
@@ -532,13 +534,6 @@ Por cada decisión:
 
 
 - Plan para validar supuestos (cómo se obtiene dato duro)
-
-
-
-
-
-02.80_NEXT_ACTIONS
-
 
 - Lista WBS:
 

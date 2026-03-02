@@ -7,7 +7,7 @@ VERSION......: 0.1
 NOTE......: Metadata agregado en modo office. No altera el contenido conceptual HUMAN.
 ID_HINT...: 
 ==============================
-ARCHIVO: HumanRGeneral.txt
+ARCHIVO: 00.0_HUMAN.GENERAL.txt
 ACCION: REEMPLAZAR (archivo completo)
 ==============================
 
@@ -15,8 +15,8 @@ ACCION: REEMPLAZAR (archivo completo)
 00.00_METADATOS_DEL_DOCUMENTO
 ==========
 
-ID_UNICO..........: HUMAN.R.GENERAL.0001
-NOMBRE_SUGERIDO...: HumanRGeneral.txt
+ID_UNICO..........: HUMAN.GENERAL.0001
+NOMBRE_SUGERIDO...: 00.0_HUMAN.GENERAL.txt
 VERSION...........: v1.1-DRAFT
 FECHA.............: 2026-02-28
 HORA..............: HH:MM (America/Santiago)
@@ -186,6 +186,12 @@ FS: filesystem del proyecto.
   - rollback Git,
   - RADAR_LITE pre/post,
   - validate ejecutable.
+- Regla peatón (P0): gates pocos y claros.
+  - Gate humano máximo por acción: 1 (PLAN->APPLY). Evitar “doble aprobación” por costumbre.
+  - Adjuntos por defecto: 0.
+  - Adjuntos permitidos en MVP: 1 (solo si desbloquea la tarea).
+  - Si se necesita >1 adjunto o contexto “pesado”:
+    - escalar por excepción (registrar en BATON: razón + costo estimado + DoD).
 
 02.30_CICLO_OPERATIVO
 - PLAN: objetivo + scope + constraints + output + validación.
@@ -198,6 +204,43 @@ FS: filesystem del proyecto.
 - L1: snippets selectivos.
 - L2: RADAR_CORE por módulo/APP_SCOPE.
 - L3: RADAR_FULL puntual (forensic).
+
+02.41_POLITICA_COSTO_Y_PERFORMANCE_(NO_POWERPOINT)
+Regla:
+- “Control de costos” existe solo si hay:
+  - métrica,
+  - umbral,
+  - alerta,
+  - y registro (para estimar costos futuros).
+
+02.41.10_ORDEN_DE_IMPLEMENTACION_(REALISTA)
+1) Benchmark local (si aplica):
+   - correr herramienta tipo llmfit (o equivalente) para determinar modelos locales viables según hardware.
+   - output mínimo: tabla “modelo / tokens/s / RAM / calidad aproximada / tarea recomendada”.
+2) Inventario de herramientas pagadas:
+   - costo fijo (ej: ChatGPT Plus),
+   - costo variable (APIs / Claude Code / etc.).
+3) Umbrales operativos (alertas):
+   - ejemplo: cada +USD 30 acumulados => alertar “acumulado = X”.
+   - (si no hay integración automática, igual se registra manual en LOG/BATON).
+4) Registro para forecast:
+   - por MiniBattle: input_size, context_level usado, modelo, duración, costo estimado/real, outcome.
+
+02.41.20_ARTEFACTO_MINIMO_(BACKLOG_READY)
+- COST.TRACKER (puede vivir en BATON o en un archivo dedicado del proyecto):
+  - MB_ID
+  - tool/model
+  - context_level
+  - costo_usd (estimado/real)
+  - acumulado_usd
+  - timestamp
+  - nota
+
+02.42_STACK_SIN_RELIGION_(ITERAR_POR_CASO)
+- Stack no se “elige para siempre” en F0.
+- Se propone una hipótesis por caso, se valida con smoke, y se registra decisión DRAFT/CANON.
+- Si no se puede implementar completo ahora:
+  - queda explícito en backlog (no se “olvida”).
 
 ==========
 03.00_GESTION_DOCUMENTAL

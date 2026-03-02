@@ -10,3 +10,6 @@ Thumbs.db
 # Temp
 *.tmp
 *.bak
+# --- HIA: carpeta de cachureo / NO versionar ---
+Raw/
+Raw/**

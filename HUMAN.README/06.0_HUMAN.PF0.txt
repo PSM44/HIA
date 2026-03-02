@@ -28,32 +28,16 @@ ID_HINT...:
 ==============================
 
 
-ARCHIVO: HUMAN.PF0.txt
-
+ARCHIVO: 06.0_HUMAN.PF0.txt
 
 ACCION: CREAR (archivo nuevo)
-
-
 ==============================
 
-
-
-
-
 ==========
-
-
 00.00_METADATOS_DEL_DOCUMENTO
-
-
 ==========
 
-
-
-
-NOMBRE_SUGERIDO...: HUMAN.PF0.0001.txt
-
-
+NOMBRE_SUGERIDO...: 06.0_HUMAN.PF0.txt
 VERSION...........: v1.0-DRAFT
 
 
@@ -407,21 +391,31 @@ APP_SCOPE (Application Scope): definición operativa de qué carpetas/archivos c
 
 02.20_REGLA_DE_FRICCION_MINIMA
 
-
 - El método no debe convertirse en ceremonia infinita.
-
 
 - Por defecto:
 
-
   - 1–3 MiniBattles por sesión
 
+  - 1 Gate máximo por MiniBattle (si aplica)
 
-  - 1 Gate máximo por minibattle (si aplica)
+  - 1 validación mínima por MiniBattle
 
+- Gates (PEATON):
+  - Gate humano máximo por MiniBattle: 1 (PLAN->APPLY).
+  - Prohibido “doble gate” por costumbre.
+  - Si hay duda o el costo/riesgo es alto: convertir a PLAN_ONLY + dividir la tarea.
 
-  - 1 validación mínima por minibattle
+- Drag&Drop (adjuntar archivos) también es fricción:
+  - 0 adjuntos por defecto.
+  - 1 adjunto solo si desbloquea el avance.
+  - 2+ adjuntos requiere justificar por qué no basta con snippet o con RADAR_CORE (por módulo/APP_SCOPE)
+    y registrar en BATON: razón + costo estimado + evidencia esperada.
 
+- Si una “tarea” necesita muchos gates:
+  - dividir en MiniBattles.
+  - cada MiniBattle con output verificable + evidencia.
+  - cada MiniBattle debe cerrar con: OK/FAIL + LOG + (si aplica) RADAR_LITE pre/post.
 
 
 

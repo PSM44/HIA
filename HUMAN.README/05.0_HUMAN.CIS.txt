@@ -1,59 +1,32 @@
 ID_UNICO..........: HUMAN.CIS.0001
 
-
 00.00_METADATA_ADDED
-
 
 DATE......: 2026-03-01
 
-
 TIME......: 18:55
-
 
 TZ........: America/Santiago
 
-
 CITY......: Santiago, Chile
-
 
 VERSION......: 0.1
 
-
 NOTE......: Metadata agregado en modo office. No altera el contenido conceptual HUMAN.
-
 
 ID_HINT...: 
 
 
 ==============================
-
-
-ARCHIVO: HUMAN.CIS.txt
-
-
+ARCHIVO: 05.0_HUMAN.CIS.txt
 ACCION: REEMPLAZAR (archivo completo)
-
-
 ==============================
 
-
-
-
-
 ==========
-
-
 00.00_METADATOS_DEL_DOCUMENTO
-
-
 ==========
 
-
-
-
-NOMBRE_SUGERIDO...: HUMAN.CIS.txt
-
-
+NOMBRE_SUGERIDO...: 05.0_HUMAN.CIS.txt
 VERSION...........: v1.1-DRAFT
 
 
@@ -1094,66 +1067,80 @@ Fin:
 
 ==========
 
-
-
-
-
 12.10_TEMPLATE_CONTRATO_CIS
 
 
-CIS_TASK_ID........:
+CIS_TASK_ID.:
 
 
-TIPO...............: <DOC/TOOL/CODE/AUDIT>
+TIPO.: <DOC/TOOL/CODE/AUDIT>
 
 
-OBJETIVO...........:
+OBJETIVO.:
 
 
-MODO...............: <PLAN_ONLY/APPLY_APPROVED>
+MODO.: <PLAN_ONLY/APPLY_APPROVED>
 
 
-SCOPE..............:
+SCOPE.:
 
 
-IMPACTO............:
+IMPACTO.:
 
 
-OPERACIONES.........:
+ADJUNTOS (MVP).:
+- Default: 0.
+- Permitidos: 1 (solo si desbloquea).
+- Lista:
+  - <NOMBRE_ARCHIVO_O_PATH_O_ID>
 
 
-  - OP.............: <CREATE/EDIT/MOVE/RENAME/DELETE>
+COSTO (si aplica).:
+- TIPO.: <FIXED/VARIABLE/UNKNOWN>
+- PROVIDER/MODEL.:
+- COSTO_EST_USD.:
+- COSTO_REAL_USD.:
+- ACUMULADO_USD.:
+- UMBRAL_ALERTA_USD.: 30
+- HARD_STOP.: <SI/NO + criterio>
 
 
-    PATH............:
+OPERACIONES.:
 
 
-    DETALLE.........:
+  - OP.: <CREATE/EDIT/MOVE/RENAME/DELETE>
 
 
-    CONTENIDO.......: <si aplica>
+    PATH.:
 
 
-VALIDACION..........:
+    DETALLE.:
 
 
-EVIDENCIA...........:
+    CONTENIDO.: <si aplica>
 
 
-ROLLBACK............:
+VALIDACION.:
 
 
-RIESGOS.............:
+EVIDENCIA.:
 
 
-SUPUESTOS...........:
+ROLLBACK.:
 
 
-APROBACION_HUMANA...: <SI/NO + timestamp>
+RIESGOS.:
 
 
+SUPUESTOS.:
 
 
+APROBACION_HUMANA.: <SI/NO + timestamp>
+
+
+REGLA_GATES (PEATON).:
+- 1 gate humano máximo por ejecución: PLAN->APPLY.
+- Prohibido gate adicional “por ceremonia” (si se requiere, justificar en IMPACTO).
 
 12.20_TEMPLATE_EDIT_REPLACE_BLOQUES
 
@@ -1224,19 +1211,9 @@ MODE.................: FULL | OVERRIDE
 NOTES................:
 
 
-
-
-
 ==========
-
 
 13.00_CHECKLIST_CIS
-
-
-==========
-
-
-
 
 
 [ ] Contrato completo (05.10)
@@ -1246,6 +1223,12 @@ NOTES................:
 
 
 [ ] Scope confirmado (root + denylist)
+
+
+[ ] Adjuntos: 0 o 1 (si hay 2+, justificar y registrar en BATON + costo estimado)
+
+
+[ ] Costo: registrado (FIXED/VARIABLE/UNKNOWN) + umbral alerta USD 30 + acumulado si existe
 
 
 [ ] Git checkpoint listo
@@ -1272,20 +1255,11 @@ NOTES................:
 [ ] Commit Git si OK
 
 
-
-
-
 ==========
-
 
 14.00_CHANGELOG
 
-
 ==========
-
-
-
-
 
 2026-02-28, v1.1-DRAFT
 

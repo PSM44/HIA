@@ -7,7 +7,7 @@ VERSION......: 0.1
 NOTE......: Metadata agregado en modo office. No altera el contenido conceptual HUMAN.
 ID_HINT...: 
 ==============================
-ARCHIVO: human.User.txt
+ARCHIVO: 01.0_HUMAN.USER.txt
 ACCION: CREAR (archivo nuevo)
 ==============================
 
@@ -16,12 +16,12 @@ ACCION: CREAR (archivo nuevo)
 ==========
 
 ID_UNICO..........: HUMAN.USER.0001
-NOMBRE_SUGERIDO...: human.User.txt
+NOMBRE_SUGERIDO...: 01.0_HUMAN.USER.txt
 VERSION...........: v1.1-DRAFT
 FECHA.............: 2026-02-28
 HORA..............: HH:MM (America/Santiago)
 CIUDAD............: <CIUDAD>, <PAIS>
-UBICACION_SISTEMA.: <PROJECT_ROOT>\01_HUMAN\
+UBICACION_SISTEMA.: <PROJECT_ROOT>\HUMAN.README\
 AUTOR_HUMANO......: PABLO (ADMIN)
 AUTOR_IA..........: GPT-5.2 Thinking
 
@@ -77,6 +77,34 @@ Quarantine (Borrado seguro): zona donde van “deletes” por defecto.
 11.00 Gestión CANON (cómo cerrar asuntos sin congelarte)
 12.00 Checklist diario (operativo)
 13.00 CHANGELOG
+
+==========
+00.25_REGLAS_PEATON_(POCOS_GATES_Y_POCO_DRAGNDROP)
+==========
+
+00.25.10_GATES_(MINIMOS)
+- Default siempre: PLAN_ONLY.
+- Gate humano (APPLY_APPROVED) se usa solo cuando:
+  - hay lista exacta de archivos,
+  - rollback claro,
+  - validación definida,
+  - y evidencia esperada.
+- Regla de fricción:
+  - máximo 1 gate por MiniBattle.
+  - si una sesión requiere 5 gates, no es “sesión”: es 5 MiniBattles mal separadas.
+
+00.25.20_DRAG_AND_DROP_(MINIMO)
+- Adjuntar archivos es caro (tiempo + ruido + costo de contexto).
+- Regla peatón:
+  - 0 adjuntos por defecto.
+  - 1 adjunto solo si desbloquea la MiniBattle.
+  - 2+ adjuntos = requiere justificar “por qué no basta con snippet o path + RADAR_CORE”.
+
+00.25.30_OUTPUTS_A_LA_MANO
+- Los archivos “de mando” deben estar siempre a mano:
+  - BATON actualizado
+  - RADAR_INDEX + RADAR_LITE recientes
+  - (CORE solo si la tarea lo exige)
 
 ==========
 00.30_DERIVED_BLOCKS_(FULL-COPY_SYNC_TARGETS)
