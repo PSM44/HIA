@@ -81,17 +81,23 @@ New-Item -ItemType File -Force -Path $script:RunLog | Out-Null
 
 Log "RUN_START ProjectRoot=$ProjectRoot Mode=$Mode Force=$Force"
 
-# ---- Guard: Git clean (opcional pero recomendado) ----
+# ---- Guard: Git clean (política por Mode) ----
+# DRAFT: permite dirty (iteración)
+# CANON: requiere clean salvo -Force
 Push-Location $ProjectRoot
 try {
   $porc = git status --porcelain 2>$null
-  if (-not $Force -and $porc) {
-    Log "Git status no está limpio. (Usa -Force si quieres ignorar.)" "ERROR"
+
+  if ($Mode -eq "CANON" -and -not $Force -and $porc) {
+    Log "Git status no está limpio (CANON). Haz commit/stash o re-ejecuta con -Force." "ERROR"
     Log $porc "ERROR"
     exit 1
   }
+
+  if ($Mode -eq "DRAFT" -and $porc) {
+    Log "Git status dirty (DRAFT): permitido. (Para enforcement usa -Mode CANON)" "WARN"
+  }
 } catch {
-  # Si git no está disponible, no rompas por eso (pero deja evidencia)
   Log "No se pudo ejecutar 'git status'. Continuando igual. Error=$($_.Exception.Message)" "WARN"
 } finally {
   Pop-Location
