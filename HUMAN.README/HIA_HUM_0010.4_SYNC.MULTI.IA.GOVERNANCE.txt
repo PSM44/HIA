@@ -1,0 +1,82 @@
+HIA_HUM_0010.4_SYNC.MULTI.IA.GOVERNANCE.txt
+DATE......: 2026-03-01
+TIME......: 19:55
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION......: 0.1
+ID........: HIA_HUM_0010.4
+OWNER.....: HUMAN (canónico conceptual)
+
+01.00_INTRO
+Este documento define cómo se sincronizan múltiples IAs (VS Code + Continue + Ollama + Web)
+para que el trabajo sea coherente, trazable y sin drift.
+
+02.00_PRINCIPIOS DE SINCRONIZACIÓN
+02.01 Un solo orquestador
+Solo 1 IA_ORCH activa por ciclo de trabajo.
+
+02.02 Un solo SSOT
+- Estado: STATE.LIVE
+- Canon: CORE
+- Inventario: Registry + RADAR
+
+02.03 Un solo “Change Queue”
+Los cambios aceptados se listan como WBS en STATE.LIVE y se ejecutan en orden.
+
+03.00_MECÁNICA DE SYNC (CICLO)
+03.01 PLAN Sync
+- IA_ORCH define el Change Queue (WBS).
+- Define qué IA ejecuta cada item y en qué modo.
+
+03.02 APPLY Sync
+- IA_CLOUD_IDE ejecuta cambios en working tree.
+- USER revisa diffs.
+- No se mezclan 10 cambios en 1 commit si se puede evitar.
+
+03.03 VALIDATE Sync
+- USER ejecuta validators/tests.
+- Si FAIL: rollback o fix antes de seguir.
+
+03.04 LOG Sync
+- IA_ORCH registra en STATE.HISTORY.
+- USER crea commit/tag.
+
+04.00_CONFLICTOS (CASOS Y RESOLUCIÓN)
+04.01 Conflicto: IA_WEB y IA_IDE divergen
+- Se resuelve por SSOT + evidence.
+- Si no está en SSOT, no existe.
+
+04.02 Conflicto: IA_LOCAL propone cambios contradictorios
+- IA_ORCH decide por criterios (calidad/evidencia).
+- IA_LOCAL no tiene autoridad final.
+
+04.03 Conflicto: múltiples IAs editan mismos archivos
+- Prohibido por proceso: se serializa por Change Queue.
+
+05.00_SINCRONIZACIÓN DE CONFIG (STACK)
+05.01 Stack Decision Record (SDR)
+Toda decisión de stack se registra:
+- qué se eligió
+- por qué
+- tradeoffs
+- cómo reproducirlo
+
+05.02 Reglas específicas para VS Code + Continue + Ollama
+- Continue es el broker: puede usar modelos locales (Ollama) y/o cloud (si se configura).
+- Ollama es local: ideal para privacidad/offline.
+- IA_WEB mantiene el “por qué” y el “qué sigue”.
+
+06.00_AUDITORÍA (AUDIT MODE)
+06.01 Qué se audita
+- Que los cambios están respaldados por evidencia (EP).
+- Que el repo sigue cumpliendo validadores.
+- Que CORE/STATE se actualizan.
+
+07.00_REGLA PARA “APRENDIZAJE REAL”
+07.01 Qué se canoniza
+- patrones repetibles (scripts, checklist, plantillas)
+07.02 Qué NO se canoniza
+- detalles del caso que no sirven fuera del caso
+07.03 Dónde se guarda
+- Reusable → CORE/TOOLS
+- Caso → README.PROJECT + STATE.HISTORY del proyecto

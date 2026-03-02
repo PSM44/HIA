@@ -1,0 +1,108 @@
+HIA_HUM_0010.1_CONTEXT.PACKAGING.AND.HANDOFF.txt
+DATE......: 2026-03-01
+TIME......: 19:55
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION......: 0.1
+ID........: HIA_HUM_0010.1
+OWNER.....: HUMAN (canónico conceptual, hiper explicativo)
+
+01.00_INTRO
+01.01 Propósito
+Definir cómo se empaqueta y entrega contexto a distintas IAs (local/cloud/IDE/web) para iterar sin drift,
+y cómo se realiza el handoff (traspaso) entre IAs cuando participan varias en el mismo caso.
+
+01.02 Abreviaciones (definidas 1 vez)
+- Context Pack (CP): paquete mínimo de contexto para que una IA ejecute una tarea.
+- Change Pack (CHP): paquete de cambios (qué se cambió, dónde, diff/paths).
+- Evidence Pack (EP): paquete de evidencia (RADAR, tags, logs, resultados validate).
+- SSOT: Single Source of Truth (fuente única de verdad).
+- IA_ORCH: IA Orquestador (rol).
+- IA_CLOUD_WEB: IA cloud en navegador.
+- IA_CLOUD_IDE: IA en IDE (Continue).
+- IA_LOCAL: IA local (Ollama).
+
+02.00_SSOT (SINGLE SOURCE OF TRUTH) — QUÉ SIEMPRE SE ENTREGA
+02.01 SSOT mínimos del repo HIA
+- 00_FRAMEWORK\HIA_COR_0001_HIA.CORE.txt (canon de gobernanza)
+- 00_FRAMEWORK\HIA_STA_0001_PROJECT.STATE.LIVE.txt (estado activo)
+- 00_FRAMEWORK\HIA_STA_0002_PROJECT.STATE.HISTORY.txt (bitácora consolidada)
+- 00_FRAMEWORK\HIA_IDR_0001_PATH.ID.REGISTRY.txt (mapa BD-friendly)
+- RADAR outputs más recientes (si están en artifacts o logs)
+
+02.02 SSOT del proyecto caso (cuando exista el proyecto en 04_PROJECTS)
+- 04_PROJECTS\<PROYECTO>\README.PROJECT.txt
+- 04_PROJECTS\<PROYECTO>\STATE.LIVE.txt
+- 04_PROJECTS\<PROYECTO>\STATE.HISTORY.txt
+
+03.00_CONTEXT PACK (CP) — FORMATO CANÓNICO
+03.01 CP.MIN (mínimo, siempre)
+- CP.01 Objective: qué se quiere lograr (1-3 líneas)
+- CP.02 Constraints: no-alcance, límites, prohibiciones (bullets)
+- CP.03 TaskType: PLAN | CONFIG | APPLY | VALIDATE | AUDIT
+- CP.04 Mode: PLAN_ONLY | APPLY_ALLOWED | VALIDATE_ONLY
+- CP.05 SSOT pointers: lista de archivos canónicos (paths)
+- CP.06 Evidence pointers: tags/commits/RADAR última ejecución
+- CP.07 Output expected: qué archivo(s) o resultado(s) se esperan
+
+03.02 CP.FULL (cuando la tarea es compleja)
+- Todo CP.MIN +
+- Arquitectura actual (si aplica)
+- Decisiones previas (resumen)
+- Riesgos conocidos
+- Criterios de aceptación (DoD) por esta tarea
+
+04.00_CHANGE PACK (CHP) — PARA SINCRONIZAR ENTRE IA_IDE Y IA_ORCH
+04.01 Contenido obligatorio
+- Lista de archivos tocados (path)
+- Tipo de cambio (add/edit/move/delete)
+- Resumen diff (qué cambió)
+- Motivo del cambio (link a WBS item)
+- Estado VALIDATE (OK/FAIL + evidencia)
+- Sugerencia de rollback (si aplica)
+
+05.00_EVIDENCE PACK (EP) — PARA CERRAR CICLOS
+05.01 Evidencia mínima por cambio APPLY
+- RADAR pre/post (o evidencia equivalente)
+- commit hash + tag (cuando corresponde)
+- output de validators/tests (texto)
+- actualización STATE.HISTORY (append-only)
+
+06.00_HANDOFF ENTRE IAs (MULTI-IA)
+06.01 Regla: IA_ORCH entrega CP; IA_IDE devuelve CHP+EP
+- IA_ORCH (WEB) produce CP con instrucciones y gate.
+- USER ejecuta.
+- IA_CLOUD_IDE (Continue) aplica patch (si APPLY).
+- IA_CLOUD_IDE devuelve CHP.
+- USER ejecuta VALIDATE.
+- IA_ORCH registra EP y cierra.
+
+06.02 Handoff hacia IA_LOCAL (Ollama)
+Uso recomendado:
+- tareas mecánicas (generar texto repetitivo, transformar formatos, scaffolding simple)
+No recomendado:
+- decisiones complejas sin supervisión
+
+07.00_CÓMO SE PASA CONTEXTO EN CONTINUE (IDE)
+07.01 Principio
+- Continue ve el repo, pero NO debe inventar gobernanza: se le pega CP.MIN en el prompt de la tarea.
+07.02 Template de prompt para Continue (para pegar)
+"CP.MIN:
+Objective: <...>
+Constraints: <...>
+TaskType: <...>
+Mode: <...>
+SSOT: <paths...>
+Evidence: <tags/commit...>
+Expected output: <...>
+Please propose plan first; do not apply changes until I say APPLY."
+
+08.00_ERRORES TÍPICOS Y CONTROLES
+08.01 Error: Continue aplica cambios sin gate
+Control: CP dice PLAN_ONLY primero + USER revisa diff.
+
+08.02 Error: IA_WEB propone sin conocer repo
+Control: CP incluye SSOT pointers + registry.
+
+08.03 Error: dos IAs cambian lo mismo
+Control: 1 IA_ORCH, 1 backlog de cambios aceptados, y commit por lote pequeño.

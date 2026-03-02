@@ -1,0 +1,159 @@
+HIA_HUM_0004_USECASE.TL.BOOTSTRAP_SENSITIVITY.MATRIX.txt
+DATE......: 2026-03-01
+TIME......: 19:20
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION......: 0.1
+ID........: HIA_HUM_0004
+SCOPE.....: Ejemplo académico de uso (HIA + TL.BOOTSTRAP) para un proyecto nuevo
+OWNER.....: HUMAN (canónico conceptual, no se reduce)
+
+01.00_INTRO (LECTURA RÁPIDA)
+01.01 Propósito
+Este documento muestra un ejemplo completo (end-to-end) de cómo usar HIA y TL.BOOTSTRAP para iniciar un proyecto nuevo.
+El caso de ejemplo es un proyecto tipo “Matriz de Sensibilidad” (análisis paramétrico con inputs, supuestos y outputs).
+
+01.02 Por qué este caso es bueno para aprender HIA
+- Tiene inputs claros (variables), reglas (relaciones), outputs verificables (tablas/gráficos).
+- Permite iteración controlada (cambio de supuestos → validar impacto).
+- Es ideal para practicar evidencia: RADAR, tags, changelog, y rollback.
+
+01.03 Principios HIA que aplicaremos (sin negociación)
+- PLAN → APPLY → VALIDATE → LOG.
+- APPLY solo con gate (checkpoint Git + evidencia).
+- Evidencia mínima por cambio: RADAR pre/post + commit/tag.
+- HUMAN crece: solo append/prepend; no se “recorta” conceptual.
+
+02.00_DEFICIONES OPERATIVAS (SIN FILOSOFÍA)
+02.01 Qué es TL.BOOTSTRAP (definición práctica)
+TL.BOOTSTRAP es el “kit mínimo” para que un proyecto nuevo:
+- quede estructurado,
+- tenga tooling reproducible (scripts, validadores),
+- y quede listo para trabajar con IA bajo HIA sin drift.
+
+02.02 Qué NO es TL.BOOTSTRAP
+- No es el proyecto final.
+- No es un framework genérico infinito.
+- No reemplaza el pensamiento: solo estandariza el arranque y la evidencia.
+
+03.00_USECASE — PROYECTO “SENSITIVITY MATRIX” (CASO DE ESTUDIO)
+03.01 Descripción del proyecto (nivel usuario)
+Objetivo del proyecto:
+- Construir una matriz de sensibilidad que muestre cómo varía un resultado (ej. rentabilidad, VPN, TIR, margen)
+  ante cambios de variables críticas (precio, costo, absorción, tasa, plazo, etc.).
+
+03.02 Inputs típicos (ejemplos)
+- Precio (UF) / indexación
+- Absorción mensual
+- Costo construcción (UF/m2)
+- Tasa descuento (%)
+- Plazo (meses)
+- % gastos / comisiones
+
+03.03 Outputs verificables
+- Tabla 2D de sensibilidad (ej. precio vs absorción)
+- Tabla 3D (opcional) o escenarios discretos
+- Resumen ejecutivo: top drivers + rango de impacto
+
+04.00_INICIO DEL PROYECTO (HIA + TL.BOOTSTRAP)
+04.01 PLAN (sin tocar filesystem todavía)
+04.01.01 Alcance mínimo (MVP)
+- MVP = una tabla sensibilidad 2D (dos variables) con fórmula trazable y resultados coherentes.
+- Validación MVP = pruebas simples (sanity checks) + comparación manual de 2-3 puntos.
+
+04.01.02 No-alcance inicial
+- No se hace “modelo financiero completo” si no es necesario.
+- No se hace UI/automatización avanzada antes del MVP.
+- No se persigue optimización prematura.
+
+04.01.03 Riesgos típicos (P0)
+- Inputs mal definidos (unidades, UF/CLP, periodos).
+- Circularidad (Excel iterativo) sin control.
+- Resultados “bonitos” pero falsos (relaciones rotas).
+- Falta evidencia (no sabes qué cambió).
+
+04.02 APPLY (crear estructura mínima del proyecto)
+Acción esperada:
+- Crear un proyecto nuevo dentro de 04_PROJECTS con ID BD-friendly.
+Ejemplo de nombre:
+- 04_PROJECTS\HIA_PRJ_0001_SENSITIVITY.MATRIX\
+
+Estructura mínima recomendada del proyecto:
+- README.PROJECT.txt (scope + DoD + riesgos)
+- STATE.LIVE.txt (objetivo y siguientes acciones)
+- STATE.HISTORY.txt (append-only)
+- INPUTS\ (si aplica)
+- OUTPUTS\ (si aplica)
+- ARTIFACTS\ (logs/snapshots del proyecto)
+
+Nota: HIA favorece pocas carpetas; si crece demasiado, se escala. Primero MVP.
+
+04.03 VALIDATE (evidencia mínima)
+- Ejecutar RADAR pre/post del repo o del proyecto.
+- Ejecutar validadores HIA (estructura, metadata).
+- Git: commit y tag del bootstrap.
+
+04.04 LOG (registro del cambio)
+- Registrar en STATE.HISTORY del proyecto:
+  - qué se creó,
+  - por qué,
+  - evidencia (tags, RADAR).
+
+05.00_CICLO DE TRABAJO (ITERACIÓN CONTROLADA)
+05.01 Ejemplo de ciclo para agregar “Tabla sensibilidad 2D”
+05.01.01 PLAN
+- Definir variables A y B (ej: Precio vs Absorción).
+- Definir rango (min, base, max) y step.
+- Definir output (ej: margen / VPN / TIR).
+
+05.01.02 APPLY
+- Implementar cálculo (primero simple).
+- Generar tabla.
+- Guardar output.
+
+05.01.03 VALIDATE
+- Sanity checks:
+  - Si sube precio, el output debería mejorar (ceteris paribus).
+  - Si baja absorción, el output debería empeorar (ceteris paribus).
+- Chequear 3 puntos manualmente.
+
+05.01.04 LOG
+- Evidencia: RADAR + commit/tag + nota en STATE.HISTORY.
+
+06.00_APRENDIZAJE Y MEJORA CONTINUA (CÓMO SE GUARDA EXPERIENCIA REAL)
+06.01 Regla central: no todo aprendizaje se canoniza
+Clasificación del aprendizaje:
+A) Reusable (canon)
+- Regla general aplicable a múltiples proyectos (ej: “cómo validar sensibilidad”, “cómo evitar circularidad”).
+→ Va a HIA_COR o a HIA_TOO (framework).
+
+B) Patrón de implementación (tooling)
+- Scripts, validadores, plantillas que se pueden reutilizar.
+→ Va a 02_TOOLS (canon) + documentado en framework.
+
+C) Caso específico (no reusable)
+- Datos del proyecto, decisiones particulares, detalles contextuales.
+→ Se queda en el proyecto: 04_PROJECTS\<proyecto>\STATE.HISTORY + README.
+
+06.02 Cómo capturar y no perderlo
+- Cada proyecto deja 3 cosas:
+  1) STATE.HISTORY del proyecto (bitácora)
+  2) “Lessons Learned” (una sección al final del README.PROJECT)
+  3) Si hay algo reusable: se crea un “Change Proposal” para HIA (con evidencia) y se canoniza por modo office.
+
+07.00_CHECKLIST (MODO OFFICE PARA UN PROYECTO NUEVO)
+07.01 Antes de APPLY
+- Objetivo claro (MVP)
+- No-alcance claro
+- Evidencia definida
+
+07.02 Después de APPLY
+- RADAR OK
+- Validadores OK
+- Git commit/tag OK
+- STATE.HISTORY actualizado
+
+08.00_BACKLOG (IDEAS FUTURAS)
+- Automatizar generación de tabla sensibilidad con script (si se repite).
+- Estándar de “sanity checks” por tipo de output.
+- Plantilla de “README.PROJECT” y “STATE.*” para proyectos tipo financiero.

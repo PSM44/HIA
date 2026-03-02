@@ -1,0 +1,195 @@
+HIA_HUM_0011.0_CASE.REAL_GUIDE_SENSITIVITY.TIR.txt
+DATE......: 2026-03-01
+TIME......: 20:10
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION......: 0.1
+ID........: HIA_HUM_0011.0
+OWNER.....: HUMAN (canónico conceptual, hiper explicativo, no se reduce)
+SCOPE.....: Caso real guiado para entrenar HIA + TL.BOOTSTRAP usando VS Code + Continue + Ollama (matriz Precio/Absorción -> TIR)
+
+01.00_INTRO
+01.01 Propósito
+Este documento describe un caso real (no solo teórico) para aprender HIA ejecutándolo:
+- Se construye una matriz de sensibilidad con cabeceras Precio y Absorción.
+- El valor dentro de la matriz es TIR (Tasa Interna de Retorno).
+- Se documenta el proceso completo: decisiones de stack, roles IA, handoffs, validación, evidencia y aprendizaje.
+
+01.02 Qué significa “caso real” aquí
+- Todo cambio se hace en el repo, con evidencia (RADAR, tags, STATE.HISTORY).
+- La IA no “hace magia”: USER ejecuta comandos, revisa diffs, aprueba APPLY.
+- El resultado final debe ser reproducible desde cero en otra máquina.
+
+01.03 Abreviaciones (definidas 1 vez)
+- HIA: Human+IA Architecture (framework operativo de gobernanza).
+- TL.BOOTSTRAP: Tooling Layer Bootstrap (kit mínimo para iniciar proyecto y operar con evidencia).
+- IDE: Integrated Development Environment (VS Code).
+- IA_ORCH: IA Orquestador (rol que coordina).
+- IA_CLOUD_WEB: IA cloud en navegador (orquestación y planificación).
+- IA_CLOUD_IDE: IA en VS Code (Continue) para revisar/editar.
+- IA_LOCAL: IA local (Ollama) para tareas offline/sensibles.
+- PLAN_ONLY: modo donde la IA solo planifica (no aplica cambios).
+- APPLY: ejecución de cambios en archivos.
+- VALIDATE: verificación (tests/scripts/sanity checks).
+- LOG: registro/evidencia (STATE.HISTORY + commit/tag + RADAR).
+- CP.MIN: Context Pack mínimo para pasar contexto a una IA.
+- CHP: Change Pack (resumen de cambios).
+- EP: Evidence Pack (evidencia de validación).
+
+02.00_STACK (DECISIÓN INICIAL Y EVOLUCIÓN)
+02.01 Stack base (inicial, MVP)
+- IDE: VS Code
+- Extensión: Continue (IA_CLOUD_IDE)
+- IA_LOCAL: Ollama (modelo por definir durante el caso)
+- IA_ORCH: IA_CLOUD_WEB (recomendado) en modo PLAN_ONLY, para asegurar reasoning y documentación.
+
+02.02 Regla de evolución del stack
+- El stack se “perfecciona” durante el caso, pero cada cambio se registra como SDR (Stack Decision Record) dentro de:
+  - 04_PROJECTS\<PROYECTO>\STATE.HISTORY.txt
+  - y, si es reusable, se eleva a CORE/TOOLS en modo office.
+
+02.03 Qué se define explícitamente (mínimo)
+- VS Code: versión (si aplica) + settings mínimos si afectan ejecución
+- Continue: provider(s) configurados (Ollama local / cloud si agregas)
+- Ollama: modelo(s) usados, versión, parámetros relevantes (si aplica)
+
+03.00_ROLES Y RESPONSABILIDADES (QUIÉN HACE QUÉ)
+03.01 USER (Humano)
+- Define objetivo del MVP y acepta gates.
+- Ejecuta comandos (pwsh/git).
+- Revisa diffs y decide APPLY.
+- Ejecuta VALIDATE y toma decisiones de rollback/fix.
+
+03.02 IA_ORCH (usualmente IA_CLOUD_WEB)
+- Produce WBS del trabajo (PLAN).
+- Define CP.MIN para Continue/Ollama.
+- Exige evidencia (RADAR, tags, logs).
+- Coordina sync multi-IA y evita drift.
+
+03.03 IA_CLOUD_IDE (Continue)
+- Lee repo, propone patches.
+- En APPLY: realiza ediciones controladas bajo gate humano.
+- Devuelve CHP (qué cambió) para LOG.
+
+03.04 IA_LOCAL (Ollama)
+- Apoya tareas mecánicas: plantillas, refactors pequeños, transformaciones.
+- No decide gobernanza; responde dentro del CP.MIN.
+
+04.00_PROYECTO (TL.BOOTSTRAP DENTRO DE 04_PROJECTS)
+04.01 Naming BD-friendly (ejemplo)
+- Carpeta proyecto: 04_PROJECTS\HIA_PRJ_0001_SENSITIVITY.TIR\
+- Archivos canónicos dentro:
+  - README.PROJECT.txt
+  - STATE.LIVE.txt
+  - STATE.HISTORY.txt
+
+04.02 Contenido mínimo del README.PROJECT (MVP)
+- Objetivo MVP: matriz 2D (Precio x Absorción) con TIR en cada celda.
+- No-alcance MVP: deuda, impuestos, CAPEX complejo, calendario de obra realista (todo eso va después).
+- Validación MVP: sanity checks + spot checks manuales (ver sección 07).
+
+05.00_RUNBOOK END-TO-END (PLAN -> APPLY -> VALIDATE -> LOG)
+05.01 Paso 0: Preparación (USER + IA_ORCH)
+05.01.01 USER
+- Repo limpio (git status).
+- Confirmar tooling HIA (RADAR/validators).
+05.01.02 IA_ORCH
+- Definir WBS del sprint (MVP).
+- Definir CP.MIN para Continue (IDE) y para Ollama (local).
+
+05.02 Paso 1: PLAN (IA_ORCH, PLAN_ONLY)
+Outputs:
+- WBS con tareas pequeñas.
+- Definición de fórmula de TIR (MVP).
+- Definición de ranges: precios y absorciones.
+
+05.03 Paso 2: APPLY (USER + Continue)
+05.03.01 USER (gate)
+- Aprueba APPLY.
+- Ejecuta RADAR pre.
+05.03.02 Continue (IA_CLOUD_IDE)
+- Crea estructura del proyecto (carpetas/archivos) o propone patch para que USER lo aplique.
+- Implementa scripts/plantillas si corresponde.
+05.03.03 USER
+- Revisa cambios (diff).
+- Ejecuta VALIDATE.
+
+05.04 Paso 3: VALIDATE (USER)
+05.04.01 Validación de tooling
+- validators HIA OK.
+- RADAR post.
+05.04.02 Validación del modelo (sanity)
+- Ver sección 07 (sanity checks + spot checks).
+
+05.05 Paso 4: LOG (IA_ORCH + USER)
+- IA_ORCH redacta entrada en STATE.HISTORY del proyecto:
+  - qué se hizo
+  - por qué
+  - evidencia (tags, RADAR, outputs)
+- USER hace commit/tag.
+
+06.00_CP.MIN (CONTEXT PACK) — PLANTILLA PARA CONTINUE/Ollama
+06.01 CP.MIN TEMPLATE (para pegar en Continue)
+Objective: Crear MVP matriz sensibilidad (Precio x Absorción -> TIR) para proyecto HIA_PRJ_0001.
+Constraints:
+- MVP: sin impuestos, sin deuda, sin CAPEX complejo, sin calendario de obra avanzado.
+- No tocar canon HIA fuera del proyecto (a menos que IA_ORCH lo indique).
+TaskType: PLAN o APPLY (indicar explícito)
+Mode: PLAN_ONLY hasta gate humano.
+SSOT:
+- 00_FRAMEWORK\HIA_COR_0001_HIA.CORE.txt
+- 00_FRAMEWORK\HIA_STA_0001_PROJECT.STATE.LIVE.txt
+- 00_FRAMEWORK\HIA_IDR_0001_PATH.ID.REGISTRY.txt
+Project SSOT (cuando exista):
+- 04_PROJECTS\HIA_PRJ_0001_SENSITIVITY.TIR\README.PROJECT.txt
+Expected Output:
+- (indicar archivos exactos a crear/editar)
+
+07.00_DEFINICIÓN DEL MVP MATEMÁTICO (PARA EVITAR TRAMPA)
+07.01 Modelo MVP recomendado (simple y verificable)
+- Asumir flujos mensuales:
+  - t0: inversión inicial negativa (por ejemplo costos totales o CAPEX simplificado)
+  - t1..tn: ingresos netos (dependen de precio * unidades vendidas, con absorción mensual)
+- TIR (IRR) calculada sobre la serie de flujos.
+Nota: la TIR real de un proyecto inmobiliario puede requerir más detalle; aquí buscamos MVP reproducible.
+
+07.02 Variables del sensitivity
+- Precio: vector de precios (ej: -10%, base, +10% o valores discretos)
+- Absorción: vector (unidades/mes o %/mes, pero definir 1 unidad estándar)
+- Output: TIR resultante por combinación.
+
+07.03 Sanity checks (mínimos)
+- Si sube Precio y todo lo demás constante, TIR debería subir (en general).
+- Si sube Absorción (ventas más rápidas), TIR debería subir (por timing).
+- Si el proyecto no tiene inversión inicial (error), TIR puede volverse absurda: detectar.
+
+07.04 Spot checks (manual)
+- Tomar 2 combinaciones y calcular el flujo y TIR por método alternativo (Excel/otra función) para validar.
+
+08.00_SYNC MULTI-IA (CÓMO NO PERDER CONTROL)
+08.01 Reglas
+- Solo 1 IA_ORCH.
+- Continue no decide objetivos; ejecuta tasks.
+- Ollama no decide gobernanza; ejecuta tareas mecánicas.
+
+08.02 Qué se sincroniza
+- Cambios: CHP (lista archivos + resumen)
+- Evidencia: EP (RADAR + commit/tag + validate output)
+
+09.00_APRENDIZAJE Y MEJORA CONTINUA (CÓMO SE GUARDA EXPERIENCIA)
+09.01 Regla de clasificación
+- Reusable → se eleva a HIA CORE/TOOLS (modo office).
+- Caso específico → se queda en el proyecto (README + STATE.HISTORY).
+
+09.02 Procedimiento de “canonización”
+- Cuando descubras una mejora reusable (ej: plantilla de proyecto, checklist, script):
+  1) Crear propuesta en STATE.HISTORY del proyecto
+  2) IA_ORCH define cambio mínimo en HIA
+  3) APPLY en modo office con evidencia (RADAR + tags)
+  4) Registrar en HIA_STA_0002 (history global)
+
+10.00_DEFINICIÓN DE ÉXITO (DoD) DEL CASO
+- Existe proyecto HIA_PRJ_0001 con estructura mínima.
+- Se genera una matriz (tabla) con Precio x Absorción y TIR por celda.
+- Se puede reproducir el resultado desde repo limpio.
+- Queda evidencia (tags + RADAR + STATE.HISTORY) y lecciones aprendidas.
