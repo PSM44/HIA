@@ -55,7 +55,7 @@ SUBTITULO_BAJO....: DRAFT. Consumido por Invoke-HIASync.ps1.
 SYNC_ENTRY_ID.......: SYNC.PF0.RITUALS.USER.0001
 SOURCE_DOC_ID........: HUMAN.PF0.0001
 SOURCE_SECTION_WBS...: 04.00
-TARGET_FILE..........: HUMAN.README\HUMAN.USER.0001.txt
+TARGET_FILE..........: HUMAN.README\01.0_HUMAN.USER.txt
 DERIVED_BLOCK_ID.....: DERIVED.PF0.RITUALS.USER.0001
 MODE.................: FULL
 NOTES................: PF.0 rituales completos en USER.
@@ -63,7 +63,7 @@ NOTES................: PF.0 rituales completos en USER.
 SYNC_ENTRY_ID.......: SYNC.PF0.MB.USER.0001
 SOURCE_DOC_ID........: HUMAN.PF0.0001
 SOURCE_SECTION_WBS...: 05.00
-TARGET_FILE..........: HUMAN.README\HUMAN.USER.0001.txt
+TARGET_FILE..........: HUMAN.README\01.0_HUMAN.USER.txt
 DERIVED_BLOCK_ID.....: DERIVED.PF0.MB.USER.0001
 MODE.................: FULL
 NOTES................: PF.0 MiniBattles completas en USER.
@@ -71,7 +71,7 @@ NOTES................: PF.0 MiniBattles completas en USER.
 SYNC_ENTRY_ID.......: SYNC.PF0.RITUALS.MASTER.0001
 SOURCE_DOC_ID........: HUMAN.PF0.0001
 SOURCE_SECTION_WBS...: 04.00
-TARGET_FILE..........: HUMAN.README\HUMAN.MASTER.txt
+TARGET_FILE..........: HUMAN.README\07.0_HUMAN.MASTER.txt
 DERIVED_BLOCK_ID.....: DERIVED.PF0.RITUALS.MASTER.0001
 MODE.................: FULL
 NOTES................: PF.0 rituales completos en MASTER.
@@ -79,7 +79,7 @@ NOTES................: PF.0 rituales completos en MASTER.
 SYNC_ENTRY_ID.......: SYNC.BATON.TEMPLATE.USER.0001
 SOURCE_DOC_ID........: HUMAN.BATON.0001
 SOURCE_SECTION_WBS...: 02.00
-TARGET_FILE..........: HUMAN.README\HUMAN.USER.0001.txt
+TARGET_FILE..........: HUMAN.README\01.0_HUMAN.USER.txt
 DERIVED_BLOCK_ID.....: DERIVED.BATON.TEMPLATE.USER.0001
 MODE.................: FULL
 NOTES................: Plantilla BATON completa en USER.
@@ -87,7 +87,7 @@ NOTES................: Plantilla BATON completa en USER.
 SYNC_ENTRY_ID.......: SYNC.RADAR.LEVELS.MASTER.0001
 SOURCE_DOC_ID........: HUMAN.RADAR.0001
 SOURCE_SECTION_WBS...: 02.00
-TARGET_FILE..........: HUMAN.README\HUMAN.MASTER.txt
+TARGET_FILE..........: HUMAN.README\07.0_HUMAN.MASTER.txt
 DERIVED_BLOCK_ID.....: DERIVED.RADAR.LEVELS.MASTER.0001
 MODE.................: FULL
 NOTES................: Definiciones RADAR completas en MASTER.
@@ -95,7 +95,7 @@ NOTES................: Definiciones RADAR completas en MASTER.
 SYNC_ENTRY_ID.......: SYNC.PF0.TEMPLATES.USER.0001
 SOURCE_DOC_ID........: HUMAN.PF0.0001
 SOURCE_SECTION_WBS...: 11.00
-TARGET_FILE..........: HUMAN.README\HUMAN.USER.0001.txt
+TARGET_FILE..........: HUMAN.README\01.0_HUMAN.USER.txt
 DERIVED_BLOCK_ID.....: DERIVED.PF0.TEMPLATES.USER.0001
 MODE.................: FULL
 NOTES................: PF.0 plantillas completas (FULL-copy) en USER.
@@ -103,7 +103,7 @@ NOTES................: PF.0 plantillas completas (FULL-copy) en USER.
 SYNC_ENTRY_ID.......: SYNC.PF0.TEMPLATES.MASTER.0001
 SOURCE_DOC_ID........: HUMAN.PF0.0001
 SOURCE_SECTION_WBS...: 11.00
-TARGET_FILE..........: HUMAN.README\HUMAN.MASTER.txt
+TARGET_FILE..........: HUMAN.README\07.0_HUMAN.MASTER.txt
 DERIVED_BLOCK_ID.....: DERIVED.PF0.TEMPLATES.MASTER.0001
 MODE.................: FULL
 NOTES................: PF.0 plantillas completas (FULL-copy) en MASTER.
@@ -111,7 +111,7 @@ NOTES................: PF.0 plantillas completas (FULL-copy) en MASTER.
 SYNC_ENTRY_ID.......: SYNC.CIS.TEMPLATES.USER.0001
 SOURCE_DOC_ID........: HUMAN.CIS.0001
 SOURCE_SECTION_WBS...: 12.00
-TARGET_FILE..........: HUMAN.README\HUMAN.USER.0001.txt
+TARGET_FILE..........: HUMAN.README\01.0_HUMAN.USER.txt
 DERIVED_BLOCK_ID.....: DERIVED.CIS.TEMPLATES.USER.0001
 MODE.................: FULL
 NOTES................: CIS plantillas completas (FULL-copy) en USER.
@@ -119,7 +119,7 @@ NOTES................: CIS plantillas completas (FULL-copy) en USER.
 SYNC_ENTRY_ID.......: SYNC.CIS.TEMPLATES.MASTER.0001
 SOURCE_DOC_ID........: HUMAN.CIS.0001
 SOURCE_SECTION_WBS...: 12.00
-TARGET_FILE..........: HUMAN.README\HUMAN.MASTER.txt
+TARGET_FILE..........: HUMAN.README\07.0_HUMAN.MASTER.txt
 DERIVED_BLOCK_ID.....: DERIVED.CIS.TEMPLATES.MASTER.0001
 MODE.................: FULL
 NOTES................: CIS plantillas completas (FULL-copy) en MASTER.
@@ -130,3 +130,4 @@ NOTES................: CIS plantillas completas (FULL-copy) en MASTER.
 
 03.10_2026-02-28_v1.1-DRAFT
 - Manifest expandido a 9 entradas (PF0 templates + CIS templates FULL-copy).
+

@@ -9,7 +9,7 @@ CIUDAD:      <CIUDAD>, <PAIS>
 
 OBJETIVO:
   Ejecutar sincronización FULL-copy de bloques DERIVED en archivos HUMAN, consumiendo:
-  HUMAN.README\HIA_SYN_0001_SYNC_MANIFEST.txt
+  HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt
 
 CAMBIOS CLAVE (v1.1):
   - APPLY atómico por target: valida todos los DERIVED blocks primero, luego aplica en memoria y escribe 1 vez por archivo.
@@ -39,7 +39,7 @@ param(
   [string]$ProjectRoot,
 
   [Parameter(Mandatory=$false)]
-  [string]$ManifestRelativePath = "HUMAN.README\HIA_SYN_0001_SYNC_MANIFEST.txt"
+  [string]$ManifestRelativePath = "HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt"
 )
 
 Set-StrictMode -Version Latest

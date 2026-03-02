@@ -183,22 +183,419 @@ NOTES................:
 
 06.50.20_PF0_RITUALES_(DERIVED)
 <<<DERIVED_BEGIN ID=DERIVED.PF0.RITUALS.MASTER.0001 SOURCE=HUMAN.PF0.0001::04.00 MODE=FULL>>>
-[SYNC_TARGET_EMPTY]
+04.10_RITUAL_DE_INICIO_(START_RITUAL)
+
+
+Objetivo:
+
+
+- arrancar sin re-explicar el universo y sin drift.
+
+
+
+
+
+Pasos:
+
+
+04.10.01 Leer BATON
+
+
+- revisar objetivo actual, decisiones (DRAFT/CANON), bloqueos, next actions.
+
+
+
+
+
+04.10.02 Seleccionar MiniBattles
+
+
+- elegir 1–3 MiniBattles con outputs claros.
+
+
+
+
+
+04.10.03 Definir modo (Gate)
+
+
+- Default: PLAN_ONLY.
+
+
+- Si una MiniBattle requiere APPLY:
+
+
+  - exigir plan, lista exacta de archivos, rollback, validación.
+
+
+
+
+
+04.10.04 Confirmar Scope
+
+
+- declarar qué paths se pueden tocar.
+
+
+- confirmar que PROJECT_ROOT es frontera por defecto.
+
+
+
+
+
+04.10.05 Confirmar APP_SCOPE (si hay RADAR_CORE)
+
+
+- si la MiniBattle implica “comprensión total de aplicación”:
+
+
+  - confirmar APP_SCOPE actualizado (por proyecto) para que CORE tome solo lo relevante.
+
+
+
+
+
+04.20_RITUAL_DE_CIERRE_(END_RITUAL)
+
+
+Objetivo:
+
+
+- continuidad y trazabilidad.
+
+
+
+
+
+Pasos:
+
+
+04.20.01 Actualizar BATON
+
+
+- objetivo actual, decisiones, cambios aplicados, evidencia, next actions.
+
+
+
+
+
+04.20.02 Evidencia mínima
+
+
+- adjuntar/registrar logs y commits.
+
+
+- confirmar RADAR_LITE post-APPLY si hubo cambios.
+
+
+
+
+
+04.20.03 Decidir TL.Bootstrap update
+
+
+- solo si:
+
+
+  - descubriste patrón reusable,
+
+
+  - cambiaste método,
+
+
+  - o mejoraste control/seguridad transversal.
+
+
+- Si fue solo trabajo del proyecto, NO contamina TL.Bootstrap.
+
+
+
+
+
+04.20.04 Preparar handoff si aplica
+
+
+- si se migrará chat/IA:
+
+
+  - BATON + RADAR_INDEX + RADAR_LITE (+ RADAR_CORE si necesario).
+
 <<<DERIVED_END ID=DERIVED.PF0.RITUALS.MASTER.0001>>>
 
 06.50.30_RADAR_NIVELES_(DERIVED)
 <<<DERIVED_BEGIN ID=DERIVED.RADAR.LEVELS.MASTER.0001 SOURCE=HUMAN.RADAR.0001::02.00 MODE=FULL>>>
-[SYNC_TARGET_EMPTY]
+02.10_SINGLE-EDIT_RULE (Regla de edición única)
+
+
+- Una regla o plantilla se edita en un solo lugar canónico (archivo dueño del dominio).
+
+
+- Nadie edita manualmente copias en otros archivos.
+
+
+
+
+
+02.20_DERIVED_FULL-COPY_EN_HUMAN
+
+
+- En HUMAN, los derivados NO son resúmenes.
+
+
+- Son FULL-copy: réplica completa del texto canónico.
+
+
+- Esto cumple la exigencia de documentación académica ultra detallada.
+
+
+
+
+
+02.30_TODO_CAMBIO_TIENE_EVIDENCIA
+
+
+- Si se sincroniza contenido derivado:
+
+
+  - se registra log,
+
+
+  - se valida (mínimo),
+
+
+  - y se hace commit (cuando corresponda).
+
+
+
+
+
+02.40_CONFLICTOS_SE_RESUELVEN_POR_AUTORIDAD
+
+
+- Si hay conflicto: manda el archivo dueño del dominio.
+
+
+- MASTER es dueño solo de meta-gobernanza, no “de todo”.
+
 <<<DERIVED_END ID=DERIVED.RADAR.LEVELS.MASTER.0001>>>
 
 06.50.50_PF0_TEMPLATES_(DERIVED)
 <<<DERIVED_BEGIN ID=DERIVED.PF0.TEMPLATES.MASTER.0001 SOURCE=HUMAN.PF0.0001::11.00 MODE=FULL>>>
-[SYNC_TARGET_EMPTY]
+11.10_TEMPLATE_MINIBATTLE
+
+
+MB_ID.............: <MB_ID>
+
+
+TIPO..............: <MB.DOC / MB.TOOL / MB.CODE / MB.DEBUG / MB.AUDIT>
+
+
+OBJETIVO..........: <texto>
+
+
+SCOPE.............: <paths/módulo>
+
+
+MODO..............: <PLAN_ONLY / APPLY_APPROVED (requiere gate)>
+
+
+PLAN..............:
+
+
+  1) ...
+
+
+  2) ...
+
+
+OUTPUT............: <artefacto>
+
+
+VALIDACION.........: <comando/log>
+
+
+EVIDENCIA.........: <log/commit/radar>
+
+
+RIESGO_PRINCIPAL..: <1 línea>
+
+
+ESTADO............: <OPEN/DONE/BLOCKED>
+
+
+NOTAS.............: <opcional>
+
+
+
+
+
+11.20_TEMPLATE_START_RITUAL
+
+
+- Leer BATON
+
+
+- Elegir 1–3 MiniBattles
+
+
+- Definir Gate (PLAN_ONLY default)
+
+
+- Confirmar Scope
+
+
+- Confirmar APP_SCOPE si habrá CORE
+
+
+
+
+
+11.30_TEMPLATE_END_RITUAL
+
+
+- Actualizar BATON
+
+
+- Guardar evidencia (logs/commits)
+
+
+- Confirmar RADAR_LITE post-APPLY
+
+
+- Decidir TL.Bootstrap update
+
+
+- Preparar handoff si aplica
+
 <<<DERIVED_END ID=DERIVED.PF0.TEMPLATES.MASTER.0001>>>
 
 06.50.60_CIS_TEMPLATES_(DERIVED)
 <<<DERIVED_BEGIN ID=DERIVED.CIS.TEMPLATES.MASTER.0001 SOURCE=HUMAN.CIS.0001::12.00 MODE=FULL>>>
-[SYNC_TARGET_EMPTY]
+12.10_TEMPLATE_CONTRATO_CIS
+
+
+CIS_TASK_ID........:
+
+
+TIPO...............: <DOC/TOOL/CODE/AUDIT>
+
+
+OBJETIVO...........:
+
+
+MODO...............: <PLAN_ONLY/APPLY_APPROVED>
+
+
+SCOPE..............:
+
+
+IMPACTO............:
+
+
+OPERACIONES.........:
+
+
+  - OP.............: <CREATE/EDIT/MOVE/RENAME/DELETE>
+
+
+    PATH............:
+
+
+    DETALLE.........:
+
+
+    CONTENIDO.......: <si aplica>
+
+
+VALIDACION..........:
+
+
+EVIDENCIA...........:
+
+
+ROLLBACK............:
+
+
+RIESGOS.............:
+
+
+SUPUESTOS...........:
+
+
+APROBACION_HUMANA...: <SI/NO + timestamp>
+
+
+
+
+
+12.20_TEMPLATE_EDIT_REPLACE_BLOQUES
+
+
+ARCHIVO............:
+
+
+SECCION_WBS.........:
+
+
+BLOQUE_ORIGINAL.....:
+
+
+<texto completo>
+
+
+BLOQUE_CORREGIDO....:
+
+
+<texto completo>
+
+
+
+
+
+12.30_TEMPLATE_DELETE_QUARANTINE
+
+
+ORIGEN_PATH.........:
+
+
+DESTINO_QUARANTINE..:
+
+
+MOTIVO..............:
+
+
+CIS_TASK_ID.........:
+
+
+FECHA_HORA..........:
+
+
+
+
+
+12.40_TEMPLATE_SYNC_ENTRY (para manifest)
+
+
+SYNC_ENTRY_ID.......:
+
+
+SOURCE_DOC_ID........:
+
+
+SOURCE_SECTION_WBS...:
+
+
+TARGET_FILE..........:
+
+
+DERIVED_BLOCK_ID.....:
+
+
+MODE.................: FULL | OVERRIDE
+
+
+NOTES................:
+
 <<<DERIVED_END ID=DERIVED.CIS.TEMPLATES.MASTER.0001>>>
 
 ==========

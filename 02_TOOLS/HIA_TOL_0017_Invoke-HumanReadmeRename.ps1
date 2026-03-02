@@ -152,14 +152,14 @@ EnsureDir $deadCasebook
 
 # 1) Mapping canon renames (old -> new)
 $canonMap = @(
-  @{ old="HUMAN.README\HumanRGeneral.txt";         new="HUMAN.README\00.0_HUMAN.GENERAL.txt" },
-  @{ old="HUMAN.README\HUMAN.USER.0001.txt";      new="HUMAN.README\01.0_HUMAN.USER.txt" },
-  @{ old="HUMAN.README\03.00_HUMAN.RADAR.txt";    new="HUMAN.README\03.0_HUMAN.RADAR.txt" },
-  @{ old="HUMAN.README\02.00_HUMAN.BATON.txt";    new="HUMAN.README\04.0_HUMAN.BATON.txt" },
-  @{ old="HUMAN.README\HUMAN.CIS.txt";            new="HUMAN.README\05.0_HUMAN.CIS.txt" },
-  @{ old="HUMAN.README\HUMAN.PF0.0001.txt";       new="HUMAN.README\06.0_HUMAN.PF0.txt" },
-  @{ old="HUMAN.README\HUMAN.MASTER.txt";         new="HUMAN.README\07.0_HUMAN.MASTER.txt" },
-  @{ old="HUMAN.README\HIA_SYN_0001_SYNC_MANIFEST.txt"; new="HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt" }
+  @{ old="HUMAN.README\00.0_HUMAN.GENERAL.txt";         new="HUMAN.README\00.0_HUMAN.GENERAL.txt" },
+  @{ old="HUMAN.README\01.0_HUMAN.USER.txt";      new="HUMAN.README\01.0_HUMAN.USER.txt" },
+  @{ old="HUMAN.README\03.0_HUMAN.RADAR.txt";    new="HUMAN.README\03.0_HUMAN.RADAR.txt" },
+  @{ old="HUMAN.README\04.0_HUMAN.BATON.txt";    new="HUMAN.README\04.0_HUMAN.BATON.txt" },
+  @{ old="HUMAN.README\05.0_HUMAN.CIS.txt";            new="HUMAN.README\05.0_HUMAN.CIS.txt" },
+  @{ old="HUMAN.README\06.0_HUMAN.PF0.txt";       new="HUMAN.README\06.0_HUMAN.PF0.txt" },
+  @{ old="HUMAN.README\07.0_HUMAN.MASTER.txt";         new="HUMAN.README\07.0_HUMAN.MASTER.txt" },
+  @{ old="HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt"; new="HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt" }
 )
 
 # 2) Ensure canonical UseCase file exists
@@ -188,7 +188,7 @@ Los casos detallados se guardan en HUMAN.README\CASEBOOK\ (HIA_HUM_00xx*).
 # 3) Snap critical files before edits/moves
 $syncRunner = Join-Path $ProjectRoot "02_TOOLS\Invoke-HIASync.ps1"
 BackupFile -path $syncRunner -snapDir $snap
-BackupFile -path (Join-Path $ProjectRoot "HUMAN.README\HIA_SYN_0001_SYNC_MANIFEST.txt") -snapDir $snap
+BackupFile -path (Join-Path $ProjectRoot "HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt") -snapDir $snap
 BackupFile -path (Join-Path $ProjectRoot "HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt") -snapDir $snap
 
 # 4) Apply canonical renames
@@ -227,7 +227,7 @@ foreach ($f in $caseFiles) {
 
 # 7) Update references across repo
 # Update runner sync manifest reference specifically if present
-$repl["HUMAN.README\HIA_SYN_0001_SYNC_MANIFEST.txt"] = "HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt"
+$repl["HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt"] = "HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt"
 ReplaceRefs -root $ProjectRoot -map $repl
 
 Log "RUN_END OK"

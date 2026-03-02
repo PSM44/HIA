@@ -90,50 +90,140 @@ Quarantine (Borrado seguro): zona donde van “deletes” por defecto.
 00.30.20_PF0_RITUALES_(DERIVED)
 <<<DERIVED_BEGIN ID=DERIVED.PF0.RITUALS.USER.0001 SOURCE=HUMAN.PF0.0001::04.00 MODE=FULL>>>
 04.10_RITUAL_DE_INICIO_(START_RITUAL)
+
+
 Objetivo:
+
+
 - arrancar sin re-explicar el universo y sin drift.
 
+
+
+
+
 Pasos:
+
+
 04.10.01 Leer BATON
+
+
 - revisar objetivo actual, decisiones (DRAFT/CANON), bloqueos, next actions.
 
+
+
+
+
 04.10.02 Seleccionar MiniBattles
+
+
 - elegir 1–3 MiniBattles con outputs claros.
 
+
+
+
+
 04.10.03 Definir modo (Gate)
+
+
 - Default: PLAN_ONLY.
+
+
 - Si una MiniBattle requiere APPLY:
+
+
   - exigir plan, lista exacta de archivos, rollback, validación.
 
+
+
+
+
 04.10.04 Confirmar Scope
+
+
 - declarar qué paths se pueden tocar.
+
+
 - confirmar que PROJECT_ROOT es frontera por defecto.
 
+
+
+
+
 04.10.05 Confirmar APP_SCOPE (si hay RADAR_CORE)
+
+
 - si la MiniBattle implica “comprensión total de aplicación”:
+
+
   - confirmar APP_SCOPE actualizado (por proyecto) para que CORE tome solo lo relevante.
 
+
+
+
+
 04.20_RITUAL_DE_CIERRE_(END_RITUAL)
+
+
 Objetivo:
+
+
 - continuidad y trazabilidad.
 
+
+
+
+
 Pasos:
+
+
 04.20.01 Actualizar BATON
+
+
 - objetivo actual, decisiones, cambios aplicados, evidencia, next actions.
 
+
+
+
+
 04.20.02 Evidencia mínima
+
+
 - adjuntar/registrar logs y commits.
+
+
 - confirmar RADAR_LITE post-APPLY si hubo cambios.
 
+
+
+
+
 04.20.03 Decidir TL.Bootstrap update
+
+
 - solo si:
+
+
   - descubriste patrón reusable,
+
+
   - cambiaste método,
+
+
   - o mejoraste control/seguridad transversal.
+
+
 - Si fue solo trabajo del proyecto, NO contamina TL.Bootstrap.
 
+
+
+
+
 04.20.04 Preparar handoff si aplica
+
+
 - si se migrará chat/IA:
+
+
   - BATON + RADAR_INDEX + RADAR_LITE (+ RADAR_CORE si necesario).
 
 <<<DERIVED_END ID=DERIVED.PF0.RITUALS.USER.0001>>>
@@ -141,44 +231,122 @@ Pasos:
 00.30.30_PF0_MINIBATTLES_(DERIVED)
 <<<DERIVED_BEGIN ID=DERIVED.PF0.MB.USER.0001 SOURCE=HUMAN.PF0.0001::05.00 MODE=FULL>>>
 05.10_DEFINICION
+
+
 - MiniBattle (Minibattle, MB) = unidad mínima de avance verificable.
+
+
 - Debe terminar en:
+
+
   - DONE (terminada) o
+
+
   - BLOCKED (bloqueada con causa explícita y next action).
 
+
+
+
+
 05.20_COMPONENTES_OBLIGATORIOS_DE_UNA_MB
+
+
 - MB_ID (ID único WBS-friendly)
+
+
 - Objetivo (qué cambia en el mundo)
+
+
 - Inputs requeridos (qué necesito)
+
+
 - Plan (pasos)
+
+
 - Output (artefacto verificable)
+
+
 - Gate requerido (PLAN_ONLY o APPLY_APPROVED)
+
+
 - Validación (qué prueba lo confirma)
+
+
 - Evidencia (log/commit/radar)
+
+
 - Estado (OPEN/DONE/BLOCKED)
+
+
 - Riesgo principal y mitigación (1 línea mínima)
 
+
+
+
+
 05.30_TIPOS_DE_MB (para routing)
+
+
 - MB.DOC: documentación HUMAN/TL.Bootstrap
+
+
 - MB.TOOL: tooling/scripts/validadores
+
+
 - MB.CODE: código de aplicación
+
+
 - MB.DEBUG: troubleshooting
+
+
 - MB.AUDIT: auditoría (RADAR_CORE/FULL, etc.)
 
+
+
+
+
 05.40_CIERRE_DE_MB (DoD de MB)
+
+
 - DONE si:
+
+
   - output existe,
+
+
   - validación OK o criterio equivalente,
+
+
   - evidencia registrada,
+
+
   - next action actualizada si corresponde.
 
+
+
+
+
 - BLOCKED si:
+
+
   - falta dato duro,
+
+
   - falta decisión humana,
+
+
   - o hay fallo técnico sin hipótesis clara.
+
+
   Debe registrar:
+
+
   - causa,
+
+
   - plan para desbloquear,
+
+
   - next action.
 
 <<<DERIVED_END ID=DERIVED.PF0.MB.USER.0001>>>
@@ -186,72 +354,436 @@ Pasos:
 00.30.40_BATON_TEMPLATE_(DERIVED)
 <<<DERIVED_BEGIN ID=DERIVED.BATON.TEMPLATE.USER.0001 SOURCE=HUMAN.BATON.0001::02.00 MODE=FULL>>>
 02.10_CURRENT_OBJECTIVE
+
+
 - Qué objetivo se está atacando ahora.
+
+
 - Debe ser concreto, medible y acotado.
 
+
+
+
+
 02.20_STATE_SUMMARY
+
+
 - Hecho:
+
+
   - hitos completados
+
+
 - En progreso:
+
+
   - piezas activas
+
+
 - Bloqueos:
+
+
   - qué impide avanzar (datos faltantes, dependencias, decisiones)
 
-02.30_DECISIONS
+
+
+
+
+02.30_SCOPE_AND_EXCLUSIONS (P0)
+
+
+- Scope (qué se puede tocar):
+
+
+  - PROJECT_ROOT por defecto
+
+
+  - allowlist/denylist si aplica
+
+
+- Exclusiones RADAR (P0):
+
+
+  - RADAR_LITE y RADAR_CORE NO deben revisar:
+
+
+    - <PROJECT_ROOT>\Raw\
+
+
+    - <PROJECT_ROOT>\03_ARTIFACTS\ (incluye LOGS, RADAR\old, DeadHistory)
+
+
+  - Implementación práctica recomendada:
+
+
+    - excluir \Raw\ y \03_ARTIFACTS\ completo para CORE/LITE
+
+
+
+
+
+02.40_DECISIONS
+
+
 Por cada decisión:
+
+
 - ID (WBS/único)
+
+
 - Qué se decidió (texto corto)
+
+
 - Por qué (razón)
+
+
 - Estado:
+
+
   - DRAFT (aún discutible)
+
+
   - CANON (cerrado oficialmente)
+
+
 - Evidencia:
+
+
   - link a archivo, commit, o sección
 
-02.40_CHANGES_APPLIED
+
+
+
+
+02.50_CHANGES_APPLIED
+
+
 - Lista de cambios aplicados en filesystem:
+
+
   - operación (CREATE/EDIT/MOVE/RENAME/DELETE)
+
+
   - paths
+
+
   - commit id (si aplica)
+
+
   - quarantine path (si aplica)
 
-02.50_VALIDATION_EVIDENCE
+
+
+
+
+02.60_VALIDATION_EVIDENCE
+
+
 - OK/FAIL + evidencia:
+
+
   - logs
+
+
   - outputs esperados
+
+
   - comandos ejecutados
+
+
 - Sin evidencia no hay “OK”.
 
-02.60_RISKS_AND_ASSUMPTIONS
+
+
+
+
+02.70_RISKS_AND_ASSUMPTIONS
+
+
 - Riesgos abiertos (top 5–10)
+
+
 - Supuestos activos (lo que se asumió por falta de datos)
+
+
 - Plan para validar supuestos (cómo se obtiene dato duro)
 
-02.70_NEXT_ACTIONS
+
+
+
+
+02.80_NEXT_ACTIONS
+
+
 - Lista WBS:
+
+
   - prioridad (P0/P1/P2)
+
+
   - owner (humano/IA planner/IA executor)
+
+
   - prerequisitos
+
+
   - definición de terminado de cada acción
 
-02.80_HANDOFF_PACKAGE
+
+
+
+
+02.90_HANDOFF_PACKAGE (por ContextLevel)
+
+
 - Al migrar chat/IA:
-  - BATON actualizado
-  - RADAR_INDEX + RADAR_LITE recientes
-  - Si se necesita “IA omnisciente”: RADAR_CORE por APP o módulo
-  - Snapshot/export (si aplica)
-  - Último commit id
+
+
+  - Siempre:
+
+
+    - BATON actualizado
+
+
+    - Último commit id (si existe)
+
+
+    - RADAR_INDEX + RADAR_LITE recientes (si existen)
+
+
+  - Solo si la tarea lo exige (no por defecto):
+
+
+    - RADAR_CORE por APP_SCOPE o módulo
+
+
+  - Evitar:
+
+
+    - pegar Raw / logs / artifacts completos
+
+
+    - re-inyectar FULL sin razón (ruido y costo)
 
 <<<DERIVED_END ID=DERIVED.BATON.TEMPLATE.USER.0001>>>
 
 00.30.50_PF0_TEMPLATES_(DERIVED)
 <<<DERIVED_BEGIN ID=DERIVED.PF0.TEMPLATES.USER.0001 SOURCE=HUMAN.PF0.0001::11.00 MODE=FULL>>>
-[SYNC_TARGET_EMPTY]
+11.10_TEMPLATE_MINIBATTLE
+
+
+MB_ID.............: <MB_ID>
+
+
+TIPO..............: <MB.DOC / MB.TOOL / MB.CODE / MB.DEBUG / MB.AUDIT>
+
+
+OBJETIVO..........: <texto>
+
+
+SCOPE.............: <paths/módulo>
+
+
+MODO..............: <PLAN_ONLY / APPLY_APPROVED (requiere gate)>
+
+
+PLAN..............:
+
+
+  1) ...
+
+
+  2) ...
+
+
+OUTPUT............: <artefacto>
+
+
+VALIDACION.........: <comando/log>
+
+
+EVIDENCIA.........: <log/commit/radar>
+
+
+RIESGO_PRINCIPAL..: <1 línea>
+
+
+ESTADO............: <OPEN/DONE/BLOCKED>
+
+
+NOTAS.............: <opcional>
+
+
+
+
+
+11.20_TEMPLATE_START_RITUAL
+
+
+- Leer BATON
+
+
+- Elegir 1–3 MiniBattles
+
+
+- Definir Gate (PLAN_ONLY default)
+
+
+- Confirmar Scope
+
+
+- Confirmar APP_SCOPE si habrá CORE
+
+
+
+
+
+11.30_TEMPLATE_END_RITUAL
+
+
+- Actualizar BATON
+
+
+- Guardar evidencia (logs/commits)
+
+
+- Confirmar RADAR_LITE post-APPLY
+
+
+- Decidir TL.Bootstrap update
+
+
+- Preparar handoff si aplica
+
 <<<DERIVED_END ID=DERIVED.PF0.TEMPLATES.USER.0001>>>
 
 00.30.60_CIS_TEMPLATES_(DERIVED)
 <<<DERIVED_BEGIN ID=DERIVED.CIS.TEMPLATES.USER.0001 SOURCE=HUMAN.CIS.0001::12.00 MODE=FULL>>>
-[SYNC_TARGET_EMPTY]
+12.10_TEMPLATE_CONTRATO_CIS
+
+
+CIS_TASK_ID........:
+
+
+TIPO...............: <DOC/TOOL/CODE/AUDIT>
+
+
+OBJETIVO...........:
+
+
+MODO...............: <PLAN_ONLY/APPLY_APPROVED>
+
+
+SCOPE..............:
+
+
+IMPACTO............:
+
+
+OPERACIONES.........:
+
+
+  - OP.............: <CREATE/EDIT/MOVE/RENAME/DELETE>
+
+
+    PATH............:
+
+
+    DETALLE.........:
+
+
+    CONTENIDO.......: <si aplica>
+
+
+VALIDACION..........:
+
+
+EVIDENCIA...........:
+
+
+ROLLBACK............:
+
+
+RIESGOS.............:
+
+
+SUPUESTOS...........:
+
+
+APROBACION_HUMANA...: <SI/NO + timestamp>
+
+
+
+
+
+12.20_TEMPLATE_EDIT_REPLACE_BLOQUES
+
+
+ARCHIVO............:
+
+
+SECCION_WBS.........:
+
+
+BLOQUE_ORIGINAL.....:
+
+
+<texto completo>
+
+
+BLOQUE_CORREGIDO....:
+
+
+<texto completo>
+
+
+
+
+
+12.30_TEMPLATE_DELETE_QUARANTINE
+
+
+ORIGEN_PATH.........:
+
+
+DESTINO_QUARANTINE..:
+
+
+MOTIVO..............:
+
+
+CIS_TASK_ID.........:
+
+
+FECHA_HORA..........:
+
+
+
+
+
+12.40_TEMPLATE_SYNC_ENTRY (para manifest)
+
+
+SYNC_ENTRY_ID.......:
+
+
+SOURCE_DOC_ID........:
+
+
+SOURCE_SECTION_WBS...:
+
+
+TARGET_FILE..........:
+
+
+DERIVED_BLOCK_ID.....:
+
+
+MODE.................: FULL | OVERRIDE
+
+
+NOTES................:
+
 <<<DERIVED_END ID=DERIVED.CIS.TEMPLATES.USER.0001>>>
 
 ==========
