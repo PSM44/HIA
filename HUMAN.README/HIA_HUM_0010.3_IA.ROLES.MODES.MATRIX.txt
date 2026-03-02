@@ -1,0 +1,88 @@
+HIA_HUM_0010.3_IA.ROLES.MODES.MATRIX.txt
+DATE......: 2026-03-01
+TIME......: 19:35
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION......: 0.1
+ID........: HIA_HUM_0010.3
+OWNER.....: HUMAN (canónico conceptual)
+
+01.00_INTRO
+Este documento define roles y modos para múltiples IAs dentro de HIA.
+Objetivo: que nunca quede duda de qué IA hace qué y bajo qué control.
+
+02.00_TIPOS DE IA (DEFINICIÓN EXACTA)
+02.01 IA_CLOUD_WEB
+- IA cloud en navegador. Ideal para análisis/planes/documentos. Normalmente PLAN_ONLY.
+
+02.02 IA_CLOUD_IDE
+- IA cloud dentro de IDE (VS Code). Ideal para navegación/edición de archivos. APPLY bajo gate.
+
+02.03 IA_LOCAL
+- IA ejecutada localmente. Ideal para privacidad u offline. APPLY/VALIDATE mecánico si aplica.
+
+02.04 IA_ORCH (Rol)
+- No es “otra IA” necesariamente. Es el rol de orquestación.
+- Puede ser IA_CLOUD_WEB o IA_CLOUD_IDE, pero lo normal es IA_CLOUD_WEB.
+
+03.00_MODOS (DEFINICIÓN EXACTA)
+03.01 PLAN
+- Diseñar WBS y decisiones. No tocar FS.
+
+03.02 CONFIG
+- Definir/configurar stack, IDE, plugins, tasks, modelos.
+
+03.03 APPLY
+- Cambiar archivos/config/código. Requiere gate humano.
+
+03.04 VALIDATE
+- Ejecutar pruebas, scripts, validadores, smoke tests.
+
+03.05 AUDIT
+- Revisar coherencia, drift, evidencia, trazabilidad (RADAR/registry).
+
+04.00_MATRIZ (ROL x MODO) — REGLAS
+04.01 IA_CLOUD_WEB
+- PLAN: permitido (principal)
+- CONFIG: permitido (definir qué instalar)
+- APPLY: prohibido (no tiene FS)
+- VALIDATE: prohibido (no ejecuta comandos)
+- AUDIT: permitido (auditoría conceptual)
+
+04.02 IA_CLOUD_IDE
+- PLAN: permitido (sobre archivos existentes)
+- CONFIG: permitido (extensiones, tasks)
+- APPLY: permitido bajo gate (edición)
+- VALIDATE: permitido si tiene tasks integradas, si no → USER
+- AUDIT: permitido (revisión de cambios)
+
+04.03 IA_LOCAL
+- PLAN: limitado (depende del modelo)
+- CONFIG: no recomendado (cambia mucho)
+- APPLY: permitido para tareas mecánicas
+- VALIDATE: permitido (si ejecuta scripts local)
+- AUDIT: limitado
+
+04.04 IA_ORCH
+- PLAN: obligatorio
+- CONFIG: obligatorio (a nivel decisión, no instalación)
+- APPLY: solo autoriza/coordina; ejecución real por USER/IDE
+- VALIDATE: exige evidencia; revisa resultados
+- AUDIT: obligatorio
+
+05.00_REGLA DE ORO (EVITAR CAOS)
+- Solo existe 1 IA_ORCH activa.
+- Solo hay 1 SSOT (STATE.LIVE).
+- Todo APPLY queda amarrado a commit/tag + RADAR.
+
+06.00_EJEMPLOS (MINI-SCENARIOS)
+06.01 Scenario A: cambio de script HIA
+- IA_ORCH (WEB) crea PLAN.
+- IA_CLOUD_IDE aplica patch.
+- USER corre VALIDATE y commitea.
+- IA_ORCH registra LOG.
+
+06.02 Scenario B: decisión local vs cloud
+- IA_ORCH decide por criterios (privacidad/costo).
+- IA_LOCAL ejecuta tarea mecánica.
+- IA_CLOUD_WEB revisa coherencia y documenta.

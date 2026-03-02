@@ -1,0 +1,50 @@
+HIA_HUM_0010.5_RESULTS.REVIEW.AND.QA.txt
+DATE......: 2026-03-01
+TIME......: 19:55
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION......: 0.1
+ID........: HIA_HUM_0010.5
+OWNER.....: HUMAN (canónico conceptual)
+
+01.00_INTRO
+Define cómo se revisan resultados, cómo se valida, y cómo se decide aceptación (DoD).
+
+02.00_TIPOS DE RESULTADO
+02.01 Resultado de tooling
+- Validadores HIA OK/FAIL
+- RADAR evidencia pre/post
+- Registry actualizado
+
+02.02 Resultado de producto
+- Archivo final (ej: matriz sensibilidad)
+- Métrica calculada (correctitud)
+- Reporte/resumen (interpretación)
+
+03.00_QA MINIMO (SIEMPRE)
+03.01 Sanity checks (reglas simples)
+- Monotonía esperada (si sube variable positiva, output debe subir, ceteris paribus)
+- Signos correctos (costos aumentan → resultado empeora)
+- Unidades coherentes (UF vs CLP, meses vs años)
+
+03.02 Spot checks (manual)
+- Calcular 2-3 puntos a mano o con cálculo alternativo.
+
+03.03 Regression checks (si aplica)
+- Si cambias fórmula, compara con baseline anterior.
+
+04.00_REVISIÓN HUMANA (USER REVIEW)
+04.01 Checklist
+- ¿Qué cambió? (CHP)
+- ¿Qué evidencia hay? (EP)
+- ¿Los outputs tienen sentido?
+- ¿Se cumplió el DoD?
+
+05.00_ACEPTACIÓN (DoD)
+- Se define antes del APPLY.
+- VALIDATE demuestra cumplimiento.
+- LOG registra el cierre (STATE.HISTORY + tag).
+
+06.00_CIERRE DE CICLO
+- Commit/tag por lote.
+- Actualizar lecciones aprendidas (append-only).

@@ -6,20 +6,37 @@ CITY......: Santiago, Chile
 VERSION......: 0.1
 
 01.00_CURRENT_OBJECTIVE
-- (RELLENAR) Objetivo activo del proyecto HIA.
+- Consolidar HIA como sistema operable sin chat: CORE + STATE + EVIDENCE en régimen.
 
 02.00_ACTIVE_DOMAINS
-- (RELLENAR) Ej: Tooling, Governance, VSCode setup, etc.
+- Governance (CORE/STATE)
+- Tooling hygiene (Git/EOL/validators)
+- RADAR / Registry (BD-friendly)
 
 03.00_NEXT_ACTIONS (WBS)
-03.01 (RELLENAR)
-03.02 (RELLENAR)
+03.01 CORE HARDENING (HIA_COR_0001)
+03.01.01 Definir mapa completo de fases y subfases (WBS) con outputs por fase.
+03.01.02 Definir gates mínimos por fase (PLAN/APPLY/VALIDATE/LOG) + evidencia requerida.
+03.01.03 Definir routing policy (TaskType) y reglas de “no drift” (canon vs derived).
+
+03.02 STATE HARDENING (HIA_STA_0001)
+03.02.01 Completar Current Objective + Next Actions (este bloque).
+03.02.02 Definir “Definition of Done” para el sprint actual.
+03.02.03 Amarrar evidence pointers a tags/commits/RADAR.
+
+03.03 CLEANUP DEUDA P0
+03.03.01 Confirmar si existe 02_TOOLS\.gitattributes legacy; si existe, mover a DeadHistory.
+03.03.02 Asegurar .gitignore incluye *.bak.
 
 04.00_GATES
-04.01 Gate de APPLY: requiere PLAN + evidencia + snapshot/RADAR.
+04.01 Gate de APPLY (estructuras/archivos): requiere PLAN explícito + checkpoint Git + RADAR pre/post.
+04.02 Gate de cambios HUMAN: permitido solo como prepend/append; prohibido borrar o reordenar.
 
 05.00_EVIDENCE_POINTERS
-- RADAR: (RELLENAR)
-- Git commit: (RELLENAR)
-- Logs: (RELLENAR)
-
+- TAGS:
+  - HIA_META_20260301_1910
+  - HIA_EOL_20260301_1915
+- RADAR:
+  - (Agregar nombre exacto del último RADAR generado por el checkpoint si lo quieres linkear)
+- REGISTRY:
+  - 00_FRAMEWORK\HIA_IDR_0001_PATH.ID.REGISTRY.txt

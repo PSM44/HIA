@@ -1,0 +1,80 @@
+HIA_HUM_0010.2_STACK.DECISION.METHOD.txt
+DATE......: 2026-03-01
+TIME......: 19:35
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION......: 0.1
+ID........: HIA_HUM_0010.2
+OWNER.....: HUMAN (canónico conceptual)
+
+01.00_INTRO
+Este documento define cómo decidir el stack de herramientas e IAs para operar HIA y TL.BOOTSTRAP.
+El objetivo es evitar “setup por moda” y tener un stack reproducible.
+
+02.00_DIMENSIONES DE DECISIÓN (CRITERIOS)
+02.01 Seguridad/Privacidad
+- ¿Datos sensibles? (si sí → preferir IA_LOCAL o IA_CLOUD con restricciones estrictas)
+02.02 Reproducibilidad
+- ¿Otra persona puede replicar el setup desde cero?
+02.03 Integración
+- ¿La IA en IDE puede ejecutar tasks/tests o solo sugerir?
+02.04 Calidad del output
+- ¿Necesitas reasoning profundo (IA_CLOUD_WEB) o mecánico (IA_LOCAL)?
+02.05 Costos
+- ¿Cuánto cuesta iterar (tokens/tiempo/errores)?
+02.06 Latencia
+- ¿Necesitas respuesta rápida?
+
+03.00_STACKS “DEFAULT” (OPCIONES)
+03.01 Stack Mínimo (recomendado para arrancar)
+- VS Code (IDE)
+- Git
+- PowerShell (pwsh)
+- HIA Tooling: RADAR + validators + registry
+- IA_CLOUD_WEB como IA_ORCH (PLAN_ONLY)
+- IA_CLOUD_IDE para APPLY bajo gate
+
+03.02 Stack Extendido (cuando ya hay MVP)
+- Todo el mínimo +
+- IA_LOCAL para tareas sensibles/repetitivas
+- CI local o pipeline (si aplica)
+- Scripts de automatización adicionales
+
+04.00_MÉTODO (PROCESO)
+04.01 Paso 1: Definir objetivos del stack
+- Qué quieres habilitar (ej: ediciones rápidas, validación automática, offline mode)
+04.02 Paso 2: Evaluar riesgos
+- Riesgo reputacional, leak, drift, dependencia tool
+04.03 Paso 3: Elegir combinación de IAs
+- IA_ORCH: IA_CLOUD_WEB (recomendado)
+- IA_CLOUD_IDE: para code/edición
+- IA_LOCAL: solo si hay razones (privacidad/costo/offline)
+04.04 Paso 4: Definir IDE + plugins
+- Plugins se definen por necesidad, no por “lista gigante”.
+- Se registra versión/razón de cada plugin.
+04.05 Paso 5: Documentar SDR (Stack Decision Record)
+- Qué se eligió, por qué, tradeoffs, DoD del setup.
+04.06 Paso 6: Smoke test del stack
+- “Hello world” operativo: plan → cambio pequeño → validate → log.
+
+05.00_DEFINICIÓN DE VS CODE (CUÁNDO Y CÓMO)
+05.01 Cuándo se define VS Code
+- Cuando el proyecto involucra archivos/código y quieres reproducibilidad.
+05.02 Qué se define exactamente
+- Versión VS Code (si aplica)
+- Perfil/Settings (mínimos)
+- Extensiones críticas (solo las que aportan)
+- Tasks para VALIDATE (ej: correr scripts HIA)
+05.03 Qué NO se define inicialmente
+- 30 extensiones “por si acaso”
+- temas, estética, etc.
+
+06.00_CRITERIO FINAL: “STACK APROBADO”
+- El stack queda aprobado cuando un tercero puede:
+  - clonar repo,
+  - seguir pasos,
+  - ejecutar TL.BOOTSTRAP,
+  - y reproducir un VALIDATE OK.
+
+07.00_SALIDA (ARTEFACTOS)
+- SDR en HUMAN (este método) + registro en STATE.HISTORY del proyecto.

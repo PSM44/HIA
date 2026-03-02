@@ -1,0 +1,178 @@
+HIA_HUM_0010.0_OPS.RUNTIME.MANUAL.txt
+DATE......: 2026-03-01
+TIME......: 19:35
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION......: 0.1
+ID........: HIA_HUM_0010.0
+OWNER.....: HUMAN (canónico conceptual, hiper explicativo, no se reduce)
+SCOPE.....: Operación runtime de HIA en entorno multi-IA (local + cloud + IDE + web)
+
+01.00_INTRO
+01.01 Propósito
+Este manual describe, sin dejar dudas, cómo se opera HIA en el día a día cuando participan múltiples IAs:
+- IA Cloud en Web (IA_CLOUD_WEB): ChatGPT/Claude/etc en navegador.
+- IA Cloud dentro de IDE (IA_CLOUD_IDE): asistente en VS Code (Copilot/Codex/Continue/otros).
+- IA Local (IA_LOCAL): modelo local (si aplica) ejecutado en tu máquina.
+- IA Orquestador (IA_ORCH): rol (puede ser IA_CLOUD_WEB u otra) que coordina el plan, gates, evidencia y handoffs.
+
+01.02 Principio rector
+HIA no es “una IA”. HIA es el sistema de gobernanza para coordinar IAs, asegurar evidencia, y evitar drift.
+
+01.03 Abreviaciones (definidas 1 vez)
+- HIA: Human+IA Architecture (framework operativo).
+- TL.BOOTSTRAP: Tooling Layer Bootstrap (kit mínimo para arrancar proyectos con estructura + tooling + evidencia).
+- IDE: Integrated Development Environment (ej: VS Code).
+- PLAN_ONLY: modo donde la IA solo propone planes, no ejecuta cambios.
+- APPLY: ejecución de cambios en filesystem/código/archivos.
+- VALIDATE: verificación (tests, scripts, chequeos, consistencia).
+- LOG: registro/evidencia (bitácora, tags, RADAR, changelog).
+- RADAR: herramienta de inventario y evidencia (snapshot/delta).
+- Context Pack: paquete de contexto entregado a una IA para iterar (ver 0010.1).
+- Change Pack: paquete de cambios propuestos/aplicados (diffs, archivos tocados).
+- Evidence Pack: paquete de evidencia (tags, RADAR, logs, resultados de tests).
+
+02.00_ROLES (QUIÉN HACE QUÉ)
+02.01 USER (Usuario Humano)
+Responsable de:
+- Definir objetivo (objective) y restricciones (constraints).
+- Aceptar o rechazar APPLY (gate humano).
+- Ejecutar comandos en su PC (cuando la IA no puede).
+- Decidir stack final (cuando hay tradeoffs).
+- Firmar “Definition of Done (DoD)” por fase.
+
+02.02 IA_ORCH (IA Orquestador)
+Responsable de:
+- Convertir objetivo humano en PLAN (WBS) ejecutable.
+- Definir TaskType y modo de cada IA (PLAN/CONFIG/APPLY/VALIDATE).
+- Construir Context Packs y handoffs.
+- Detectar conflictos y drift entre IAs y repositorio.
+- Exigir evidencia y ordenar VALIDATE antes de avanzar.
+
+02.03 IA_CLOUD_WEB (IA Cloud Web)
+Uso típico:
+- Análisis, planificación, redacción de artefactos HUMAN, diseño de políticas.
+- Auditoría del repo a nivel conceptual (sin ejecutar comandos).
+Modo típico:
+- PLAN_ONLY casi siempre.
+- Puede actuar como IA_ORCH (recomendado).
+
+02.04 IA_CLOUD_IDE (IA Cloud dentro de IDE)
+Uso típico:
+- Navegar código, proponer patches, refactors, cambios pequeños.
+Modo típico:
+- CONFIG (setup de extensiones/IDE tasks).
+- APPLY (edición de archivos) bajo gate humano.
+- VALIDATE (puede ejecutar tasks, scripts, tests si está integrado).
+
+02.05 IA_LOCAL (IA Local)
+Uso típico:
+- Tareas sensibles/offline (sin enviar datos).
+- Tareas rápidas y repetitivas (si el modelo rinde).
+Limitación típica:
+- Menor calidad en reasoning profundo (depende del modelo).
+Modo típico:
+- APPLY/VALIDATE para tasks mecánicas (si confías), o PLAN_ONLY si no.
+
+03.00_MODOS OPERATIVOS (CÓMO SE MUEVE EL SISTEMA)
+03.01 PLAN (Planificación)
+- Output esperado: WBS con pasos, entradas, salidas, riesgos, evidencia mínima.
+- Ejecuta: IA_ORCH (usualmente IA_CLOUD_WEB).
+- Gate: USER aprueba plan antes de APPLY.
+
+03.02 CONFIG (Configuración de stack/IDE/IA)
+- Output esperado: “Stack Decision Record (SDR)” + pasos de instalación + versiones.
+- Ejecuta: IA_ORCH define; USER instala; IA_CLOUD_IDE valida setup.
+
+03.03 APPLY (Ejecución)
+- Output esperado: cambios en archivos, scripts, estructura, config.
+- Ejecuta: USER (commands) + IA_CLOUD_IDE (edición) + IA_LOCAL (si aplica).
+- Gate: checkpoint Git + RADAR pre/post + validación mínima.
+
+03.04 VALIDATE (Verificación)
+- Output esperado: resultados de tests/scripts, checklist OK/FAIL.
+- Ejecuta: USER/IDE tasks/CI local.
+- Gate: si FAIL, rollback o fix antes de avanzar.
+
+03.05 LOG (Evidencia)
+- Output esperado: STATE.HISTORY actualizado + commit/tag + RADAR artifacts + resumen.
+- Ejecuta: IA_ORCH prepara texto; USER ejecuta commit/tag; IA_CLOUD_WEB redacta resumen académico si aplica.
+
+04.00_DECISIÓN DE STACK (CUÁNDO Y CÓMO)
+04.01 Cuándo se define stack
+- En Fase 1/2 (antes de coding real) o al iniciar TL.BOOTSTRAP del proyecto.
+- Stack mínimo = editor + git + PowerShell + validators + RADAR.
+- Stack extendido = IA IDE + IA web + IA local + CI.
+
+04.02 Cómo se define stack (método)
+- Ver archivo 0010.2: STACK.DECISION.METHOD (criterios y matriz).
+- Regla: si stack no es reproducible, no es stack: es improvisación.
+
+05.00_CÓMO SE ENTREGA CONTEXTO A UNA IA PARA ITERAR
+05.01 Context Pack (mínimo)
+- Objective (qué quieres lograr)
+- Constraints (qué no se puede)
+- Canon files (CORE/STATE/ROUTING/VALIDATORS)
+- Latest evidence (tags, RADAR last run)
+- TaskType (PLAN/CONFIG/APPLY/VALIDATE) y modo (PLAN_ONLY si aplica)
+
+05.02 Cómo se evita drift
+- Siempre se trabaja contra: STATE.LIVE + CORE + registry.
+- Se prohíbe “inventar estructura”: si falta info, se declara como unknown.
+- APPLY solo si existe PLAN aprobado.
+
+06.00_MULTI-IA ORCHESTRATION (SINCRONIZACIÓN)
+06.01 Single Source of Truth (SSOT)
+- SSOT de operación: STATE.LIVE (objetivo/next actions).
+- SSOT de gobernanza: CORE.
+- SSOT de inventario: registry y RADAR.
+
+06.02 Conflicto típico
+- IA_WEB dice “cambiar X”, IA_IDE cambia Y.
+Solución:
+- IA_ORCH alinea a WBS: una sola lista de cambios aceptados.
+- Cada APPLY queda amarrado a commit/tag.
+- Cualquier desviación → rollback o re-plan.
+
+07.00_RESULTADOS: CÓMO SE VEN Y CÓMO SE ACEPTAN
+07.01 Resultados técnicos
+- tests OK/FAIL
+- outputs generados (archivos, tablas, reportes)
+- comparaciones (before/after)
+
+07.02 Aceptación (DoD)
+- USER define DoD por fase.
+- VALIDATE evidencia DoD.
+- LOG registra evidencia y decide cierre de fase.
+
+08.00_RUNBOOK (PASO A PASO UNIVERSAL PARA UN CAMBIO)
+08.01 PLAN
+- IA_ORCH produce WBS: inputs, outputs, riesgos, evidencia.
+08.02 CHECKPOINT
+- USER asegura repo limpio o hace checkpoint.
+08.03 RADAR PRE
+- USER ejecuta RADAR.
+08.04 APPLY
+- IA_IDE edita; USER ejecuta commands.
+08.05 VALIDATE
+- scripts/tests/validators.
+08.06 RADAR POST
+- evidencia del cambio.
+08.07 LOG
+- update STATE.HISTORY + commit/tag.
+
+09.00_MEGARIESGOS (P0) Y CONTROLES
+09.01 Riesgo: exceso de IAs sin coordinación
+Control: IA_ORCH único; SSOT; gates.
+
+09.02 Riesgo: stack no reproducible
+Control: SDR (Stack Decision Record) + versiones + instalación paso a paso.
+
+09.03 Riesgo: resultados falsos
+Control: VALIDATE mínimo + sanity checks + comparación manual.
+
+10.00_ANEXO: DICCIONARIO DE “QUIÉN EJECUTA”
+- Commands (git/pwsh): USER
+- Edición de archivos: IA_CLOUD_IDE (bajo gate) o USER
+- Planificación/gobernanza: IA_CLOUD_WEB como IA_ORCH
+- Tareas sensibles: IA_LOCAL (si aplica)

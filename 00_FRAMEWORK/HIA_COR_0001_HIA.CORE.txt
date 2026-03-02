@@ -24,6 +24,33 @@ Definición operativa de HIA. Este archivo es canónico y estable. Cambios solo 
 03.04 FASE 3.1: Pre-coding (smoke)
 03.05 FASE 3.2: Coding iterativo con gates
 
+03.10_FASES_Y_SUBFASES (WBS CANÓNICO)
+03.10.01 FASE 0 — FILOSOFÍA / HUMAN-FIRST
+03.10.01.01 Outputs: HUMAN_SCOPE + HUMAN_DOD_POR_FASE + PRINCIPIOS_NO_NEGOCIABLES
+03.10.01.02 Gate: cierre cuando existe No-Alcance explícito + riesgos top + DoD mínimo.
+03.10.01.03 Evidencia: commit/tag + referencia en STATE.HISTORY.
+
+03.10.02 FASE 1 — POLÍTICAS IA (SIN FS)
+03.10.02.01 Outputs: routing policy + ejecución (PLAN/APPLY/VALIDATE) + formatos de evidencia.
+03.10.02.02 Gate: política aplicada en scripts/plantillas; sin ambigüedad.
+
+03.10.03 FASE 2 — BOOTSTRAP LOCAL (FS)
+03.10.03.01 Outputs: estructura mínima + tools canónicos + artifacts + registry IDs.
+03.10.03.02 Gate: validators pasan + RADAR baseline + repo limpio.
+
+03.10.04 FASE 3.1 — PRE-CODING (SMOKE)
+03.10.04.01 Outputs: smoke tests + environment check + toolchain check.
+03.10.04.02 Gate: test mínimo OK.
+
+03.10.05 FASE 3.2 — CODING ITERATIVO
+03.10.05.01 Outputs: cambios incrementales con gates y evidencia.
+03.10.05.02 Gate: cada APPLY requiere PLAN + checkpoint + validate + log.
+
+03.11_TRANSVERSAL
+03.11.01 Git como rollback primario; DeadHistory como fallback.
+03.11.02 RADAR pre/post para cambios estructurales.
+03.11.03 Registry Path->ID BD-friendly actualizado tras cambios.
+
 04.00_ROUTING (HIGH-LEVEL)
 04.01 TaskType: ANALYZE (no changes), PLAN (no changes), APPLY (changes), VALIDATE (evidence)
 04.02 Todas las acciones APPLY requieren: (a) PLAN explícito, (b) backup/quarantine, (c) post-validate

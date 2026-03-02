@@ -9,5 +9,20 @@ VERSION......: 0.1
 Bitácora consolidada. Append-only. Registra decisiones, cambios y evidencia.
 
 02.00_LOG
+
+ENTRY_TS: 2026-03-01 19:12 America/Santiago
+01.00_EVENT
+- Se estabilizó higiene Git/EOL.
+
+02.00_DECISIÓN
+- Mantener git core.autocrlf=true (global) y confiar en .gitattributes como canon del repo.
+
+03.00_EVIDENCIA
+- Tag: HIA_META_20260301_1910 (normalización metadata + WBS + git hygiene)
+- Tag: HIA_EOL_20260301_1915 (renormalize eol)
+- Check: HIA_TOL_0008 post-eol -> “No hay cambios para commitear” (2026-03-01 19:12)
+
+04.00_NOTAS
+- Warnings CRLF/LF previos fueron transitorios; renormalize no generó diffs.
 -----
 

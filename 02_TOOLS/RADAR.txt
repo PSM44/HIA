@@ -157,11 +157,10 @@ $OldDir   = Join-Path $RadarDir "old"
 Test-EnsureDirectory $RadarDir
 Test-EnsureDirectory $OldDir
 
-$LiteActive     = Join-Path $RadarDir "HIA_RAD_0001_LITE.ACTIVE.txt"
-$IndexActive    = Join-Path $RadarDir "HIA_RAD_INDEX.REPO.ACTIVE.txt"
-$IndexAllActive = Join-Path $RadarDir "HIA_RAD_INDEX.ALL.ACTIVE.txt"
-$CoreActive     = Join-Path $RadarDir "HIA_RAD_0003_CORE.ACTIVE.txt"
-$FullActive     = Join-Path $RadarDir "HIA_RAD_0004_FULL.FULL.ACTIVE.txt"
+$LiteActive  = Join-Path $RadarDir "HIA_RAD_0001_LITE.ACTIVE.txt"
+$IndexActive = Join-Path $RadarDir "HIA_RAD_INDEX.REPO.ACTIVE.txt"
+$CoreActive  = Join-Path $RadarDir "HIA_RAD_0003_CORE.ACTIVE.txt"
+$FullActive  = Join-Path $RadarDir "HIA_RAD_0004_FULL.FULL.ACTIVE.txt"
 
 $stamp = Get-NowStamp
 
@@ -188,11 +187,10 @@ if (Test-Path -Path $IndexActive) {
 $oldRunDir = Join-Path $OldDir $stamp
 Test-EnsureDirectory $oldRunDir
 
-Move-IfExistsToOld $LiteActive     $oldRunDir $stamp
-Move-IfExistsToOld $IndexActive    $oldRunDir $stamp
-Move-IfExistsToOld $IndexAllActive $oldRunDir $stamp
-Move-IfExistsToOld $CoreActive     $oldRunDir $stamp
-Move-IfExistsToOld $FullActive     $oldRunDir $stamp
+Move-IfExistsToOld $LiteActive  $oldRunDir $stamp
+Move-IfExistsToOld $IndexActive $oldRunDir $stamp
+Move-IfExistsToOld $CoreActive  $oldRunDir $stamp
+Move-IfExistsToOld $FullActive  $oldRunDir $stamp
 
 # ---------- Collect files once ----------
 $files = Get-ChildItem -Path $RootPath -Recurse -Force -File -ErrorAction Stop
@@ -433,58 +431,25 @@ if (-not $BaselineIndexPath) {
 $liteContent = ($liteLines -join "`r`n")
 Write-SegmentedFile $LiteActive $liteContent $MaxActiveBytes | Out-Null
 
-
-# ---------- INDEX.ALL (sin exclusiones) ----------
-function Build-RadarIndexAll {
-  param([string]$RootFull)
-
-  $lines = New-Object System.Collections.Generic.List[string]
-  $lines.Add("RADAR_INDEX_ALL — HIA") | Out-Null
-  $lines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
-  $lines.Add("ROOT: " + $RootFull) | Out-Null
-  $lines.Add("HASH_MODE: None") | Out-Null
-  $lines.Add("EXCLUSIONS: NONE") | Out-Null
-  $lines.Add("") | Out-Null
-  $lines.Add("FIELDS: relpath | ext | size | modified_utc") | Out-Null
-  $lines.Add("") | Out-Null
-
-  $allFiles = Get-ChildItem -LiteralPath $RootFull -Recurse -Force -File -ErrorAction Stop |
-    Sort-Object -Property FullName
-
-  foreach ($f in $allFiles) {
-    $rel = $f.FullName.Substring($RootFull.Length).TrimStart('\')
-    $ext = $f.Extension.ToLowerInvariant()
-    $lw  = $f.LastWriteTimeUtc.ToString("o")
-    $lines.Add("$rel | $ext | $($f.Length) | $lw") | Out-Null
-  }
-
-  return ($lines -join "`r`n")
-}
-
-$indexAllContent = Build-RadarIndexAll -RootFull $RootPath
-Write-SegmentedFile $IndexAllActive $indexAllContent $MaxActiveBytes | Out-Null
-
-# ---------- FULL.FULL (INDEX.ALL + CORE + LITE) ----------
+# ---------- FULL ----------
 $fullLines = New-Object System.Collections.Generic.List[string]
-$fullLines.Add("RADAR_FULL.FULL — HIA (INDEX.ALL + CORE + LITE)") | Out-Null
+$fullLines.Add("RADAR_FULL — HIA (INDEX + CORE + LITE)") | Out-Null
 $fullLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
 $fullLines.Add("ROOT: " + $RootPath) | Out-Null
-$fullLines.Add("HASH_MODE (INDEX.REPO): " + $HashMode) | Out-Null
-$fullLines.Add("EXCLUDED_CONTAINS (INDEX.REPO): " + ($excludedContains -join " | ")) | Out-Null
+$fullLines.Add("HASH_MODE: " + $HashMode) | Out-Null
+$fullLines.Add("EXCLUDED_CONTAINS: " + ($excludedContains -join " | ")) | Out-Null
+$fullLines.Add("FILES_COUNT: " + $records.Count) | Out-Null
 $fullLines.Add("") | Out-Null
-
 $fullLines.Add("==========") | Out-Null
-$fullLines.Add("SECTION: INDEX.ALL") | Out-Null
+$fullLines.Add("SECTION: INDEX") | Out-Null
 $fullLines.Add("==========") | Out-Null
-$fullLines.Add($indexAllContent) | Out-Null
+$fullLines.Add($indexContent) | Out-Null
 $fullLines.Add("") | Out-Null
-
 $fullLines.Add("==========") | Out-Null
 $fullLines.Add("SECTION: CORE") | Out-Null
 $fullLines.Add("==========") | Out-Null
 $fullLines.Add($coreContent) | Out-Null
 $fullLines.Add("") | Out-Null
-
 $fullLines.Add("==========") | Out-Null
 $fullLines.Add("SECTION: LITE") | Out-Null
 $fullLines.Add("==========") | Out-Null
@@ -493,10 +458,80 @@ $fullLines.Add((Get-Content -Path $LiteActive -Raw)) | Out-Null
 $fullContent = ($fullLines -join "`r`n")
 Write-SegmentedFile $FullActive $fullContent $MaxActiveBytes | Out-Null
 
-Write-Host "OK: RADAR HIA generado correctamente."
-Write-Host "OUTPUTS: $LiteActive; $IndexActive; $IndexAllActive; $CoreActive; $FullActive"
-exit 0
+  # ---------- EXTRA PROFILES (IndexAll / RepoNCore / Full.Full) ----------
+  # Nota: mantenemos 1 runner. Estos outputs son la "foto IA" completa.
 
+  $IndexAllActive = Join-Path $RadarDir "HIA_RAD_INDEX.ALL.ACTIVE.txt"
+  # $FullActive ya fue renombrado a HIA_RAD_0004_FULL.FULL.ACTIVE.txt por replace global (02.01.03)
+
+  function Build-RadarIndexAll {
+    param([string]$RootFull)
+
+    $lines = New-Object System.Collections.Generic.List[string]
+    $lines.Add("RADAR_INDEX_ALL — HIA") | Out-Null
+    $lines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
+    $lines.Add("ROOT: " + $RootFull) | Out-Null
+    $lines.Add("HASH_MODE: None") | Out-Null
+    $lines.Add("EXCLUSIONS: NONE") | Out-Null
+    $lines.Add("") | Out-Null
+    $lines.Add("FIELDS: relpath | ext | size | modified_utc") | Out-Null
+    $lines.Add("") | Out-Null
+
+    $allFiles = Get-ChildItem -LiteralPath $RootFull -Recurse -Force -File -ErrorAction Stop |
+      Sort-Object -Property FullName
+
+    foreach ($f in $allFiles) {
+      $rel = $f.FullName.Substring($RootFull.Length).TrimStart('\')
+      $ext = $f.Extension.ToLowerInvariant()
+      $lw  = $f.LastWriteTimeUtc.ToString("o")
+      $lines.Add("$rel | $ext | $($f.Length) | $lw") | Out-Null
+    }
+
+    return ($lines -join "`r`n")
+  }
+
+  # INDEX.ALL
+  $indexAllContent = Build-RadarIndexAll -RootFull $RootPath
+  Write-SegmentedFile $IndexAllActive $indexAllContent $MaxActiveBytes | Out-Null
+
+  $repoNCoreLines = New-Object System.Collections.Generic.List[string]
+  $repoNCoreLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
+  $repoNCoreLines.Add("ROOT: " + $RootPath) | Out-Null
+  $repoNCoreLines.Add("") | Out-Null
+  $repoNCoreLines.Add("==========") | Out-Null
+  $repoNCoreLines.Add("SECTION: INDEX.REPO") | Out-Null
+  $repoNCoreLines.Add("==========") | Out-Null
+  $repoNCoreLines.Add($indexContent) | Out-Null
+  $repoNCoreLines.Add("") | Out-Null
+  $repoNCoreLines.Add("==========") | Out-Null
+  $repoNCoreLines.Add("SECTION: CORE") | Out-Null
+  $repoNCoreLines.Add("==========") | Out-Null
+  $repoNCoreLines.Add($coreContent) | Out-Null
+  Write-SegmentedFile $IndexRepoNCoreActive ($repoNCoreLines -join "`r`n") $MaxActiveBytes | Out-Null
+
+  # FULL.FULL = INDEX.ALL + CORE + LITE
+  $fullFullLines = New-Object System.Collections.Generic.List[string]
+  $fullFullLines.Add("RADAR_FULL.FULL — HIA (INDEX.ALL + CORE + LITE)") | Out-Null
+  $fullFullLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
+  $fullFullLines.Add("ROOT: " + $RootPath) | Out-Null
+  $fullFullLines.Add("") | Out-Null
+  $fullFullLines.Add("==========") | Out-Null
+  $fullFullLines.Add("SECTION: INDEX.ALL") | Out-Null
+  $fullFullLines.Add("==========") | Out-Null
+  $fullFullLines.Add($indexAllContent) | Out-Null
+  $fullFullLines.Add("") | Out-Null
+  $fullFullLines.Add("==========") | Out-Null
+  $fullFullLines.Add("SECTION: CORE") | Out-Null
+  $fullFullLines.Add("==========") | Out-Null
+  $fullFullLines.Add($coreContent) | Out-Null
+  $fullFullLines.Add("") | Out-Null
+  $fullFullLines.Add("==========") | Out-Null
+  $fullFullLines.Add("SECTION: LITE") | Out-Null
+  $fullFullLines.Add("==========") | Out-Null
+  $fullFullLines.Add((Get-Content -Path $LiteActive -Raw)) | Out-Null
+
+  $fullContent = ($fullFullLines -join "`r`n")
+  Write-SegmentedFile $FullActive $fullContent $MaxActiveBytes | Out-Null
 
 Write-Host "OK: RADAR HIA generado correctamente."
 Write-Host "OUTPUTS: $LiteActive; $IndexActive; $CoreActive; $FullActive"
