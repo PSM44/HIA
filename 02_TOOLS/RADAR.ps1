@@ -30,7 +30,7 @@ pwsh -NoProfile -File .\02_TOOLS\RADAR.ps1
 [CmdletBinding()]
 param(
   [Parameter(Mandatory = $false)]
-  [string] $RootPath = "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA",
+  [string] $RootPath = $null,
 
   [Parameter(Mandatory = $false)]
   [ValidateSet("None","Text","All")]
@@ -42,6 +42,19 @@ param(
   [Parameter(Mandatory = $false)]
   [int] $MaxActiveBytes = (8 * 1024 * 1024)
 )
+
+# Default RootPath: 1 nivel arriba de 02_TOOLS (PROJECT_ROOT)
+if (-not $RootPath) {
+  try {
+    $RootPath = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+  } catch {
+    throw "No se pudo resolver RootPath desde PSScriptRoot. Pasa -RootPath explícito. Error=$($_.Exception.Message)"
+  }
+}
+
+if ($RootPath -match '<PROJECT_ROOT>' -or $RootPath -match '^\s*<.*>\s*$') {
+  throw "RootPath contiene placeholder '<PROJECT_ROOT>'. Reemplázalo por ruta real (ej: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA)."
+}
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
@@ -174,8 +187,14 @@ $excludedContains = @(
   "\__pycache__\",
   "\.venv\",
   "\.pytest_cache\",
+
+  # EXCLUSIONES ABSOLUTAS (P0)
   "\03_ARTIFACTS\",
-  "\Raw\"
+  "\Raw\",
+
+  # DragnDrop (Drag-and-Drop) es carpeta GENERADA: no se indexa por defecto (evita churn)
+  "\DragnDrop\",
+  "\DnD\"
 )
 
 # ---------- Baseline determinista ----------
@@ -434,16 +453,19 @@ $liteContent = ($liteLines -join "`r`n")
 Write-SegmentedFile $LiteActive $liteContent $MaxActiveBytes | Out-Null
 
 
-# ---------- INDEX.ALL (sin exclusiones) ----------
-function Build-RadarIndexAll {
-  param([string]$RootFull)
+# ---------- INDEX.ALL (con exclusiones absolutas P0) ----------
+function New-HIARadarIndexAll {
+  param(
+    [string]$RootFull,
+    [string[]]$ExcludedContains
+  )
 
   $lines = New-Object System.Collections.Generic.List[string]
   $lines.Add("RADAR_INDEX_ALL — HIA") | Out-Null
   $lines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
   $lines.Add("ROOT: " + $RootFull) | Out-Null
   $lines.Add("HASH_MODE: None") | Out-Null
-  $lines.Add("EXCLUSIONS: NONE") | Out-Null
+  $lines.Add("EXCLUSIONS: ABSOLUTE_CONTAINS = " + ($ExcludedContains -join " | ")) | Out-Null
   $lines.Add("") | Out-Null
   $lines.Add("FIELDS: relpath | ext | size | modified_utc") | Out-Null
   $lines.Add("") | Out-Null
@@ -452,6 +474,7 @@ function Build-RadarIndexAll {
     Sort-Object -Property FullName
 
   foreach ($f in $allFiles) {
+    if (Test-ShouldExcludePath $f.FullName $ExcludedContains) { continue }
     $rel = $f.FullName.Substring($RootFull.Length).TrimStart('\')
     $ext = $f.Extension.ToLowerInvariant()
     $lw  = $f.LastWriteTimeUtc.ToString("o")
@@ -461,7 +484,7 @@ function Build-RadarIndexAll {
   return ($lines -join "`r`n")
 }
 
-$indexAllContent = Build-RadarIndexAll -RootFull $RootPath
+$indexAllContent = New-HIARadarIndexAll -RootFull $RootPath -ExcludedContains $excludedContains
 Write-SegmentedFile $IndexAllActive $indexAllContent $MaxActiveBytes | Out-Null
 
 # ---------- FULL.FULL (INDEX.ALL + CORE + LITE) ----------

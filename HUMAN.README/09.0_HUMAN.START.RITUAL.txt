@@ -1,0 +1,650 @@
+==============================
+ARCHIVO: 09.0_HUMAN.START.RITUAL.txt
+ACCION: REEMPLAZAR (archivo completo)
+==============================
+
+==========
+00.00_METADATOS_DEL_DOCUMENTO
+==========
+
+ID_UNICO..........: HUMAN.START.RITUAL.0001
+NOMBRE_SUGERIDO...: 09.0_HUMAN.START.RITUAL.txt
+VERSION...........: v1.1-DRAFT
+FECHA.............: 2026-03-02
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: Santiago, Chile
+UBICACION_SISTEMA.: <PROJECT_ROOT>\HUMAN.README\
+AUTOR_HUMANO......: PABLO (ADMIN)
+AUTOR_IA..........: GPT-5.2 Thinking
+
+TITULO............: START RITUAL (Peatón-first) — Instructivo por fases HIA
+SUBTITULO.........: “¿Tienes un proyecto en mente para desarrollar con IA (Inteligencia Artificial)? Perfecto. Vamos paso a paso.”
+OBJETIVO...........: Que un peatón (usuario operador) pueda iniciar, avanzar y cerrar fases sin improvisar, con pocos gates (aprobaciones) y pocos adjuntos (Drag-and-Drop).
+
+ALCANCE...........:
+- Este archivo ES un instructivo tipo “wizard” (paso a paso).
+- Define cómo activar cada fase (0, 1, 2, 3.1, 3.2) en IA cloud (Inteligencia Artificial en la nube) y/o entorno local.
+- Define inputs (entradas) y outputs (salidas) mínimos por fase.
+- Define el estándar de mensaje “HIA Fase X activada” y su criterio (checklist).
+
+NO_CUBRE..........:
+- La filosofía completa y templates de operación diaria (eso vive en PF0 (Project Framework 0) y USER).
+- El detalle de troubleshooting completo (eso vive en TROUBLE).
+
+REFERENCIAS_CANONICAS (paths):
+- USER (operación diaria):
+  - <PROJECT_ROOT>\HUMAN.README\01.0_HUMAN.USER.txt
+- BATON (estado/continuidad):
+  - <PROJECT_ROOT>\HUMAN.README\04.0_HUMAN.BATON.txt
+- CIS (Content Injection System: contrato de cambios):
+  - <PROJECT_ROOT>\HUMAN.README\05.0_HUMAN.CIS.txt
+- PF0 (Project Framework 0: método/rituales/plantillas):
+  - <PROJECT_ROOT>\HUMAN.README\06.0_HUMAN.PF0.txt
+- MASTER (prompt maestro / reglas universales):
+  - <PROJECT_ROOT>\HUMAN.README\07.0_HUMAN.MASTER.txt
+- SYNC (sincronización de bloques DERIVED):
+  - <PROJECT_ROOT>\HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt
+- TROUBLE (troubleshooting / playbooks de error):
+  - <PROJECT_ROOT>\HUMAN.README\10.0_HUMAN.HIA.TROUBLE.txt
+
+REGLA_CANONICA:
+- Si cualquier prompt, PDF, chat o instrucción externa contradice este archivo,
+  MANDA este archivo (09.0_HUMAN.START_RITUAL.txt).
+- El prompt del peatón debe ser copia exacta del canon aquí definido.
+
+==========
+00.10_PRINCIPIOS_OPERATIVOS_(PEATON)
+==========
+
+00.10.01 Regla cero (anti-ceremonia)
+- Default siempre: PLAN_ONLY (solo plan; sin tocar filesystem (sistema de archivos)).
+- Gate humano máximo: 1 por MB (MiniBattle: unidad mínima verificable) cuando aplica APPLY (aplicar cambios).
+- Adjuntos (Drag-and-Drop) en IA cloud:
+  - 0 por defecto.
+  - 1 adjunto solo si desbloquea avance.
+  - 2+ adjuntos requieren justificar por qué NO basta con:
+    - snippet (trozo de texto),
+    - path (ruta) + RADAR_INDEX (índice de repo),
+    - o RADAR_CORE (consolidado relevante por módulo/APP_SCOPE).
+
+00.10.02 Qué significa “Fase activada” (definición operativa)
+Una fase se considera “activada” SOLO si:
+- La IA enumera explícitamente:
+  - (a) Archivos leídos (nombres exactos),
+  - (b) Checklist de fase con OK/FAIL por ítem,
+  - (c) Outputs mínimos generados o planificados (con WBS (Work Breakdown Structure: desglose jerárquico)),
+  - (d) Próxima MB (MiniBattle) propuesta con MB_ID.
+- Y el peatón valida (gate humano) que el checklist tiene sentido.
+- Y se actualiza BATON (archivo) cuando corresponde.
+
+00.10.03 Mensaje estándar (sin inventar timestamps)
+- La línea de estado debe ser EXACTA y corta:
+  - “HIA Fase X activada”
+- El timestamp (fecha/hora) va en evidencia/LOG (registro), no en el mensaje.
+
+==========
+00.20_REQUISITOS_MINIMOS_(ANTES_DE_EMPEZAR)
+==========
+
+00.20.01 Requisito: PROJECT_ROOT (raíz del proyecto)
+- Tener un PROJECT_ROOT local (tu repositorio).
+  - Ejemplo real (tu máquina): C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
+
+00.20.02 Requisito: Carpeta DragnDrop (paquetes mínimos)
+- Carpeta base:
+  - <PROJECT_ROOT>\DragnDrop\
+- Subcarpetas por fase (mínimo):
+  - <PROJECT_ROOT>\DragnDrop\Phase0\
+  - <PROJECT_ROOT>\DragnDrop\Phase1\
+  - <PROJECT_ROOT>\DragnDrop\Phase2\
+  - <PROJECT_ROOT>\DragnDrop\Phase3.1\
+  - <PROJECT_ROOT>\DragnDrop\Phase3.2\
+
+00.20.03 Requisito: Archivos a mano (local)
+- Tener a mano (local), aunque NO siempre se adjunten:
+  - <PROJECT_ROOT>\HUMAN.README\01.0_HUMAN.USER.txt
+  - <PROJECT_ROOT>\HUMAN.README\04.0_HUMAN.BATON.txt
+  - <PROJECT_ROOT>\HUMAN.README\05.0_HUMAN.CIS.txt
+  - <PROJECT_ROOT>\HUMAN.README\06.0_HUMAN.PF0.txt
+  - <PROJECT_ROOT>\HUMAN.README\07.0_HUMAN.MASTER.txt
+  - <PROJECT_ROOT>\HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt
+  - <PROJECT_ROOT>\HUMAN.README\10.0_HUMAN.HIA.TROUBLE.txt
+
+==========
+00.30_INDICE_WBS
+==========
+
+01.00_COMO_COMENZAR_(FASE_0)
+02.00_COMO_AVANZAR_A_FASE_1
+03.00_COMO_AVANZAR_A_FASE_2
+04.00_COMO_AVANZAR_A_FASE_3_1_(SMOKE_TEST)
+05.00_COMO_AVANZAR_A_FASE_3_2_(CODING_ITERATIVO)
+
+06.00_DRAGNDROP_(QUE_SUBIR_A_IA_CLOUD_Y_QUE_NO)
+07.00_MENSAJES_ESTANDAR_Y_CRITERIOS_(FASE_ACTIVADA)
+08.00_CHECKLISTS_POR_FASE_(INPUTS_Y_OUTPUTS)
+09.00_ERRORES_TIPICOS_Y_TROUBLE
+
+10.00_CHANGELOG
+
+==========
+01.00_COMO_COMENZAR_(FASE_0)
+==========
+
+01.10 Narrativa peatón-first
+“¿Tienes un proyecto en mente para desarrollar con IA (Inteligencia Artificial)?
+Felicidades. Con HIA lo vamos a desarrollar paso a paso.”
+
+01.20 Objetivo de Fase 0 (F0)
+- Definir intención, alcance, no-alcance, restricciones, definición de éxito/fracaso.
+- Definir DoD (Definition of Done: definición de terminado) mínimo por fase.
+- NO se ejecuta el filesystem del proyecto objetivo (todavía).
+- Se prepara el contrato humano para que la IA no invente.
+
+01.30 Inputs (entradas) de Fase 0
+01.30.01 Inputs del peatón (texto)
+- Problema u objetivo (1–3 frases).
+- Restricciones no negociables (ej: “no tocar FS”, “0 adjuntos por defecto”, “no usar Validate-* en PowerShell”).
+- Contexto mínimo: ¿qué tipo de proyecto es? (tooling, docs, modelo financiero, app, etc.)
+- DoD de F0 (qué significa “cerré F0”).
+
+01.30.02 Inputs del sistema (archivos, local)
+- USER:
+  - <PROJECT_ROOT>\HUMAN.README\01.0_HUMAN.USER.txt
+- MASTER:
+  - <PROJECT_ROOT>\HUMAN.README\07.0_HUMAN.MASTER.txt
+- GENERAL (si aplica):
+  - <PROJECT_ROOT>\HUMAN.README\00.0_HUMAN.GENERAL.txt
+- BATON (solo si existe continuidad):
+  - <PROJECT_ROOT>\HUMAN.README\04.0_HUMAN.BATON.txt
+
+01.40 Drag-and-Drop (DragnDrop) recomendado para Fase 0 (IA cloud)
+01.40.01 Carpeta
+- <PROJECT_ROOT>\DragnDrop\Phase0\
+
+01.40.02 Paquete mínimo recomendado (ROBUSTO — determinista; Phase0)
+- 00.0_HUMAN.GENERAL.txt
+- 01.0_HUMAN.USER.txt
+- 04.0_HUMAN.BATON.txt
+- 07.0_HUMAN.MASTER.txt
+- 08.0_HUMAN.SYNC.MANIFEST.txt
+- 09.0_HUMAN.START_RITUAL.txt
+- README.txt
+
+Nota:
+- Phase0 prioriza “0 ambigüedad” sobre “mínimo tamaño”.
+- BATON NO es opcional en Phase0 ROBUSTO: es continuidad/evidencia obligatoria.
+
+01.40.03 Archivo recomendado dentro de la carpeta (README pedagógico)
+- Crear (si no existe):
+  - <PROJECT_ROOT>\DragnDrop\Phase0\README.txt
+- Contenido mínimo del README:
+  - objetivo del paquete,
+  - lista de archivos incluidos,
+  - y un recordatorio: “No subir Raw/03_ARTIFACTS”.
+
+01.50 Procedimiento paso a paso (Fase 0)
+Paso 1: Adjuntar a IA cloud el paquete de <PROJECT_ROOT>\DragnDrop\Phase0\
+- Adjuntar SOLO los archivos listados en 01.40.02.
+
+Paso 2: Prompt de activación (PLAN_ONLY)
+Prompt mínimo sugerido (peatón, ejemplo):
+
+##########################################
++++++++++++++++++++++++++++++++++++++++++++
+
+- “Activar HIA Fase 0 (PLAN_ONLY).
+
+Lee los archivos adjuntos (DragnDrop\Phase0) y entrega:
+
+(1) Checklist F0 (OK/FAIL estrictamente binario)
+(2) Backlog inicial WBS (máximo 15 ítems)
+(3) MB_ID para la primera MiniBattle
+
+HIA PHASE0 — ACTIVACION (PLAN_ONLY)
+
+Reglas obligatorias:
+
+1) Responde EXACTAMENTE primero:
+   acuso leído
+
+2) En la línea inmediatamente siguiente imprime EXACTAMENTE:
+   HIA Fase 0 activada
+   SOLO si el checklist objetivo pasa 100%.
+
+   Si no pasa:
+   error codigo F0_FAIL
+
+3) Luego lista los nombres EXACTOS de los archivos adjuntos que leíste (uno por línea).
+
+4) Checklist F0 debe ser exclusivamente OBJETIVO.
+   Solo puedes usar:
+   - existencia del archivo
+   - tamaño > 0
+   - presencia literal de strings en README
+   - coherencia nominal exacta
+
+   Prohibido:
+   - inventar criterios
+   - cuestionar el framework HIA
+   - redefinir HIA
+   - pedir contexto adicional
+   - usar interpretaciones filosóficas
+
+5) Archivos requeridos obligatorios:
+   - 00.0_HUMAN.GENERAL.txt
+   - 01.0_HUMAN.USER.txt
+   - 04.0_HUMAN.BATON.txt
+   - 07.0_HUMAN.MASTER.txt
+   - 08.0_HUMAN.SYNC.MANIFEST.txt
+   - 09.0_HUMAN.START.RITUAL.txt
+   - README.txt
+
+6) Al FINAL del output debes imprimir:
+
+TIMESTAMP_DE_SISTEMA:
+- fecha
+- hora
+- ciudad
+- pais
+
+Luego imprimir:
+
+CONFIRMACION_REQUERIDA:
+"Según mi sistema hoy es <fecha-hora-ciudad-pais>. Confirma o corrige."
+
+Luego imprimir:
+
+DEFINICION_PROYECTO_REQUERIDA:
+Responde obligatoriamente:
+1) ¿Cuál es el proyecto objetivo?
+2) ¿Qué problema concreto resuelve?
+3) ¿Cuál es el output verificable esperado?
+4) ¿Qué NO es este proyecto?”
+
+##########################################
++++++++++++++++++++++++++++++++++++++++++++
+
+Paso 3: Validación humana (gate)
+- El peatón revisa:
+  - que la IA listó los archivos leídos,
+  - que la línea obligatoria de activación esté presente,
+  - que el checklist sea realista,
+  - que el backlog no intente redefinir HIA,
+  - que el backlog no sea humo.
+
+01.55_CONTRATO_DE_ACTIVACION_F0_(DETERMINISTA)
+
+La activación de Fase 0 es válida SOLO si se cumplen TODAS las siguientes condiciones:
+
+1) Línea obligatoria de estado:
+   - Inmediatamente después de escribir:
+       "acuso leído"
+     la IA debe imprimir EXACTAMENTE UNA línea de estado:
+
+       "HIA Fase 0 activada"
+         SOLO si el checklist objetivo pasa 100%
+
+     o bien (si falla):
+       "error codigo F0_FAIL"
+
+   - Si la línea de estado no aparece exactamente igual:
+       => FAIL_AUTOMATICO_F0
+
+2) Prohibición de redefinir HIA:
+   - Fase 0 NO rediseña el framework HIA.
+   - HIA ya está definido en:
+       - 00.0_HUMAN.GENERAL.txt
+       - 07.0_HUMAN.MASTER.txt
+   - Si la IA propone:
+       - redefinir HIA,
+       - cuestionar su existencia,
+       - tratar HIA como proyecto nuevo,
+     entonces:
+       => FAIL_SEMANTICO_F0
+
+3) Alcance correcto:
+   - Fase 0 aplica al PROYECTO OBJETIVO bajo HIA,
+     no al framework HIA en sí.
+
+3.1) Regla martillo:
+   - El proyecto objetivo NO es HIA; HIA es el método.
+   - Si la IA intenta “definir HIA” como proyecto objetivo:
+       => FAIL_SEMANTICO_F0
+
+4) Backlog alineado:
+   - El backlog inicial debe:
+       - respetar que HUMAN es CANON,
+       - no intentar reformular la gobernanza base,
+       - centrarse en intención, alcance y ejecución del proyecto objetivo.
+
+Si cualquiera de los puntos anteriores falla:
+   - NO se considera "HIA Fase 0 activada"
+   - Se debe marcar FAIL explícito.
+
+01.60 Outputs (salidas) esperadas en Fase 0
+- Línea 1:
+  - "acuso leído"
+- Línea 2 (estado):
+  - "HIA Fase 0 activada"  (solo si checklist objetivo = 100%)
+  - o "error codigo F0_FAIL" (si falla)
+- Línea 3+:
+  - Lista de archivos leídos (nombres exactos; uno por línea).
+  - Checklist F0 (OK/FAIL por ítem; objetivo).
+  - Backlog inicial WBS (P0/P1/P2; max 15 ítems).
+  - 1 MiniBattle propuesta (MB_ID + objetivo + validación + evidencia esperada).
+  - Lista de dudas/omisiones y supuestos (explicitados).
+- Cierre (footer obligatorio):
+  - "fase 0 finalizada exitosamente"
+    o
+  - "fase 0 aún activa, pendiente:"
+    1.- <pendiente_1>
+    2.- <pendiente_2>
+  - TIMESTAMP_DE_SISTEMA (sugerido por IA) + "por favor confirmar o editar".
+
+01.70 Hito de cierre de Fase 0 (DoD de F0)
+F0 se puede cerrar cuando existe:
+- No-alcance explícito (lo que NO se hará).
+- DoD mínimo por fase (al menos F1 y F2 definidos).
+- Riesgos top (3–10) + supuestos críticos (3–10).
+- Backlog WBS inicial.
+- BATON actualizado (si aplica continuidad):
+  - <PROJECT_ROOT>\HUMAN.README\04.0_HUMAN.BATON.txt
+
+==========
+02.00_COMO_AVANZAR_A_FASE_1
+==========
+
+02.10 Objetivo de Fase 1 (F1)
+- Definir políticas de operación en IA (routing, gates, evidencia, adjuntos, costos).
+- Se cierra el “cómo trabajaremos” antes de tocar filesystem.
+- Se estabiliza el lenguaje operativo:
+  - PLAN_ONLY (solo plan),
+  - APPLY (aplicar cambios, requiere gate),
+  - VALIDATE (validar),
+  - LOG (registro de evidencia).
+
+02.20 Inputs (entradas) de Fase 1
+- BATON (estado actual):
+  - <PROJECT_ROOT>\HUMAN.README\04.0_HUMAN.BATON.txt
+- CIS (contrato de cambios):
+  - <PROJECT_ROOT>\HUMAN.README\05.0_HUMAN.CIS.txt
+- PF0 (método/plantillas):
+  - <PROJECT_ROOT>\HUMAN.README\06.0_HUMAN.PF0.txt
+- SYNC manifest (si vas a usar DERIVED):
+  - <PROJECT_ROOT>\HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt
+
+02.30 DragnDrop recomendado para Fase 1 (IA cloud)
+02.30.01 Carpeta
+- <PROJECT_ROOT>\DragnDrop\Phase1\
+
+02.30.02 Paquete mínimo recomendado
+- 04.0_HUMAN.BATON.txt
+- 05.0_HUMAN.CIS.txt
+- 06.0_HUMAN.PF0.txt
+- 08.0_HUMAN.SYNC.MANIFEST.txt
+
+02.30.03 Archivo recomendado dentro de la carpeta
+- <PROJECT_ROOT>\DragnDrop\Phase1\README.txt
+- Debe explicar:
+  - “F1 define política de operación; no se toca FS del proyecto objetivo”.
+
+02.40 Procedimiento paso a paso (Fase 1)
+Paso 1: Adjuntar paquete Phase1 a IA cloud (si corresponde).
+Paso 2: Prompt de activación (PLAN_ONLY):
+- “Activar HIA Fase 1 (PLAN_ONLY).
+   Lee DragnDrop\Phase1 y entrega:
+   (1) routing policy (política de ruteo) resumida,
+   (2) reglas de gates y evidencia,
+   (3) política de adjuntos (0–1 default),
+   (4) costos (umbral/alerta, si aplica),
+   (5) checklist F1 (OK/FAIL).”
+
+Paso 3: Gate humano: confirmar que la política evita ceremonia y evita subir archivos por ansiedad.
+
+02.50 Outputs (salidas) esperadas en Fase 1
+- Línea 1 (estado):
+  - “HIA Fase 1 activada”
+- Luego, mínimo:
+  - Checklist F1 (OK/FAIL).
+  - Política de gates (1 por MB como máximo).
+  - Política de adjuntos (0–1 default).
+  - Política de costos (si aplica: umbrales y registro).
+  - 1 MiniBattle de implementación/ajuste del método (si aplica).
+
+02.60 Hito de cierre de Fase 1 (DoD de F1)
+F1 se cierra cuando:
+- La política de operación está explícita, sin contradicciones.
+- El peatón entiende cómo pedir trabajo a la IA sin improvisar.
+- Se define cuándo se permite APPLY (aplicar) y qué evidencia se exige.
+
+==========
+03.00_COMO_AVANZAR_A_FASE_2
+==========
+
+03.10 Objetivo de Fase 2 (F2)
+- Bootstrap local: estructura, runners, RADAR, logs, validadores.
+- Aquí ya existe contacto real con filesystem del proyecto HIA (no necesariamente del proyecto objetivo).
+- Salida clave: “tooling mínimo para no romperte”.
+
+03.20 Inputs (entradas) de Fase 2
+- MASTER:
+  - <PROJECT_ROOT>\HUMAN.README\07.0_HUMAN.MASTER.txt
+- SYNC manifest:
+  - <PROJECT_ROOT>\HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt
+- (Opcional) RADAR_INDEX o snippet, para ubicarse sin subir repo:
+  - <PROJECT_ROOT>\03_ARTIFACTS\RADAR\HIA_RAD_INDEX.REPO.ACTIVE.txt
+
+03.30 DragnDrop recomendado para Fase 2 (IA cloud solo si la IA necesita contexto)
+03.30.01 Carpeta
+- <PROJECT_ROOT>\DragnDrop\Phase2\
+
+03.30.02 Paquete mínimo recomendado
+- 07.0_HUMAN.MASTER.txt
+- 08.0_HUMAN.SYNC.MANIFEST.txt
+- (Opcional) snippets específicos (no dumps) de tools relevantes.
+
+03.40 Procedimiento paso a paso (Fase 2)
+Paso 1: Ejecutar bootstrap local (si aplica; depende del repo).
+Paso 2: Ejecutar RADAR y validators (validación).
+Paso 3: Guardar evidencia (logs) y confirmar repo estable.
+
+03.50 Outputs (salidas) esperadas en Fase 2
+- Línea 1 (estado):
+  - “HIA Fase 2 activada”
+- Luego, mínimo:
+  - Lista de comandos one-shot para bootstrap + validación.
+  - Checklist F2 (OK/FAIL).
+  - Evidencia: paths de logs y outputs de RADAR/validators.
+
+03.60 Hito de cierre de Fase 2 (DoD de F2)
+F2 se cierra cuando:
+- Los validators pasan (al menos en DRAFT para iterar; CANON para cerrar).
+- RADAR produce outputs coherentes.
+- Repo queda en estado controlado (sin caos de archivos).
+
+==========
+04.00_COMO_AVANZAR_A_FASE_3_1_(SMOKE_TEST)
+==========
+
+04.10 Objetivo de Fase 3.1 (F3.1)
+- Confirmar stack/entorno/runners con SMOKE test (prueba de humo) antes de coding.
+- Detectar temprano si “la religión del stack” falla con la realidad (hardware, herramientas disponibles).
+
+04.20 Inputs (entradas) de Fase 3.1
+- Decisión de stack (aunque sea provisional).
+- Comandos de validación (smoke).
+- Si aplica: costos/limitaciones (API vs fixed cost).
+
+04.30 DragnDrop recomendado para Fase 3.1
+04.30.01 Carpeta
+- <PROJECT_ROOT>\DragnDrop\Phase3.1\
+
+04.30.02 Paquete mínimo recomendado
+- 07.0_HUMAN.MASTER.txt (si IA en blanco)
+- 04.0_HUMAN.BATON.txt (si hay continuidad)
+- (Opcional) checklist de smoke (si existe como archivo independiente)
+
+04.40 Outputs (salidas) esperadas en Fase 3.1
+- Línea 1 (estado):
+  - “HIA Fase 3.1 activada”
+- Luego:
+  - Checklist smoke (OK/FAIL).
+  - Lista de comandos ejecutados / por ejecutar.
+  - Evidencia mínima (log path si existe).
+
+04.50 Hito de cierre de Fase 3.1 (DoD de F3.1)
+F3.1 se cierra cuando:
+- El smoke test mínimo es OK.
+- El stack elegido no revienta por limitaciones evidentes.
+
+==========
+05.00_COMO_AVANZAR_A_FASE_3_2_(CODING_ITERATIVO)
+==========
+
+05.10 Objetivo de Fase 3.2 (F3.2)
+- Iteración controlada: PLAN → APPLY → VALIDATE → LOG
+- Mantener 1 gate por MB (MiniBattle) y evidencia obligatoria.
+
+05.20 Inputs (entradas) de Fase 3.2
+- MB definida con:
+  - MB_ID, objetivo, scope, plan, validación, evidencia.
+- Lista exacta de archivos a tocar (si APPLY).
+- Rollback (Git) definido.
+
+05.30 DragnDrop recomendado para Fase 3.2 (si trabajas en IA cloud + repo local)
+05.30.01 Carpeta
+- <PROJECT_ROOT>\DragnDrop\Phase3.2\
+
+05.30.02 Paquete mínimo recomendado
+- BATON (si hay continuidad):
+  - 04.0_HUMAN.BATON.txt
+- CIS (si habrá cambios APPLY):
+  - 05.0_HUMAN.CIS.txt
+- (Opcional) snippet del archivo objetivo (solo lo necesario).
+
+05.40 Outputs (salidas) esperadas en Fase 3.2
+- Línea 1 (estado):
+  - “HIA Fase 3.2 activada”
+- Luego:
+  - Reglas recordatorio (0–1 adjuntos default; gate único).
+  - Primer MB (MiniBattle) en modo PLAN_ONLY.
+  - Si se aprueba APPLY: plan + lista exacta + rollback + validación + evidencia.
+
+05.50 Hito de cierre de Fase 3.2 (DoD de F3.2)
+F3.2 se cierra por MB, no por “fase eterna”:
+- Cada MB se cierra con:
+  - DONE (hecho) o BLOCKED (bloqueado) con causa y next action.
+- Todo APPLY requiere evidencia (log/commit/radar si aplica).
+
+==========
+06.00_DRAGNDROP_(QUE_SUBIR_A_IA_CLOUD_Y_QUE_NO)
+==========
+
+06.10 Qué SÍ subir (mínimo, por defecto)
+- Paquetes DragnDrop\PhaseX con 1–5 archivos máximo, según fase.
+- BATON (si hay continuidad):
+  - <PROJECT_ROOT>\HUMAN.README\04.0_HUMAN.BATON.txt
+- USER/MASTER si la IA está “en blanco”:
+  - <PROJECT_ROOT>\HUMAN.README\01.0_HUMAN.USER.txt
+  - <PROJECT_ROOT>\HUMAN.README\07.0_HUMAN.MASTER.txt
+
+06.20 Qué NO subir (por defecto)
+- <PROJECT_ROOT>\Raw\
+- <PROJECT_ROOT>\03_ARTIFACTS\ (logs completos / dumps)
+- RADAR_FULL salvo forensic justificado
+
+06.30 Alternativas a adjuntar “archivos grandes”
+- Usar snippet (trozo) del bloque relevante.
+- Indicar path + pedir a la IA que diga “qué necesita” (1 archivo máximo).
+- Usar RADAR_INDEX (índice) para ubicar sin subir todo el repo.
+
+==========
+07.00_MENSAJES_ESTANDAR_Y_CRITERIOS_(FASE_ACTIVADA)
+==========
+
+07.10 Mensaje estándar por fase (exacto)
+- “HIA Fase 0 activada”
+- “HIA Fase 1 activada”
+- “HIA Fase 2 activada”
+- “HIA Fase 3.1 activada”
+- “HIA Fase 3.2 activada”
+
+07.20 Criterio mínimo para decir “activada”
+La IA debe listar:
+- Archivos leídos (nombres exactos).
+- Checklist OK/FAIL (por ítem).
+- Next actions WBS (P0/P1/P2).
+- Una MB (MiniBattle) sugerida con MB_ID.
+
+==========
+08.00_CHECKLISTS_POR_FASE_(INPUTS_Y_OUTPUTS)
+==========
+
+08.10 Checklist Fase 0 (F0)
+Inputs mínimos:
+- USER + MASTER (y GENERAL si aplica).
+Outputs mínimos:
+- Checklist OK/FAIL
+- Backlog WBS inicial
+- MB_ID inicial
+- Riesgos + supuestos
+
+08.20 Checklist Fase 1 (F1)
+Inputs mínimos:
+- BATON + CIS + PF0 (+ SYNC si usas DERIVED)
+Outputs mínimos:
+- Política gates/adjuntos/costos
+- Checklist OK/FAIL
+- MB de ajuste/método (si aplica)
+
+08.30 Checklist Fase 2 (F2)
+Inputs mínimos:
+- MASTER + SYNC (y snippets tools si aplica)
+Outputs mínimos:
+- Comandos one-shot bootstrap/validate
+- Checklist OK/FAIL
+- Evidencia (paths logs)
+
+08.40 Checklist Fase 3.1 (F3.1)
+Inputs mínimos:
+- stack provisional + smoke checklist
+Outputs mínimos:
+- smoke OK/FAIL + evidencia
+
+08.50 Checklist Fase 3.2 (F3.2)
+Inputs mínimos:
+- MB definida + lista de archivos (si APPLY)
+Outputs mínimos:
+- ciclo PLAN/APPLY/VALIDATE/LOG funcionando
+- evidencia y cierre por MB
+
+==========
+09.00_ERRORES_TIPICOS_Y_TROUBLE
+==========
+
+09.10 Si la IA no entiende qué hacer
+- Causa típica: faltó paquete DragnDrop mínimo o el objetivo es ambiguo.
+- Acción: volver a Fase 0 y recortar inputs.
+
+09.20 Si la IA pide 10 archivos
+- Estás rompiendo la regla de adjuntos.
+- Acción: recortar a 1–3 archivos (USER/MASTER/BATON) y usar snippet/path/RADAR_INDEX.
+
+09.30 Si no aparece “HIA Fase X activada”
+- Acción:
+  - leer el mensaje de error completo,
+  - ir a:
+    - <PROJECT_ROOT>\HUMAN.README\10.0_HUMAN.HIA.TROUBLE.txt
+  - seguir el playbook.
+
+==========
+10.00_CHANGELOG
+==========
+
+10.10_2026-03-02_v1.1-DRAFT
+- Renombrado canónico de DnD → DragnDrop en todo el documento.
+- Abreviaciones ahora incluyen explicación entre paréntesis.
+- Se expanden inputs/outputs por fase y se eliminan placeholders “xxxxxxxx”.
+- Mensaje “Fase activada” pasa a ser determinista (sin timestamp inventado).
+- Se formaliza estructura de carpetas DragnDrop\PhaseX y README por fase.

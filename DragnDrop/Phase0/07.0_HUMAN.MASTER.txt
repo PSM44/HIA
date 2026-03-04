@@ -1,0 +1,673 @@
+00.00_METADATA_ADDED
+DATE......: 2026-03-01
+TIME......: 18:55
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION......: 0.1
+NOTE......: Metadata agregado en modo office. No altera el contenido conceptual HUMAN.
+ID_HINT...: 
+==============================
+TANDA 6/6.A
+ARCHIVO: 07.0_HUMAN.MASTER.txt
+ACCION: REEMPLAZAR (archivo completo)
+==============================
+
+==========
+00.00_METADATOS_DEL_DOCUMENTO
+==========
+
+ID_UNICO..........: HUMAN.MASTER.0001
+NOMBRE_SUGERIDO...: 07.0_HUMAN.MASTER.txt
+VERSION...........: v1.2-DRAFT
+FECHA.............: 2026-02-28
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: <CIUDAD>, <PAIS>
+UBICACION_SISTEMA.: <TL_BOOTSTRAP_ROOT>\HUMAN.README\
+AUTOR_HUMANO......: PABLO (ADMIN)
+AUTOR_IA..........: GPT-5.2 Thinking
+
+TITULO............: HUMAN — MASTER (Mapa de autoridad, CANON, y sincronización HIA)
+SUBTITULO_MEDIO...: Documento dueño de la gobernanza meta: qué manda dónde, qué es canónico, qué es derivado, y cómo se sincroniza sin trabajo manual infernal.
+SUBTITULO_BAJO....: Peatón-first. Académico. Sin abreviaciones sin explicar. Fuente de verdad del “sistema de documentos”.
+
+DOMINIO_DUENO......: META-GOVERNANCE (gobernanza de documentos + sincronización)
+AUTORIDAD..........: Este archivo manda en: DOC.AUTHORITY.MAP, CANON.REGISTRY, SYNC.MANIFEST.SPEC, Single-Edit Rules.
+ESTADO_CANON........: DRAFT (no oficial hasta promoción humana)
+
+DEPENDENCIAS.......:
+- HUMAN.USER (operación humana)
+- HUMAN.PF0 (método mínimo operativo)
+- HUMAN.BATON (continuidad/handoff)
+- HUMAN.RADAR (inventario/auditoría)
+- HUMAN.CIS (contratos de cambio)
+- SYNC_MANIFEST (HIA_SYN_0001_SYNC_MANIFEST.txt)
+
+==========
+00.10_GLOSARIO_MINIMO_(ABREVIACIONES_EXPLICADAS)
+==========
+
+HIA (Human + IA): entorno/metodología reusable para colaboración humano + IA.
+TL.Bootstrap (Tooling & Lifecycle Bootstrap): set transversal reusable (RADAR, BATON, CIS, PF.0, estructura, tools).
+DOC.AUTHORITY.MAP (Mapa de autoridad documental): qué archivo manda por dominio.
+CANON.REGISTRY (Registro canónico): inventario de secciones CANON vs DERIVED.
+SYNC (Sincronización): replicación automática de bloques DERIVED desde fuentes canónicas.
+SYNC.MANIFEST: archivo declarativo fuente→destinos consumido por SYNC runner.
+SYNC.RUNNER: script ejecutor de SYNC (APPLY atómico por target).
+DERIVED (Derivado): contenido replicado automáticamente; no se edita manualmente.
+CANON (Canónico): fuente de verdad; se edita manualmente y se promueve por humano.
+FULL-copy (Copia completa): derivación que replica texto completo (no resumen).
+Gate (Aprobación humana): permiso explícito para APPLY.
+
+==========
+00.20_INDICE_GENERAL_WBS
+==========
+
+01.00 Propósito y mental model (por qué existe MASTER)
+02.00 Principios meta (reglas de oro del sistema documental)
+03.00 DOC.AUTHORITY.MAP (quién manda dónde)
+04.00 CANON.REGISTRY (canónico vs derivado)
+05.00 Single-Edit Rules (edición única por dominio)
+06.00 SYNC.MANIFEST.SPEC (especificación + reglas)
+06.50 DERIVED blocks (targets reales para SYNC)
+07.00 Marcadores DERIVED (formato estándar)
+08.00 Política de conflictos (DIRTY/OVERRIDE)
+09.00 Integración Git/RADAR/BATON (evidencia)
+10.00 Plantillas (templates)
+11.00 Checklist operativo
+12.00 CHANGELOG
+
+==========
+01.00_PROPOSITO_Y_MENTAL_MODEL
+==========
+
+01.10_PROPOSITO
+- Si editas 10 copias manualmente, te vuelves lento y te frustras.
+- MASTER define: single-edit canon + FULL-copy por SYNC = ultra detalle sin trabajo manual infernal.
+
+01.20_MENTAL_MODEL
+- Cada dominio tiene archivo dueño (CANON).
+- Otros archivos pueden contener el mismo contenido como DERIVED (FULL-copy).
+- Los DERIVED se actualizan por SYNC.RUNNER usando SYNC.MANIFEST.
+- Git + RADAR + BATON entregan evidencia y trazabilidad.
+
+==========
+02.00_PRINCIPIOS_META_(REGLAS_DE_ORO)
+==========
+
+02.10_SINGLE-EDIT_RULE
+- Una regla se edita en un solo archivo dueño.
+- Nadie edita manualmente copias en otros archivos.
+
+02.20_FULL-COPY_EN_HUMAN
+- En HUMAN los derivados NO son resúmenes.
+- Son FULL-copy por exigencia académica.
+
+02.30_EVIDENCIA
+- Todo sync/aplicación importante deja evidencia:
+  - log runner,
+  - validate,
+  - commit.
+
+==========
+03.00_DOC.AUTHORITY.MAP_(MAPA_DE_AUTORIDAD)
+==========
+
+DOMINIO...........................: ARCHIVO_DUENO..........................: NOTA
+- Operación humana (usuario)       : HUMAN.USER.0001.txt                    : Cómo opera el humano, gates, rutina.
+- PF.0 método mínimo               : HUMAN.PF0.0001.txt                     : Ritual/MB/MVP.HIA/DoD/Sync readiness.
+- Continuidad / BATON              : 02.00_HUMAN.BATON.txt                  : Plantilla y reglas baton/handoff.
+- Inventario / RADAR               : 03.00_HUMAN.RADAR.txt                  : Definiciones niveles + exclusiones.
+- Contratos / CIS                  : HUMAN.CIS.txt                          : Contratos de cambio + atomic apply.
+- Meta-gobernanza documental        : HUMAN.MASTER.txt                       : Autoridad y sync.
+
+Regla de conflicto:
+- manda el dueño del dominio.
+- si es meta (autoridad/sync/canon): manda MASTER.
+
+==========
+04.00_CANON.REGISTRY_(REGISTRO_CANONICO)
+==========
+
+04.10_REGLA
+- CANON: se edita en archivo dueño.
+- DERIVED: se reemplaza por SYNC.
+- FULL-copy por defecto.
+
+04.20_ENTRADA_ESTANDAR
+CANON_ENTRY_ID.....:
+DOMINIO............:
+SOURCE_DOC_ID......:
+SOURCE_SECTION_WBS.:
+TARGET_FILES.......:
+DERIVED_MODE........: FULL | OVERRIDE
+STATUS.............: DRAFT | CANON
+NOTES..............:
+
+==========
+05.00_SINGLE-EDIT_RULES
+==========
+
+05.10_REGLA
+- Si algo se repite en dos archivos:
+  - uno debe ser CANON,
+  - el otro DERIVED.
+- Si hay que “cambiar el derivado”:
+  - se cambia el CANON,
+  - luego SYNC.
+
+==========
+06.00_SYNC.MANIFEST.SPEC
+==========
+
+06.10_REGLA
+- SYNC.MANIFEST es el “source of truth” operacional de derivaciones.
+- Runner debe:
+  - validar todo antes de escribir,
+  - escribir 1 vez por target (Atomic Apply).
+
+06.20_FORMATO_ENTRY
+SYNC_ENTRY_ID.......:
+SOURCE_DOC_ID........:
+SOURCE_SECTION_WBS...:
+TARGET_FILE..........:
+DERIVED_BLOCK_ID.....:
+MODE.................: FULL | OVERRIDE
+NOTES................:
+
+==========
+06.50_DERIVED_BLOCKS_(FULL-COPY_SYNC_TARGETS)
+==========
+
+06.50.10_NOTA
+- No editar manualmente dentro de BEGIN/END.
+
+06.50.20_PF0_RITUALES_(DERIVED)
+<<<DERIVED_BEGIN ID=DERIVED.PF0.RITUALS.MASTER.0001 SOURCE=HUMAN.PF0.0001::04.00 MODE=FULL>>>
+04.10_RITUAL_DE_INICIO_(START_RITUAL)
+
+
+Objetivo:
+
+
+- arrancar sin re-explicar el universo y sin drift.
+
+
+
+
+
+Pasos:
+
+
+04.10.01 Leer BATON
+
+
+- revisar objetivo actual, decisiones (DRAFT/CANON), bloqueos, next actions.
+
+
+
+
+
+04.10.02 Seleccionar MiniBattles
+
+
+- elegir 1–3 MiniBattles con outputs claros.
+
+
+
+
+
+04.10.03 Definir modo (Gate)
+
+
+- Default: PLAN_ONLY.
+
+
+- Si una MiniBattle requiere APPLY:
+
+
+  - exigir plan, lista exacta de archivos, rollback, validación.
+
+
+
+
+
+04.10.04 Confirmar Scope
+
+
+- declarar qué paths se pueden tocar.
+
+
+- confirmar que PROJECT_ROOT es frontera por defecto.
+
+
+
+
+
+04.10.05 Confirmar APP_SCOPE (si hay RADAR_CORE)
+
+
+- si la MiniBattle implica “comprensión total de aplicación”:
+
+
+  - confirmar APP_SCOPE actualizado (por proyecto) para que CORE tome solo lo relevante.
+
+
+
+
+
+04.20_RITUAL_DE_CIERRE_(END_RITUAL)
+
+
+Objetivo:
+
+
+- continuidad y trazabilidad.
+
+
+
+
+
+Pasos:
+
+
+04.20.01 Actualizar BATON
+
+
+- objetivo actual, decisiones, cambios aplicados, evidencia, next actions.
+
+
+
+
+
+04.20.02 Evidencia mínima
+
+
+- adjuntar/registrar logs y commits.
+
+
+- confirmar RADAR_LITE post-APPLY si hubo cambios.
+
+
+
+
+
+04.20.03 Decidir TL.Bootstrap update
+
+
+- solo si:
+
+
+  - descubriste patrón reusable,
+
+
+  - cambiaste método,
+
+
+  - o mejoraste control/seguridad transversal.
+
+
+- Si fue solo trabajo del proyecto, NO contamina TL.Bootstrap.
+
+
+
+
+
+04.20.04 Preparar handoff si aplica
+
+
+- si se migrará chat/IA:
+
+
+  - BATON + RADAR_INDEX + RADAR_LITE (+ RADAR_CORE si necesario).
+
+<<<DERIVED_END ID=DERIVED.PF0.RITUALS.MASTER.0001>>>
+
+06.50.30_RADAR_NIVELES_(DERIVED)
+<<<DERIVED_BEGIN ID=DERIVED.RADAR.LEVELS.MASTER.0001 SOURCE=HUMAN.RADAR.0001::02.00 MODE=FULL>>>
+02.10_SINGLE-EDIT_RULE (Regla de edición única)
+
+
+- Una regla o plantilla se edita en un solo lugar canónico (archivo dueño del dominio).
+
+
+- Nadie edita manualmente copias en otros archivos.
+
+
+
+
+
+02.20_DERIVED_FULL-COPY_EN_HUMAN
+
+
+- En HUMAN, los derivados NO son resúmenes.
+
+
+- Son FULL-copy: réplica completa del texto canónico.
+
+
+- Esto cumple la exigencia de documentación académica ultra detallada.
+
+
+
+
+
+02.30_TODO_CAMBIO_TIENE_EVIDENCIA
+
+
+- Si se sincroniza contenido derivado:
+
+
+  - se registra log,
+
+
+  - se valida (mínimo),
+
+
+  - y se hace commit (cuando corresponda).
+
+
+
+
+
+02.40_CONFLICTOS_SE_RESUELVEN_POR_AUTORIDAD
+
+
+- Si hay conflicto: manda el archivo dueño del dominio.
+
+
+- MASTER es dueño solo de meta-gobernanza, no “de todo”.
+
+<<<DERIVED_END ID=DERIVED.RADAR.LEVELS.MASTER.0001>>>
+
+06.50.50_PF0_TEMPLATES_(DERIVED)
+<<<DERIVED_BEGIN ID=DERIVED.PF0.TEMPLATES.MASTER.0001 SOURCE=HUMAN.PF0.0001::11.00 MODE=FULL>>>
+11.10_TEMPLATE_MINIBATTLE
+
+
+MB_ID.............: <MB_ID>
+
+
+TIPO..............: <MB.DOC / MB.TOOL / MB.CODE / MB.DEBUG / MB.AUDIT>
+
+
+OBJETIVO..........: <texto>
+
+
+SCOPE.............: <paths/módulo>
+
+
+MODO..............: <PLAN_ONLY / APPLY_APPROVED (requiere gate)>
+
+
+PLAN..............:
+
+
+  1) ...
+
+
+  2) ...
+
+
+OUTPUT............: <artefacto>
+
+
+VALIDACION.........: <comando/log>
+
+
+EVIDENCIA.........: <log/commit/radar>
+
+
+RIESGO_PRINCIPAL..: <1 línea>
+
+
+ESTADO............: <OPEN/DONE/BLOCKED>
+
+
+NOTAS.............: <opcional>
+
+
+
+
+
+11.20_TEMPLATE_START_RITUAL
+
+
+- Leer BATON
+
+
+- Elegir 1–3 MiniBattles
+
+
+- Definir Gate (PLAN_ONLY default)
+
+
+- Confirmar Scope
+
+
+- Confirmar APP_SCOPE si habrá CORE
+
+
+
+
+
+11.30_TEMPLATE_END_RITUAL
+
+
+- Actualizar BATON
+
+
+- Guardar evidencia (logs/commits)
+
+
+- Confirmar RADAR_LITE post-APPLY
+
+
+- Decidir TL.Bootstrap update
+
+
+- Preparar handoff si aplica
+
+<<<DERIVED_END ID=DERIVED.PF0.TEMPLATES.MASTER.0001>>>
+
+06.50.60_CIS_TEMPLATES_(DERIVED)
+<<<DERIVED_BEGIN ID=DERIVED.CIS.TEMPLATES.MASTER.0001 SOURCE=HUMAN.CIS.0001::12.00 MODE=FULL>>>
+12.10_TEMPLATE_CONTRATO_CIS
+
+
+CIS_TASK_ID........:
+
+
+TIPO...............: <DOC/TOOL/CODE/AUDIT>
+
+
+OBJETIVO...........:
+
+
+MODO...............: <PLAN_ONLY/APPLY_APPROVED>
+
+
+SCOPE..............:
+
+
+IMPACTO............:
+
+
+OPERACIONES.........:
+
+
+  - OP.............: <CREATE/EDIT/MOVE/RENAME/DELETE>
+
+
+    PATH............:
+
+
+    DETALLE.........:
+
+
+    CONTENIDO.......: <si aplica>
+
+
+VALIDACION..........:
+
+
+EVIDENCIA...........:
+
+
+ROLLBACK............:
+
+
+RIESGOS.............:
+
+
+SUPUESTOS...........:
+
+
+APROBACION_HUMANA...: <SI/NO + timestamp>
+
+
+
+
+
+12.20_TEMPLATE_EDIT_REPLACE_BLOQUES
+
+
+ARCHIVO............:
+
+
+SECCION_WBS.........:
+
+
+BLOQUE_ORIGINAL.....:
+
+
+<texto completo>
+
+
+BLOQUE_CORREGIDO....:
+
+
+<texto completo>
+
+
+
+
+
+12.30_TEMPLATE_DELETE_QUARANTINE
+
+
+ORIGEN_PATH.........:
+
+
+DESTINO_QUARANTINE..:
+
+
+MOTIVO..............:
+
+
+CIS_TASK_ID.........:
+
+
+FECHA_HORA..........:
+
+
+
+
+
+12.40_TEMPLATE_SYNC_ENTRY (para manifest)
+
+
+SYNC_ENTRY_ID.......:
+
+
+SOURCE_DOC_ID........:
+
+
+SOURCE_SECTION_WBS...:
+
+
+TARGET_FILE..........:
+
+
+DERIVED_BLOCK_ID.....:
+
+
+MODE.................: FULL | OVERRIDE
+
+
+NOTES................:
+
+<<<DERIVED_END ID=DERIVED.CIS.TEMPLATES.MASTER.0001>>>
+
+==========
+07.00_MARCADORES_DERIVED
+==========
+
+BEGIN:
+<<<DERIVED_BEGIN ID=<DERIVED_BLOCK_ID> SOURCE=<SOURCE_DOC_ID>::<SOURCE_WBS> MODE=FULL>>>
+END:
+<<<DERIVED_END ID=<DERIVED_BLOCK_ID>>>
+
+==========
+08.00_POLITICA_DIRTY_OVERRIDE
+==========
+
+DIRTY:
+- si alguien edita un DERIVED manualmente, se considera DIRTY.
+Resolución:
+A) revert + sync desde CANON (preferido)
+B) mover cambio a CANON y sync
+C) OVERRIDE (excepcional) + registro explícito
+
+==========
+09.00_GIT_RADAR_BATON
+==========
+
+- Antes de SYNC APPLY:
+  - commit checkpoint
+- Después de SYNC OK:
+  - commit “SYNC: …”
+- RADAR_LITE pre/post para evidencia de delta
+- BATON registra que SYNC ocurrió (qué entries aplicaron y evidencia)
+
+==========
+10.00_PLANTILLAS
+==========
+
+10.10_TEMPLATE_CANON_ENTRY
+CANON_ENTRY_ID.....:
+DOMINIO............:
+SOURCE_DOC_ID......:
+SOURCE_SECTION_WBS.:
+TARGET_FILES.......:
+DERIVED_MODE........:
+STATUS.............:
+NOTES..............:
+
+10.20_TEMPLATE_SYNC_ENTRY
+SYNC_ENTRY_ID.......:
+SOURCE_DOC_ID........:
+SOURCE_SECTION_WBS...:
+TARGET_FILE..........:
+DERIVED_BLOCK_ID.....:
+MODE.................:
+NOTES................:
+
+==========
+11.00_CHECKLIST
+==========
+
+[ ] DOC.AUTHORITY.MAP consistente con nombres reales
+[ ] SYNC.MANIFEST consistente con IDs reales
+[ ] DERIVED placeholders existen en targets
+[ ] Atomic Apply policy vigente en runner
+[ ] Git/RADAR/BATON integrados como evidencia
+
+==========
+12.00_CHANGELOG
+==========
+
+2026-02-28, v1.2-DRAFT
+- Corrige drift de nombres (USER/BATON IDs reales).
+- Elimina “pendientes” y alinea a SYNC manifest de 9 entradas.
+2026-02-27, v1.0-DRAFT
+- Creación inicial.

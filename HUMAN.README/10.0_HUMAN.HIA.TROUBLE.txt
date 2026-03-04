@@ -1,0 +1,72 @@
+==============================
+ARCHIVO: 10.0_HUMAN.HIA.TROUBLE.txt
+ACCION: CREAR (archivo nuevo)
+==============================
+
+==========
+00.00_METADATOS_DEL_DOCUMENTO
+==========
+
+ID_UNICO..........: HUMAN.HIA.TROUBLE.0001
+NOMBRE_SUGERIDO...: 10.0_HUMAN.HIA.TROUBLE.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-03-02
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: Santiago, Chile
+UBICACION_SISTEMA.: <PROJECT_ROOT>\HUMAN.README\
+AUTOR_HUMANO......: PABLO (ADMIN)
+AUTOR_IA..........: GPT-5.2 Thinking
+
+TITULO............: HIA TROUBLESHOOTING — Playbook de errores (peatón)
+OBJETIVO...........: Diagnóstico rápido sin inventar contexto.
+
+==========
+00.10_REGLA_DE_ORO
+==========
+- Si hay error: copiar/pegar el mensaje completo.
+- No adivinar.
+- No “arreglar” sin saber causa.
+
+==========
+01.00_ERROR_NO_APARECE_"HIA_FASE_X_ACTIVADA"
+==========
+Causa típica:
+- faltó paquete DnD mínimo,
+- objetivo mal formulado,
+- IA no leyó los archivos.
+
+Acción:
+1) Confirmar qué archivos se subieron.
+2) Subir SOLO el paquete mínimo (no más).
+3) Repetir prompt de activación PLAN_ONLY.
+
+==========
+02.00_ERROR_IA_PIDE_DEMASIADOS_ARCHIVOS
+==========
+Causa:
+- el instructivo no fijó regla 0–1 adjuntos,
+- o el peatón le dio contexto disperso.
+
+Acción:
+1) Recortar: subir solo USER + MASTER + BATON (si aplica).
+2) Usar snippets específicos, no carpetazos.
+3) Si necesita ubicación: proveer paths y/o RADAR_INDEX snippet.
+
+==========
+03.00_ERROR_SYNC_IDS_NO_ENCONTRADOS
+==========
+Causa:
+- mismatch en ID_UNICO o regex rígido.
+
+Acción:
+1) Ejecutar validators (DRAFT).
+2) Revisar manifest.
+3) Revisar tool de sync lookup (si aplica) y corregir patrón.
+
+==========
+04.00_ERROR_VALIDATORS_FAIL
+==========
+Acción:
+1) Copiar log path.
+2) Abrir el log y leer el primer FAIL.
+3) Arreglar 1 cosa por vez.

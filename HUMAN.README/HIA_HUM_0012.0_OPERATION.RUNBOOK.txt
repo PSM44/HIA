@@ -1,0 +1,37 @@
+01.00_RUNTIME QUICKSTART
+
+01.01 Activar HIA
+
+STEP 1
+Abrir terminal en raíz del repo.
+
+STEP 2
+Construir Phase0.
+
+pwsh -NoProfile -File .\05_Triggers\HIA_TRI_0001_Build-DragnDropPhase0.ps1
+
+STEP 3
+Verificar PASS.
+
+STEP 4
+Adjuntar DragnDrop\Phase0\ a IA cloud.
+
+STEP 5
+Enviar prompt:
+
+"Activar HIA Fase 0 (PLAN_ONLY). 
+Lee los archivos adjuntos y responde:
+
+(1) Checklist F0
+(2) Backlog inicial WBS
+(3) Riesgos P0
+(4) Próxima acción."
+
+01.02 Modos de operación
+
+PLAN
+APPLY
+VALIDATE
+LOG
+
+(ver runtime manual 0010.0)

@@ -45,21 +45,28 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-function Ensure-Dir([string]$path) {
-  if (-not (Test-Path -Path $path)) {
+function New-HIADirectory([string]$path) {
+  if (-not (Test-Path -LiteralPath $path)) {
     New-Item -ItemType Directory -Path $path -Force | Out-Null
   }
 }
 
-function Write-RunLog([string]$file, [string]$msg) {
-  $line = "[{0}] {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $msg
-  Write-Host $line
-  Add-Content -Path $file -Value $line
+function Write-RunLog([string]$Path, [string]$Line) {
+  $dir = Split-Path -Parent $Path
+  if(-not (Test-Path -LiteralPath $dir)){
+    New-Item -ItemType Directory -LiteralPath $dir -Force | Out-Null
+  }
+  # Append (no overwrite): reduce spam de -WhatIf y conserva evidencia completa.
+  Add-Content -LiteralPath $Path -Value $Line -Encoding UTF8
 }
 
-function Fail([string]$log, [string]$msg) {
-  Write-RunLog $log "FAIL: $msg"
-  throw $msg
+function Fail([string]$LogPath, [string]$Message) {
+  Write-RunLog $LogPath ("FAIL: {0}" -f $Message)
+  throw $Message
+}
+
+if ($ProjectRoot -match '<PROJECT_ROOT>' -or $ProjectRoot -match '^\s*<.*>\s*$') {
+  throw "ProjectRoot contiene placeholder '<PROJECT_ROOT>'. Reemplázalo por la ruta real (ej: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA)."
 }
 
 $ProjectRoot = [System.IO.Path]::GetFullPath($ProjectRoot)
@@ -67,16 +74,16 @@ $ProjectRoot = [System.IO.Path]::GetFullPath($ProjectRoot)
 $HumanDir = Join-Path $ProjectRoot "HUMAN.README"
 $ArtifactsDir = Join-Path $ProjectRoot "03_ARTIFACTS"
 $LogsDir = Join-Path $ArtifactsDir "LOGS"
-Ensure-Dir $ArtifactsDir
-Ensure-Dir $LogsDir
+New-HIADirectory $ArtifactsDir
+New-HIADirectory $LogsDir
 
 $ts = Get-Date -Format "yyyyMMdd_HHmmss"
 $runLog = Join-Path $LogsDir ("SYNC.RUNNER.{0}.txt" -f $ts)
-New-Item -ItemType File -Path $runLog -Force | Out-Null
+New-Item -ItemType File -LiteralPath $runLog -Force | Out-Null
 
 $manifestPath = Join-Path $ProjectRoot $ManifestRelativePath
-Write-RunLog $runLog "RUN_START: ProjectRoot=$ProjectRoot"
-Write-RunLog $runLog "MANIFEST: $manifestPath"
+Write-RunLog $runLog ("RUN_START: ProjectRoot={0}" -f $ProjectRoot)
+Write-RunLog $runLog ("MANIFEST: {0}" -f $manifestPath)
 
 if (-not (Test-Path -Path $manifestPath)) {
   Fail $runLog "Manifest no existe: $manifestPath"

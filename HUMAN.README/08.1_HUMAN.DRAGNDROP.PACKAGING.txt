@@ -1,0 +1,142 @@
+==============================
+ARCHIVO: 08.1_HUMAN.DRAGNDROP.PACKAGING.txt
+ACCION: CREAR (archivo completo)
+==============================
+
+==========
+00.00_METADATOS_DEL_DOCUMENTO
+==========
+
+ID_UNICO..........: HUMAN.DRAGNDROP.PACKAGING.0001
+NOMBRE_SUGERIDO...: 08.1_HUMAN.DRAGNDROP.PACKAGING.txt
+VERSION...........: v0.1-DRAFT
+FECHA.............: 2026-03-03
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: Santiago, Chile
+UBICACION_SISTEMA.: <PROJECT_ROOT>\HUMAN.README\
+AUTOR_HUMANO......: PABLO (ADMIN)
+AUTOR_IA..........: GPT-5.2 Thinking
+
+TITULO............: DRAGNDROP PACKAGING — Contrato y actualización de paquetes por fase (sin ZIP)
+SUBTITULO.........: Cómo se construyen y se regeneran los paquetes “Phase0/Phase1/…” que se adjuntan a IA cloud.
+
+OBJETIVO...........:
+- Estandarizar el contenido mínimo de DragnDrop por fase.
+- Evitar drift (copias desactualizadas) mediante REGENERACION, no edición manual.
+- Mantener el enfoque peatón-first: pocos adjuntos, pocos gates, cero humo.
+
+ALCANCE...........:
+- Phase0 (prioridad): carpeta <PROJECT_ROOT>\DragnDrop\Phase0\
+- Define reglas de “qué entra / qué NO entra”.
+- Define cómo regenerar y cómo validar (test) el paquete.
+
+NO_CUBRE..........:
+- Zip o empaquetado comprimido (descartado por compatibilidad de IAs).
+- Filosofía completa de HIA (vive en START.RITUAL / MASTER / USER).
+- Estructura de repo completa (eso es RADAR).
+
+REFERENCIAS_CANONICAS:
+- START_RITUAL:
+  - <PROJECT_ROOT>\HUMAN.README\09.0_HUMAN.START.RITUAL.txt
+- SYNC.MANIFEST:
+  - <PROJECT_ROOT>\HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt
+- TRIGGERS:
+  - <PROJECT_ROOT>\05_Triggers\ (scripts mínimos para el peatón)
+
+==========
+00.10_INDICE_WBS
+==========
+
+01.00_PRINCIPIOS
+02.00_PHASE0_(PAQUETE_MINIMO)
+03.00_REGLAS_DE_ACTUALIZACION_(ANTI_DRIFT)
+04.00_TESTS_(SMOKE)_Y_EVIDENCIA
+05.00_TROUBLESHOOTING
+06.00_CHANGELOG
+
+==========
+01.00_PRINCIPIOS
+==========
+
+01.10 DragnDrop = “build artifact”, NO “source”
+- Los archivos dentro de DragnDrop se consideran OUTPUTS generables.
+- Prohibido tratarlos como canon: el canon vive en HUMAN.README y en TOOLS.
+- Si hay discrepancia: se regenera DragnDrop, no se edita manualmente.
+
+01.20 Pocos adjuntos (contrato)
+- Phase0: 1–4 archivos máximos, según START.RITUAL.
+- No se adjuntan carpetas grandes, Raw, ni 03_ARTIFACTS.
+
+==========
+02.00_PHASE0_(PAQUETE_MINIMO)
+==========
+
+02.10 Carpeta
+- <PROJECT_ROOT>\DragnDrop\Phase0\
+
+02.20 Archivos requeridos (mínimos)
+- 00.0_HUMAN.GENERAL.txt
+- 01.0_HUMAN.USER.txt
+- 07.0_HUMAN.MASTER.txt
+- 04.0_HUMAN.BATON.txt (solo si existe continuidad / existe el archivo)
+
+02.30 README pedagógico (requerido)
+- <PROJECT_ROOT>\DragnDrop\Phase0\README.txt
+- Debe explicar:
+  - objetivo del paquete,
+  - lista de archivos incluidos,
+  - recordatorio: NO subir Raw ni 03_ARTIFACTS.
+
+==========
+03.00_REGLAS_DE_ACTUALIZACION_(ANTI_DRIFT)
+==========
+
+03.10 Regeneración obligatoria
+- Cada vez que cambie cualquier HUMAN requerido, el paquete Phase0 se REGENERA.
+- No hay “merge manual”.
+
+03.20 Fuentes de verdad
+- Los HUMAN en <PROJECT_ROOT>\HUMAN.README\ son la fuente.
+- El README de Phase0 puede ser DERIVED desde START_RITUAL vía SYNC.MANIFEST (si aplica).
+
+03.30 Lock de edición (opcional)
+- Si quieres “bloquear” DragnDrop para evitar edición manual:
+  - Opción A: atributo ReadOnly en archivos
+  - Opción B: test falla si detecta cambios manuales (hash mismatch vs fuente)
+- Recomendación: empezar sin bloqueo duro, solo “regenerar siempre + test”.
+
+==========
+04.00_TESTS_(SMOKE)_Y_EVIDENCIA
+==========
+
+04.10 Smoke test (mínimo)
+- Verifica:
+  - existe la carpeta Phase0
+  - existen archivos requeridos (y no están vacíos)
+  - README existe y menciona los archivos
+
+04.20 Evidencia
+- El trigger debe imprimir:
+  - RUN_START
+  - lista de archivos copiados
+  - resultado del test (PASS/FAIL)
+- Si FAIL: mensaje accionable “qué falta y dónde”.
+
+==========
+05.00_TROUBLESHOOTING
+==========
+
+05.10 “Falta BATON”
+- No es error si no existe continuidad.
+- Solo se copia si el archivo existe.
+
+05.20 “README no se actualiza”
+- Si SYNC no está configurado para targets externos, el builder escribe un README base (fallback).
+- Si quieres derivación total, se habilita placeholder DERIVED y se sincroniza por manifest.
+
+==========
+06.00_CHANGELOG
+==========
+
+06.10_2026-03-03_v0.1-DRAFT
+- Creación inicial enfocada solo en Phase0 (sin ZIP).

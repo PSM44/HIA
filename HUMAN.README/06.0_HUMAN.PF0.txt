@@ -515,71 +515,31 @@ APP_SCOPE (Application Scope): definición operativa de qué carpetas/archivos c
 
 04.10_RITUAL_DE_INICIO_(START_RITUAL)
 
-
 Objetivo:
-
-
 - arrancar sin re-explicar el universo y sin drift.
+- mantener operación peatón-first con pocos gates y poco drag&drop.
 
+Decisión de diseño (P0):
+- Este documento (PF0) NO es un wizard por fases.
+- El instructivo paso-a-paso por fases y DnD (IA cloud) vive en un archivo dedicado:
 
+  - <PROJECT_ROOT>\HUMAN.README\09.0_HUMAN.START.RITUAL.txt
 
+Regla operativa:
+- Antes de iniciar una sesión o activar una fase, seguir el wizard del Start Ritual.
+- Si la IA cloud no responde “HIA Fase X activada” o arroja error:
+  - <PROJECT_ROOT>\HUMAN.README\10.0_HUMAN.HIA.TROUBLE.txt
 
-
-Pasos:
-
-
-04.10.01 Leer BATON
-
-
-- revisar objetivo actual, decisiones (DRAFT/CANON), bloqueos, next actions.
-
-
-
-
-
-04.10.02 Seleccionar MiniBattles
-
-
-- elegir 1–3 MiniBattles con outputs claros.
-
-
-
-
-
-04.10.03 Definir modo (Gate)
-
-
-- Default: PLAN_ONLY.
-
-
-- Si una MiniBattle requiere APPLY:
-
-
-  - exigir plan, lista exacta de archivos, rollback, validación.
-
-
-
-
-
-04.10.04 Confirmar Scope
-
-
-- declarar qué paths se pueden tocar.
-
-
-- confirmar que PROJECT_ROOT es frontera por defecto.
-
-
-
-
-
-04.10.05 Confirmar APP_SCOPE (si hay RADAR_CORE)
-
-
-- si la MiniBattle implica “comprensión total de aplicación”:
-
-
-  - confirmar APP_SCOPE actualizado (por proyecto) para que CORE tome solo lo relevante.
+Checklist mínimo (resumen, no wizard):
+- Leer BATON:
+  - <PROJECT_ROOT>\HUMAN.README\04.0_HUMAN.BATON.txt
+- Seleccionar 1–3 MiniBattles (outputs claros).
+- Definir modo:
+  - Default: PLAN_ONLY
+  - APPLY requiere gate humano explícito + lista exacta de archivos + rollback + validación.
+- Confirmar Scope:
+  - PROJECT_ROOT como frontera por defecto.
+- Confirmar APP_SCOPE (solo si habrá RADAR_CORE).
 
 
 
@@ -1271,20 +1231,16 @@ NOTAS.............: <opcional>
 
 11.20_TEMPLATE_START_RITUAL
 
+- Seguir wizard Start Ritual por fases (peatón-first):
+  - <PROJECT_ROOT>\HUMAN.README\09.0_HUMAN.START.RITUAL.txt
 
-- Leer BATON
-
-
-- Elegir 1–3 MiniBattles
-
-
-- Definir Gate (PLAN_ONLY default)
-
-
-- Confirmar Scope
-
-
-- Confirmar APP_SCOPE si habrá CORE
+- Checklist mínimo (si no se requiere wizard completo):
+  - Leer BATON:
+    - <PROJECT_ROOT>\HUMAN.README\04.0_HUMAN.BATON.txt
+  - Elegir 1–3 MiniBattles
+  - Definir Gate (PLAN_ONLY default)
+  - Confirmar Scope
+  - Confirmar APP_SCOPE si habrá CORE
 
 
 

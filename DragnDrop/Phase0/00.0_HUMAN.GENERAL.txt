@@ -1,0 +1,384 @@
+00.00_METADATA_ADDED
+DATE......: 2026-03-01
+TIME......: 18:55
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION......: 0.1
+NOTE......: Metadata agregado en modo office. No altera el contenido conceptual HUMAN.
+ID_HINT...: 
+==============================
+ARCHIVO: 00.0_HUMAN.GENERAL.txt
+ACCION: REEMPLAZAR (archivo completo)
+==============================
+
+==========
+00.00_METADATOS_DEL_DOCUMENTO
+==========
+
+ID_UNICO..........: HUMAN.GENERAL.0001
+NOMBRE_SUGERIDO...: 00.0_HUMAN.GENERAL.txt
+VERSION...........: v1.1-DRAFT
+FECHA.............: 2026-02-28
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: <CIUDAD>, <PAIS>
+UBICACION_SISTEMA.: <TL_BOOTSTRAP_ROOT>\HUMAN.README\
+AUTOR_HUMANO......: PABLO (ADMIN)
+AUTOR_IA..........: GPT-5.2 Thinking
+
+TITULO............: HUMAN Root — Marco General (General Operating Model)
+SUBTITULO_MEDIO...: Filosofía, gobernanza, fases, gates, CANON, RADAR, CIS, Git, continuidad.
+SUBTITULO_BAJO....: Documento para peatones primero. IA segundo. No recorta conceptos.
+
+ALCANCE...........:
+- Marco general para operar proyectos TI con soporte de IA (no específico de una app).
+- Pirámide de autoridad: HUMAN arriba (máxima definición).
+- Fases end-to-end (0 → 3.2 + transversal) con DoD (Definition of Done = Definición de Terminado).
+- Gobernanza: PLAN→APPLY→VALIDATE→LOG, gates humanos, CANON, delete=quarantine, Git.
+- Disciplina de archivos .txt (metadatos, índice, WBS interno, replace por bloques).
+- RADAR y CIS como mecanismos de trazabilidad y control.
+
+NO_CUBRE..........:
+- Stack tecnológico específico (se define por iteración por proyecto).
+- Implementación de scripts (vive en 02_TOOLS).
+
+DEPENDENCIAS......:
+- HUMAN.PF0 (método mínimo operativo)
+- HUMAN.CIS (contratos de cambio)
+- HUMAN.RADAR (inventario/delta + exclusiones)
+- HUMAN.BATON (continuidad/handoff)
+- Git (rollback)
+
+==========
+00.10_INDICE_GENERAL_WBS
+==========
+
+00.00 Metadatos
+00.10 Índice
+00.20 Contexto y propósito
+00.30 Definiciones base (taxonomía mínima)
+
+01.00 Filosofía y principios (constitución)
+01.10 No-negociables
+01.20 Anti-objetivos
+01.30 Pirámide de autoridad
+01.40 Trazabilidad y evidencia
+
+02.00 Gobernanza operacional (cómo se trabaja)
+02.10 Roles: Humano / IA Planner / IA Executor
+02.20 Gates: PLAN_ONLY vs APPLY_APPROVED
+02.30 Ciclo operativo: PLAN → APPLY → VALIDATE → LOG
+02.40 Política de costo/performance (Context Levels)
+
+03.00 Gestión documental (txt-first)
+03.10 Estándar mínimo archivo .txt
+03.20 WBS/ID y compatibilidad DB (RADAR-friendly)
+03.30 Reglas de edición (replace por bloques)
+03.40 CANON: promoción y congelamiento
+
+04.00 Seguridad operativa (scope, delete, secrets)
+04.10 Sandbox boundary (allowlist/denylist)
+04.20 Delete policy: quarantine por defecto
+04.30 Rollback: Git preferido
+04.40 Secrets handling: fail-fast
+
+05.00 RADAR (inventario y auditoría)
+05.10 Niveles LITE/INDEX/CORE/FULL
+05.20 Cuándo ejecutar RADAR
+05.30 Exclusiones obligatorias (HIA)
+05.40 Señales y evidencia
+
+06.00 CIS (contratos de cambio)
+06.10 CIS vs magia
+06.20 Planner vs Executor
+06.30 Operaciones CREATE/EDIT/MOVE/RENAME/DELETE
+06.40 Prevención de errores (PowerShell verbs, atomic apply)
+
+07.00 Fases de proyecto (end-to-end)
+07.10 Fase 0: Filosofía (HUMAN-first)
+07.20 Fase 1: Entorno contextual IA
+07.30 Fase 2: Entorno local (bootstrap)
+07.40 Fase 3.1: Pre-Coding (setup check)
+07.50 Fase 3.2: Coding (iteración controlada)
+
+08.00 Transversal
+08.10 Cierre de sesión (BATON)
+08.20 Gestión de performance (drift, migración de chat)
+08.30 Escalamiento futuro (pocas carpetas, archivos grandes)
+
+09.00 Riesgos y mejoras
+10.00 CHANGELOG
+
+
+==========
+00.20_CONTEXTO_Y_PROPOSITO
+==========
+
+00.21_PROPOSITO_GENERAL
+- “Trabajar con IA” sin método da velocidad puntual pero acumula deuda y rompe trazabilidad.
+- HUMAN Root define el sistema operativo conceptual: para peatones, tu yo del futuro y una IA en blanco.
+
+00.22_TXT_FIRST
+- TXT primero (no markdown) por pragmatismo: edición simple, replace por bloques, baja ambigüedad.
+- Markdown queda como conversión futura opcional.
+
+00.23_NO_PERDIDA_DE_CONTEXTO
+- HUMAN no se recorta: se complementa.
+- Si algo queda obsoleto:
+  - se marca DEPRECATED,
+  - o se mueve a historial (DeadHistory) con registro.
+
+==========
+00.30_DEFINICIONES_BASE_(ABREVIACIONES_EXPLICADAS)
+==========
+
+HIA (Human + IA): entorno/metodología reusable para colaborar humano + IA.
+TL.Bootstrap (Tooling & Lifecycle Bootstrap): set transversal reusable (RADAR, CIS, BATON, PF.0, estructura, tools).
+Cambio: crear / editar / renombrar / mover / eliminar (archivo o carpeta).
+Gate: punto de control humano para pasar de PLAN a APPLY.
+PLAN_ONLY: solo planificación, sin modificar FS.
+APPLY_APPROVED: ejecución permitida por gate explícito.
+DoD (Definition of Done): criterio de terminado (por fase / por minibattle).
+CANON: cierre oficial; congelado; no editar directo en main.
+MB (MiniBattle): unidad mínima de avance verificable.
+FS: filesystem del proyecto.
+
+==========
+01.00_FILOSOFIA_Y_PRINCIPIOS
+==========
+
+01.10_NO_NEGOCIABLES
+- HUMAN manda.
+- PLAN→APPLY→VALIDATE→LOG (siempre).
+- Git siempre.
+- Delete=quarantine (por defecto).
+- No magia: supuestos explícitos y plan de validación.
+
+01.20_ANTI_OBJETIVOS
+- Automatización total sin gates.
+- “Inyectar todo siempre”.
+- Tooling por ansiedad (Frankenstein).
+- Reemplazos totales cuando bastan bloques.
+
+01.30_PIRAMIDE_DE_AUTORIDAD
+- Nivel 0: HUMAN (conceptos/decisiones).
+- Nivel 1: Políticas (gates, canon, seguridad).
+- Nivel 2: Métodos (workflow, routing).
+- Nivel 3: Tools (scripts/validadores).
+- Nivel 4: Código de app.
+- Nivel 5: Artefactos (logs/snapshots).
+
+01.40_EVIDENCIA
+- Decisión importante = qué / por qué / cuándo / quién + evidencia mínima.
+
+==========
+02.00_GOBERNANZA_OPERACIONAL
+==========
+
+02.10_ROLES
+- HUMANO: intención, prioridades, restricciones, gates, promoción a CANON.
+- IA_PLANNER: propone plan/contrato, default PLAN_ONLY.
+- IA_EXECUTOR: aplica cambios solo con gate + CIS + evidencia.
+
+02.20_GATES
+- Default: PLAN_ONLY.
+- APPLY_APPROVED solo con:
+  - contrato completo,
+  - rollback Git,
+  - RADAR_LITE pre/post,
+  - validate ejecutable.
+- Regla peatón (P0): gates pocos y claros.
+  - Gate humano máximo por acción: 1 (PLAN->APPLY). Evitar “doble aprobación” por costumbre.
+  - Adjuntos por defecto: 0.
+  - Adjuntos permitidos en MVP: 1 (solo si desbloquea la tarea).
+  - Si se necesita >1 adjunto o contexto “pesado”:
+    - escalar por excepción (registrar en BATON: razón + costo estimado + DoD).
+
+02.30_CICLO_OPERATIVO
+- PLAN: objetivo + scope + constraints + output + validación.
+- APPLY: ejecutar exactamente lo planeado.
+- VALIDATE: pruebas mínimas.
+- LOG: evidencia OK/FAIL + cambios + next actions.
+
+02.40_CONTEXT_LEVELS
+- L0: HUMAN/BATON + navegación básica.
+- L1: snippets selectivos.
+- L2: RADAR_CORE por módulo/APP_SCOPE.
+- L3: RADAR_FULL puntual (forensic).
+
+02.41_POLITICA_COSTO_Y_PERFORMANCE_(NO_POWERPOINT)
+Regla:
+- “Control de costos” existe solo si hay:
+  - métrica,
+  - umbral,
+  - alerta,
+  - y registro (para estimar costos futuros).
+
+02.41.10_ORDEN_DE_IMPLEMENTACION_(REALISTA)
+1) Benchmark local (si aplica):
+   - correr herramienta tipo llmfit (o equivalente) para determinar modelos locales viables según hardware.
+   - output mínimo: tabla “modelo / tokens/s / RAM / calidad aproximada / tarea recomendada”.
+2) Inventario de herramientas pagadas:
+   - costo fijo (ej: ChatGPT Plus),
+   - costo variable (APIs / Claude Code / etc.).
+3) Umbrales operativos (alertas):
+   - ejemplo: cada +USD 30 acumulados => alertar “acumulado = X”.
+   - (si no hay integración automática, igual se registra manual en LOG/BATON).
+4) Registro para forecast:
+   - por MiniBattle: input_size, context_level usado, modelo, duración, costo estimado/real, outcome.
+
+02.41.20_ARTEFACTO_MINIMO_(BACKLOG_READY)
+- COST.TRACKER (puede vivir en BATON o en un archivo dedicado del proyecto):
+  - MB_ID
+  - tool/model
+  - context_level
+  - costo_usd (estimado/real)
+  - acumulado_usd
+  - timestamp
+  - nota
+
+02.42_STACK_SIN_RELIGION_(ITERAR_POR_CASO)
+- Stack no se “elige para siempre” en F0.
+- Se propone una hipótesis por caso, se valida con smoke, y se registra decisión DRAFT/CANON.
+- Si no se puede implementar completo ahora:
+  - queda explícito en backlog (no se “olvida”).
+
+==========
+03.00_GESTION_DOCUMENTAL
+==========
+
+03.10_ESTANDAR_TXT
+- Metadatos + índice WBS + cómo ejecutar (si aplica) + checklist + changelog.
+
+03.20_WBS_ID_DB
+- IDs únicos + WBS interno estable.
+- ASCII-friendly recomendado para FS.
+- Mantener consistencia para RADAR e ingestión BD.
+
+03.30_REPLACE_BLOQUES
+- Siempre: BLOQUE_ORIGINAL completo + BLOQUE_CORREGIDO completo.
+
+03.40_CANON
+- Promoción solo por humano.
+- CANON no se edita directo: hotfix por branch.
+
+==========
+04.00_SEGURIDAD_OPERATIVA
+==========
+
+04.10_SCOPE
+- PROJECT_ROOT por defecto.
+- Allowlist/denylist explícitos.
+
+04.20_DELETE
+- Delete => quarantine/DeadHistory por defecto.
+- Hard delete solo con orden explícita.
+
+04.30_ROLLBACK
+- Git preferido.
+
+04.40_SECRETS
+- Fuera del repo. Si aparece secret: FAIL + quarantine + incident.
+
+==========
+05.00_RADAR
+==========
+
+05.10_NIVELES
+- LITE: delta.
+- INDEX: inventario.
+- CORE: consolidado relevante (texto).
+- FULL: auditoría completa.
+
+05.20_CUANDO_CORRER
+- LITE pre/post APPLY.
+- INDEX para navegación/handoff.
+- CORE solo por APP_SCOPE/módulo.
+
+05.30_EXCLUSIONES_OBLIGATORIAS_(HIA)
+- RAW y ARTIFACTS (logs/old/deadhistory) fuera de CORE/LITE por P0.
+- Implementación recomendada: excluir \Raw\ y \03_ARTIFACTS\ completo salvo forensic.
+
+05.40_SENALES
+- created/edited/moved/deleted + anomalías + evidencia (hash/commit/log).
+
+==========
+06.00_CIS
+==========
+
+06.10_CIS_NO_ES_MAGIA
+- CIS es contrato: explícito, auditable, reversible.
+
+06.20_PLANNER_VS_EXECUTOR
+- Planner redacta; executor aplica (solo con gate).
+
+06.30_OPERACIONES
+- CREATE / EDIT / MOVE / RENAME / DELETE (delete=quarantine default).
+
+06.40_PREVENCION_DE_ERRORES
+- PowerShell: evitar Validate-* (unapproved verb); preferir Test-*.
+- Runners deben aplicar de forma atómica por target (evita APPLY parcial).
+
+==========
+07.00_FASES
+==========
+
+07.10_FASE_0_FILOSOFIA
+Entregable de término:
+- intención, scope/no-scope, riesgos top, DoD por fase.
+
+07.20_FASE_1_CONTEXTO_IA (PLAN_ONLY)
+Entregable de término:
+- BATON inicial + routing policy + políticas de ejecución + decisiones DRAFT.
+
+07.30_FASE_2_LOCAL_BOOTSTRAP
+Entregable de término:
+- estructura + tools (RADAR/validadores) + primer commit baseline.
+
+07.40_FASE_3_1_PRE_CODING
+Entregable de término:
+- run local + smoke/test mínimo OK + logs.
+
+07.50_FASE_3_2_CODING
+Entregable de término:
+- iteración controlada (PLAN/APPLY/VALIDATE/LOG) + commits trazables.
+
+==========
+08.00_TRANSVERSAL
+==========
+
+08.10_CIERRE_DE_SESION
+- BATON actualizado siempre.
+
+08.20_MIGRACION_DE_CHAT
+- Si drift/performance cae: export + baton + radar + nuevo chat.
+
+08.30_ESCALAMIENTO
+- Pocas carpetas, archivos grandes; pero con estrategia explícita de escalamiento.
+
+==========
+09.00_RIESGOS_Y_MEJORAS
+==========
+
+09.10_SOBRE_INYECCION
+Mitigación: routing + escalamiento por niveles.
+
+09.20_AUTOMATIZACION_SIN_GATES
+Mitigación: PLAN_ONLY default; gate humano para APPLY.
+
+09.30_RADAR_RUIDOSO
+Mitigación: exclusiones + CORE por módulo.
+
+09.40_MEJORAS
+- Decision Records canónicos.
+- Exclusion profiles por stack.
+- Handoff package estándar.
+
+==========
+10.00_CHANGELOG
+==========
+
+2026-02-28, v1.1-DRAFT
+- Se alinea con PF.0 + CIS + RADAR exclusiones P0.
+- Se refuerza atomic apply por target como política de runners.
+2026-02-27, v1.0-DRAFT
+- Creación inicial.
