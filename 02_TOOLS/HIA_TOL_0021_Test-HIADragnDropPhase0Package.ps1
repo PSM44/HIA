@@ -50,7 +50,7 @@ $must = @(
   "README.txt"
 )
 
-# BATON opcional para Phase0
+# BATON para Phase0
 $batonPath = Join-Path $ddRoot "04.0_HUMAN.BATON.txt"
 if (Test-Path -LiteralPath $batonPath) {
   $batonLen = (Get-Item -LiteralPath $batonPath).Length

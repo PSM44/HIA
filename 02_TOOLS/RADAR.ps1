@@ -200,7 +200,7 @@ $excludedContains = @(
 # ---------- Baseline determinista ----------
 $BaselineIndexPath = $null
 if (Test-Path -Path $IndexActive) {
-  $BaselineIndexPath = Join-Path $OldDir ("HIA_RAD_0002_INDEX.BASELINE.$stamp.txt")
+  $BaselineIndexPath = Join-Path $OldDir ("HIA_RAD_INDEX.REPO.BASELINE.$stamp.txt")
   Copy-Item -Path $IndexActive -Destination $BaselineIndexPath -Force
 }
 

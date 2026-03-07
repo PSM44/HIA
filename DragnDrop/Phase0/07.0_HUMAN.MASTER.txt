@@ -108,6 +108,15 @@ Gate (Aprobación humana): permiso explícito para APPLY.
   - validate,
   - commit.
 
+02.40 CLOSE-FIRST (anti-iteración infinita)
+- Prioridad del sistema HIA:
+  - cerrar phases y minibattles cuando ya no bloquean.
+- Criterio:
+  - Si no bloquea el siguiente paso, se cierra.
+  - Las mejoras se registran como backlog (P1/P2).
+- Motivo:
+  - Evita burocracia, drift y “cierre falso” por fatiga o por perfeccionismo.
+
 ==========
 03.00_DOC.AUTHORITY.MAP_(MAPA_DE_AUTORIDAD)
 ==========

@@ -18,7 +18,10 @@ FUENTE DE VERDAD:
 SEGURIDAD:
   - NO usa Validate-* (verbos no aprobados).
   - Limpia destino antes de copiar (para evitar drift).
-  - WARN (no FAIL) si entry opcional no existe (BATON).
+  - FAIL determinista si:
+      (a) no hay DD_COPY_ENTRY_ID para la Phase solicitada
+      (b) falta cualquier SOURCE_FILE declarado en el manifest
+  - BATON es REQUERIDO (no existe “opcional” por Phase).
 
 USO:
   pwsh -NoProfile -File .\02_TOOLS\HIA_TOL_0021_New-HIADragnDropPackage.ps1 -ProjectRoot "." -Phase "Phase0"
@@ -162,22 +165,23 @@ if (Test-Path -LiteralPath $ddDir) {
 # Copy files
 $copied = @()
 
+# FAIL si no hay entradas para Phase
+if (@($entries).Count -eq 0) {
+  Write-Log -File $runLog -Message ("FAIL_NO_DD_ENTRIES Phase={0} Manifest={1}" -f $Phase,$manifest) -Level "ERROR"
+  throw "FAIL: no se encontraron DD_COPY_ENTRY_ID para $Phase en el manifest."
+}
+
 foreach ($e in $entries) {
   $srcAbs = Join-Path $ProjectRoot $e.Source
   $tgtAbs = Join-Path $ProjectRoot $e.Target
   $tgtParent = Split-Path -Parent $tgtAbs
 
   if (-not (Test-Path -LiteralPath $tgtParent)) {
-    New-Item -ItemType Directory -Force -Path $tgtParent | Out-Null
+    New-Item -ItemType Directory -Force -LiteralPath $tgtParent | Out-Null
   }
 
+  # Determinismo: si el manifest lo declara, debe existir.
   if (-not (Test-Path -LiteralPath $srcAbs)) {
-    $isOptionalBaton = ($Phase -eq "Phase0" -and ($e.Source -like "*\04.0_HUMAN.BATON.txt"))
-    if ($isOptionalBaton) {
-      Write-Log -File $runLog -Message ("WARN_SOURCE_MISSING optional id={0} src={1} (skip)" -f $e.Id,$e.Source) -Level "WARN"
-      continue
-    }
-
     Write-Log -File $runLog -Message ("FAIL_SOURCE_MISSING id={0} src={1}" -f $e.Id,$e.Source) -Level "ERROR"
     throw "FAIL: falta source requerido: $srcAbs"
   }
@@ -215,8 +219,10 @@ if ($IncludeRadar -ne "None") {
   }
 }
 
-# Generate README
+# Generate README (contract determinista para tester + peatón)
+$IncludeRadar = "None"  # este tool no activa radar; toggle manual fuera del trigger
 $readme = Join-Path $ddDir "README.txt"
+
 $readmeLines = New-Object System.Collections.Generic.List[string]
 $readmeLines.Add("HIA_DRAGNDROP_README") | Out-Null
 $readmeLines.Add(("DATE......: {0}" -f (Get-Date).ToString("yyyy-MM-dd"))) | Out-Null
@@ -224,16 +230,20 @@ $readmeLines.Add(("TIME......: {0}" -f (Get-Date).ToString("HH:mm"))) | Out-Null
 $readmeLines.Add("TZ........: America/Santiago") | Out-Null
 $readmeLines.Add("CITY......: Santiago, Chile") | Out-Null
 $readmeLines.Add("VERSION...: v1.1-DRAFT") | Out-Null
+
+# Literales exigidos por tester
 $readmeLines.Add(("PHASE: {0}" -f $Phase)) | Out-Null
-$readmeLines.Add(("PHASE.....: {0}" -f $Phase)) | Out-Null
+$readmeLines.Add(("INCLUDE_RADAR: {0}" -f $IncludeRadar)) | Out-Null
 $readmeLines.Add(("GENERATED.: {0}" -f $stamp)) | Out-Null
 $readmeLines.Add("RULES.....: GENERATED-ONLY. NO EDITAR MANUALMENTE.") | Out-Null
 $readmeLines.Add("RULES.....: PROHIBIDO EDITAR A MANO.") | Out-Null
-$readmeLines.Add(("INCLUDE_RADAR: {0}" -f $IncludeRadar)) | Out-Null
 $readmeLines.Add("") | Out-Null
-$readmeLines.Add("FILES_INCLUDED (copiados desde HUMAN.README y/o RADAR toggle):") | Out-Null
+
+$readmeLines.Add("FILES_INCLUDED (copiados desde HUMAN.README y/o framework):") | Out-Null
 foreach ($c in $copied | Sort-Object) { $readmeLines.Add((" - {0}" -f $c)) | Out-Null }
 $readmeLines.Add("") | Out-Null
+
+# Contract para IA cloud (reduce alucinación)
 $readmeLines.Add("CLOUD_CONTRACT:") | Out-Null
 $readmeLines.Add("- Responde PRIMERO: acuso leído") | Out-Null
 $readmeLines.Add("- Luego lista exacta de archivos leídos (uno por línea)") | Out-Null
@@ -242,8 +252,7 @@ $readmeLines.Add("- Si inventa un archivo: FAIL (alucinación)") | Out-Null
 $readmeLines.Add("") | Out-Null
 $readmeLines.Add("IF_MISSING: si falta un archivo esperado, re-ejecuta el tool (no copies a mano).") | Out-Null
 
-$readmeLines | Set-Content -Path $readme -Encoding UTF8
+$readmeLines | Set-Content -LiteralPath $readme -Encoding UTF8
 Write-Log -File $runLog -Message ("README_WRITTEN {0}" -f $readme)
 
-Write-Log -File $runLog -Message ("RUN_END OK copied={0} dest={1}" -f @($copied).Count,$ddDir)
 exit 0

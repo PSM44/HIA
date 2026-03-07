@@ -48,7 +48,7 @@ INDICE_WBS:
 [CmdletBinding()]
 param(
   [Parameter(Mandatory = $false)]
-  [string] $ProjectRoot = "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA",
+  [string] $ProjectRoot = $null,
 
   [Parameter(Mandatory = $false)]
   [string] $OutDirRel = "03_ARTIFACTS\RADAR",
@@ -63,6 +63,15 @@ param(
   [Parameter(Mandatory = $false)]
   [switch] $VerboseLog
 )
+
+# Default ProjectRoot: 1 nivel arriba de 02_TOOLS (PROJECT_ROOT)
+if (-not $ProjectRoot) {
+  try {
+    $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+  } catch {
+    throw "No se pudo resolver ProjectRoot desde PSScriptRoot. Pasa -ProjectRoot explícito. Error=$($_.Exception.Message)"
+  }
+}
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"

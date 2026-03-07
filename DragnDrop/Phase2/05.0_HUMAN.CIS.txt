@@ -397,12 +397,7 @@ Requisito:
 
 
 03.00_GATES_Y_ESTADOS
-
-
 ==========
-
-
-
 
 
 03.10_PLAN_ONLY (DEFAULT)
@@ -479,7 +474,13 @@ Requisitos:
 
 - FAIL: ejecución o validación falla; rollback requerido.
 
-
+03.40 REGLA P0: APPLY no es iteración eterna
+- Si el contrato CIS ya cumple su OBJETIVO y VALIDACION pasa:
+  - se declara OK,
+  - se registra evidencia,
+  - se cierra la MiniBattle.
+- Mejoras adicionales:
+  - se mueven a backlog (nuevo CIS_TASK_ID), no se “apilan” en el mismo APPLY.
 
 
 

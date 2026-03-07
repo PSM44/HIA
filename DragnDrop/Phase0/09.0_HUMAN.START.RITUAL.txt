@@ -613,6 +613,18 @@ Reglas:
 - Prohibido inventar pendientes vagas (“mejorar”, “optimizar”). Deben ser accionables.
 - Si el checklist no pasa 100%, se obliga OPCION B (phase aún activa).
 
+07.35 Regla HIA anti-iteración infinita (CLOSE-FIRST)
+- Deber de HIA: focalizar para CERRAR phases, no iterar eternamente.
+- Regla práctica (P0):
+  - Si los outputs mínimos de la checklist están OK
+  - y NO existe un “bloqueo” explícito para la siguiente phase,
+  => la IA debe cerrar la phase (OPCION A) y proponer la siguiente phase como next action.
+
+- Prohibición:
+  - No se permite “seguir perfeccionando” por preferencia estética.
+  - Cualquier perfeccionamiento adicional se mueve a backlog P1/P2.
+
+
 ==========
 08.00_CHECKLISTS_POR_FASE_(INPUTS_Y_OUTPUTS)
 ==========
