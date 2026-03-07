@@ -29,8 +29,16 @@ if (-not (Test-Path -LiteralPath $toolTest))  { throw "No existe tool: $toolTest
 
 Write-Log "INFO" "STEP 1/2 Build Phase0 package"
 pwsh -NoProfile -File $toolBuild -ProjectRoot $projectRoot
+if ($LASTEXITCODE -ne 0) {
+  throw "FAIL: Build Phase0 package failed."
+}
 
 Write-Log "INFO" "STEP 2/2 Test Phase0 package"
 pwsh -NoProfile -File $toolTest -ProjectRoot $projectRoot
+if ($LASTEXITCODE -ne 0) {
+  throw "FAIL: Test Phase0 package failed."
+}
 
 Write-Log "INFO" "RUN_OK Phase0 ready. Adjunta DragnDrop\\Phase0\\ a IA cloud (sin Raw/ni 03_ARTIFACTS)."
+Write-Log "INFO" "PHASE_DONE: Phase0"
+exit 0

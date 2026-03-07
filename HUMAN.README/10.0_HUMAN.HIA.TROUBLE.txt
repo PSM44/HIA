@@ -52,6 +52,26 @@ Acción:
 2) Usar snippets específicos, no carpetazos.
 3) Si necesita ubicación: proveer paths y/o RADAR_INDEX snippet.
 
+02.50_ERROR_IA_DECLARA_OUTPUT_SIN_EVIDENCIA
+Causa:
+- La IA afirmó que generó/creó/actualizó un archivo/artefacto/log,
+  pero NO entregó:
+  - adjunto, ni
+  - path verificable (REL_PATH + FULL_PATH), ni
+  - contenido inline completo.
+
+Acción:
+1) Marcar FAIL inmediatamente (alucinación operativa).
+2) Responder con una sola línea:
+   “FAIL: output sin evidencia. Entrega adjunto o REL_PATH+FULL_PATH o pega contenido inline.”
+3) Forzar PLAN_ONLY (no continuar con APPLY).
+4) Si la IA insiste en “archivo adjunto” inexistente:
+   - reiniciar la activación de la fase con el paquete DragnDrop correspondiente.
+5) Registrar en BATON:
+   - qué output declaró la IA
+   - que no hubo evidencia
+   - next action: reintentar con contrato estricto
+
 ==========
 03.00_ERROR_SYNC_IDS_NO_ENCONTRADOS
 ==========

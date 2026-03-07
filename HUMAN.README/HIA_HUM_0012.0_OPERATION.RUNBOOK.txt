@@ -1,37 +1,301 @@
-01.00_RUNTIME QUICKSTART
+HIA_HUM_0012.0_OPERATION.RUNBOOK.txt
+DATE......: 2026-03-05
+TIME......: HH:MM
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION...: v1.0-DRAFT
+ID_UNICO..: HIA.HUM.0012.0
+OWNER.....: HUMAN (canónico operacional)
+SCOPE.....: HIA (runbook operativo real)
 
-01.01 Activar HIA
+==========
+01.00_INTRO
+==========
+Este archivo es el runbook operativo de HIA.
+Su objetivo es que un humano (admin/dev/peatón) pueda:
+- entender qué archivo editar según el tipo de cambio,
+- saber qué script ejecutar,
+- saber en qué orden ejecutarlo,
+- reconocer el output esperado,
+- y saber dónde revisar si algo falla.
 
-STEP 1
-Abrir terminal en raíz del repo.
+REGLA DE AUTORIDAD:
+- START.RITUAL manda si hay conflicto con la interacción humano–IA cloud.
+- Este archivo manda para operación local y actualización del sistema.
+- DragnDrop es GENERATED-ONLY: nunca se edita manualmente.
 
-STEP 2
-Construir Phase0.
+==========
+02.00_PRINCIPIOS_OPERATIVOS
+==========
+02.10 CANON vs DERIVED
+- CANON = HUMAN.README + TOOLS + TRIGGERS.
+- DERIVED = DragnDrop\PhaseX\ y otros outputs generados.
+- Si un DERIVED está mal: se regenera. No se parchea a mano.
 
+02.20 RESPONSABILIDADES
+- HUMAN.README = contratos, reglas, packaging, rituales, troubleshooting.
+- 02_TOOLS = implementación real (build/test/sync/validators).
+- 05_Triggers = entrypoints simples para el peatón.
+- DragnDrop = build artifact para adjuntar a IA cloud.
+
+02.30 NOMENCLATURA
+- Usar siempre “Phase” (no “Fase”) en nombres, textos y tooling.
+
+02.40 RADAR EN DRAGNDROP
+- IncludeRadar=None por defecto.
+- Radar solo por toggle manual:
+  - Index
+  - IndexLite
+- RADAR_FULL no entra por defecto en paquetes DragnDrop.
+
+==========
+03.00_TIPO_DE_CAMBIO_Y_DONDE_EDITAR
+==========
+03.10 Si quieres cambiar el CONTRATO del paquete DragnDrop
+Editar:
+- HUMAN.README\08.1_HUMAN.DRAGNDROP.PACKAGING.txt
+
+Ejemplos:
+- qué archivos van en Phase0/Phase1/Phase2/Phase3.1/Phase3.2
+- si README debe exigir nuevas strings literales
+- política IncludeRadar
+- reglas generated-only
+
+03.20 Si quieres cambiar la RELACION CANON -> DERIVED
+Editar:
+- HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt
+
+Ejemplos:
+- entradas DD_COPY
+- vínculos entre HUMAN.README y DragnDrop
+- derivación de archivos
+
+03.30 Si quieres cambiar el RITUAL de interacción con IA cloud
+Editar:
+- HUMAN.README\09.0_HUMAN.START.RITUAL.txt
+
+Ejemplos:
+- prompt de activación
+- checklist binario
+- condiciones para decir “HIA PhaseX activada”
+- qué pedir a la IA cloud
+
+03.40 Si quieres cambiar la LOGICA DE BUILD del paquete
+Editar:
+- 02_TOOLS\HIA_TOL_0021_New-HIADragnDropPackage.ps1
+
+Ejemplos:
+- purge + regen
+- generación de README
+- IncludeRadar
+- selección por phase
+
+03.50 Si quieres cambiar la LOGICA DE TEST del paquete
+Editar:
+- 02_TOOLS\HIA_TOL_0022_Test-HIADragnDropPackage.ps1
+- y si aplica Phase0 legacy:
+- 02_TOOLS\HIA_TOL_0021_Test-HIADragnDropPhase0Package.ps1
+
+Ejemplos:
+- archivos requeridos
+- strings literales en README
+- validación de IncludeRadar
+- reglas PASS/FAIL
+
+03.60 Si quieres cambiar la EXPERIENCIA DEL PEATON
+Editar:
+- 05_Triggers\HIA_TRI_0001_Build-DragnDropPhase0.ps1
+- 05_Triggers\HIA_TRI_0002_Build-DragnDropPhase1.ps1
+- 05_Triggers\HIA_TRI_0003_Build-DragnDropPhase2.ps1
+- 05_Triggers\HIA_TRI_0004_Build-DragnDropPhase3_1.ps1
+- 05_Triggers\HIA_TRI_0005_Build-DragnDropPhase3_2.ps1
+
+Ejemplos:
+- mensajes impresos en terminal
+- orden build/test
+- instrucciones para adjuntar a IA cloud
+
+==========
+04.00_SECUENCIA_SEGURA_PARA_ACTUALIZAR_HIA
+==========
+04.10 Regla general
+04.10.01 Editar SOLO el canon que corresponda.
+04.10.02 No editar manualmente DragnDrop\PhaseX\.
+04.10.03 Después de editar, regenerar y testear.
+04.10.04 Recién después hacer prueba en IA cloud.
+04.10.05 Recién al final hacer git add / commit / push.
+
+04.20 Orden recomendado de aplicación
+04.20.01 Si el cambio afecta DRAGNDROP / PHASES:
+1) Editar HUMAN (contract/manifest/ritual) según corresponda.
+2) Editar TOOLS si la lógica build/test quedó desalineada.
+3) Ejecutar trigger de la phase afectada.
+4) Revisar PASS local.
+5) Probar en IA cloud.
+6) Si todo sale bien: git status / commit / push.
+
+04.20.02 Motivo del orden
+- Si cambias tooling sin ajustar HUMAN, el sistema pierde trazabilidad.
+- Si cambias HUMAN y no regeneras, DragnDrop queda con drift.
+- Si haces commit antes del smoke test, versionas basura.
+
+==========
+05.00_COMANDOS_EXACTOS_POR_PHASE
+==========
+05.10 Precondición común
+Ubicarse en la raíz del repo:
+
+C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
+
+05.20 Phase0
+Comando:
 pwsh -NoProfile -File .\05_Triggers\HIA_TRI_0001_Build-DragnDropPhase0.ps1
 
-STEP 3
-Verificar PASS.
+Esperado:
+- STEP 1/2 Build Phase0 package
+- STEP 2/2 Test Phase0 package
+- PASS: Phase0 smoke test OK
+- DragnDrop\Phase0\ listo para adjuntar
+- PHASE_DONE: Phase0
 
-STEP 4
-Adjuntar DragnDrop\Phase0\ a IA cloud.
+05.30 Phase1
+Comando:
+pwsh -NoProfile -File .\05_Triggers\HIA_TRI_0002_Build-DragnDropPhase1.ps1
 
-STEP 5
-Enviar prompt:
+Esperado:
+- STEP 1/2 Build Phase1 package
+- STEP 2/2 Test Phase1 package
+- PASS: Phase1 package OK
+- DragnDrop\Phase1\ listo para adjuntar
+- PHASE_DONE: Phase1
 
-"Activar HIA Fase 0 (PLAN_ONLY). 
-Lee los archivos adjuntos y responde:
+05.40 Phase2
+Comando:
+pwsh -NoProfile -File .\05_Triggers\HIA_TRI_0003_Build-DragnDropPhase2.ps1
 
-(1) Checklist F0
-(2) Backlog inicial WBS
-(3) Riesgos P0
-(4) Próxima acción."
+Esperado:
+- STEP 1/2 Build Phase2 package
+- STEP 2/2 Test Phase2 package
+- PASS: Phase2 package OK
+- DragnDrop\Phase2\ listo para adjuntar
+- PHASE_DONE: Phase2
 
-01.02 Modos de operación
+05.50 Phase3.1
+Comando:
+pwsh -NoProfile -File .\05_Triggers\HIA_TRI_0004_Build-DragnDropPhase3_1.ps1
 
-PLAN
-APPLY
-VALIDATE
-LOG
+Esperado:
+- STEP 1/2 Build Phase3.1 package
+- STEP 2/2 Test Phase3.1 package
+- PASS: Phase3.1 package OK
+- DragnDrop\Phase3.1\ listo para adjuntar
+- PHASE_DONE: Phase3.1
 
-(ver runtime manual 0010.0)
+05.60 Phase3.2
+Comando:
+pwsh -NoProfile -File .\05_Triggers\HIA_TRI_0005_Build-DragnDropPhase3_2.ps1
+
+Esperado:
+- STEP 1/2 Build Phase3.2 package
+- STEP 2/2 Test Phase3.2 package
+- PASS: Phase3.2 package OK
+- DragnDrop\Phase3.2\ listo para adjuntar
+- PHASE_DONE: Phase3.2
+
+==========
+06.00_USO_CON_IA_CLOUD
+==========
+06.10 Regla de adjuntos
+- Adjuntar archivos sueltos de DragnDrop\PhaseX\
+- No adjuntar Raw
+- No adjuntar 03_ARTIFACTS completos
+- No adjuntar ZIP por defecto
+
+06.20 Regla de prompt
+- START.RITUAL manda.
+- El README del paquete debe coincidir con el contract esperado.
+- La IA cloud debe responder primero: "acuso leído"
+- Luego debe listar archivos exactos leídos (uno por línea).
+- Si falta un archivo requerido: FAIL determinista.
+- Si inventa un archivo (adjunto inexistente): FAIL (alucinación).
+
+- Regla anti-alucinación de OUTPUTS (NO negociable):
+  - Si la IA declara que “generó/creó/actualizó” un archivo/artefacto/log, DEBE cumplir UNA de estas:
+    (1) El archivo está ADJUNTO en el mensaje (cloud), o
+    (2) Entrega PATH verificable (REL_PATH + FULL_PATH), o
+    (3) Pega el contenido completo inline con nombre exacto del archivo.
+  - Si no puede cumplir (1)(2)(3): debe decir “NO SE GENERÓ OUTPUT” y quedarse en PLAN_ONLY.
+  - Prohibido referenciar “archivo adjunto” si no existe.
+
+06.30 Modo de operación
+- PLAN
+- APPLY
+- VALIDATE
+- LOG
+
+Nota:
+- PLAN_ONLY por defecto, salvo que el contract indique APPLY aprobado.
+
+==========
+07.00_OUTPUT_ESPERADO_Y_EVIDENCIA
+==========
+07.10 Output local esperado
+- Carpeta DragnDrop\PhaseX\ regenerada.
+- README.txt regenerado.
+- Tester en PASS.
+- Sin edición manual de archivos derivados.
+
+07.20 Evidencia mínima
+- output visible del trigger
+- output visible del tester
+- si aplica: RADAR manual por toggle
+- evidencia cloud (si aplica):
+  - “acuso leído”
+  - lista exacta de archivos leídos (uno por línea)
+  - línea de estado: “HIA Fase X activada” o “error codigo FX_FAIL”
+  - si la IA declara outputs: evidencia obligatoria (adjunto o REL_PATH+FULL_PATH o inline)
+- git status limpio antes de cerrar
+- commit/push solo después de PASS
+
+==========
+08.00_SI_FALLA
+==========
+08.10 Primera regla
+- No adivinar.
+- No editar DragnDrop a mano.
+- Copiar error completo.
+
+08.20 Dónde mirar
+- terminal actual
+- logs del tool ejecutado
+- HUMAN.README\10.0_HUMAN.HIA.TROUBLE.txt
+
+08.30 Casos típicos
+- falta archivo requerido
+- mismatch de nombre canónico
+- README sin string literal esperado
+- IncludeRadar desalineado
+- trigger invoca tool incorrecto
+- IA cloud no respeta contract START.RITUAL
+
+08.40 Qué hacer
+1) Identificar el primer FAIL real.
+2) Corregir canon/tool/trigger según corresponda.
+3) Re-ejecutar trigger.
+4) Verificar PASS.
+5) Recién después repetir prueba cloud.
+
+==========
+09.00_NOTAS_DE_CONSOLIDACION
+==========
+09.10 Este archivo absorbe la parte operativa práctica que antes estaba dispersa.
+09.20 02.0_HUMAN.OPERATION.txt puede seguir existiendo como guía operativa general, pero este archivo manda para ejecución práctica.
+09.30 Si en el futuro se reduce cantidad de HUMAN, este archivo es candidato a absorber más operación y reemplazar duplicidades.
+
+==========
+10.00_CHANGELOG
+==========
+10.10_2026-03-05_v1.0-DRAFT
+- Se reemplazó quickstart mínimo por runbook operativo real.
+- Se consolidó aquí el proceso práctico de actualización y ejecución de DragnDrop por phase.
+- Se agregaron comandos exactos, orden recomendado, outputs esperados y vínculo con troubleshooting.

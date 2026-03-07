@@ -1,19 +1,29 @@
 <#
 ID_UNICO..........: HIA.HUM.0002
 NOMBRE............: 02.0_HUMAN.OPERATION.txt
-VERSION...........: v0.1-DRAFT
-FECHA.............: 2026-03-04
+VERSION...........: v0.2-DRAFT
+FECHA.............: 2026-03-05
 TZ.................: America/Santiago
 CIUDAD............: Santiago
 PAIS..............: Chile
 OBJETIVO..........: Guía operativa (académica) para ejecutar y actualizar el sistema HIA sin improvisar.
-REGLA_DE_AUTORIDAD: START.RITUAL MANDA si hay conflicto.
-NOTA_CANON........: Este archivo es HUMAN (CANON). No reducir, no “manualizar frío”. Mantener explicación conceptual + pasos operativos.
+REGLA_DE_AUTORIDAD: START.RITUAL MANDA si hay conflicto (cloud contract).
+NOTA_CANON........: Este archivo es HUMAN (CANON). Mantener explicación conceptual + reglas operativas.
+                  : Para evitar duplicidad, los comandos exactos y el runbook por Phase viven en:
+                  : HUMAN.README\HIA_HUM_0012.0_OPERATION.RUNBOOK.txt
 #>
 
 ==========
 02.0_HUMAN.OPERATION — Operación y actualización del sistema (HIA)
 ==========
+
+02.00 ROL DE ESTE DOCUMENTO (WBS)
+02.00.01 Este archivo define PRINCIPIOS operativos y reglas de actualización (académico + conceptual).
+02.00.02 Este archivo NO es el runbook de comandos.
+02.00.03 El runbook operativo (comandos exactos + orden por Phase + outputs esperados) vive en:
+         HUMAN.README\HIA_HUM_0012.0_OPERATION.RUNBOOK.txt
+02.00.04 START.RITUAL manda si hay conflicto sobre interacción humano–IA cloud:
+         HUMAN.README\09.0_HUMAN.START.RITUAL.txt
 
 02.01 PRINCIPIOS (WBS)
 02.01.01 START.RITUAL manda (contrato humano–IA).
@@ -29,14 +39,11 @@ NOTA_CANON........: Este archivo es HUMAN (CANON). No reducir, no “manualizar 
 02.02.01.03 Nombres canónicos exactos (no inventar variantes).
 
 02.02.02 RUN — Build + Test (un comando)
-02.02.02.01 Ubicarse en:
-          C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
-02.02.02.02 Ejecutar:
-          pwsh -NoProfile -File .\05_Triggers\HIA_TRI_0001_Build-DragnDropPhase0.ps1
-02.02.02.03 Esperado:
-          STEP 1/2 Build Phase0 package
-          STEP 2/2 Test Phase0 package
-          PASS: Phase0 smoke test OK
+02.02.02.01 El comando exacto y el output esperado del trigger viven en el RUNBOOK operativo:
+          HUMAN.README\HIA_HUM_0012.0_OPERATION.RUNBOOK.txt
+02.02.02.02 Regla:
+          - No ejecutar tools sueltos para operación normal.
+          - Ejecutar triggers (peatón-first) y dejar que llamen tools internos.
 
 02.02.03 Output esperado (artefacto)
 02.02.03.01 Carpeta:
@@ -44,11 +51,13 @@ NOTA_CANON........: Este archivo es HUMAN (CANON). No reducir, no “manualizar 
 02.02.03.02 Contenido mínimo requerido:
           00.0_HUMAN.GENERAL.txt
           01.0_HUMAN.USER.txt
-          04.0_HUMAN.BATON.txt
           07.0_HUMAN.MASTER.txt
           08.0_HUMAN.SYNC.MANIFEST.txt
           09.0_HUMAN.START.RITUAL.txt
           README.txt
+
+02.02.03.03 Contenido condicional (si existe continuidad):
+          04.0_HUMAN.BATON.txt
 
 02.02.04 Reintento controlado (si falla)
 02.02.04.01 Si falta un archivo -> corregir en HUMAN.README y re-ejecutar trigger.
@@ -76,6 +85,8 @@ NOTA_CANON........: Este archivo es HUMAN (CANON). No reducir, no “manualizar 
 02.04.02.02 Fix: usar prompt endurecido (ver 02.05).
 
 02.05 PROMPT CANÓNICO — PHASE0 (WBS)
-02.05.01 Reglas: ver START.RITUAL (manda).
-02.05.02 Prompt endurecido: checklist OBJETIVO binario + “HIA Fase 0 activada” solo si 100% OK.
-02.05.03 Al final: pedir confirmación de timestamp y ejecutar preguntas para definir proyecto objetivo.
+02.05.01 Autoridad: START.RITUAL manda (contrato humano–IA cloud).
+          Archivo: HUMAN.README\09.0_HUMAN.START.RITUAL.txt
+02.05.02 Regla: este archivo NO duplica prompts; solo declara el principio de autoridad.
+02.05.03 Si el peatón necesita “copy/paste exacto”, usar el RUNBOOK operativo:
+          HUMAN.README\HIA_HUM_0012.0_OPERATION.RUNBOOK.txt

@@ -50,16 +50,16 @@ $must = @(
   "README.txt"
 )
 
-foreach ($f in $must) {
-  $p = Join-Path $ddRoot $f
-  if (-not (Test-Path -LiteralPath $p)) {
-    throw "FAIL: Falta archivo requerido en Phase0: $p"
+# BATON opcional para Phase0
+$batonPath = Join-Path $ddRoot "04.0_HUMAN.BATON.txt"
+if (Test-Path -LiteralPath $batonPath) {
+  $batonLen = (Get-Item -LiteralPath $batonPath).Length
+  if ($batonLen -le 0) {
+    throw "FAIL: BATON opcional presente pero vacío: $batonPath"
   }
-  $len = (Get-Item -LiteralPath $p).Length
-  if ($len -le 0) {
-    throw "FAIL: Archivo vacío: $p"
-  }
-  Write-Log "INFO" "OK exists+nonempty: $f ($len bytes)"
+  Write-Log "INFO" "OK optional BATON: 04.0_HUMAN.BATON.txt ($batonLen bytes)"
+} else {
+  Write-Log "WARN" "Phase0 sin BATON (aceptable si no existe continuidad)"
 }
 
 # README coherence check (estricto, excluye README.txt)

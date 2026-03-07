@@ -1,0 +1,230 @@
+DATE......: 2026-03-01
+TIME......: 18:55
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION......: 0.1
+ID_HINT...: HIA_MTH_0001
+==========
+00.00_METADATOS_DEL_DOCUMENTO
+==========
+
+*******
+**TEST2
+
+
+ID_UNICO..........: HIA.MTH.0001
+NOMBRE_SUGERIDO...: HIA_MTH_0001_WORKFLOW.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-02-26
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: Maria Luisa, Chile
+UBICACION_SISTEMA.: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\
+AUTOR_HUMANO......: PABLO (ADMIN)
+ALCANCE...........:
+Metodología operativa del proyecto HIA:
+- cómo se trabaja con IA (plan/apply/validate/log),
+- gates humanos,
+- definición operativa de CANON y cómo se congela,
+- reglas de contexto y escalamiento,
+- disciplina de cambios (patch-first).
+NO_CUBRE..........:
+- No define arquitectura técnica de AI_ORCH (ver HIA_ARC_*).
+- No define políticas específicas de sandbox/exec (ver HIA_POL_*).
+DEPENDENCIAS......:
+06.STANDAR.WBS_ID.txt
+07.STANDAR.FILE_CONTENT.txt
+08.STANDAR.PROBLEM_TROUBLE_INCIDENTS.txt
+09.STANDAR.RADAR_INDEX_CORE_FULL.txt
+10.STANDAR.BATON.txt
+11.STANDAR.HUMAN_README.txt
+
+==========
+00.10_INDICE_GENERAL_WBS
+==========
+
+00.00 Metadatos del documento
+00.10 Índice general WBS
+00.20 Contexto
+
+01.00 Objetivo del método (qué optimiza)
+02.00 Roles (Humano, IA Planner, IA Executor)
+03.00 Ciclo operativo (PLAN → APPLY → VALIDATE → LOG)
+04.00 Política de contexto (L0/L1/L2/L3)
+05.00 Política de cambio (Patch-first + replace por bloques)
+06.00 CANON: definición operativa
+07.00 CANON: promoción, congelamiento y hotfix
+08.00 Gestión de TROUBLE/INCIDENT
+09.00 Checklist rápido
+10.00 CHANGELOG
+
+==========
+00.20_CONTEXTO
+==========
+
+HIA existe para:
+- diseñar arquitectura, estructura y metodología de trabajo con apoyo IA,
+- sin depender del chat web,
+- con ejecución frecuente (crear/editar/eliminar) pero encapsulada,
+- controlando costos, drift, y errores operativos.
+
+==========
+01.00_OBJETIVO_DEL_METODO
+==========
+
+01.10_OPTIMIZA_POR
+- Estabilidad del sistema (mínimo drift).
+- Auditabilidad (evidencia siempre).
+- Velocidad (menos rework por prompts malos).
+- Control de costos (preflight + hard stop).
+
+01.20_NO_OPTIMIZA_POR
+- “Magia” sin controles.
+- Automatización sin gates.
+- Multiplicar herramientas/IDE/plugins (Frankenstein).
+
+==========
+02.00_ROLES
+==========
+
+02.10_HUMANO
+- Decide prioridades, gates, promoción a CANON.
+- Aprueba APPLY que modifica FS.
+- Define límites y criterios.
+
+02.20_IA_PLANNER
+- Produce planes, riesgos, estimaciones, patches propuestos.
+- Default: no toca FS.
+
+02.30_IA_EXECUTOR
+- Aplica cambios en FS (siempre bajo sandbox/policies).
+- Solo ejecuta bajo gate humano (MVP).
+
+==========
+03.00_CICLO_OPERATIVO_(PLAN_APPLY_VALIDATE_LOG)
+==========
+
+03.10_PLAN_(OBLIGATORIO)
+Input mínimo:
+- objetivo
+- scope (paths o módulos)
+- constraints (no tocar X)
+Output mínimo:
+- plan paso a paso
+- riesgos y supuestos
+- estimación costo (preflight)
+- propuesta de patch (si aplica)
+
+03.20_APPLY_(CON_GATE_HUMANO)
+- Apply solo si:
+  - plan aprobado,
+  - sandbox activo,
+  - checkpoint creado (Git o snapshot),
+  - preflight dentro de budget.
+
+03.30_VALIDATE_(MINIMO)
+- Validación mínima:
+  - outputs existen (si aplica),
+  - smoke test,
+  - script OK/FAIL real (si se ejecutó tooling).
+
+03.40_LOG_(OBLIGATORIO)
+- OK: registrar evidencia mínima.
+- FAIL: crear TROUBLE_LOG con evidencia reproducible + rollback.
+
+==========
+04.00_POLITICA_DE_CONTEXTO_(L0_L3)
+==========
+
+04.10_L0_DEFAULT
+- HUMAN/BATON + RADAR_INDEX (inventario) como default.
+
+04.20_L1_SNIPPETS
+- Agregar snippets selectivos de archivos target.
+
+04.30_L2_CORE_POR_MODULO
+- RADAR_CORE solo por módulo o subcarpeta relevante.
+
+04.40_L3_FULL_AUDITORIA
+- RADAR_FULL solo para auditoría puntual.
+- Prohibido como default (costo + ruido).
+
+==========
+05.00_POLITICA_DE_CAMBIO
+==========
+
+05.10_PATCH_FIRST
+- Preferir diff/patch sobre reemplazos totales.
+
+05.20_REPLACE_POR_BLOQUES_(TXT_CANONICOS)
+- Para archivos canónicos:
+  - BLOQUE_ORIGINAL + BLOQUE_CORREGIDO
+  - replace en VS Code sin ambigüedad.
+
+05.30_DELETE
+- Delete por defecto = quarantine (no hard delete).
+- Hard delete solo con orden explícita humana.
+
+==========
+06.00_CANON_DEFINICION_OPERATIVA
+==========
+
+06.10_DEFINICION
+Un archivo es CANON cuando:
+(1) Cumple FILE_CONTENT al 100%.
+(2) No contradice HUMAN root.
+(3) Pasa validadores allowlisted.
+(4) Tiene VERSION: vX.Y-CANON
+(5) Tiene CHANGELOG completo.
+
+06.20_REGLA
+- IA no promueve a CANON.
+- Humano promueve.
+
+==========
+07.00_CANON_PROMOCION_CONGELAMIENTO_Y_HOTFIX
+==========
+
+07.10_PROMOCION_(REVIEW_TO_CANON)
+Pasos:
+(1) Ejecutar validadores (naming + file_content).
+(2) Registrar decisión en HIA_DEC_0001_DECISIONS.txt
+(3) Cambiar VERSION a vX.Y-CANON
+(4) Commit Git: "CANON: <ID_FS> vX.Y"
+
+07.20_CONGELAMIENTO
+- CANON no se edita directo en main.
+- Cambios a CANON: branch + hotfix.
+
+07.30_HOTFIX
+(1) Crear branch: hotfix/<ID_FS>/<YYYYMMDD>
+(2) Aplicar cambio mínimo (bloque).
+(3) Subir versión: vX.(Y+1)-CANON
+(4) Commit: "HOTFIX CANON: <ID_FS> vX.(Y+1)"
+(5) Merge.
+
+==========
+08.00_GESTION_TROUBLE_INCIDENT
+==========
+
+- Seguir 08.STANDAR.PROBLEM_TROUBLE_INCIDENTS.
+- Regla anti-shotgun: 1 hipótesis, 1 cambio, 1 prueba.
+- Tooling roto (RADAR/validadores) = TROUBLE mínimo MEDIA.
+
+==========
+09.00_CHECKLIST_RAPIDO
+==========
+
+[ ] PLAN antes de APPLY
+[ ] Apply con gate humano
+[ ] Checkpoint antes de escribir FS
+[ ] Validate mínimo
+[ ] Log obligatorio (OK/FAIL)
+[ ] Context default L0
+[ ] CANON solo por promoción humana
+
+==========
+10.00_CHANGELOG
+==========
+
+2026-02-26, v1.0-DRAFT
+- Creación inicial workflow HIA (plan/apply/validate/log) + CANON governance.

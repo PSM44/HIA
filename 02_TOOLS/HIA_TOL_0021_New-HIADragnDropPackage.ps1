@@ -36,7 +36,11 @@ param(
 
   [Parameter(Mandatory=$true)]
   [ValidateSet("Phase0","Phase1","Phase2","Phase3.1","Phase3.2")]
-  [string]$Phase
+  [string]$Phase,
+
+  [Parameter(Mandatory=$false)]
+  [ValidateSet("None","Index","IndexLite")]
+  [string]$IncludeRadar = "None"
 )
 
 Set-StrictMode -Version Latest
@@ -60,12 +64,12 @@ $ddDir      = Join-Path $ProjectRoot ("DragnDrop\{0}" -f $Phase)
 $manifest   = Join-Path $humanDir "08.0_HUMAN.SYNC.MANIFEST.txt"
 $logsDir    = Join-Path $ProjectRoot "03_ARTIFACTS\Logs"
 
-if (-not (Test-Path -LiteralPath $logsDir)) { New-Item -ItemType Directory -Force -LiteralPath $logsDir | Out-Null }
+if (-not (Test-Path -LiteralPath $logsDir)) { New-Item -ItemType Directory -Force -Path $logsDir | Out-Null }
 $stamp = (Get-Date).ToString("yyyyMMdd_HHmmss")
 $runLog = Join-Path $logsDir ("DRAGNDROP.{0}.{1}.txt" -f $Phase, $stamp)
-New-Item -ItemType File -Force -LiteralPath $runLog | Out-Null
+New-Item -ItemType File -Force -Path $runLog | Out-Null
 
-Write-Log -File $runLog -Message ("RUN_START ProjectRoot={0} Phase={1}" -f $ProjectRoot,$Phase)
+Write-Log -File $runLog -Message ("RUN_START ProjectRoot={0} Phase={1} IncludeRadar={2}" -f $ProjectRoot,$Phase,$IncludeRadar)
 
 if (-not (Test-Path -LiteralPath $manifest)) {
   Write-Log -File $runLog -Message ("Falta manifest: {0}" -f $manifest) -Level "ERROR"
@@ -75,18 +79,20 @@ if (-not (Test-Path -LiteralPath $manifest)) {
 # Read manifest raw
 $raw = Get-Content -LiteralPath $manifest -Raw -Encoding UTF8
 
-# Parse DD entries (simple/stateful)
+# Parse DD entries (stateful, tolera KEY: VALUE y KEY: en una línea + VALUE en la siguiente)
 # We intentionally do NOT parse SYNC_ENTRY_ID. Only DD_COPY_ENTRY_ID blocks.
-$lines = $raw -split "`r?`n"
+$lines = $raw -split '\r?\n'
 $entries = @()
 $current = @{}
+$pendingKey = $null
 
 function Flush-Entry {
   param([hashtable]$h)
   if ($h.Count -eq 0) { return }
   if (($h["PHASE"] -as [string]) -ne $Phase) { return }
   if (-not $h["SOURCE_FILE"] -or -not $h["TARGET_FILE"]) { return }
-  $entries += [pscustomobject]@{
+
+  $script:entries += [pscustomobject]@{
     Id     = $h["DD_COPY_ENTRY_ID"]
     Phase  = $h["PHASE"]
     Source = $h["SOURCE_FILE"]
@@ -98,45 +104,115 @@ function Flush-Entry {
 
 foreach ($ln in $lines) {
   $t = $ln.Trim()
-  if ($t -like "DD_COPY_ENTRY_ID*:*") {
+
+  if ([string]::IsNullOrWhiteSpace($t)) {
+    continue
+  }
+
+  # Caso 1: venimos esperando el valor de una clave que quedó como "KEY:"
+  if ($pendingKey) {
+    $current[$pendingKey] = $t
+    $pendingKey = $null
+    continue
+  }
+
+  # Caso 2: inicia un nuevo bloque DD_COPY_ENTRY_ID
+  if ($t -match '^DD_COPY_ENTRY_ID\.{2,}\s*:\s*(.*)$') {
     Flush-Entry -h $current
     $current = @{}
+    $val = $Matches[1].Trim()
+    if ($val) {
+      $current["DD_COPY_ENTRY_ID"] = $val
+    } else {
+      $pendingKey = "DD_COPY_ENTRY_ID"
+    }
+    continue
   }
-  if ($t -match "^(DD_COPY_ENTRY_ID|PHASE|SOURCE_FILE|TARGET_FILE|MODE|NOTES)\s*:\s*(.*)$") {
+
+  # Caso 3: cualquier otra clave soportada
+  if ($t -match '^(PHASE|SOURCE_FILE|TARGET_FILE|MODE|NOTES)\.{2,}\s*:\s*(.*)$') {
     $key = $Matches[1].Trim()
     $val = $Matches[2].Trim()
-    $current[$key] = $val
+
+    if ($val) {
+      $current[$key] = $val
+    } else {
+      $pendingKey = $key
+    }
+    continue
   }
 }
+
 Flush-Entry -h $current
 
-Write-Log -File $runLog -Message ("DD_ENTRIES_FOUND count={0}" -f @($entries).Count)
+if (@($entries).Count -eq 0) {
+  Write-Log -File $runLog -Message ("FAIL_NO_DD_ENTRIES Phase={0} Manifest={1}" -f $Phase,$manifest) -Level "ERROR"
+  throw "FAIL: no se encontraron DD_COPY_ENTRY_ID para $Phase en el manifest."
+}
 
 # Prepare dest (clean)
 if (Test-Path -LiteralPath $ddDir) {
   Write-Log -File $runLog -Message ("CLEAN_DEST {0}" -f $ddDir)
   Get-ChildItem -LiteralPath $ddDir -Force -Recurse | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
 } else {
-  New-Item -ItemType Directory -Force -LiteralPath $ddDir | Out-Null
+  New-Item -ItemType Directory -Force -Path $ddDir | Out-Null
   Write-Log -File $runLog -Message ("CREATE_DEST {0}" -f $ddDir)
 }
 
 # Copy files
 $copied = @()
+
 foreach ($e in $entries) {
   $srcAbs = Join-Path $ProjectRoot $e.Source
   $tgtAbs = Join-Path $ProjectRoot $e.Target
   $tgtParent = Split-Path -Parent $tgtAbs
-  if (-not (Test-Path -LiteralPath $tgtParent)) { New-Item -ItemType Directory -Force -LiteralPath $tgtParent | Out-Null }
+
+  if (-not (Test-Path -LiteralPath $tgtParent)) {
+    New-Item -ItemType Directory -Force -Path $tgtParent | Out-Null
+  }
 
   if (-not (Test-Path -LiteralPath $srcAbs)) {
-    Write-Log -File $runLog -Message ("WARN_SOURCE_MISSING id={0} src={1} (skip)" -f $e.Id,$e.Source) -Level "WARN"
-    continue
+    $isOptionalBaton = ($Phase -eq "Phase0" -and ($e.Source -like "*\04.0_HUMAN.BATON.txt"))
+    if ($isOptionalBaton) {
+      Write-Log -File $runLog -Message ("WARN_SOURCE_MISSING optional id={0} src={1} (skip)" -f $e.Id,$e.Source) -Level "WARN"
+      continue
+    }
+
+    Write-Log -File $runLog -Message ("FAIL_SOURCE_MISSING id={0} src={1}" -f $e.Id,$e.Source) -Level "ERROR"
+    throw "FAIL: falta source requerido: $srcAbs"
   }
 
   Copy-Item -LiteralPath $srcAbs -Destination $tgtAbs -Force
   $copied += (Split-Path -Leaf $tgtAbs)
   Write-Log -File $runLog -Message ("COPIED id={0} {1} -> {2}" -f $e.Id,$e.Source,$e.Target)
+}
+
+# Optional RADAR toggle (DEFAULT NONE)
+$radarDir = Join-Path $ProjectRoot "03_ARTIFACTS\RADAR"
+
+if ($IncludeRadar -ne "None") {
+  if (-not (Test-Path -LiteralPath $radarDir)) {
+    Write-Log -File $runLog -Message ("WARN IncludeRadar={0} pero no existe RADAR dir: {1}" -f $IncludeRadar,$radarDir) -Level "WARN"
+  } else {
+    $radarWanted = @("HIA_RAD_INDEX.REPO.ACTIVE.txt")
+    if ($IncludeRadar -eq "IndexLite") {
+      $radarWanted += "HIA_RAD_0001_LITE.ACTIVE.txt"
+    }
+
+    foreach ($rf in $radarWanted) {
+      $srcRadar = Join-Path $radarDir $rf
+      $dstRadar = Join-Path $ddDir $rf
+
+      if (-not (Test-Path -LiteralPath $srcRadar)) {
+        Write-Log -File $runLog -Message ("WARN_RADAR_MISSING {0}" -f $srcRadar) -Level "WARN"
+        continue
+      }
+
+      Copy-Item -LiteralPath $srcRadar -Destination $dstRadar -Force
+      $copied += $rf
+      Write-Log -File $runLog -Message ("COPIED_RADAR {0} -> DragnDrop\{1}\{2}" -f $srcRadar,$Phase,$rf)
+    }
+  }
 }
 
 # Generate README
@@ -147,17 +223,26 @@ $readmeLines.Add(("DATE......: {0}" -f (Get-Date).ToString("yyyy-MM-dd"))) | Out
 $readmeLines.Add(("TIME......: {0}" -f (Get-Date).ToString("HH:mm"))) | Out-Null
 $readmeLines.Add("TZ........: America/Santiago") | Out-Null
 $readmeLines.Add("CITY......: Santiago, Chile") | Out-Null
-$readmeLines.Add("VERSION...: v1.0-DRAFT") | Out-Null
+$readmeLines.Add("VERSION...: v1.1-DRAFT") | Out-Null
+$readmeLines.Add(("PHASE: {0}" -f $Phase)) | Out-Null
 $readmeLines.Add(("PHASE.....: {0}" -f $Phase)) | Out-Null
 $readmeLines.Add(("GENERATED.: {0}" -f $stamp)) | Out-Null
 $readmeLines.Add("RULES.....: GENERATED-ONLY. NO EDITAR MANUALMENTE.") | Out-Null
+$readmeLines.Add("RULES.....: PROHIBIDO EDITAR A MANO.") | Out-Null
+$readmeLines.Add(("INCLUDE_RADAR: {0}" -f $IncludeRadar)) | Out-Null
 $readmeLines.Add("") | Out-Null
-$readmeLines.Add("FILES_INCLUDED (copiados desde HUMAN.README):") | Out-Null
+$readmeLines.Add("FILES_INCLUDED (copiados desde HUMAN.README y/o RADAR toggle):") | Out-Null
 foreach ($c in $copied | Sort-Object) { $readmeLines.Add((" - {0}" -f $c)) | Out-Null }
+$readmeLines.Add("") | Out-Null
+$readmeLines.Add("CLOUD_CONTRACT:") | Out-Null
+$readmeLines.Add("- Responde PRIMERO: acuso leído") | Out-Null
+$readmeLines.Add("- Luego lista exacta de archivos leídos (uno por línea)") | Out-Null
+$readmeLines.Add("- Si falta un requerido: FAIL determinista") | Out-Null
+$readmeLines.Add("- Si inventa un archivo: FAIL (alucinación)") | Out-Null
 $readmeLines.Add("") | Out-Null
 $readmeLines.Add("IF_MISSING: si falta un archivo esperado, re-ejecuta el tool (no copies a mano).") | Out-Null
 
-$readmeLines | Set-Content -LiteralPath $readme -Encoding UTF8
+$readmeLines | Set-Content -Path $readme -Encoding UTF8
 Write-Log -File $runLog -Message ("README_WRITTEN {0}" -f $readme)
 
 Write-Log -File $runLog -Message ("RUN_END OK copied={0} dest={1}" -f @($copied).Count,$ddDir)

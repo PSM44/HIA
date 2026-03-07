@@ -48,7 +48,7 @@ REFERENCIAS_CANONICAS:
 ==========
 
 01.00_PRINCIPIOS
-02.00_PHASE0_(PAQUETE_MINIMO)
+02.00_PACKAGES_POR_PHASE_(PHASE0..PHASE3.2)
 03.00_REGLAS_DE_ACTUALIZACION_(ANTI_DRIFT)
 04.00_TESTS_(SMOKE)_Y_EVIDENCIA
 05.00_TROUBLESHOOTING
@@ -67,25 +67,124 @@ REFERENCIAS_CANONICAS:
 - Phase0: 1–4 archivos máximos, según START.RITUAL.
 - No se adjuntan carpetas grandes, Raw, ni 03_ARTIFACTS.
 
+01.30 Nomenclatura oficial
+- Usamos "Phase" siempre (no "Fase") para consistencia y tooling.
+
+01.40 Radar toggle (DEFAULT NONE)
+- IncludeRadar=None por defecto.
+- Radar solo por toggle manual (Index / IndexLite) cuando desbloquea navegación o evita drift.
+
 ==========
-02.00_PHASE0_(PAQUETE_MINIMO)
+02.00_PACKAGES_POR_PHASE_(PHASE0..PHASE3.2)
 ==========
 
-02.10 Carpeta
+02.01 Regla base (aplica a todas las phases)
+- Destino: <PROJECT_ROOT>\DragnDrop\PhaseX\
+- DragnDrop es build artifact: purge + regen siempre (ver 03.10).
+- Default IncludeRadar=None (cero RADAR dentro del paquete).
+- Radar se agrega solo por toggle manual (Index / IndexLite).
+
+02.02 Radar toggle policy (DEFAULT NONE)
+- IncludeRadar=None (default):
+  - no incluir outputs RADAR en el paquete.
+- IncludeRadar=Index (toggle manual):
+  - incluir: HIA_RAD_INDEX.REPO.ACTIVE.txt
+- IncludeRadar=IndexLite (toggle manual):
+  - incluir: HIA_RAD_INDEX.REPO.ACTIVE.txt
+  - incluir: HIA_RAD_0001_LITE.ACTIVE.txt
+- Prohibido por defecto: RADAR_FULL (solo forensic con orden explícita).
+
+==========
+02.10_PHASE0_(ACTIVACION / HUMAN-FIRST)
+==========
+
+02.10.10 Carpeta
 - <PROJECT_ROOT>\DragnDrop\Phase0\
 
-02.20 Archivos requeridos (mínimos)
-- 00.0_HUMAN.GENERAL.txt
-- 01.0_HUMAN.USER.txt
-- 07.0_HUMAN.MASTER.txt
-- 04.0_HUMAN.BATON.txt (solo si existe continuidad / existe el archivo)
+02.10.20 Archivos requeridos (según contract del proyecto)
+- Mínimos recomendados:
+  - 00.0_HUMAN.GENERAL.txt
+  - 01.0_HUMAN.USER.txt
+  - 07.0_HUMAN.MASTER.txt
+- Condicional (si existe continuidad):
+  - 04.0_HUMAN.BATON.txt
+- Si el proyecto opera con SYNC/START_RITUAL en Phase0 (caso HIA):
+  - 08.0_HUMAN.SYNC.MANIFEST.txt
+  - 09.0_HUMAN.START.RITUAL.txt
+- README.txt siempre requerido.
 
-02.30 README pedagógico (requerido)
+02.10.30 README pedagógico (requerido)
 - <PROJECT_ROOT>\DragnDrop\Phase0\README.txt
 - Debe explicar:
   - objetivo del paquete,
   - lista de archivos incluidos,
-  - recordatorio: NO subir Raw ni 03_ARTIFACTS.
+  - recordatorio: NO subir Raw ni 03_ARTIFACTS,
+  - IncludeRadar actual (None/Index/IndexLite).
+
+==========
+02.20_PHASE1_(OPERACION + CONTROL DE CAMBIOS / SIN FS)
+==========
+
+02.20.10 Carpeta
+- <PROJECT_ROOT>\DragnDrop\Phase1\
+
+02.20.20 Archivos requeridos (mínimos)
+- 04.0_HUMAN.BATON.txt
+- 05.0_HUMAN.CIS.txt
+- 06.0_HUMAN.PF0.txt
+- 08.0_HUMAN.SYNC.MANIFEST.txt
+- README.txt
+
+02.20.30 README (requerido)
+- Debe incluir contract binario de activación Phase1 (acuso leído + checklist + FAIL si faltan requeridos).
+
+==========
+02.30_PHASE2_(BOOTSTRAP_LOCAL / FS)
+==========
+
+02.30.10 Carpeta
+- <PROJECT_ROOT>\DragnDrop\Phase2\
+
+02.30.20 Archivos requeridos (mínimos)
+- 04.0_HUMAN.BATON.txt
+- 05.0_HUMAN.CIS.txt
+- 06.0_HUMAN.PF0.txt
+- 00_FRAMEWORK\HIA_COR_0001_HIA.CORE.txt
+- 00_FRAMEWORK\HIA_RTG_0001_ROUTING_POLICY.txt
+- README.txt
+
+02.30.30 Nota
+- Phase2 se usa cuando la IA cloud debe operar sobre estructura local (FS) con reglas claras y routing.
+
+==========
+02.40_PHASE3.1_(PRE-CODING / SMOKE)
+==========
+
+02.40.10 Carpeta
+- <PROJECT_ROOT>\DragnDrop\Phase3.1\
+
+02.40.20 Archivos requeridos (mínimos)
+- 04.0_HUMAN.BATON.txt
+- 06.0_HUMAN.PF0.txt
+- 00_FRAMEWORK\HIA_MTH_0001_WORKFLOW.txt
+- README.txt
+
+==========
+02.50_PHASE3.2_(CODING / GATES)
+==========
+
+02.50.10 Carpeta
+- <PROJECT_ROOT>\DragnDrop\Phase3.2\
+
+02.50.20 Archivos requeridos (mínimos)
+- 04.0_HUMAN.BATON.txt
+- 05.0_HUMAN.CIS.txt
+- 06.0_HUMAN.PF0.txt
+- 00_FRAMEWORK\HIA_POL_0001_AI_EXECUTION.txt
+- README.txt
+
+02.50.30 Nota
+- Phase3.2 es el paquete mínimo para iteración controlada (PLAN/APPLY/VALIDATE/LOG) con gates.
 
 ==========
 03.00_REGLAS_DE_ACTUALIZACION_(ANTI_DRIFT)
@@ -138,5 +237,7 @@ REFERENCIAS_CANONICAS:
 06.00_CHANGELOG
 ==========
 
-06.10_2026-03-03_v0.1-DRAFT
-- Creación inicial enfocada solo en Phase0 (sin ZIP).
+06.20_2026-03-04_v0.2-DRAFT
+- Se extendió el contrato de packaging a Phase1..Phase3.2.
+- Se definió IncludeRadar=None por defecto + toggle manual (Index/IndexLite).
+- Se mantuvo Phase0 como base, evitando reemplazos totales: solo se complementó.
