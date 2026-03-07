@@ -1,6 +1,13 @@
 * text=auto
 *.ps1 text eol=crlf
 *.psm1 text eol=crlf
-*.psd1 text eol=crlf
-*.txt text eol=crlf
+
 *.pdf binary
+
+# HIA - Repo attributes (release artifacts)
+# DragnDrop is versioned (release artifact) but must be treated as generated output.
+DragnDrop/** linguist-generated=true
+
+# Optional: normalize line endings for text artifacts
+*.txt text eol=lf
+*.ps1 text eol=lf

@@ -70,10 +70,20 @@ REGLA_CANONICA:
 00.10.02 Qué significa “Fase activada” (definición operativa)
 Una fase se considera “activada” SOLO si:
 - La IA enumera explícitamente:
-  - (a) Archivos leídos (nombres exactos),
-  - (b) Checklist de fase con OK/FAIL por ítem,
+  - (a) Archivos leídos (nombres exactos, uno por línea),
+  - (b) Checklist de fase con OK/FAIL por ítem (binario, objetivo),
   - (c) Outputs mínimos generados o planificados (con WBS (Work Breakdown Structure: desglose jerárquico)),
-  - (d) Próxima MB (MiniBattle) propuesta con MB_ID.
+  - (d) Próxima MB (MiniBattle) propuesta con MB_ID,
+  - (e) Regla anti-alucinación de outputs (NO negociable):
+        - Si la IA declara que “generó/creó/actualizó” un archivo/artefacto/log,
+          entonces DEBE cumplir UNA (y solo una) de estas:
+          (1) El archivo está ADJUNTO en el mensaje (cloud), o
+          (2) Se entrega PATH exacto verificable en local (incluye:
+              - REL_PATH y
+              - FULL_PATH), o
+          (3) El contenido completo del archivo va inline (en texto) con nombre de archivo explícito.
+        - Si no puede cumplir (1)(2)(3): debe decir “NO SE GENERÓ OUTPUT” y quedarse en PLAN_ONLY.
+        - Prohibido inventar nombres de archivos, rutas o logs.
 - Y el peatón valida (gate humano) que el checklist tiene sentido.
 - Y se actualiza BATON (archivo) cuando corresponde.
 
@@ -392,6 +402,9 @@ F0 se puede cerrar cuando existe:
 02.40 Procedimiento paso a paso (Fase 1)
 Paso 1: Adjuntar paquete Phase1 a IA cloud (si corresponde).
 Paso 2: Prompt de activación (PLAN_ONLY):
+
+========================================
+++++++++++++++++++++++++++++++++++++++++
 - “Activar HIA Fase 1 (PLAN_ONLY).
    Lee DragnDrop\Phase1 y entrega:
    (1) routing policy (política de ruteo) resumida,
@@ -399,6 +412,8 @@ Paso 2: Prompt de activación (PLAN_ONLY):
    (3) política de adjuntos (0–1 default),
    (4) costos (umbral/alerta, si aplica),
    (5) checklist F1 (OK/FAIL).”
+========================================
+++++++++++++++++++++++++++++++++++++++++
 
 Paso 3: Gate humano: confirmar que la política evita ceremonia y evita subir archivos por ansiedad.
 
@@ -577,6 +592,27 @@ La IA debe listar:
 - Next actions WBS (P0/P1/P2).
 - Una MB (MiniBattle) sugerida con MB_ID.
 
+07.30 Cierre obligatorio por phase (FOOTER determinista)
+- Al final del output, la IA debe imprimir EXACTAMENTE uno de estos bloques:
+
+OPCION A (Phase cerrada):
+- "phase <X> finalizada exitosamente"
+
+OPCION B (Phase aún activa):
+- "phase <X> aún activa, pendiente:"
+  1.- <pendiente_1>
+  2.- <pendiente_2>
+
+Reglas:
+- <X> debe ser EXACTAMENTE uno de:
+  - 0
+  - 1
+  - 2
+  - 3.1
+  - 3.2
+- Prohibido inventar pendientes vagas (“mejorar”, “optimizar”). Deben ser accionables.
+- Si el checklist no pasa 100%, se obliga OPCION B (phase aún activa).
+
 ==========
 08.00_CHECKLISTS_POR_FASE_(INPUTS_Y_OUTPUTS)
 ==========
@@ -630,6 +666,14 @@ Outputs mínimos:
 09.20 Si la IA pide 10 archivos
 - Estás rompiendo la regla de adjuntos.
 - Acción: recortar a 1–3 archivos (USER/MASTER/BATON) y usar snippet/path/RADAR_INDEX.
+
+09.25 Si la IA declara “generé/creé/actualicé” un output sin evidencia
+- Eso es alucinación operativa.
+- Acción:
+  - exigir adjunto o REL_PATH+FULL_PATH o contenido inline completo.
+  - si no puede: forzar PLAN_ONLY.
+  - ver playbook:
+    - <PROJECT_ROOT>\HUMAN.README\10.0_HUMAN.HIA.TROUBLE.txt :: 02.50
 
 09.30 Si no aparece “HIA Fase X activada”
 - Acción:

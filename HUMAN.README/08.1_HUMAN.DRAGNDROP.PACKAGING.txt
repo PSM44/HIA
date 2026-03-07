@@ -233,11 +233,45 @@ REFERENCIAS_CANONICAS:
 - Si SYNC no está configurado para targets externos, el builder escribe un README base (fallback).
 - Si quieres derivación total, se habilita placeholder DERIVED y se sincroniza por manifest.
 
+06.00_GIT_POLICY_(DRAGNDROP_ES_RELEASE)
+06.10 Decisión canónica
+- DragnDrop\PhaseX\ se versiona en git como RELEASE ARTIFACT (sí se commitea).
+
+06.20 Reglas (NO negociables)
+- DragnDrop es GENERATED-ONLY:
+  - Prohibido editar manualmente cualquier archivo bajo DragnDrop\.
+  - El único modo válido de cambio es: ejecutar trigger correspondiente y regenerar.
+
+06.30 Qué significa “release”
+Un release DragnDrop (por phase) se considera válido solo si:
+1) Build + Test PASS (trigger PhaseX),
+2) README.txt regenerado,
+3) DragnDrop\PhaseX\ contiene los required files del tester,
+4) Commit + push posterior a PASS.
+
+06.40 Qué se commitea
+- Se commitea:
+  - DragnDrop\Phase0\
+  - DragnDrop\Phase1\
+  - DragnDrop\Phase2\
+  - DragnDrop\Phase3.1\
+  - DragnDrop\Phase3.2\
+- Se commitea el README generado (es parte del contrato y evidencia).
+
+06.50 Qué NO se commitea (si existe)
+- No se commitean outputs temporales (logs de ejecución) salvo que se declare explícitamente un “forensic checkpoint”.
+
+06.60 Motivación
+- DragnDrop en git habilita:
+  - trazabilidad/auditoría
+  - reproducibilidad del paquete adjuntado a IA cloud
+  - rollback rápido por commit hash
+
 ==========
-06.00_CHANGELOG
+07.00_CHANGELOG
 ==========
 
-06.20_2026-03-04_v0.2-DRAFT
+07.20_2026-03-04_v0.2-DRAFT
 - Se extendió el contrato de packaging a Phase1..Phase3.2.
 - Se definió IncludeRadar=None por defecto + toggle manual (Index/IndexLite).
 - Se mantuvo Phase0 como base, evitando reemplazos totales: solo se complementó.

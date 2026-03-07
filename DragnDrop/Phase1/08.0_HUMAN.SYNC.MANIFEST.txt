@@ -174,7 +174,7 @@ PHASE...............: Phase0
 SOURCE_FILE.........: HUMAN.README\04.0_HUMAN.BATON.txt
 TARGET_FILE.........: DragnDrop\Phase0\04.0_HUMAN.BATON.txt
 MODE................: FULL
-NOTES...............: Opcional por continuidad. Si no existe, el generator debe WARN y continuar.
+NOTES...............: Canon -> DragnDrop (generated-only). Requerido para continuidad operativa (Phase0 incluido). Si falta: FAIL determinista.
 
 DD_COPY_ENTRY_ID....: DD.PHASE1.FILECOPY.0001
 PHASE...............: Phase1
@@ -204,6 +204,90 @@ TARGET_FILE.........: DragnDrop\Phase1\08.0_HUMAN.SYNC.MANIFEST.txt
 MODE................: FULL
 NOTES...............: Canon -> DragnDrop (generated-only). Fuente de verdad del packaging y sync.
 
+DD_COPY_ENTRY_ID....: DD.PHASE2.FILECOPY.0001
+PHASE...............: Phase2
+SOURCE_FILE.........: HUMAN.README\04.0_HUMAN.BATON.txt
+TARGET_FILE.........: DragnDrop\Phase2\04.0_HUMAN.BATON.txt
+MODE................: FULL
+NOTES...............: Canon -> DragnDrop (generated-only). Requerido Phase2.
+
+DD_COPY_ENTRY_ID....: DD.PHASE2.FILECOPY.0002
+PHASE...............: Phase2
+SOURCE_FILE.........: HUMAN.README\05.0_HUMAN.CIS.txt
+TARGET_FILE.........: DragnDrop\Phase2\05.0_HUMAN.CIS.txt
+MODE................: FULL
+NOTES...............: Canon -> DragnDrop (generated-only). Requerido Phase2.
+
+DD_COPY_ENTRY_ID....: DD.PHASE2.FILECOPY.0003
+PHASE...............: Phase2
+SOURCE_FILE.........: HUMAN.README\06.0_HUMAN.PF0.txt
+TARGET_FILE.........: DragnDrop\Phase2\06.0_HUMAN.PF0.txt
+MODE................: FULL
+NOTES...............: Canon -> DragnDrop (generated-only). Requerido Phase2.
+
+DD_COPY_ENTRY_ID....: DD.PHASE2.FILECOPY.0004
+PHASE...............: Phase2
+SOURCE_FILE.........: 00_FRAMEWORK\HIA_COR_0001_HIA.CORE.txt
+TARGET_FILE.........: DragnDrop\Phase2\HIA_COR_0001_HIA.CORE.txt
+MODE................: FULL
+NOTES...............: Kernel mínimo. Requerido Phase2.
+
+DD_COPY_ENTRY_ID....: DD.PHASE2.FILECOPY.0005
+PHASE...............: Phase2
+SOURCE_FILE.........: 00_FRAMEWORK\HIA_RTG_0001_ROUTING_POLICY.txt
+TARGET_FILE.........: DragnDrop\Phase2\HIA_RTG_0001_ROUTING_POLICY.txt
+MODE................: FULL
+NOTES...............: Routing policy. Requerido Phase2.
+
+DD_COPY_ENTRY_ID....: DD.PHASE3.1.FILECOPY.0001
+PHASE...............: Phase3.1
+SOURCE_FILE.........: HUMAN.README\04.0_HUMAN.BATON.txt
+TARGET_FILE.........: DragnDrop\Phase3.1\04.0_HUMAN.BATON.txt
+MODE................: FULL
+NOTES...............: Canon -> DragnDrop (generated-only). Requerido Phase3.1.
+
+DD_COPY_ENTRY_ID....: DD.PHASE3.1.FILECOPY.0002
+PHASE...............: Phase3.1
+SOURCE_FILE.........: HUMAN.README\06.0_HUMAN.PF0.txt
+TARGET_FILE.........: DragnDrop\Phase3.1\06.0_HUMAN.PF0.txt
+MODE................: FULL
+NOTES...............: Canon -> DragnDrop (generated-only). Requerido Phase3.1.
+
+DD_COPY_ENTRY_ID....: DD.PHASE3.1.FILECOPY.0003
+PHASE...............: Phase3.1
+SOURCE_FILE.........: 00_FRAMEWORK\HIA_MTH_0001_WORKFLOW.txt
+TARGET_FILE.........: DragnDrop\Phase3.1\HIA_MTH_0001_WORKFLOW.txt
+MODE................: FULL
+NOTES...............: Workflow canónico. Requerido Phase3.1.
+
+DD_COPY_ENTRY_ID....: DD.PHASE3.2.FILECOPY.0001
+PHASE...............: Phase3.2
+SOURCE_FILE.........: HUMAN.README\04.0_HUMAN.BATON.txt
+TARGET_FILE.........: DragnDrop\Phase3.2\04.0_HUMAN.BATON.txt
+MODE................: FULL
+NOTES...............: Canon -> DragnDrop (generated-only). Requerido Phase3.2.
+
+DD_COPY_ENTRY_ID....: DD.PHASE3.2.FILECOPY.0002
+PHASE...............: Phase3.2
+SOURCE_FILE.........: HUMAN.README\05.0_HUMAN.CIS.txt
+TARGET_FILE.........: DragnDrop\Phase3.2\05.0_HUMAN.CIS.txt
+MODE................: FULL
+NOTES...............: Canon -> DragnDrop (generated-only). Requerido Phase3.2.
+
+DD_COPY_ENTRY_ID....: DD.PHASE3.2.FILECOPY.0003
+PHASE...............: Phase3.2
+SOURCE_FILE.........: HUMAN.README\06.0_HUMAN.PF0.txt
+TARGET_FILE.........: DragnDrop\Phase3.2\06.0_HUMAN.PF0.txt
+MODE................: FULL
+NOTES...............: Canon -> DragnDrop (generated-only). Requerido Phase3.2.
+
+DD_COPY_ENTRY_ID....: DD.PHASE3.2.FILECOPY.0004
+PHASE...............: Phase3.2
+SOURCE_FILE.........: 00_FRAMEWORK\HIA_POL_0001_AI_EXECUTION.txt
+TARGET_FILE.........: DragnDrop\Phase3.2\HIA_POL_0001_AI_EXECUTION.txt
+MODE................: FULL
+NOTES...............: AI execution policy. Requerido Phase3.2.
+
 ==========
 03.00_CHANGELOG
 ==========
@@ -218,3 +302,6 @@ NOTES...............: Canon -> DragnDrop (generated-only). Fuente de verdad del 
 03.30_2026-03-05_v1.3-DRAFT
 - Agregadas entradas DD_COPY_ENTRY_ID para Phase1.
 - Phase1 ahora declara BATON, CIS, PF0 y SYNC.MANIFEST como fuentes canónicas para packaging DragnDrop.
+
+03.07_2026-03-07_v1.4-DRAFT
+- Agregadas entradas DD_COPY_ENTRY_ID para Phase2 (BATON/CIS/PF0/CORE/ROUTING).

@@ -623,611 +623,281 @@ Pasos:
 ==========
 
 
-
-
-
 05.10_DEFINICION
-
 
 - MiniBattle (Minibattle, MB) = unidad mínima de avance verificable.
 
-
 - Debe terminar en:
 
-
   - DONE (terminada) o
-
 
   - BLOCKED (bloqueada con causa explícita y next action).
 
 
-
-
-
 05.20_COMPONENTES_OBLIGATORIOS_DE_UNA_MB
 
-
 - MB_ID (ID único WBS-friendly)
-
-
 - Objetivo (qué cambia en el mundo)
-
-
 - Inputs requeridos (qué necesito)
-
-
 - Plan (pasos)
-
-
 - Output (artefacto verificable)
-
-
 - Gate requerido (PLAN_ONLY o APPLY_APPROVED)
-
-
 - Validación (qué prueba lo confirma)
-
-
 - Evidencia (log/commit/radar)
-
-
 - Estado (OPEN/DONE/BLOCKED)
-
-
 - Riesgo principal y mitigación (1 línea mínima)
-
-
-
-
 
 05.30_TIPOS_DE_MB (para routing)
 
-
 - MB.DOC: documentación HUMAN/TL.Bootstrap
-
-
 - MB.TOOL: tooling/scripts/validadores
-
-
 - MB.CODE: código de aplicación
-
-
 - MB.DEBUG: troubleshooting
-
-
 - MB.AUDIT: auditoría (RADAR_CORE/FULL, etc.)
-
-
-
-
 
 05.40_CIERRE_DE_MB (DoD de MB)
 
-
 - DONE si:
-
-
   - output existe,
-
-
   - validación OK o criterio equivalente,
-
-
   - evidencia registrada,
-
-
   - next action actualizada si corresponde.
 
 
-
-
-
 - BLOCKED si:
-
-
   - falta dato duro,
-
-
   - falta decisión humana,
-
-
   - o hay fallo técnico sin hipótesis clara.
 
-
   Debe registrar:
-
-
   - causa,
-
-
   - plan para desbloquear,
-
-
   - next action.
 
-
-
-
+05.50 REGLA P0: CLOSE-FIRST (evitar iteración infinita)
+- Cada MiniBattle debe terminar en exactamente uno:
+  - DONE (con evidencia mínima), o
+  - BLOCKED (con causa explícita + next action ejecutable).
+- Prohibido dejar MB “abierta” por perfeccionamiento indefinido.
+- Si hay mejoras:
+  - se registran como backlog P1/P2,
+  - pero se cierra la MB si ya no bloquea el siguiente paso.
 
 ==========
-
-
 06.00_MVP_DEL_SISTEMA_HIA_(MVP.HIA)
-
-
 ==========
-
-
-
-
 
 06.10_PROPOSITO
 
-
 - MVP aquí no es una app: es la capacidad mínima del sistema HIA para operar proyectos.
-
-
-
-
 
 06.20_MVP.HIA_P0 (must-have)
 
-
 - Operar PLAN→APPLY→VALIDATE→LOG con:
-
-
   - Git (rollback),
-
-
   - RADAR_LITE pre/post APPLY,
-
-
   - BATON al cierre,
-
-
   - y gates humanos.
-
 
 - Resultado: puedes construir cualquier cosa sin perder control.
 
 
-
-
-
 06.30_MVP.HIA_P1 (should-have)
 
-
 - CIS formalizado:
-
-
   - contratos de cambio explícitos,
-
-
   - separación Planner/Executor.
 
-
 - Routing policy:
-
-
   - TaskType → ContextLevel → Gate.
-
-
-
 
 
 06.40_MVP.HIA_P2 (could-have)
 
-
 - Sync system (CANON.REGISTRY + SYNC MANIFEST + RUNNER) para derivar secciones FULL y evitar propagación manual.
-
 
 - Quality gates avanzados (linters/CI) por StackProfile (perfil de stack) cuando exista.
 
-
-
-
-
 ==========
-
-
 07.00_DOD_POR_FASES_HIA_(H0–H6)
-
-
 ==========
-
-
-
-
 
 07.10_H0 (Constitución HIA)
 
-
 - existen HUMAN base (USER, GENERAL, PF0, BATON, RADAR, CIS, MASTER)
-
 
 - glosario y autoridad definidos
 
-
 - PF.0 definido (este documento)
-
 
 - DoD por fase definido
 
-
-
-
-
 07.20_H1 (Baseline técnico)
-
 
 - entorno IDE listo (VS Code u otro)
 
-
 - Git operativo
-
 
 - runners mínimos definidos (no stack fijo, solo método)
 
-
 - validación mínima ejecutable
-
-
-
-
 
 07.30_H2 (Integración TL.Bootstrap)
 
-
 - RADAR operativo
-
 
 - BATON operativo
 
-
 - CIS operativo
-
 
 - estructura de carpetas base
 
-
 - sync readiness (marcadores, manifest DRAFT)
-
-
-
-
 
 07.40_H3 (Operación diaria)
 
-
 - rituales ejecutables
-
 
 - minibattles funcionando
 
-
 - batón actualizado por sesión
-
 
 - gating respetado
 
-
-
-
-
 07.50_H4 (Coding asistido)
-
 
 - ciclos PLAN/APPLY/VALIDATE/LOG aplicados a cambios reales
 
-
 - evidencia consistente
-
 
 - scope y app_scope mantenidos por proyecto
 
-
-
-
-
 07.60_H5 (Calidad y seguridad)
-
 
 - secret hygiene (secretos fuera del repo)
 
-
 - quarantine efectiva
-
 
 - validadores allowlisted
 
-
 - incident/trobule handling mínimo
-
-
-
-
 
 07.70_H6 (Continuidad y escala)
 
-
 - handoff package estándar
-
 
 - migración de chat sin pérdida
 
-
 - actualización controlada de TL.Bootstrap (cuando corresponde)
 
-
-
-
-
 ==========
-
-
 08.00_DECISIONES_DRAFT_VS_CANON
-
-
 ==========
-
-
-
-
 
 08.10_DRAFT
 
-
 - decisión en exploración; puede cambiar.
 
-
 - debe registrar:
-
-
   - supuestos,
-
-
   - por qué,
-
-
   - evidencia parcial.
-
-
-
-
 
 08.20_CANON
 
-
 - decisión cerrada oficialmente por humano.
 
-
 - requiere:
-
-
   - cabos sueltos resueltos,
-
-
   - validación mínima,
-
-
   - evidencia,
-
-
   - congelamiento (no editar directo; hotfix por branch).
 
-
-
-
-
 ==========
-
-
 09.00_INTEGRACION_CON_RADAR_BATON_CIS
-
-
 ==========
-
-
-
-
 
 09.10_RADAR (foto/delta)
 
-
 - PF.0 exige:
-
-
   - RADAR_LITE pre/post APPLY (delta).
 
-
 - RADAR_CORE se usa cuando:
-
-
   - la IA necesita “comprensión completa de la aplicación”,
-
-
   - con APP_SCOPE actualizado por proyecto.
-
-
-
-
 
 09.20_BATON (continuidad)
 
-
 - PF.0 exige:
-
-
   - BATON actualizado al cierre,
-
-
   - y antes/después de APPLY significativo si se requiere trazabilidad.
-
-
-
-
 
 09.30_CIS (contratos de cambio)
 
-
 - PF.0 no redefine CIS.
 
-
 - PF.0 exige que cambios aplicados estén declarados de forma explícita:
-
-
   - operaciones claras,
-
-
   - scope claro,
-
-
   - evidencia clara.
 
-
-
-
-
 ==========
-
-
 10.00_STACK_DISCOVERY_BY_ITERATION
-
-
 ==========
-
-
-
-
 
 10.10_PRINCIPIO
 
-
 - No se define stack “por religión”.
 
-
 - Se define por:
-
-
   - requisitos del proyecto,
-
-
   - constraints,
-
-
   - y evidencia (smoke tests, complejidad, costos, riesgos).
-
-
-
-
 
 10.20_INSTANCIA_DE_ITERACION (ARTEFACTO)
 
-
 - Por proyecto, la IA debe crear y mantener:
-
-
   STACK.ITERATION.LOG.txt (nombre referencial)
 
-
 con:
-
-
   - hipótesis de stack/setup,
-
-
   - comandos run/test,
-
-
   - resultados de validación,
-
-
   - decisiones DRAFT/CANON,
-
-
   - riesgos y mitigaciones.
-
-
-
-
 
 10.30_CIERRE
 
-
 - Cuando el stack/setup queda estable:
-
-
   - promover decisión a CANON (humano),
-
-
   - registrar en BATON,
-
-
   - actualizar APP_SCOPE y validadores.
 
-
-
-
-
 ==========
-
-
 11.00_PLANTILLAS_(TEMPLATES)_PF0
-
-
 ==========
-
-
-
-
 
 11.10_TEMPLATE_MINIBATTLE
-
-
 MB_ID.............: <MB_ID>
-
-
 TIPO..............: <MB.DOC / MB.TOOL / MB.CODE / MB.DEBUG / MB.AUDIT>
-
-
 OBJETIVO..........: <texto>
-
-
 SCOPE.............: <paths/módulo>
-
-
 MODO..............: <PLAN_ONLY / APPLY_APPROVED (requiere gate)>
-
-
 PLAN..............:
-
-
   1) ...
-
-
   2) ...
-
 
 OUTPUT............: <artefacto>
 
-
 VALIDACION.........: <comando/log>
-
 
 EVIDENCIA.........: <log/commit/radar>
 
-
 RIESGO_PRINCIPAL..: <1 línea>
-
 
 ESTADO............: <OPEN/DONE/BLOCKED>
 
-
 NOTAS.............: <opcional>
-
-
-
-
 
 11.20_TEMPLATE_START_RITUAL
 
@@ -1243,280 +913,122 @@ NOTAS.............: <opcional>
   - Confirmar APP_SCOPE si habrá CORE
 
 
-
-
-
 11.30_TEMPLATE_END_RITUAL
-
 
 - Actualizar BATON
 
-
 - Guardar evidencia (logs/commits)
-
 
 - Confirmar RADAR_LITE post-APPLY
 
-
 - Decidir TL.Bootstrap update
-
 
 - Preparar handoff si aplica
 
-
-
-
-
 ==========
-
-
 12.00_CONTROLES_DE_FRICCION
-
-
 ==========
-
-
-
 
 
 12.10_REGLA_80_20
 
-
 - No perfeccionar 20 documentos por un cambio menor.
 
-
 - Usar:
-
-
   - single-edit canon,
-
-
   - derivación FULL por SYNC,
-
-
   - y runner para actualizar derivados.
-
-
-
-
 
 12.20_SINCRONIZACION_(DERIVED_FULL)
 
-
 - Secciones duplicadas en HUMAN se mantienen por SYNC (no a mano).
-
 
 - Esto preserva “ultra detallado” sin “trabajo manual infernal”.
 
-
-
-
-
 12.30_MAXIMO_DE_PASOS_MANUALES_POR_CAMBIO
 
-
 - Por defecto:
-
-
   - 1 edición canónica
-
-
   - 1 ejecución runner (sync)
-
-
   - 1 validación mínima
-
-
   - 1 update baton
-
-
   - 1 commit
-
 
 Si supera eso sistemáticamente, el sistema está mal diseñado.
 
-
-
-
-
 ==========
-
-
 13.00_RIESGOS_TIPICOS_Y_MITIGACIONES
-
-
 ==========
-
-
-
-
 
 13.10_RIESGO: BUROCRACIA
 
-
 Mitigación:
-
-
 - limitar pasos manuales (12.30)
-
-
 - automatizar derivación (SYNC)
-
-
-
-
 
 13.20_RIESGO: DRIFT ENTRE ARCHIVOS
 
-
 Mitigación:
-
-
 - single-edit canon + derivación FULL
-
-
-
-
 
 13.30_RIESGO: IA CONFUNDE APP_SCOPE
 
-
 Mitigación:
-
-
 - APP_SCOPE explícito por proyecto, actualizado en BATON y en archivo dedicado.
 
-
-
-
-
 ==========
-
-
 14.00_REGLAS_DE_DERIVACION_FULL-COPY_(SYNC_READINESS)
-
-
 ==========
-
-
-
-
 
 14.10_OBJETIVO
-
-
 - Permitir que secciones completas se repliquen entre HUMAN sin edición manual.
-
 
 - Preservar “ultra detallado” y consistencia.
 
-
-
-
-
 14.20_MARCADORES_RECOMENDADOS
 
-
 Inicio:
-
-
 <<<DERIVED_BEGIN ID=<DERIVED_BLOCK_ID> SOURCE=<SOURCE_DOC_ID>::<SOURCE_WBS> MODE=FULL>>>
 
-
 Fin:
-
-
 <<<DERIVED_END ID=<DERIVED_BLOCK_ID>>>
 
-
-
-
-
 14.30_REGLA
-
-
 - El contenido entre marcadores se reemplaza desde la fuente canónica.
-
-
 - Si se requiere edición, se edita la fuente (archivo dueño del dominio).
-
-
-
-
 
 14.40_OVERRIDE_EXCEPCIONAL
 
-
 - MODE=OVERRIDE bloquea reemplazo automático y obliga a resolución manual.
-
 
 - El runner debe loguear overrides como “DIRTY”.
 
-
-
-
-
 ==========
-
-
 15.00_CHECKLIST_PF0
-
-
 ==========
-
-
-
-
 
 [ ] Start Ritual definido y ejecutable
 
-
 [ ] End Ritual definido y ejecutable
-
 
 [ ] Plantilla MiniBattle existe
 
-
 [ ] MVP.HIA P0/P1/P2 definido
-
 
 [ ] DoD H0–H6 definido
 
-
 [ ] Gates (PLAN_ONLY/APPLY) claros
-
 
 [ ] Evidencia mínima definida
 
-
 [ ] Derivación FULL lista (marcadores y reglas)
-
 
 [ ] Reglas de fricción (pasos manuales máximos) definidas
 
-
-
-
-
 ==========
-
-
 16.00_CHANGELOG
-
-
 ==========
-
-
-
-
 
 2026-02-27, v1.0-DRAFT
 
-
 - Creación inicial del dominio PF.0 como Operating Model mínimo de HIA.
-
-
-
-
-
-

@@ -292,6 +292,29 @@ Nota:
 09.20 02.0_HUMAN.OPERATION.txt puede seguir existiendo como guía operativa general, pero este archivo manda para ejecución práctica.
 09.30 Si en el futuro se reduce cantidad de HUMAN, este archivo es candidato a absorber más operación y reemplazar duplicidades.
 
+09.50 DRAGNDROP EN GIT (RELEASE ARTIFACT)
+09.50.01 Decisión canónica
+- DragnDrop\PhaseX\ se versiona en git como release artifact.
+
+09.50.02 Regla de oro
+- Prohibido editar DragnDrop a mano. Si cambia, es porque se regeneró por trigger.
+
+09.50.03 Flujo release (orden exacto)
+1) Ejecutar trigger PhaseX:
+   - debe terminar con:
+     - PASS (tester)
+     - PHASE_DONE: PhaseX
+2) Verificar DragnDrop\PhaseX\ (archivos requeridos presentes).
+3) git status (revisar cambios).
+4) git add -A
+5) git commit -m "<mensaje>"
+6) git push
+
+09.50.04 DoD (Definition of Done)
+- Un release se considera DONE solo si:
+  - trigger PASS + PHASE_DONE
+  - commit + push completados
+
 ==========
 10.00_CHANGELOG
 ==========
