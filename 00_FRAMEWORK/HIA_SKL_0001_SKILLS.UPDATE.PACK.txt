@@ -1,0 +1,64 @@
+HIA_SKL_0001_SKILLS.UPDATE.PACK.txt
+DATE......: 2026-03-08
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION...: v1.0-DRAFT
+ID_UNICO..: HIA.SKL.UPDATE.0001
+
+01.00_OBJETIVO
+- Consolidar aprendizajes “reusables” de HIA (DragnDrop + Triggers/Tools + Validación determinista).
+- Este archivo se copia/integra al repositorio de skills del usuario (fuera de HIA).
+- NO inventa contexto: solo codifica patrones ya observados en HIA.
+
+02.00_SKILL_001_DRAGNDROP_BUILD_PATTERN
+02.01 Qué es
+- Patrón “generated-only package” DragnDrop\<Phase>\ construido desde HUMAN.README + 00_FRAMEWORK.
+- Limpia destino y regenera. Nunca se edita manualmente DragnDrop.
+
+02.02 Reglas duras
+- Fuente de verdad: HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt (DD_COPY_ENTRY_ID blocks).
+- README generado debe contener strings literales: PHASE, INCLUDE_RADAR, GENERATED-ONLY, PROHIBIDO EDITAR A MANO, CLOUD_CONTRACT.
+
+02.03 Anti-bugs
+- Evitar parsing frágil por ":" + nuevas líneas: siempre Trim y split por CRLF.
+- Nunca tratar BATON como opcional si la gobernanza lo declara requerido.
+
+03.00_SKILL_002_VALIDACION_DETERMINISTA
+03.01 Qué valida
+- Existencia de carpeta
+- Required files existen + tamaño > 0
+- README menciona cada requerido
+- README contiene literales base
+- Radar toggle coherente
+
+03.02 Qué NO valida (a propósito)
+- No interpreta semántica ni “calidad conceptual”
+- No hace heurísticas
+- No inventa nuevos criterios
+
+04.00_SKILL_003_WRAPPER_TRIGGERS
+04.01 Regla
+- 05_Triggers/* = interfaz peatón, orchestration mínima
+- 02_TOOLS/* = implementación canónica, lógica real
+
+04.02 Output esperado
+- Logs con prefijo [HIA_TRI_xxxx] y pasos 1/2 build, 2/2 test
+- Si pasa: imprime PHASE_DONE: <Phase>
+
+05.00_SKILL_004_GIT_CHECKPOINT_RESILIENCE
+05.01 Problema observado
+- Scripts interactivos fallan por Message vacío.
+
+05.02 Solución
+- Mensaje opcional + fallback CHKPT: AUTO <timestamp>
+
+06.00_SKILL_005_PHASE1_STRUCTURE_GATE
+06.01 Decisión
+- “estructura se exige en Phase1”.
+
+06.02 Recomendación operativa
+- Estándar por proyecto:
+  04_PROJECTS\<PRJ>\00.0_PROJECT.STRUCTURE.txt
+- Validación:
+  - WARN si no hay proyectos aún
+  - FAIL si hay proyectos y falta estructura

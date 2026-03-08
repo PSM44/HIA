@@ -115,6 +115,44 @@ try {
   $warnCount = 0
   $failCount = 0
 
+  # ---- Phase1 Gate: Project Structure Spec (documental, determinista) ----
+  # Regla: si existen proyectos reales en 04_PROJECTS, cada uno debe tener 00.0_PROJECT.STRUCTURE.txt
+  $projectsRoot = Join-Path $ProjectRoot "04_PROJECTS"
+
+  if (-not (Test-Path -LiteralPath $projectsRoot)) {
+    Log "STRUCTURE_GATE: 04_PROJECTS no existe (skip)" "WARN"
+    $log.Add(("[{0}][WARN] STRUCTURE_GATE: 04_PROJECTS no existe (skip)" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")))
+    $warnCount++
+  } else {
+    $projDirs = Get-ChildItem -LiteralPath $projectsRoot -Directory -Force -ErrorAction SilentlyContinue
+    if (-not $projDirs -or $projDirs.Count -eq 0) {
+      Log "STRUCTURE_GATE: sin proyectos en 04_PROJECTS (skip)" "WARN"
+      $log.Add(("[{0}][WARN] STRUCTURE_GATE: sin proyectos en 04_PROJECTS (skip)" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")))
+      $warnCount++
+    } else {
+      foreach($d in $projDirs) {
+        $spec = Join-Path $d.FullName "00.0_PROJECT.STRUCTURE.txt"
+        if (-not (Test-Path -LiteralPath $spec)) {
+          Log ("STRUCTURE_GATE_FAIL: falta 00.0_PROJECT.STRUCTURE.txt project={0}" -f $d.Name) "ERROR"
+          $log.Add(("[{0}][ERROR] STRUCTURE_GATE_FAIL: project={1} missing=00.0_PROJECT.STRUCTURE.txt" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss"), $d.Name))
+          $failCount++
+          continue
+        }
+
+        $len = (Get-Item -LiteralPath $spec).Length
+        if ($len -le 0) {
+          Log ("STRUCTURE_GATE_FAIL: spec vacío project={0}" -f $d.Name) "ERROR"
+          $log.Add(("[{0}][ERROR] STRUCTURE_GATE_FAIL: project={1} spec_empty" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss"), $d.Name))
+          $failCount++
+          continue
+        }
+
+        Log ("STRUCTURE_GATE_OK: project={0} bytes={1}" -f $d.Name,$len)
+        $log.Add(("[{0}][INFO] STRUCTURE_GATE_OK: project={1} bytes={2}" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss"), $d.Name, $len))
+      }
+    }
+  }
+
   $validators = @(
     @{ Name="Test-HIAFileContentRecursive"; Path="02_TOOLS\HIA_TOL_0007_Test-HIAFileContentRecursive.ps1" }
   )
@@ -143,6 +181,41 @@ try {
       Log "VALIDATOR_EXIT_FAIL Name=$name ExitCode=$exit" "ERROR"
       $log.Add(("[{0}][ERROR] VALIDATOR_EXIT_FAIL Name={1} ExitCode={2}" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss"), $name, $exit))
       $failCount++
+    }
+  }
+
+    # ---- Phase1 Gate: Project Structure Spec (documental, determinista) ----
+  # Regla: si existen proyectos reales en 04_PROJECTS, cada uno debe tener 00.0_PROJECT.STRUCTURE.txt
+  $projectsRoot = Join-Path $ProjectRoot "04_PROJECTS"
+  if (-not (Test-Path -LiteralPath $projectsRoot)) {
+    Log "STRUCTURE_GATE: 04_PROJECTS no existe (skip)" "WARN"
+    $log.Add(("[{0}][WARN] STRUCTURE_GATE: 04_PROJECTS no existe (skip)" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")))
+    $warnCount++
+  } else {
+    $projDirs = Get-ChildItem -LiteralPath $projectsRoot -Directory -Force -ErrorAction SilentlyContinue
+    if (-not $projDirs -or $projDirs.Count -eq 0) {
+      Log "STRUCTURE_GATE: sin proyectos en 04_PROJECTS (skip)" "WARN"
+      $log.Add(("[{0}][WARN] STRUCTURE_GATE: sin proyectos en 04_PROJECTS (skip)" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")))
+      $warnCount++
+    } else {
+      foreach($d in $projDirs) {
+        $spec = Join-Path $d.FullName "00.0_PROJECT.STRUCTURE.txt"
+        if (-not (Test-Path -LiteralPath $spec)) {
+          Log ("STRUCTURE_GATE_FAIL: falta 00.0_PROJECT.STRUCTURE.txt en proyecto={0}" -f $d.Name) "ERROR"
+          $log.Add(("[{0}][ERROR] STRUCTURE_GATE_FAIL: project={1} missing=00.0_PROJECT.STRUCTURE.txt" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss"), $d.Name))
+          $failCount++
+        } else {
+          $len = (Get-Item -LiteralPath $spec).Length
+          if ($len -le 0) {
+            Log ("STRUCTURE_GATE_FAIL: spec vacío project={0}" -f $d.Name) "ERROR"
+            $log.Add(("[{0}][ERROR] STRUCTURE_GATE_FAIL: project={1} spec_empty" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss"), $d.Name))
+            $failCount++
+          } else {
+            Log ("STRUCTURE_GATE_OK: project={0} bytes={1}" -f $d.Name,$len)
+            $log.Add(("[{0}][INFO] STRUCTURE_GATE_OK: project={1} bytes={2}" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss"), $d.Name, $len))
+          }
+        }
+      }
     }
   }
 

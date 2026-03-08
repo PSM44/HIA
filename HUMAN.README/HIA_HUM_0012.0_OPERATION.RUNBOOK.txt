@@ -139,6 +139,65 @@ Ejemplos:
 - Si cambias HUMAN y no regeneras, DragnDrop queda con drift.
 - Si haces commit antes del smoke test, versionas basura.
 
+04.30 DECISION_CANON (MVP1) — Estructura exigida en Phase1
+04.30.01 Qué se decidió
+- HIA debe exigir definición de ESTRUCTURA INICIAL del proyecto en Phase1 (Project Bootstrap).
+- Sin estructura + política de IDs => Phase1 NO se cierra (anti “cierres falsos”).
+
+04.30.02 Por qué
+- Si no existe estructura explícita, el peatón improvisa y la IA deriva (carpetas inventadas / nombres inconsistentes / RADAR incoherente).
+- El costo de “arreglar después” es mayor que el costo de definir una base mínima en Phase1.
+
+04.40 PLANTILLA MVP1 — Estructura tipo para PROYECTOS (NO para este repo HIA)
+04.40.01 Regla de alcance
+- Esta estructura aplica al proyecto que HIA ayuda a desarrollar (cliente / repo objetivo).
+- El repo HIA mantiene su estructura actual hasta MVP2 (ver deuda técnica).
+
+04.40.02 Root baseline (transversal)
+- 00_FRAMEWORK\
+- HUMAN.README\                     (se renombrará en MVP2; hoy se mantiene)
+- 02_TOOLS\
+- 04_PROJECTS\                      (si el proyecto requiere multi-proyecto; si no, se omite)
+- 05_TRIGGERS\
+- DragnDrop\
+
+04.40.03 Root baseline (NN_* para operación) — MVP1
+- NN_Logs\
+- NN_Radar\
+- NN_Raw\
+- NN_Import\
+- NN_Export\
+- NN_Reports\
+- NN_History\
+- NN_DeadHistory\
+
+Notas:
+- NN_* son carpetas “operacionales” (artefactos, evidencia, basura controlada).
+- Se prefieren en root (tu criterio), no dentro de 03_ARTIFACTS.
+
+04.40.04 Archivos transversales (baseline)
+- RADAR.ps1 (canónico)
+- RADAR.DEV.ps1 (no-canon)
+- HUMAN.* (los HUMAN canónicos definidos por HIA)
+
+04.50 POLÍTICA DE IDs — MVP1
+04.50.01 ID visible (humano)
+- Mantener nombres estilo WBS/código (ej: HIA_TOL_0021..., 09.0_HUMAN..., etc.)
+- Mejora posterior (MVP2): renames más breves pero SIN romper trazabilidad.
+
+04.50.02 ID interno (IA)
+- Archivos: metadata interna (ID_UNICO, VERSION, etc.)
+- Carpetas: registry único (archivo único), NO “propiedades OS”, NO “un archivo por carpeta”.
+
+04.90 DEUDA_TECNICA MVP2 (NO hacer ahora)
+04.90.01 Migración de estructura HIA (este repo)
+- Migrar: 03_ARTIFACTS\* → NN_* en root
+- Ajustar scripts/paths/denylist/allowlist para reflejar el nuevo layout
+
+04.90.02 Renames breves (sin perder trazabilidad)
+- Definir nomenclatura breve + mapeo canónico (alias/compat layer)
+- Ejecutar migración por scripts + RADAR delta + validadores, no manual.
+
 ==========
 05.00_COMANDOS_EXACTOS_POR_PHASE
 ==========
@@ -314,6 +373,46 @@ Nota:
 - Un release se considera DONE solo si:
   - trigger PASS + PHASE_DONE
   - commit + push completados
+
+==========
+F.00_NEXT_ACTION_(HIA-ONLY)
+==========
+
+F.00.10 Objetivo
+- Ejecutar “higiene operativa” antes de cualquier caso real:
+  (1) validar DragnDrop (todas las phases),
+  (2) generar RADAR (canónico + dev),
+  (3) dejar evidencia lista,
+  (4) recién después: Git checkpoint/push.
+
+F.00.20 Orden recomendado (determinista)
+1) Build + Test DragnDrop (todas las phases)
+   - pwsh -NoProfile -File .\05_Triggers\HIA_TRI_0001_Build-DragnDropPhase0.ps1
+   - pwsh -NoProfile -File .\05_Triggers\HIA_TRI_0002_Build-DragnDropPhase1.ps1
+   - pwsh -NoProfile -File .\05_Triggers\HIA_TRI_0003_Build-DragnDropPhase2.ps1
+   - pwsh -NoProfile -File .\05_Triggers\HIA_TRI_0004_Build-DragnDropPhase3_1.ps1
+   - pwsh -NoProfile -File .\05_Triggers\HIA_TRI_0005_Build-DragnDropPhase3_2.ps1
+   - Criterio PASS: cada trigger debe terminar con “PHASE_DONE: <PhaseX>”.
+
+2) Generar RADAR (canónico)
+   - pwsh -NoProfile -File .\02_TOOLS\RADAR.ps1
+   - Criterio PASS: imprime “OK: RADAR HIA generado correctamente.” y lista outputs.
+
+3) Generar RADAR (dev / targets)
+   - pwsh -NoProfile -File .\02_TOOLS\RADAR.DEV.ps1
+   - Criterio PASS: termina “RUN_END OK”.
+
+4) (Opcional) Validadores adicionales (si aplica en tu repo)
+   - pwsh -NoProfile -File .\02_TOOLS\Invoke-HIAValidators.ps1 -ProjectRoot "."
+
+5) Recién ahora: Git checkpoint (si quieres evidencia pre-commit)
+   - pwsh -NoProfile -File .\02_TOOLS\HIA_TOL_0008_Invoke-HIAGitCheckpoint.ps1 -ProjectRoot "." -Message "CHKPT: <tu mensaje>"
+   - Nota: el parámetro Message NO puede ser vacío.
+
+F.00.30 Salida esperada (evidencia)
+- Logs generados en paths que declaren los tools/triggers.
+- RADAR actualizado (outputs recientes).
+- DragnDrop\PhaseX listo para adjuntar a IA cloud (sin Raw).
 
 ==========
 10.00_CHANGELOG

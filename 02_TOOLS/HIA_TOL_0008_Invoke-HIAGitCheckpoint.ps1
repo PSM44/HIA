@@ -28,8 +28,8 @@ param(
   [Parameter(Mandatory=$true)]
   [string]$ProjectRoot,
 
-  [Parameter(Mandatory=$true)]
-  [string]$Message,
+  [Parameter(Mandatory=$false)]
+  [string]$Message = "",
 
   [string]$Tag
 )
@@ -46,6 +46,14 @@ function Write-Log {
 # Normalize root defensively
 $ProjectRoot = ($ProjectRoot -as [string]).Trim().Trim('"').Trim("'") -replace "[`r`n]", ""
 if (-not (Test-Path -LiteralPath $ProjectRoot)) { throw "ProjectRoot no existe: [$ProjectRoot]" }
+
+# Normalize Message (peatón-proof: evita fallo por string vacío)
+$Message = ($Message -as [string])
+if ($null -eq $Message) { $Message = "" }
+$Message = $Message.Trim()
+if ([string]::IsNullOrWhiteSpace($Message)) {
+  $Message = "CHKPT: AUTO " + (Get-Date).ToString("yyyyMMdd_HHmmss")
+}
 
 $git = Get-Command git -ErrorAction SilentlyContinue
 if (-not $git) { throw "Git no encontrado en PATH." }

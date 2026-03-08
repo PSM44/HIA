@@ -641,10 +641,26 @@ Outputs mínimos:
 08.20 Checklist Fase 1 (F1)
 Inputs mínimos:
 - BATON + CIS + PF0 (+ SYNC si usas DERIVED)
-Outputs mínimos:
-- Política gates/adjuntos/costos
-- Checklist OK/FAIL
+Outputs mínimos (MVP1):
+- Política gates/adjuntos/costos (operacional, no poesía)
+- Checklist OK/FAIL (binario)
+- DEFINICIÓN DE ESTRUCTURA DE PROYECTO (OBLIGATORIA):
+  - Se define una estructura INICIAL (no definitiva) acorde al tipo de proyecto.
+  - Se declaran carpetas/archivos TRANSVERSALES (baseline) vs “extensiones por tipo”.
+  - Se declara qué se considera “Root transversal” (pocas reglas, alta claridad).
+- POLÍTICA DE IDs (OBLIGATORIA):
+  - ID visible (corto) para orientación humana (nombres de carpetas/archivos).
+  - ID interno (rico) para orientación IA (en archivos como metadata; en carpetas vía registry único, NO por propiedades OS).
+- RADAR y RADAR.DEV (DEFINICIÓN MÍNIMA):
+  - RADAR.ps1 = canónico (outputs activos).
+  - RADAR.DEV.ps1 = no-canon (debug), no rompe contract de outputs.
 - MB de ajuste/método (si aplica)
+- Registro de decisiones:
+  - DECISION: “estructura se exige en Phase1”
+  - DEUDA MVP2: “migrar 03_ARTIFACTS → NN_* root + renames breves”
+
+NOTA:
+- Si no existe definición de estructura + política de IDs => Phase1 NO se puede cerrar.
 
 08.30 Checklist Fase 2 (F2)
 Inputs mínimos:
