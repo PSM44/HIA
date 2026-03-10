@@ -120,15 +120,17 @@ try {
   $projectsRoot = Join-Path $ProjectRoot "04_PROJECTS"
 
   if (-not (Test-Path -LiteralPath $projectsRoot)) {
-    Log "STRUCTURE_GATE: 04_PROJECTS no existe (skip)" "WARN"
+    Log "STRUCTURE_GATE: 04_PROJECTS no existe (skip)" "INFO"
+$log.Add(("[{0}][INFO] STRUCTURE_GATE: 04_PROJECTS no existe (skip)" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")))
+# Nota: no incrementa warnCount (skip no es warning)
     $log.Add(("[{0}][WARN] STRUCTURE_GATE: 04_PROJECTS no existe (skip)" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")))
     $warnCount++
   } else {
     $projDirs = Get-ChildItem -LiteralPath $projectsRoot -Directory -Force -ErrorAction SilentlyContinue
     if (-not $projDirs -or $projDirs.Count -eq 0) {
-      Log "STRUCTURE_GATE: sin proyectos en 04_PROJECTS (skip)" "WARN"
-      $log.Add(("[{0}][WARN] STRUCTURE_GATE: sin proyectos en 04_PROJECTS (skip)" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")))
-      $warnCount++
+Log "STRUCTURE_GATE: sin proyectos en 04_PROJECTS (skip)" "INFO"
+$log.Add(("[{0}][INFO] STRUCTURE_GATE: sin proyectos en 04_PROJECTS (skip)" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")))
+# Nota: skip no incrementa warnCount (en CANON WARN=>FAIL)
     } else {
       foreach($d in $projDirs) {
         $spec = Join-Path $d.FullName "00.0_PROJECT.STRUCTURE.txt"
@@ -188,15 +190,17 @@ try {
   # Regla: si existen proyectos reales en 04_PROJECTS, cada uno debe tener 00.0_PROJECT.STRUCTURE.txt
   $projectsRoot = Join-Path $ProjectRoot "04_PROJECTS"
   if (-not (Test-Path -LiteralPath $projectsRoot)) {
-    Log "STRUCTURE_GATE: 04_PROJECTS no existe (skip)" "WARN"
+    Log "STRUCTURE_GATE: 04_PROJECTS no existe (skip)" "INFO"
+$log.Add(("[{0}][INFO] STRUCTURE_GATE: 04_PROJECTS no existe (skip)" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")))
+# Nota: no incrementa warnCount (skip no es warning)
     $log.Add(("[{0}][WARN] STRUCTURE_GATE: 04_PROJECTS no existe (skip)" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")))
     $warnCount++
   } else {
     $projDirs = Get-ChildItem -LiteralPath $projectsRoot -Directory -Force -ErrorAction SilentlyContinue
     if (-not $projDirs -or $projDirs.Count -eq 0) {
-      Log "STRUCTURE_GATE: sin proyectos en 04_PROJECTS (skip)" "WARN"
-      $log.Add(("[{0}][WARN] STRUCTURE_GATE: sin proyectos en 04_PROJECTS (skip)" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")))
-      $warnCount++
+Log "STRUCTURE_GATE: sin proyectos en 04_PROJECTS (skip)" "INFO"
+$log.Add(("[{0}][INFO] STRUCTURE_GATE: sin proyectos en 04_PROJECTS (skip)" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")))
+# Nota: skip no incrementa warnCount (en CANON WARN=>FAIL)
     } else {
       foreach($d in $projDirs) {
         $spec = Join-Path $d.FullName "00.0_PROJECT.STRUCTURE.txt"

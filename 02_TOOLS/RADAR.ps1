@@ -1,526 +1,803 @@
 <#
-==========
-00.00_METADATOS_DEL_DOCUMENTO
-==========
+========================================================================
+00.00_METADATOS_DEL_SCRIPT
+========================================================================
 
-ID_UNICO..........: HIA.TOOL.PS1.0004
+ID_UNICO..........: HIA.TOOL.RADAR.0001
 NOMBRE_SUGERIDO...: RADAR.ps1
-VERSION...........: v2.1-DRAFT
-FECHA.............: 2026-02-28
+VERSION...........: v3.1-DRAFT
+FECHA.............: 2026-03-10
 HORA..............: HH:MM (America/Santiago)
-CIUDAD............: <CIUDAD>, <PAIS>
-UBICACION_SISTEMA.: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\02_TOOLS\
+CIUDAD............: Santiago, Chile
+UBICACION_SISTEMA.: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\02_TOOLS\RADAR.ps1
 AUTOR_HUMANO......: PABLO (ADMIN)
-AUTOR_IA..........: GPT-5.2 Thinking
+AUTOR_IA..........: GPT-5.4 Thinking
 
-REGLAS_CRITICAS (P0):
-- EXCLUSIONES ABSOLUTAS (CORE/LITE/INDEX/FULL no deben considerar):
-  - \Raw\
-  - \03_ARTIFACTS\LOGS\
-  - \03_ARTIFACTS\RADAR\old\
-  - \03_ARTIFACTS\DeadHistory\
-  Nota: Se implementa excluyendo TODO \03_ARTIFACTS\ y TODO \Raw\.
-- LITE determinista: baseline = copia del INDEX ACTIVE anterior, tomado al inicio del run.
-- Parser LITE NO debe tragarse headers (EXCLUDED_CONTAINS contiene '|').
+OBJETIVO
+- Generar el RADAR canónico de HIA.
+- Producir solamente:
+  1) Radar.Index.ACTIVE.txt
+  2) Radar.Core.ACTIVE.txt
+  3) Radar.Lite.ACTIVE.txt
+- No generar FULL canónico.
+- No truncar contenido fuente en CORE.
+- No usar Get-ChildItem -Recurse.
 
-COMO_EJECUTAR:
+COMO_EJECUTAR
 pwsh -NoProfile -File .\02_TOOLS\RADAR.ps1
+pwsh -NoProfile -File .\02_TOOLS\RADAR.ps1 -RootPath "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA"
+
+NOTAS DURAS
+- RADAR.ps1 = runner canónico.
+- RADAR.DEV.ps1 = laboratorio.
+- Este script observa y copia. No corrige, no decide y no aplica cambios.
 #>
 
 [CmdletBinding()]
 param(
-  [Parameter(Mandatory = $false)]
-  [string] $RootPath = $null,
+    [Parameter(Mandatory = $false)]
+    [string]$RootPath = $null,
 
-  [Parameter(Mandatory = $false)]
-  [ValidateSet("None","Text","All")]
-  [string] $HashMode = "Text",
+    [Parameter(Mandatory = $false)]
+    [string]$RadarOutDirRel = "03_ARTIFACTS\RADAR",
 
-  [Parameter(Mandatory = $false)]
-  [int] $MaxCoreFileBytes = 2097152,
+    [Parameter(Mandatory = $false)]
+    [ValidateSet("None", "Text", "All")]
+    [string]$HashMode = "Text",
 
-  [Parameter(Mandatory = $false)]
-  [int] $MaxActiveBytes = (8 * 1024 * 1024)
+    [Parameter(Mandatory = $false)]
+    [long]$MaxOutputBytes = 8388608
 )
-
-# Default RootPath: 1 nivel arriba de 02_TOOLS (PROJECT_ROOT)
-if (-not $RootPath) {
-  try {
-    $RootPath = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-  } catch {
-    throw "No se pudo resolver RootPath desde PSScriptRoot. Pasa -RootPath explícito. Error=$($_.Exception.Message)"
-  }
-}
-
-if ($RootPath -match '<PROJECT_ROOT>' -or $RootPath -match '^\s*<.*>\s*$') {
-  throw "RootPath contiene placeholder '<PROJECT_ROOT>'. Reemplázalo por ruta real (ej: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA)."
-}
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-function Test-EnsureDirectory([string]$Path) {
-  if (-not (Test-Path -Path $Path)) {
-    New-Item -ItemType Directory -Path $Path -Force | Out-Null
-  }
+# ========================================================================
+# 01.00_FUNCIONES_BASE
+# ========================================================================
+
+function Get-RunStamp {
+    return (Get-Date -Format "yyyyMMdd_HHmmss")
 }
 
-function Get-NowStamp { (Get-Date -Format "yyyyMMdd_HHmmss") }
+function New-DirectoryIfMissing {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path
+    )
 
-function Convert-ToRelativePath([string]$Root,[string]$Full) {
-  $rootFull = [System.IO.Path]::GetFullPath($Root).TrimEnd('\')
-  $fullNorm = [System.IO.Path]::GetFullPath($Full)
-  if ($fullNorm.StartsWith($rootFull, [System.StringComparison]::OrdinalIgnoreCase)) {
-    return $fullNorm.Substring($rootFull.Length).TrimStart('\')
-  }
-  return $Full
+    if (-not [System.IO.Directory]::Exists($Path)) {
+        [void][System.IO.Directory]::CreateDirectory($Path)
+    }
 }
 
-function Get-Sha256Hex([string]$Path) {
-  $sha = [System.Security.Cryptography.SHA256]::Create()
-  try {
-    $fs = [System.IO.File]::Open($Path, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
+function Get-FullPathSafe {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path
+    )
+
+    return [System.IO.Path]::GetFullPath($Path)
+}
+
+function Get-RelativePathSafe {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$RootPath,
+        [Parameter(Mandatory = $true)]
+        [string]$FullPath
+    )
+
+    $root = (Get-FullPathSafe -Path $RootPath).TrimEnd('\')
+    $full = Get-FullPathSafe -Path $FullPath
+
+    if ($full.StartsWith($root, [System.StringComparison]::OrdinalIgnoreCase)) {
+        return $full.Substring($root.Length).TrimStart('\')
+    }
+
+    return $full
+}
+
+function Get-Sha256Hex {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path
+    )
+
+    $sha = [System.Security.Cryptography.SHA256]::Create()
+
     try {
-      $hash = $sha.ComputeHash($fs)
-      return ([BitConverter]::ToString($hash)).Replace("-","").ToLowerInvariant()
-    } finally { $fs.Dispose() }
-  } finally { $sha.Dispose() }
+        $fs = [System.IO.File]::Open($Path, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
+        try {
+            $hash = $sha.ComputeHash($fs)
+            return ([BitConverter]::ToString($hash)).Replace("-", "").ToLowerInvariant()
+        }
+        finally {
+            $fs.Dispose()
+        }
+    }
+    finally {
+        $sha.Dispose()
+    }
 }
 
-function Test-IsCoreEligibleExt([string]$ExtLower) {
-  $eligible = @(
-    ".txt",".md",".json",".yaml",".yml",".xml",".ini",".cfg",".conf",".toml",".env",
-    ".ps1",".psm1",".py",".js",".ts",".tsx",".jsx",".java",".cs",".go",".rs",".cpp",".c",".h",".hpp",
-    ".sql",".sh",".bat",".cmd",".rb",".php",".kt",".swift"
-  )
-  return ($eligible -contains $ExtLower)
+function Get-TextExtensionSet {
+    $set = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
+
+    @(
+        ".txt",".md",".json",".yaml",".yml",".xml",".ini",".cfg",".conf",".toml",".env",
+        ".ps1",".psm1",".psd1",
+        ".py",".js",".ts",".tsx",".jsx",".java",".cs",".go",".rs",".rb",".php",".sh",".bat",".cmd",
+        ".sql",".csv"
+    ) | ForEach-Object { [void]$set.Add($_) }
+
+    return $set
 }
 
-function Get-LogicalType([string]$ExtLower) {
-  if ($ExtLower -eq "") { return "no_ext" }
-  if (Test-IsCoreEligibleExt $ExtLower) { return "text" }
-  $bin = @(".exe",".dll",".png",".jpg",".jpeg",".webp",".gif",".pdf",".xlsx",".xls",".pptx",".docx",".zip",".7z",".rar",".bin")
-  if ($bin -contains $ExtLower) { return "binary" }
-  return "other"
+function Get-HashAllowlistNameSet {
+    $set = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
+
+    @(
+        ".gitignore",
+        ".gitattributes",
+        ".editorconfig",
+        ".npmrc",
+        ".yarnrc",
+        ".prettierrc",
+        ".eslintrc"
+    ) | ForEach-Object { [void]$set.Add($_) }
+
+    return $set
 }
 
-function Test-ShouldExcludePath([string]$FullPath, [string[]]$ExcludedContains) {
-  foreach ($p in $ExcludedContains) {
-    if ($FullPath -like ("*" + $p + "*")) { return $true }
-  }
-  return $false
+function Get-CoreIncludeRootSet {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectRoot
+    )
+
+    $roots = New-Object System.Collections.Generic.List[string]
+
+    $candidateRelPaths = @(
+        "HUMAN.README",
+        "02_TOOLS",
+        "BATON",
+        "BACKLOG",
+        "BACKLOGS",
+        "SKILLS",
+        "00_FRAMEWORK\BATON",
+        "00_FRAMEWORK\BACKLOG",
+        "00_FRAMEWORK\BACKLOGS"
+    )
+
+    foreach ($rel in $candidateRelPaths) {
+        $full = Join-Path $ProjectRoot $rel
+
+        if ([System.IO.Directory]::Exists($full)) {
+            $roots.Add((Get-FullPathSafe -Path $full)) | Out-Null
+        }
+        elseif ([System.IO.File]::Exists($full)) {
+            $roots.Add((Get-FullPathSafe -Path $full)) | Out-Null
+        }
+    }
+
+    $seen = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
+    $final = New-Object System.Collections.Generic.List[string]
+
+    foreach ($r in $roots) {
+        if ($seen.Add($r)) {
+            $final.Add($r) | Out-Null
+        }
+    }
+
+    return $final
 }
 
-function Move-IfExistsToOld([string]$Path,[string]$OldDir,[string]$Stamp) {
-  if (Test-Path -Path $Path) {
-    Test-EnsureDirectory $OldDir
+function Test-ExcludedPath {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$FullPath,
+        [Parameter(Mandatory = $true)]
+        [string[]]$ExcludedContains
+    )
+
+    $normalized = $FullPath.Replace('/', '\')
+
+    foreach ($frag in $ExcludedContains) {
+        if ($normalized.IndexOf($frag, [System.StringComparison]::OrdinalIgnoreCase) -ge 0) {
+            return $true
+        }
+    }
+
+    return $false
+}
+
+function Test-TextEligiblePath {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$FullPath,
+        [Parameter(Mandatory = $true)]
+        [System.Collections.Generic.HashSet[string]]$TextExtSet,
+        [Parameter(Mandatory = $true)]
+        [System.Collections.Generic.HashSet[string]]$AllowlistNameSet
+    )
+
+    $leaf = [System.IO.Path]::GetFileName($FullPath)
+
+    if ($AllowlistNameSet.Contains($leaf)) {
+        return $true
+    }
+
+    $ext = [System.IO.Path]::GetExtension($leaf)
+    if ([string]::IsNullOrWhiteSpace($ext)) {
+        return $false
+    }
+
+    return $TextExtSet.Contains($ext)
+}
+
+function Get-LogicalType {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$FullPath,
+        [Parameter(Mandatory = $true)]
+        [System.Collections.Generic.HashSet[string]]$TextExtSet,
+        [Parameter(Mandatory = $true)]
+        [System.Collections.Generic.HashSet[string]]$AllowlistNameSet
+    )
+
+    if (Test-TextEligiblePath -FullPath $FullPath -TextExtSet $TextExtSet -AllowlistNameSet $AllowlistNameSet) {
+        return "text"
+    }
+
+    $ext = [System.IO.Path]::GetExtension($FullPath)
+    if ([string]::IsNullOrWhiteSpace($ext)) {
+        return "no_ext"
+    }
+
+    $binaryLike = @(".exe",".dll",".png",".jpg",".jpeg",".webp",".gif",".pdf",".xlsx",".xls",".pptx",".docx",".zip",".7z",".rar",".bin")
+    if ($binaryLike -contains $ext.ToLowerInvariant()) {
+        return "binary"
+    }
+
+    return "other"
+}
+
+function Convert-BytesToText {
+    param(
+        [Parameter(Mandatory = $true)]
+        [byte[]]$Bytes
+    )
+
+    if ($Bytes.Length -ge 3 -and $Bytes[0] -eq 0xEF -and $Bytes[1] -eq 0xBB -and $Bytes[2] -eq 0xBF) {
+        return [System.Text.Encoding]::UTF8.GetString($Bytes, 3, $Bytes.Length - 3)
+    }
+    if ($Bytes.Length -ge 2 -and $Bytes[0] -eq 0xFF -and $Bytes[1] -eq 0xFE) {
+        return [System.Text.Encoding]::Unicode.GetString($Bytes, 2, $Bytes.Length - 2)
+    }
+    if ($Bytes.Length -ge 2 -and $Bytes[0] -eq 0xFE -and $Bytes[1] -eq 0xFF) {
+        return [System.Text.Encoding]::BigEndianUnicode.GetString($Bytes, 2, $Bytes.Length - 2)
+    }
+    if ($Bytes.Length -ge 4 -and $Bytes[0] -eq 0xFF -and $Bytes[1] -eq 0xFE -and $Bytes[2] -eq 0x00 -and $Bytes[3] -eq 0x00) {
+        return [System.Text.Encoding]::UTF32.GetString($Bytes, 4, $Bytes.Length - 4)
+    }
+
+    try {
+        return [System.Text.Encoding]::UTF8.GetString($Bytes)
+    }
+    catch {
+        return [System.Text.Encoding]::Default.GetString($Bytes)
+    }
+}
+
+function Get-FileTextSafe {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path
+    )
+
+    try {
+        $bytes = [System.IO.File]::ReadAllBytes($Path)
+        return Convert-BytesToText -Bytes $bytes
+    }
+    catch {
+        return "[READ_FAIL: " + $_.Exception.Message + "]"
+    }
+}
+
+function Get-FileEntryListDeterministic {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectRoot,
+        [Parameter(Mandatory = $true)]
+        [string[]]$ExcludedContains,
+        [Parameter(Mandatory = $true)]
+        [System.Collections.Generic.HashSet[string]]$TextExtSet,
+        [Parameter(Mandatory = $true)]
+        [System.Collections.Generic.HashSet[string]]$AllowlistNameSet,
+        [Parameter(Mandatory = $true)]
+        [string]$HashMode
+    )
+
+    $options = New-Object System.IO.EnumerationOptions
+    $options.RecurseSubdirectories = $true
+    $options.IgnoreInaccessible = $true
+    $options.ReturnSpecialDirectories = $false
+    $options.AttributesToSkip = [System.IO.FileAttributes]::ReparsePoint
+
+    $records = New-Object System.Collections.Generic.List[object]
+
+    foreach ($full in [System.IO.Directory]::EnumerateFiles($ProjectRoot, "*", $options)) {
+        if (Test-ExcludedPath -FullPath $full -ExcludedContains $ExcludedContains) {
+            continue
+        }
+
+        $info = [System.IO.FileInfo]::new($full)
+        $rel  = Get-RelativePathSafe -RootPath $ProjectRoot -FullPath $full
+        $ext  = $info.Extension.ToLowerInvariant()
+        $type = Get-LogicalType -FullPath $full -TextExtSet $TextExtSet -AllowlistNameSet $AllowlistNameSet
+
+        $sha = ""
+        if ($HashMode -eq "All") {
+            $sha = Get-Sha256Hex -Path $full
+        }
+        elseif ($HashMode -eq "Text" -and $type -eq "text") {
+            $sha = Get-Sha256Hex -Path $full
+        }
+
+        $records.Add([pscustomobject]@{
+            RelPath     = $rel
+            FullPath    = $full
+            Ext         = $ext
+            Type        = $type
+            Size        = [int64]$info.Length
+            ModifiedUtc = $info.LastWriteTimeUtc.ToString("o")
+            Sha256      = $sha
+        }) | Out-Null
+    }
+
+    return @($records.ToArray() | Sort-Object -Property RelPath)
+}
+
+function Write-SegmentedTextFile {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ActivePath,
+        [Parameter(Mandatory = $true)]
+        [string]$Content,
+        [Parameter(Mandatory = $true)]
+        [long]$MaxBytes
+    )
+
+    $utf8 = New-Object System.Text.UTF8Encoding($false)
+    $bytes = $utf8.GetBytes($Content)
+
+    if ($bytes.Length -le $MaxBytes) {
+        [System.IO.File]::WriteAllText($ActivePath, $Content, $utf8)
+        return @($ActivePath)
+    }
+
+    $dir = Split-Path -Parent $ActivePath
+    $base = [System.IO.Path]::GetFileNameWithoutExtension($ActivePath)
+    $ext  = [System.IO.Path]::GetExtension($ActivePath)
+
+    $segments = New-Object System.Collections.Generic.List[string]
+    $lines = $Content -split "`r?`n"
+    $builder = New-Object System.Text.StringBuilder
+    $segmentIndex = 1
+
+    foreach ($line in $lines) {
+        $candidate = if ($builder.Length -eq 0) { $line } else { $builder.ToString() + "`r`n" + $line }
+        $candidateBytes = $utf8.GetByteCount($candidate)
+
+        if ($candidateBytes -gt $MaxBytes -and $builder.Length -gt 0) {
+            $segPath = Join-Path $dir ($base + ".seg." + $segmentIndex.ToString("000") + $ext)
+            [System.IO.File]::WriteAllText($segPath, $builder.ToString(), $utf8)
+            $segments.Add($segPath) | Out-Null
+            $builder.Clear() | Out-Null
+            [void]$builder.Append($line)
+            $segmentIndex++
+        }
+        else {
+            $builder.Clear() | Out-Null
+            [void]$builder.Append($candidate)
+        }
+    }
+
+    if ($builder.Length -gt 0) {
+        $segPath = Join-Path $dir ($base + ".seg." + $segmentIndex.ToString("000") + $ext)
+        [System.IO.File]::WriteAllText($segPath, $builder.ToString(), $utf8)
+        $segments.Add($segPath) | Out-Null
+    }
+
+    $pointer = New-Object System.Collections.Generic.List[string]
+    $pointer.Add("RADAR_SEGMENTED_OUTPUT") | Out-Null
+    $pointer.Add("ACTIVE_FILE: " + $ActivePath) | Out-Null
+    $pointer.Add("SEGMENT_COUNT: " + $segments.Count) | Out-Null
+    $pointer.Add("SEGMENTS:") | Out-Null
+    foreach ($p in $segments) {
+        $pointer.Add(" - " + $p) | Out-Null
+    }
+
+    [System.IO.File]::WriteAllText($ActivePath, ($pointer -join "`r`n"), $utf8)
+    return @($ActivePath) + @($segments.ToArray())
+}
+
+function Move-ActiveFileToArchiveIfExists {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path,
+        [Parameter(Mandatory = $true)]
+        [string]$ArchiveDir,
+        [Parameter(Mandatory = $true)]
+        [string]$RunStamp
+    )
+
+    if (-not [System.IO.File]::Exists($Path)) {
+        return
+    }
+
+    New-DirectoryIfMissing -Path $ArchiveDir
+
     $name = [System.IO.Path]::GetFileName($Path)
-    $dst = Join-Path $OldDir ($name.Replace(".ACTIVE", ".$Stamp"))
-    Move-Item -Path $Path -Destination $dst -Force
-  }
+    $archivedName = $name.Replace(".ACTIVE", "." + $RunStamp)
+    $target = Join-Path $ArchiveDir $archivedName
+    [System.IO.File]::Move($Path, $target)
 }
 
-function Write-SegmentedFile([string]$PathActive,[string]$Content,[int]$MaxBytes) {
-  $bytes = [System.Text.Encoding]::UTF8.GetByteCount($Content)
-  if ($bytes -le $MaxBytes) {
-    Set-Content -Path $PathActive -Value $Content -NoNewline -Encoding UTF8
-    return @($PathActive)
-  }
+function Remove-LegacyRadarOutputs {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$RadarDir
+    )
 
-  $dir = Split-Path -Parent $PathActive
-  $base = [System.IO.Path]::GetFileNameWithoutExtension($PathActive)
-  $ext  = [System.IO.Path]::GetExtension($PathActive)
+    $legacy = @(
+        "HIA_RAD_INDEX.ALL.ACTIVE.txt",
+        "HIA_RAD_0004_FULL.FULL.ACTIVE.txt",
+        "HIA_RAD_INDEX.REPO.ACTIVE.txt",
+        "HIA_RAD_0003_CORE.ACTIVE.txt",
+        "HIA_RAD_0001_LITE.ACTIVE.txt"
+    )
 
-  $out = New-Object System.Collections.Generic.List[string]
-  $chunkSize = [Math]::Max(1024*256, [int]($MaxBytes * 0.9))
-  $utf8 = [System.Text.Encoding]::UTF8
-  $allBytes = $utf8.GetBytes($Content)
-
-  $i = 0
-  $seg = 1
-  while ($i -lt $allBytes.Length) {
-    $len = [Math]::Min($chunkSize, $allBytes.Length - $i)
-    $partBytes = $allBytes[$i..($i+$len-1)]
-    $partText = $utf8.GetString($partBytes)
-
-    $segName = "$base.seg.$('{0:000}' -f $seg)$ext"
-    $segPath = Join-Path $dir $segName
-    Set-Content -Path $segPath -Value $partText -NoNewline -Encoding UTF8
-    $out.Add($segPath) | Out-Null
-
-    $i += $len
-    $seg += 1
-  }
-
-  $pointer = @()
-  $pointer += "RADAR_SEGMENTED_OUTPUT"
-  $pointer += "ACTIVE_FILE: $PathActive"
-  $pointer += "SEGMENTS:"
-  foreach ($p in $out) { $pointer += " - $p" }
-  Set-Content -Path $PathActive -Value ($pointer -join "`r`n") -NoNewline -Encoding UTF8
-
-  return @($PathActive) + $out.ToArray()
+    foreach ($name in $legacy) {
+        $path = Join-Path $RadarDir $name
+        if ([System.IO.File]::Exists($path)) {
+            Remove-Item -LiteralPath $path -Force
+        }
+    }
 }
 
-# ---------- Paths & exclusions ----------
-$RootPath = [System.IO.Path]::GetFullPath($RootPath)
+function Get-IndexMapFromFile {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path
+    )
 
-$RadarDir = Join-Path $RootPath "03_ARTIFACTS\RADAR"
+    $map = @{}
+
+    if (-not [System.IO.File]::Exists($Path)) {
+        return $map
+    }
+
+    $lines = [System.IO.File]::ReadAllLines($Path)
+    foreach ($rawLine in $lines) {
+        $line = $rawLine.TrimEnd()
+        if ([string]::IsNullOrWhiteSpace($line)) { continue }
+        if ($line.StartsWith("RADAR_INDEX")) { continue }
+        if ($line.StartsWith("STAMP_UTC:")) { continue }
+        if ($line.StartsWith("ROOT:")) { continue }
+        if ($line.StartsWith("HASH_MODE:")) { continue }
+        if ($line.StartsWith("EXCLUDED_CONTAINS:")) { continue }
+        if ($line.StartsWith("FILES_COUNT:")) { continue }
+        if ($line.StartsWith("FIELDS:")) { continue }
+        if ($line -notmatch '\|') { continue }
+
+        $parts = $line.Split('|') | ForEach-Object { $_.Trim() }
+        if ($parts.Count -lt 6) { continue }
+
+        $rel = $parts[0]
+        $map[$rel] = [pscustomobject]@{
+            RelPath     = $parts[0]
+            Type        = $parts[1]
+            Ext         = $parts[2]
+            Size        = $parts[3]
+            ModifiedUtc = $parts[4]
+            Sha256      = $parts[5]
+        }
+    }
+
+    return $map
+}
+
+# ========================================================================
+# 02.00_RESOLUCION_DE_ROOT_Y_PATHS
+# ========================================================================
+
+if (-not $RootPath) {
+    try {
+        $RootPath = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+    }
+    catch {
+        throw "No se pudo resolver RootPath desde PSScriptRoot. Error=" + $_.Exception.Message
+    }
+}
+
+$RootPath = Get-FullPathSafe -Path $RootPath
+
+if ($RootPath -match '<PROJECT_ROOT>' -or $RootPath -match '^\s*<.*>\s*$') {
+    throw "RootPath contiene placeholder inválido. Debe ser una ruta real del proyecto."
+}
+
+$RadarDir = Join-Path $RootPath $RadarOutDirRel
 $OldDir   = Join-Path $RadarDir "old"
-Test-EnsureDirectory $RadarDir
-Test-EnsureDirectory $OldDir
+$RunStamp = Get-RunStamp
 
-$LiteActive     = Join-Path $RadarDir "HIA_RAD_0001_LITE.ACTIVE.txt"
-$IndexActive    = Join-Path $RadarDir "HIA_RAD_INDEX.REPO.ACTIVE.txt"
-$IndexAllActive = Join-Path $RadarDir "HIA_RAD_INDEX.ALL.ACTIVE.txt"
-$CoreActive     = Join-Path $RadarDir "HIA_RAD_0003_CORE.ACTIVE.txt"
-$FullActive     = Join-Path $RadarDir "HIA_RAD_0004_FULL.FULL.ACTIVE.txt"
+New-DirectoryIfMissing -Path $RadarDir
+New-DirectoryIfMissing -Path $OldDir
 
-$stamp = Get-NowStamp
+$LiteActive  = Join-Path $RadarDir "Radar.Lite.ACTIVE.txt"
+$IndexActive = Join-Path $RadarDir "Radar.Index.ACTIVE.txt"
+$CoreActive  = Join-Path $RadarDir "Radar.Core.ACTIVE.txt"
 
-# EXCLUSIONES ABSOLUTAS: (cumple tu regla)
-$excludedContains = @(
-  "\.git\",
-  "\node_modules\",
-  "\dist\",
-  "\build\",
-  "\__pycache__\",
-  "\.venv\",
-  "\.pytest_cache\",
+$TextExtSet       = Get-TextExtensionSet
+$AllowlistNameSet = Get-HashAllowlistNameSet
 
-  # EXCLUSIONES ABSOLUTAS (P0)
-  "\03_ARTIFACTS\",
-  "\Raw\",
-
-  # DragnDrop (Drag-and-Drop) es carpeta GENERADA: no se indexa por defecto (evita churn)
-  "\DragnDrop\",
-  "\DnD\"
+$ExcludedContains = @(
+    "\.git\",
+    "\node_modules\",
+    "\dist\",
+    "\build\",
+    "\__pycache__\",
+    "\.venv\",
+    "\.pytest_cache\",
+    "\03_ARTIFACTS\",
+    "\Raw\",
+    "\DeadHistory\",
+    "\archive\",
+    "\DnD\",
+    "\bin\",
+    "\obj\"
 )
 
-# ---------- Baseline determinista ----------
+$CoreIncludeRoots = Get-CoreIncludeRootSet -ProjectRoot $RootPath
+
+# ========================================================================
+# 03.00_ROTACION_Y_LIMPIEZA
+# ========================================================================
+
 $BaselineIndexPath = $null
-if (Test-Path -Path $IndexActive) {
-  $BaselineIndexPath = Join-Path $OldDir ("HIA_RAD_INDEX.REPO.BASELINE.$stamp.txt")
-  Copy-Item -Path $IndexActive -Destination $BaselineIndexPath -Force
+if ([System.IO.File]::Exists($IndexActive)) {
+    $BaselineIndexPath = Join-Path $OldDir ("Radar.Index.BASELINE." + $RunStamp + ".txt")
+    [System.IO.File]::Copy($IndexActive, $BaselineIndexPath, $true)
 }
 
-$oldRunDir = Join-Path $OldDir $stamp
-Test-EnsureDirectory $oldRunDir
+$OldRunDir = Join-Path $OldDir $RunStamp
+New-DirectoryIfMissing -Path $OldRunDir
 
-Move-IfExistsToOld $LiteActive     $oldRunDir $stamp
-Move-IfExistsToOld $IndexActive    $oldRunDir $stamp
-Move-IfExistsToOld $IndexAllActive $oldRunDir $stamp
-Move-IfExistsToOld $CoreActive     $oldRunDir $stamp
-Move-IfExistsToOld $FullActive     $oldRunDir $stamp
+Move-ActiveFileToArchiveIfExists -Path $LiteActive  -ArchiveDir $OldRunDir -RunStamp $RunStamp
+Move-ActiveFileToArchiveIfExists -Path $IndexActive -ArchiveDir $OldRunDir -RunStamp $RunStamp
+Move-ActiveFileToArchiveIfExists -Path $CoreActive  -ArchiveDir $OldRunDir -RunStamp $RunStamp
 
-# ---------- Collect files once ----------
-$files = Get-ChildItem -Path $RootPath -Recurse -Force -File -ErrorAction Stop
+Remove-LegacyRadarOutputs -RadarDir $RadarDir
 
-$records = New-Object System.Collections.Generic.List[object]
-foreach ($f in $files) {
-  $full = $f.FullName
-  if (Test-ShouldExcludePath $full $excludedContains) { continue }
+# ========================================================================
+# 04.00_ENUMERACION_DETERMINISTA
+# ========================================================================
 
-  $extLower = $f.Extension.ToLowerInvariant()
-  $rel = Convert-ToRelativePath $RootPath $full
+$Records = Get-FileEntryListDeterministic `
+    -ProjectRoot $RootPath `
+    -ExcludedContains $ExcludedContains `
+    -TextExtSet $TextExtSet `
+    -AllowlistNameSet $AllowlistNameSet `
+    -HashMode $HashMode
 
-  # hash_allowlist dotfiles críticos (forense)
-  $hashAllowlistNames = @(".gitattributes", ".gitignore")
-  $nameLower = $f.Name.ToLowerInvariant()
-  $isHashAllowlist = ($hashAllowlistNames -contains $nameLower)
+# ========================================================================
+# 05.00_INDEX
+# ========================================================================
 
-  # Si es dotfile crítico, lo tratamos como "text" (mejora semántica del INDEX)
-  $typ = if ($isHashAllowlist) { "text" } else { Get-LogicalType $extLower }
+$IndexLines = New-Object System.Collections.Generic.List[string]
+$IndexLines.Add("RADAR_INDEX — HIA") | Out-Null
+$IndexLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
+$IndexLines.Add("ROOT: " + $RootPath) | Out-Null
+$IndexLines.Add("HASH_MODE: " + $HashMode) | Out-Null
+$IndexLines.Add("EXCLUDED_CONTAINS: " + ($ExcludedContains -join " | ")) | Out-Null
+$IndexLines.Add("FILES_COUNT: " + $Records.Count) | Out-Null
+$IndexLines.Add("") | Out-Null
+$IndexLines.Add("FIELDS: relpath | type | ext | size | modified_utc | sha256") | Out-Null
+$IndexLines.Add("") | Out-Null
 
-  $sha = ""
-  if ($HashMode -eq "All") {
-    $sha = Get-Sha256Hex $full
-  } elseif ($HashMode -eq "Text") {
-    if ($isHashAllowlist -or (Test-IsCoreEligibleExt $extLower)) {
-      $sha = Get-Sha256Hex $full
+foreach ($r in $Records) {
+    $IndexLines.Add($r.RelPath + " | " + $r.Type + " | " + $r.Ext + " | " + $r.Size + " | " + $r.ModifiedUtc + " | " + $r.Sha256) | Out-Null
+}
+
+$IndexContent = $IndexLines -join "`r`n"
+[void](Write-SegmentedTextFile -ActivePath $IndexActive -Content $IndexContent -MaxBytes $MaxOutputBytes)
+
+# ========================================================================
+# 06.00_CORE
+# ========================================================================
+
+$CoreLines = New-Object System.Collections.Generic.List[string]
+$CoreLines.Add("RADAR_CORE — HIA") | Out-Null
+$CoreLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
+$CoreLines.Add("ROOT: " + $RootPath) | Out-Null
+$CoreLines.Add("POLICY: HUMAN.README + 02_TOOLS + BATON/BACKLOG/SKILLS if present") | Out-Null
+$CoreLines.Add("EXCLUDED_CONTAINS: " + ($ExcludedContains -join " | ")) | Out-Null
+$CoreLines.Add("") | Out-Null
+
+foreach ($r in $Records) {
+    if ($r.Type -ne "text") {
+        continue
     }
-  }
 
-  $records.Add([pscustomobject]@{
-    relpath  = $rel
-    fullpath = $full
-    ext      = $extLower
-    type     = $typ
-    size     = [int64]$f.Length
-    modified = $f.LastWriteTimeUtc.ToString("o")
-    sha256   = $sha
-  }) | Out-Null
-}
-
-$records = $records | Sort-Object -Property relpath
-
-# ---------- INDEX ----------
-$idxLines = New-Object System.Collections.Generic.List[string]
-$idxLines.Add("RADAR_INDEX — HIA") | Out-Null
-$idxLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
-$idxLines.Add("ROOT: " + $RootPath) | Out-Null
-$idxLines.Add("HASH_MODE: " + $HashMode) | Out-Null
-$idxLines.Add("EXCLUDED_CONTAINS: " + ($excludedContains -join " | ")) | Out-Null
-$idxLines.Add("FILES_COUNT: " + $records.Count) | Out-Null
-$idxLines.Add("") | Out-Null
-$idxLines.Add("FIELDS: relpath | type | ext | size | modified_utc | sha256") | Out-Null
-$idxLines.Add("") | Out-Null
-
-foreach ($r in $records) {
-  $idxLines.Add("$($r.relpath) | $($r.type) | $($r.ext) | $($r.size) | $($r.modified) | $($r.sha256)") | Out-Null
-}
-
-$indexContent = ($idxLines -join "`r`n")
-Write-SegmentedFile $IndexActive $indexContent $MaxActiveBytes | Out-Null
-
-# ---------- CORE ----------
-$coreLines = New-Object System.Collections.Generic.List[string]
-$coreLines.Add("RADAR_CORE — HIA (solo texto legible relevante)") | Out-Null
-$coreLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
-$coreLines.Add("ROOT: " + $RootPath) | Out-Null
-$coreLines.Add("MAX_CORE_FILE_BYTES: " + $MaxCoreFileBytes) | Out-Null
-$coreLines.Add("EXCLUDED_CONTAINS: " + ($excludedContains -join " | ")) | Out-Null
-$coreLines.Add("") | Out-Null
-
-foreach ($r in $records) {
-  # CORE allowlist (dotfiles críticos sin extensión)
-  $coreAllowlistNames = @(".gitattributes", ".gitignore")
-  $rName = (Split-Path $r.relpath -Leaf).ToLowerInvariant()
-  $isCoreAllowlist = ($coreAllowlistNames -contains $rName)
-
-  if (-not ($isCoreAllowlist -or (Test-IsCoreEligibleExt $r.ext))) { continue }
-
-  $coreLines.Add("==========") | Out-Null
-  $coreLines.Add("FILE: " + $r.relpath) | Out-Null
-  $coreLines.Add("SIZE: " + $r.size) | Out-Null
-  $coreLines.Add("MODIFIED_UTC: " + $r.modified) | Out-Null
-  $coreLines.Add("SHA256: " + $r.sha256) | Out-Null
-  $coreLines.Add("==========") | Out-Null
-
-  try {
-    $bytes = [System.IO.File]::ReadAllBytes($r.fullpath)
-    if ($bytes.Length -gt $MaxCoreFileBytes) {
-      $part = $bytes[0..($MaxCoreFileBytes-1)]
-      $txt = [System.Text.Encoding]::UTF8.GetString($part)
-      $coreLines.Add($txt) | Out-Null
-      $coreLines.Add("") | Out-Null
-      $coreLines.Add("[TRUNCATED: file_bytes=$($bytes.Length) max=$MaxCoreFileBytes]") | Out-Null
-    } else {
-      $txt = [System.Text.Encoding]::UTF8.GetString($bytes)
-      $coreLines.Add($txt) | Out-Null
+    $includedByPolicy = $false
+    foreach ($root in $CoreIncludeRoots) {
+        if ($r.FullPath.StartsWith($root, [System.StringComparison]::OrdinalIgnoreCase)) {
+            $includedByPolicy = $true
+            break
+        }
+        if ($r.FullPath.Equals($root, [System.StringComparison]::OrdinalIgnoreCase)) {
+            $includedByPolicy = $true
+            break
+        }
     }
-  } catch {
-    $coreLines.Add("[READ_FAIL: " + $_.Exception.Message + "]") | Out-Null
-  }
 
-  $coreLines.Add("") | Out-Null
-}
-
-$coreContent = ($coreLines -join "`r`n")
-Write-SegmentedFile $CoreActive $coreContent $MaxActiveBytes | Out-Null
-
-# ---------- LITE (determinista + parser robusto) ----------
-function Parse-IndexFileToMap([string]$Path) {
-  $map = @{}
-  if (-not (Test-Path -Path $Path)) { return $map }
-
-  $lines = Get-Content -Path $Path
-  foreach ($ln in $lines) {
-    $line = $ln.TrimEnd()
-
-    if ([string]::IsNullOrWhiteSpace($line)) { continue }
-    if ($line -match '^(RADAR_INDEX|STAMP_UTC|ROOT|HASH_MODE|EXCLUDED_CONTAINS|FILES_COUNT|FIELDS):') { continue }
-    if ($line -match '^SECTION:\s') { continue }
-    if ($line -match '^={3,}$') { continue }
-    if ($line -notmatch '\|') { continue }
-
-    $parts = $line.Split('|').ForEach({ $_.Trim() })
-    if ($parts.Count -lt 6) { continue }
-
-    $rel = $parts[0]
-    if ($rel -match '^\w+:\s') { continue }
-
-    $map[$rel] = [pscustomobject]@{
-      relpath  = $rel
-      type     = $parts[1]
-      ext      = $parts[2]
-      size     = $parts[3]
-      modified = $parts[4]
-      sha256   = $parts[5]
+    if (-not $includedByPolicy) {
+        continue
     }
-  }
-  return $map
+
+    $CoreLines.Add("======================================================================") | Out-Null
+    $CoreLines.Add("INICIO_ARCHIVO_INCLUIDO") | Out-Null
+    $CoreLines.Add("ARCHIVO: " + [System.IO.Path]::GetFileName($r.FullPath)) | Out-Null
+    $CoreLines.Add("RUTA: " + $r.RelPath) | Out-Null
+    $CoreLines.Add("SIZE: " + $r.Size) | Out-Null
+    $CoreLines.Add("MODIFIED_UTC: " + $r.ModifiedUtc) | Out-Null
+    $CoreLines.Add("SHA256: " + $r.Sha256) | Out-Null
+    $CoreLines.Add("======================================================================") | Out-Null
+    $CoreLines.Add("") | Out-Null
+
+    $CoreLines.Add((Get-FileTextSafe -Path $r.FullPath)) | Out-Null
+    $CoreLines.Add("") | Out-Null
+
+    $CoreLines.Add("======================================================================") | Out-Null
+    $CoreLines.Add("FIN_ARCHIVO_INCLUIDO") | Out-Null
+    $CoreLines.Add("ARCHIVO: " + [System.IO.Path]::GetFileName($r.FullPath)) | Out-Null
+    $CoreLines.Add("RUTA: " + $r.RelPath) | Out-Null
+    $CoreLines.Add("======================================================================") | Out-Null
+    $CoreLines.Add("") | Out-Null
 }
 
-$newMap  = Parse-IndexFileToMap $IndexActive
-$baseMap = @{}
-if ($BaselineIndexPath) { $baseMap = Parse-IndexFileToMap $BaselineIndexPath }
+$CoreContent = $CoreLines -join "`r`n"
+[void](Write-SegmentedTextFile -ActivePath $CoreActive -Content $CoreContent -MaxBytes $MaxOutputBytes)
 
-$liteLines = New-Object System.Collections.Generic.List[string]
-$liteLines.Add("RADAR_LITE (Delta) — HIA") | Out-Null
-$liteLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
-$liteLines.Add("ROOT: " + $RootPath) | Out-Null
-$liteLines.Add("BASELINE_INDEX: " + ($BaselineIndexPath ?? "[NONE]")) | Out-Null
-$liteLines.Add("NEW_INDEX: " + $IndexActive) | Out-Null
-$liteLines.Add("") | Out-Null
+# ========================================================================
+# 07.00_LITE
+# ========================================================================
+
+$NewMap  = Get-IndexMapFromFile -Path $IndexActive
+$BaseMap = @{}
+if ($BaselineIndexPath) {
+    $BaseMap = Get-IndexMapFromFile -Path $BaselineIndexPath
+}
+
+$LiteLines = New-Object System.Collections.Generic.List[string]
+$LiteLines.Add("RADAR_LITE — HIA") | Out-Null
+$LiteLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
+$LiteLines.Add("ROOT: " + $RootPath) | Out-Null
+$LiteLines.Add("BASELINE_INDEX: " + $(if ($BaselineIndexPath) { $BaselineIndexPath } else { "[NONE]" })) | Out-Null
+$LiteLines.Add("NEW_INDEX: " + $IndexActive) | Out-Null
+$LiteLines.Add("") | Out-Null
 
 if (-not $BaselineIndexPath) {
-  $liteLines.Add("NO_BASELINE: primera ejecución o baseline no disponible.") | Out-Null
-  $liteLines.Add("NEW_FILES_COUNT: " + $newMap.Count) | Out-Null
-  $liteLines.Add("") | Out-Null
-  $liteLines.Add("NEW_FILES:") | Out-Null
-  foreach ($k in ($newMap.Keys | Sort-Object)) { $liteLines.Add(" + " + $k) | Out-Null }
-} else {
-  $created = New-Object System.Collections.Generic.List[string]
-  $deleted = New-Object System.Collections.Generic.List[string]
-  $edited  = New-Object System.Collections.Generic.List[string]
-  $moved   = New-Object System.Collections.Generic.List[string]
+    $LiteLines.Add("NO_BASELINE: primera ejecución o baseline no disponible.") | Out-Null
+    $LiteLines.Add("NEW_FILES_COUNT: " + $NewMap.Count) | Out-Null
+    $LiteLines.Add("") | Out-Null
+    $LiteLines.Add("NEW_FILES:") | Out-Null
 
-  $baseHash = @{}
-  foreach ($k in $baseMap.Keys) {
-    $h = $baseMap[$k].sha256
-    if ([string]::IsNullOrWhiteSpace($h)) { continue }
-    if (-not $baseHash.ContainsKey($h)) { $baseHash[$h] = New-Object System.Collections.Generic.List[string] }
-    $baseHash[$h].Add($k) | Out-Null
-  }
-
-  $newHash = @{}
-  foreach ($k in $newMap.Keys) {
-    $h = $newMap[$k].sha256
-    if ([string]::IsNullOrWhiteSpace($h)) { continue }
-    if (-not $newHash.ContainsKey($h)) { $newHash[$h] = New-Object System.Collections.Generic.List[string] }
-    $newHash[$h].Add($k) | Out-Null
-  }
-
-  foreach ($k in $newMap.Keys) {
-    if (-not $baseMap.ContainsKey($k)) { $created.Add($k) | Out-Null; continue }
-    $b = $baseMap[$k]; $n = $newMap[$k]
-    if (-not [string]::IsNullOrWhiteSpace($n.sha256) -and -not [string]::IsNullOrWhiteSpace($b.sha256)) {
-      if ($n.sha256 -ne $b.sha256) { $edited.Add($k) | Out-Null }
-    } else {
-      if (($n.size -ne $b.size) -or ($n.modified -ne $b.modified)) { $edited.Add($k) | Out-Null }
+    foreach ($k in ($NewMap.Keys | Sort-Object)) {
+        $LiteLines.Add(" + " + $k) | Out-Null
     }
-  }
+}
+else {
+    $Created = New-Object System.Collections.Generic.List[string]
+    $Deleted = New-Object System.Collections.Generic.List[string]
+    $Edited  = New-Object System.Collections.Generic.List[string]
+    $Moved   = New-Object System.Collections.Generic.List[string]
 
-  foreach ($k in $baseMap.Keys) {
-    if (-not $newMap.ContainsKey($k)) { $deleted.Add($k) | Out-Null }
-  }
-
-  foreach ($h in $baseHash.Keys) {
-    if (-not $newHash.ContainsKey($h)) { continue }
-    foreach ($from in $baseHash[$h]) {
-      foreach ($to in $newHash[$h]) {
-        if ($from -ne $to) {
-          if (($deleted -contains $from) -and ($created -contains $to)) {
-            $moved.Add("$($from) -> $($to)") | Out-Null
-          }
+    $BaseHash = @{}
+    foreach ($k in $BaseMap.Keys) {
+        $h = $BaseMap[$k].Sha256
+        if ([string]::IsNullOrWhiteSpace($h)) { continue }
+        if (-not $BaseHash.ContainsKey($h)) {
+            $BaseHash[$h] = New-Object System.Collections.Generic.List[string]
         }
-      }
+        $BaseHash[$h].Add($k) | Out-Null
     }
-  }
 
-  foreach ($mv in $moved) {
-    $pair = $mv.Split('->').ForEach({ $_.Trim() })
-    if ($pair.Count -eq 2) {
-      $deleted.Remove($pair[0]) | Out-Null
-      $created.Remove($pair[1]) | Out-Null
+    $NewHash = @{}
+    foreach ($k in $NewMap.Keys) {
+        $h = $NewMap[$k].Sha256
+        if ([string]::IsNullOrWhiteSpace($h)) { continue }
+        if (-not $NewHash.ContainsKey($h)) {
+            $NewHash[$h] = New-Object System.Collections.Generic.List[string]
+        }
+        $NewHash[$h].Add($k) | Out-Null
     }
-  }
 
-  $liteLines.Add("CREATED_FILES_COUNT: " + $created.Count) | Out-Null
-  $liteLines.Add("EDITED_FILES_COUNT: " + $edited.Count) | Out-Null
-  $liteLines.Add("DELETED_FILES_COUNT: " + $deleted.Count) | Out-Null
-  $liteLines.Add("MOVED_FILES_COUNT: " + $moved.Count) | Out-Null
-  $liteLines.Add("") | Out-Null
+    foreach ($k in $NewMap.Keys) {
+        if (-not $BaseMap.ContainsKey($k)) {
+            $Created.Add($k) | Out-Null
+            continue
+        }
 
-  $liteLines.Add("CREATED_FILES:") | Out-Null
-  foreach ($x in ($created | Sort-Object)) { $liteLines.Add(" + " + $x) | Out-Null }
-  $liteLines.Add("") | Out-Null
+        $b = $BaseMap[$k]
+        $n = $NewMap[$k]
 
-  $liteLines.Add("EDITED_FILES:") | Out-Null
-  foreach ($x in ($edited | Sort-Object)) { $liteLines.Add(" ~ " + $x) | Out-Null }
-  $liteLines.Add("") | Out-Null
+        if (-not [string]::IsNullOrWhiteSpace($n.Sha256) -and -not [string]::IsNullOrWhiteSpace($b.Sha256)) {
+            if ($n.Sha256 -ne $b.Sha256) {
+                $Edited.Add($k) | Out-Null
+            }
+        }
+        elseif (($n.Size -ne $b.Size) -or ($n.ModifiedUtc -ne $b.ModifiedUtc)) {
+            $Edited.Add($k) | Out-Null
+        }
+    }
 
-  $liteLines.Add("DELETED_FILES:") | Out-Null
-  foreach ($x in ($deleted | Sort-Object)) { $liteLines.Add(" - " + $x) | Out-Null }
-  $liteLines.Add("") | Out-Null
+    foreach ($k in $BaseMap.Keys) {
+        if (-not $NewMap.ContainsKey($k)) {
+            $Deleted.Add($k) | Out-Null
+        }
+    }
 
-  $liteLines.Add("MOVED_FILES:") | Out-Null
-  foreach ($x in ($moved | Sort-Object)) { $liteLines.Add(" > " + $x) | Out-Null }
+    foreach ($h in $BaseHash.Keys) {
+        if (-not $NewHash.ContainsKey($h)) { continue }
+
+        foreach ($from in $BaseHash[$h]) {
+            foreach ($to in $NewHash[$h]) {
+                if ($from -ne $to -and ($Deleted -contains $from) -and ($Created -contains $to)) {
+                    $Moved.Add($from + " -> " + $to) | Out-Null
+                }
+            }
+        }
+    }
+
+    foreach ($mv in @($Moved)) {
+        $pair = $mv.Split('->') | ForEach-Object { $_.Trim() }
+        if ($pair.Count -eq 2) {
+            [void]$Deleted.Remove($pair[0])
+            [void]$Created.Remove($pair[1])
+        }
+    }
+
+    $LiteLines.Add("CREATED_FILES_COUNT: " + $Created.Count) | Out-Null
+    $LiteLines.Add("EDITED_FILES_COUNT: " + $Edited.Count) | Out-Null
+    $LiteLines.Add("DELETED_FILES_COUNT: " + $Deleted.Count) | Out-Null
+    $LiteLines.Add("MOVED_FILES_COUNT: " + $Moved.Count) | Out-Null
+    $LiteLines.Add("") | Out-Null
+
+    $LiteLines.Add("CREATED_FILES:") | Out-Null
+    foreach ($x in ($Created | Sort-Object)) { $LiteLines.Add(" + " + $x) | Out-Null }
+    $LiteLines.Add("") | Out-Null
+
+    $LiteLines.Add("EDITED_FILES:") | Out-Null
+    foreach ($x in ($Edited | Sort-Object)) { $LiteLines.Add(" ~ " + $x) | Out-Null }
+    $LiteLines.Add("") | Out-Null
+
+    $LiteLines.Add("DELETED_FILES:") | Out-Null
+    foreach ($x in ($Deleted | Sort-Object)) { $LiteLines.Add(" - " + $x) | Out-Null }
+    $LiteLines.Add("") | Out-Null
+
+    $LiteLines.Add("MOVED_FILES:") | Out-Null
+    foreach ($x in ($Moved | Sort-Object)) { $LiteLines.Add(" > " + $x) | Out-Null }
 }
 
-$liteContent = ($liteLines -join "`r`n")
-Write-SegmentedFile $LiteActive $liteContent $MaxActiveBytes | Out-Null
+$LiteContent = $LiteLines -join "`r`n"
+[void](Write-SegmentedTextFile -ActivePath $LiteActive -Content $LiteContent -MaxBytes $MaxOutputBytes)
 
-
-# ---------- INDEX.ALL (con exclusiones absolutas P0) ----------
-function New-HIARadarIndexAll {
-  param(
-    [string]$RootFull,
-    [string[]]$ExcludedContains
-  )
-
-  $lines = New-Object System.Collections.Generic.List[string]
-  $lines.Add("RADAR_INDEX_ALL — HIA") | Out-Null
-  $lines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
-  $lines.Add("ROOT: " + $RootFull) | Out-Null
-  $lines.Add("HASH_MODE: None") | Out-Null
-  $lines.Add("EXCLUSIONS: ABSOLUTE_CONTAINS = " + ($ExcludedContains -join " | ")) | Out-Null
-  $lines.Add("") | Out-Null
-  $lines.Add("FIELDS: relpath | ext | size | modified_utc") | Out-Null
-  $lines.Add("") | Out-Null
-
-  $allFiles = Get-ChildItem -LiteralPath $RootFull -Recurse -Force -File -ErrorAction Stop |
-    Sort-Object -Property FullName
-
-  foreach ($f in $allFiles) {
-    if (Test-ShouldExcludePath $f.FullName $ExcludedContains) { continue }
-    $rel = $f.FullName.Substring($RootFull.Length).TrimStart('\')
-    $ext = $f.Extension.ToLowerInvariant()
-    $lw  = $f.LastWriteTimeUtc.ToString("o")
-    $lines.Add("$rel | $ext | $($f.Length) | $lw") | Out-Null
-  }
-
-  return ($lines -join "`r`n")
-}
-
-$indexAllContent = New-HIARadarIndexAll -RootFull $RootPath -ExcludedContains $excludedContains
-Write-SegmentedFile $IndexAllActive $indexAllContent $MaxActiveBytes | Out-Null
-
-# ---------- FULL.FULL (INDEX.ALL + CORE + LITE) ----------
-$fullLines = New-Object System.Collections.Generic.List[string]
-$fullLines.Add("RADAR_FULL.FULL — HIA (INDEX.ALL + CORE + LITE)") | Out-Null
-$fullLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
-$fullLines.Add("ROOT: " + $RootPath) | Out-Null
-$fullLines.Add("HASH_MODE (INDEX.REPO): " + $HashMode) | Out-Null
-$fullLines.Add("EXCLUDED_CONTAINS (INDEX.REPO): " + ($excludedContains -join " | ")) | Out-Null
-$fullLines.Add("") | Out-Null
-
-$fullLines.Add("==========") | Out-Null
-$fullLines.Add("SECTION: INDEX.ALL") | Out-Null
-$fullLines.Add("==========") | Out-Null
-$fullLines.Add($indexAllContent) | Out-Null
-$fullLines.Add("") | Out-Null
-
-$fullLines.Add("==========") | Out-Null
-$fullLines.Add("SECTION: CORE") | Out-Null
-$fullLines.Add("==========") | Out-Null
-$fullLines.Add($coreContent) | Out-Null
-$fullLines.Add("") | Out-Null
-
-$fullLines.Add("==========") | Out-Null
-$fullLines.Add("SECTION: LITE") | Out-Null
-$fullLines.Add("==========") | Out-Null
-$fullLines.Add((Get-Content -Path $LiteActive -Raw)) | Out-Null
-
-$fullContent = ($fullLines -join "`r`n")
-Write-SegmentedFile $FullActive $fullContent $MaxActiveBytes | Out-Null
+# ========================================================================
+# 08.00_SALIDA_FINAL
+# ========================================================================
 
 Write-Host "OK: RADAR HIA generado correctamente."
-Write-Host "OUTPUTS: $LiteActive; $IndexActive; $IndexAllActive; $CoreActive; $FullActive"
-exit 0
-
-
-Write-Host "OK: RADAR HIA generado correctamente."
-Write-Host "OUTPUTS: $LiteActive; $IndexActive; $CoreActive; $FullActive"
+Write-Host ("OUTPUTS: " + $LiteActive + "; " + $IndexActive + "; " + $CoreActive)
 exit 0

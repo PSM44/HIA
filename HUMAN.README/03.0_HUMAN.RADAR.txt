@@ -1,757 +1,698 @@
-ID_UNICO..........: HUMAN.RADAR.0001
+======================================================================
+03.0_HUMAN.RADAR.txt
+======================================================================
+
+CÓDIGO WBS
+03.0
+
+ID_UNICO
+HIA.HUMAN.RADAR.0001
+
+NOMBRE
+HUMAN.RADAR – Definición Canónica del Sistema RADAR en HIA
+
+UBICACIÓN CANÓNICA
+C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\HUMAN.README\03.0_HUMAN.RADAR.txt
+
+FECHA
+2026-03-10
+
+HORA
+[local]
+
+CIUDAD / PAÍS
+Santiago, Chile
+
+VERSIÓN
+v2.0-DRAFT
+
+ESTADO
+ACTIVO
+
+AUTORIDAD DOCUMENTAL
+CANÓNICO_HUMAN
+
+DOMINIO
+RADAR / OBSERVACIÓN / NAVEGACIÓN / CONTEXTO PARA IA / PATCHING
+
+DEPENDENCIAS
+- 00.00_CANON.txt
+- 03.00_HUMAN.README.txt
+- 07.00_FRAME.TXTFormat.txt
+- 08.00_FRAME.GOVERNANCE.txt
+- 05.00_FRAME.RADAR.ERROR.txt
+- HUMAN.BATON
+- HUMAN.CIS
+- TOOLS\RADAR.ps1
+- TOOLS\RADAR.DEV.ps1
+
+INTRODUCCIÓN
+
+Este archivo define el significado, alcance,
+límites y política de uso del sistema RADAR dentro de HIA.
+
+RADAR existe para observar y exponer
+lo que realmente está presente en local,
+de forma trazable, estable y útil
+para navegación, continuidad,
+comprensión por parte de una IA
+y soporte de patches.
+
+RADAR NO existe para:
+
+- decidir qué hacer
+- ejecutar cambios
+- corregir archivos
+- reinterpretar el contenido fuente
+- reemplazar revisión humana
+- justificar acciones por sí mismo
+
+En HIA, RADAR es una foto operativa.
+No es criterio.
+No es editor.
+No es gate.
+No es CIS.
+No es BATON.
+
+Su valor está en mostrar con precisión
+qué existe,
+qué contenido vivo hay,
+y qué cambió entre snapshots,
+sin contaminar la fuente.
+
+ÍNDICE (WBS)
+
+00.00 Propósito y alcance
+01.00 Definición general de RADAR
+02.00 Qué sí es RADAR
+03.00 Qué no es RADAR
+04.00 Objetivos operativos de RADAR en HIA
+05.00 Outputs oficiales de RADAR
+06.00 RADAR.Index
+07.00 RADAR.Core
+08.00 RADAR.Lite
+09.00 RADAR.DEV
+10.00 Política de inclusión de RADAR.Core
+11.00 Política de exclusión de RADAR.Core
+12.00 Delimitadores y formato de copia en RADAR.Core
+13.00 Relación RADAR–BATON
+14.00 Relación RADAR–CIS
+15.00 Relación RADAR–Git
+16.00 Relación RADAR–patching
+17.00 Guardrails operativos
+18.00 Límites duros de RADAR
+19.00 Riesgos de mal uso
+20.00 Vigencia
+21.00 Changelog
+
+========================================================================
+00.00_PROPOSITO_Y_ALCANCE
+========================================================================
+
+00.10_PROPÓSITO
+
+El propósito de RADAR en HIA es:
+
+- ubicar los elementos del sistema
+- mostrar el contenido vivo necesario
+- exponer cambios entre snapshots
+- facilitar continuidad entre sesiones
+- dar base real a una IA para lectura y patches
+- reducir dependencia de memoria conversacional
+- aumentar trazabilidad operativa
+
+00.20_ALCANCE
+
+RADAR aplica sobre el repositorio local
+y sobre los archivos que la política canónica
+defina como incluidos para observación,
+inventario o compilación.
+
+RADAR puede leer.
+RADAR puede copiar.
+RADAR puede listar.
+RADAR puede comparar.
+
+RADAR no promueve,
+no ejecuta,
+no parchea,
+no aprueba,
+no valida semánticamente por sí solo.
+
+========================================================================
+01.00_DEFINICION_GENERAL_DE_RADAR
+========================================================================
+
+01.10_DEFINICIÓN_CANÓNICA
+
+RADAR es el sistema de observación pasiva de HIA.
+
+Su función es producir snapshots útiles
+del estado local del proyecto,
+sin modificar la fuente observada.
+
+RADAR trabaja con cuatro salidas oficiales:
+
+- RADAR.Index
+- RADAR.Core
+- RADAR.Lite
+- RADAR.DEV
+
+01.20_PRINCIPIO_RECTOR
+
+RADAR describe y expone.
+La decisión siempre es externa.
+
+========================================================================
+02.00_QUE_SI_ES_RADAR
+========================================================================
 
+02.10 RADAR sí es:
+
+- un sistema de observación del estado local
+- un mecanismo de navegación para humano e IA
+- una ayuda para continuidad
+- una base de apoyo para patching
+- una forma de reducir alucinación por falta de contexto
+- una evidencia auxiliar del estado textual del sistema
 
-00.00_METADATA_ADDED
+02.20 RADAR sí puede:
 
+- inventariar archivos
+- copiar contenido exacto
+- comparar snapshots
+- reflejar diferencias estructurales
+- exponer delimitadores entre archivos copiados
+- apoyar lectura en IA en blanco o IA con poca memoria contextual
+
+========================================================================
+03.00_QUE_NO_ES_RADAR
+========================================================================
 
-DATE......: 2026-03-01
+03.10 RADAR no es:
 
+- CIS
+- BATON
+- MANIFEST
+- validator semántico completo
+- sistema de ejecución
+- motor de apply
+- changelog humano
+- reemplazo de Git
+- criterio humano
+- análisis de valor de negocio
 
-TIME......: 18:55
+03.20 RADAR no puede usarse como:
+
+- autorización para modificar
+- razón suficiente para aplicar cambios
+- excusa para saltarse CIS
+- excusa para editar canónicos sin permiso
+- mecanismo de inferencia libre
+- detector infalible de intención humana
 
+========================================================================
+04.00_OBJETIVOS_OPERATIVOS_DE_RADAR_EN_HIA
+========================================================================
 
-TZ........: America/Santiago
+04.10 Los objetivos operativos de RADAR son:
 
+04.10.01
+Permitir a una IA ubicarse en el proyecto
+sin asumir ni inventar qué existe.
 
-CITY......: Santiago, Chile
+04.10.02
+Mostrar el contenido vivo local
+que sirve de base para lectura y patches.
 
+04.10.03
+Facilitar comparación entre estados
+sin depender solo de memoria conversacional.
 
-VERSION......: 0.1
+04.10.04
+Reducir riesgo de patch sobre archivo equivocado,
+versión equivocada
+o contexto incompleto.
 
+04.10.05
+Aportar evidencia auxiliar
+antes o después de cambios relevantes.
 
-NOTE......: Metadata agregado en modo office. No altera el contenido conceptual HUMAN.
+========================================================================
+05.00_OUTPUTS_OFICIALES_DE_RADAR
+========================================================================
 
+05.10 Los outputs oficiales de RADAR en HIA son:
 
-ID_HINT...: 
+- RADAR.Index
+- RADAR.Core
+- RADAR.Lite
+- RADAR.DEV
 
+05.20 Regla dura:
+ningún otro output RADAR
+debe presentarse como oficial
+si no está explícitamente definido aquí
+o promovido por regla humana posterior.
 
-==============================
+========================================================================
+06.00_RADAR_INDEX
+========================================================================
 
+06.10_DEFINICIÓN
 
-ARCHIVO: HUMAN.MASTER.txt
+RADAR.Index es la foto descriptiva
+del inventario local observado.
 
+06.20_FUNCIÓN
 
-ACCION: CREAR (archivo nuevo)
+Su función es decir qué existe
+y dónde está,
+sin copiar el contenido completo de cada archivo.
 
+06.30_CONTENIDO_ESPERADO
 
-==============================
+RADAR.Index puede incluir, entre otros:
 
+- ruta
+- nombre
+- extensión
+- tamaño
+- fecha de creación
+- fecha de modificación
+- existencia
+- estado básico de observación
+- otra metadata física no semántica
 
+06.40_PROHIBICIONES
 
+RADAR.Index no debe:
 
+- resumir significado profundo
+- decidir relevancia por criterio creativo
+- reemplazar el contenido fuente
+- actuar como MANIFEST estructural
+- justificar acciones por sí mismo
 
-==========
+========================================================================
+07.00_RADAR_CORE
+========================================================================
 
+07.10_DEFINICIÓN
 
-00.00_METADATOS_DEL_DOCUMENTO
+RADAR.Core es el compilado determinista
+del contenido exacto de las capas vivas
+incluidas por política canónica de compilación.
 
+07.20_FUNCIÓN
 
-==========
+Su función es reunir en un solo artefacto
+el texto exacto de los archivos incluidos,
+para que humano o IA puedan leer
+lo que realmente está en local
+sin navegar archivo por archivo.
 
+07.30_REGLA_DURA_DE_COMPORTAMIENTO
 
+RADAR.Core:
 
+- lee
+- copia
+- compila
 
-NOMBRE_SUGERIDO...: HUMAN.MASTER.txt
+RADAR.Core no:
 
+- resume
+- interpreta
+- corrige
+- reordena el contenido interno de cada archivo
+- complementa
+- deduplica semánticamente
+- clasifica por criterio libre
+- “mejora” redacción
+- agrega comentarios explicativos
 
-VERSION...........: v1.1-DRAFT
+07.40_ALCANCE_REAL
 
+RADAR.Core existe para soporte de:
 
-FECHA.............: 2026-02-28
+- lectura consolidada
+- continuidad
+- bootstrapping de IA
+- revisión contextual
+- preparación de patches
 
+No existe para reemplazar
+la fuente real de los archivos.
 
-HORA..............: HH:MM (America/Santiago)
+========================================================================
+08.00_RADAR_LITE
+========================================================================
 
+08.10_DEFINICIÓN
 
-CIUDAD............: <CIUDAD>, <PAIS>
+RADAR.Lite es la vista comparativa focalizada
+entre snapshots de RADAR.Index y/o RADAR.Core.
 
+08.20_FUNCIÓN
 
-UBICACION_SISTEMA.: <TL_BOOTSTRAP_ROOT>\01_HUMAN\
+Su función es mostrar con lupa
+qué cambió entre versiones observadas.
 
+08.30_USOS_TÍPICOS
 
-AUTOR_HUMANO......: PABLO (ADMIN)
+RADAR.Lite puede servir para:
 
+- detectar altas
+- detectar bajas
+- detectar renombres
+- detectar mutaciones estructurales
+- detectar variaciones de tamaño
+- detectar cambios en set compilado
+- ubicar rápidamente dónde revisar
 
-AUTOR_IA..........: GPT-5.2 Thinking
+08.40_LÍMITE
 
+RADAR.Lite no reemplaza
+ni al inventario completo
+ni al contenido completo.
 
+Es un comparador focalizado,
+no la fuente principal.
 
+========================================================================
+09.00_RADAR_DEV
+========================================================================
 
+09.10_DEFINICIÓN
 
-TITULO............: HUMAN — MASTER (Mapa de autoridad, CANON, y sincronización HIA)
+RADAR.DEV es el entorno de laboratorio
+para probar reglas, targets,
+formatos de salida y experimentos RADAR
+sin contaminar los outputs canónicos.
 
+09.20_REGLA_DURA
 
-SUBTITULO_MEDIO...: Documento dueño de la gobernanza meta: qué manda dónde, qué es canónico, qué es derivado, y cómo se sincroniza sin trabajo manual infernal.
+RADAR.DEV no es autoridad operativa.
 
+09.30_USOS_PERMITIDOS
 
-SUBTITULO_BAJO....: Peatón-first. Académico. Sin abreviaciones sin explicar. Fuente de verdad del “sistema de documentos”.
+- pruebas
+- exploración
+- experimentación
+- validación de ideas de formato
+- targets especiales
+- salidas no promovidas
 
+09.40_USOS_PROHIBIDOS
 
+- ser invocado por triggers canónicos
+- reemplazar RADAR.ps1
+- presentarse como output oficial estable
+- justificar operación estándar
 
+========================================================================
+10.00_POLITICA_DE_INCLUSION_DE_RADAR_CORE
+========================================================================
 
+10.10_PRINCIPIO
 
-DOMINIO_DUENO......: META-GOVERNANCE (gobernanza de documentos + sincronización)
+RADAR.Core no decide por análisis dinámico
+qué es importante.
+RADAR.Core compila
+lo que la política canónica de inclusión
+ordene incluir.
 
+10.20_POLÍTICA_BASE_HIA
 
-AUTORIDAD..........: Este archivo manda en: DOC.AUTHORITY.MAP, CANON.REGISTRY, SYNC.MANIFEST.SPEC, Single-Edit Rules.
+Como baseline operativo de HIA,
+RADAR.Core debe incluir íntegramente:
 
+10.20.01
+Todo el contenido de HUMAN.README
+o su equivalente activo en la capa HUMAN.
 
-ESTADO_CANON........: DRAFT (no oficial hasta promoción humana)
+10.20.02
+Todo el contenido de 02_TOOLS
+o carpeta operativa equivalente de tooling vivo.
 
+10.20.03
+Todo archivo BATON vigente
+o archivo equivalente de continuidad viva.
 
+10.20.04
+Todo backlog activo
+que esté marcado como vigente y operativo.
 
+10.20.05
+Todo archivo o carpeta de skills
+que la política vigente defina
+como parte del sistema vivo local
+y que afecte la forma de operar o editar.
 
+10.30_NOTA_OPERATIVA
+
+La inclusión por política
+existe para evitar que RADAR.Core
+se transforme en curador semántico.
 
-DEPENDENCIAS.......:
+HIA no quiere un RADAR “inteligente”.
+Quiere un RADAR confiable.
 
+========================================================================
+11.00_POLITICA_DE_EXCLUSION_DE_RADAR_CORE
+========================================================================
 
-- HUMAN.USER (operación humana)
+11.10 Por defecto, RADAR.Core no debe incluir:
 
+- outputs derivados
+- logs masivos
+- raw
+- history profundo
+- deadhistory
+- archive
+- binarios pesados
+- exportes
+- paquetes comprimidos
+- artefactos temporales
+- carpetas técnicas de caché o build
+- node_modules
+- .git
+- bin
+- obj
+- .venv
+- __pycache__
+- otros elementos claramente no vivos u operativos
+
+11.20 Regla:
+si un elemento no forma parte de la capa viva
+o es derivado/masivo/pesado,
+debe quedar fuera de RADAR.Core
+aunque exista en local.
 
-- HUMAN.GENERAL (constitución HIA)
+========================================================================
+12.00_DELIMITADORES_Y_FORMATO_DE_COPIA_EN_RADAR_CORE
+========================================================================
 
+12.10 RADAR.Core puede agregar
+solo separadores técnicos mínimos
+para delimitar con claridad
+el inicio y el término del contenido copiado
+de cada archivo.
+
+12.20 Estos separadores pueden incluir:
+
+- nombre del archivo
+- ruta
+- inicio de contenido
+- fin de contenido
 
-- HUMAN.PF0 (PFundations Level 0: método mínimo operativo)
+12.30 Prohibición:
+fuera de esos delimitadores técnicos mínimos,
+RADAR.Core no debe agregar
+ninguna capa semántica nueva.
 
+========================================================================
+13.00_RELACION_RADAR_BATON
+========================================================================
 
-- HUMAN.BATON (continuidad/handoff)
+13.10 BATON y RADAR no son lo mismo.
 
+13.20 BATON entrega continuidad operativa:
+- objetivo actual
+- resumen de estado
+- decisiones
+- próximos pasos
+- handoff
 
-- HUMAN.RADAR (inventario/auditoría)
+13.30 RADAR entrega observación del estado local:
+- inventario
+- contenido compilado
+- comparación de snapshots
 
+13.40 BATON orienta continuidad.
+RADAR muestra evidencia auxiliar del estado observado.
 
-- HUMAN.CIS (contratos de cambio)
+========================================================================
+14.00_RELACION_RADAR_CIS
+========================================================================
 
+14.10 CIS gobierna cambios.
+RADAR no.
 
+14.20 CIS define:
+- qué se quiere cambiar
+- cómo se cambiará
+- con qué alcance
+- con qué restricciones
 
+14.30 RADAR solo puede apoyar:
+- lectura previa
+- navegación
+- contexto
+- evidencia auxiliar
 
+14.40 Regla dura:
+RADAR nunca autoriza APPLY.
 
-==========
+========================================================================
+15.00_RELACION_RADAR_GIT
+========================================================================
 
+15.10 Git y RADAR se complementan.
+
+15.20 Git aporta:
+- historial
+- rollback
+- diff
+- checkpoint
+- trazabilidad de cambios
+
+15.30 RADAR aporta:
+- snapshot descriptivo
+- compilado de contenido vivo
+- comparación focalizada
+- apoyo contextual para IA
 
-00.10_GLOSARIO_MINIMO_(ABREVIACIONES_EXPLICADAS)
+15.40 Git no reemplaza RADAR.
+RADAR no reemplaza Git.
+
+========================================================================
+16.00_RELACION_RADAR_PATCHING
+========================================================================
+
+16.10 RADAR.Core existe, entre otras cosas,
+para mejorar la base contextual
+desde la cual se proponen patches.
 
+16.20 Su valor en patching es:
 
-==========
-
-
-
-
-
-HIA (Human + IA): entorno/metodología reusable para colaboración humano + IA en desarrollo asistido.
-
-
-TL.Bootstrap (Tooling & Lifecycle Bootstrap): set transversal reusable (RADAR, BATON, CIS, SKILLS, estructura, HUMAN, etc.).
-
-
-DOC.AUTHORITY.MAP (Mapa de autoridad documental): tabla que define qué archivo manda por dominio y cómo se resuelven conflictos.
-
-
-CANON.REGISTRY (Registro canónico): inventario de secciones canónicas vs derivadas (y reglas de edición).
-
-
-SYNC (Sincronización): mecanismo para replicar contenido derivado desde fuentes canónicas.
-
-
-SYNC.MANIFEST (Manifiesto de sincronización): lista declarativa Fuente→Destinos + modo.
-
-
-SYNC.RUNNER (Ejecutor de sincronización): script que aplica el manifiesto y actualiza derivados.
-
-
-DERIVED (Derivado): contenido que se replica automáticamente; no se edita manualmente.
-
-
-CANON (Canónico): contenido fuente de verdad; se edita manualmente y se promueve por humano.
-
-
-Single-Edit Rule (Regla de edición única): cada regla se edita en un solo lugar canónico.
-
-
-FULL-copy (Copia completa): derivación que replica texto completo (no resumen), usada en HUMAN por requerimiento académico.
-
-
-Gate (Aprobación humana): permiso explícito para APPLY.
-
-
-
-
-
-==========
-
-
-00.20_INDICE_GENERAL_WBS
-
-
-==========
-
-
-
-
-
-01.00 Propósito y mental model (por qué existe MASTER)
-
-
-02.00 Principios meta (reglas de oro del sistema de documentos)
-
-
-03.00 DOC.AUTHORITY.MAP (mapa de autoridad: quién manda y cómo se resuelven conflictos)
-
-
-04.00 CANON.REGISTRY (canónico vs derivado: qué se edita dónde)
-
-
-05.00 Single-Edit Rules (reglas de edición única por dominio)
-
-
-06.00 SYNC.MANIFEST.SPEC (especificación del manifiesto de sincronización)
-
-
-07.00 Marcadores DERIVED (formato estándar dentro de .txt)
-
-
-08.00 Política de conflictos (qué pasa si alguien edita un derivado)
-
-
-09.00 Integración con Git, RADAR y BATON (evidencia y control)
-
-
-10.00 Plantillas (templates) para registrar entradas de registry y manifest
-
-
-11.00 Checklist operativo
-
-
-12.00 CHANGELOG
-
-
-
-
-
-==========
-
-
-01.00_PROPOSITO_Y_MENTAL_MODEL
-
-
-==========
-
-
-
-
-
-01.10_PROPOSITO
-
-
-- Este archivo existe por una razón práctica:
-
-
-  cuando tienes muchos archivos HUMAN, cualquier cambio se vuelve engorroso si exige editar 10 copias divergentes.
-
-
-- MASTER define un sistema para:
-
-
-  - mantener ultra detalle en HUMAN,
-
-
-  - sin edición manual multiarchivo,
-
-
-  - con una única fuente de verdad por regla,
-
-
-  - y sincronización automática FULL-copy.
-
-
-
-
-
-01.20_MENTAL_MODEL
-
-
-- Cada dominio de reglas tiene un “archivo dueño”.
-
-
-- Ese archivo dueño contiene el CANON.
-
-
-- Otros archivos pueden incluir el mismo contenido como DERIVED (FULL-copy) por usabilidad.
-
-
-- Los derivados se actualizan por SYNC.RUNNER usando SYNC.MANIFEST.
-
-
-- Git + RADAR + BATON entregan evidencia y trazabilidad.
-
-
-
-
-
-==========
-
-
-02.00_PRINCIPIOS_META_(REGLAS_DE_ORO)
-
-
-==========
-
-
-
-
-
-02.10_SINGLE-EDIT_RULE (Regla de edición única)
-
-
-- Una regla o plantilla se edita en un solo lugar canónico (archivo dueño del dominio).
-
-
-- Nadie edita manualmente copias en otros archivos.
-
-
-
-
-
-02.20_DERIVED_FULL-COPY_EN_HUMAN
-
-
-- En HUMAN, los derivados NO son resúmenes.
-
-
-- Son FULL-copy: réplica completa del texto canónico.
-
-
-- Esto cumple la exigencia de documentación académica ultra detallada.
-
-
-
-
-
-02.30_TODO_CAMBIO_TIENE_EVIDENCIA
-
-
-- Si se sincroniza contenido derivado:
-
-
-  - se registra log,
-
-
-  - se valida (mínimo),
-
-
-  - y se hace commit (cuando corresponda).
-
-
-
-
-
-02.40_CONFLICTOS_SE_RESUELVEN_POR_AUTORIDAD
-
-
-- Si hay conflicto: manda el archivo dueño del dominio.
-
-
-- MASTER es dueño solo de meta-gobernanza, no “de todo”.
-
-
-
-
-
-==========
-
-
-03.00_DOC.AUTHORITY.MAP_(MAPA_DE_AUTORIDAD)
-
-
-==========
-
-
-
-
-
-03.10_OBJETIVO
-
-
-- Definir qué archivo manda por dominio, y cómo se resuelven conflictos sin discusión eterna.
-
-
-
-
-
-03.20_TABLA_DE_AUTORIDAD (CANON)
-
-
-- Regla de lectura:
-
-
-  - Si una pregunta es sobre el dominio X, se consulta el archivo dueño.
-
-
-  - Si hay contradicción entre dos archivos, manda el dueño del dominio, o si el conflicto es meta, manda MASTER.
-
-
-
-
-
-DOMINIO...........................: ARCHIVO_DUENO.........................: EJEMPLOS_DE_CONTENIDO_CANON
-
-
-- Operación Humana (rituales, prompts, MB) : 00.00_HUMAN.USER.txt            : Ritual inicio/cierre, MiniBattles, cómo pedir trabajo a IA, gates operativos.
-
-
-- Constitución HIA (filosofía/glosario)   : 01.00_HUMAN.GENERAL.txt         : Principios, anti-objetivos, pirámide de autoridad general, glosario HIA base.
-
-
-- PF.0 (método mínimo operativo)          : HUMAN.PF0.txt                   : PF.0 completo: rituales, MB, MVP.HIA, DoD H0–H6, control de fricción.
-
-
-- Continuidad / Handoff (BATON)           : 02.00_HUMAN.BATON.txt           : Plantilla BATON, reglas de cierre/migración, handoff package.
-
-
-- Inventario / Auditoría (RADAR)          : 03.00_HUMAN.RADAR.txt           : Definiciones LITE/INDEX/CORE/FULL, CORE_SCOPE=APP, exclusiones, ejecución.
-
-
-- Contratos de cambio (CIS)               : 04.00_HUMAN.CIS.txt             : Formato CREATE/EDIT/MOVE/RENAME/DELETE, planner/executor, apply discipline.
-
-
-- Meta-gobernanza documental              : HUMAN.MASTER.txt                : authority map, canon registry, sync manifest spec, single-edit rules.
-
-
-
-
-
-03.30_REGLA_DE_CONFLICTO (CANON)
-
-
-- Si un contenido pertenece a un dominio y está duplicado:
-
-
-  - manda el archivo dueño del dominio.
-
-
-- Si el conflicto es sobre:
-
-
-  - qué es canónico vs derivado,
-
-
-  - cómo se sincroniza,
-
-
-  - o quién manda en documentos,
-
-
-  entonces manda MASTER.
-
-
-
-
-
-==========
-
-
-04.00_CANON.REGISTRY_(REGISTRO_CANONICO)
-
-
-==========
-
-
-
-
-
-04.10_OBJETIVO
-
-
-- Declarar explícitamente:
-
-
-  - qué secciones son CANON (editables manualmente),
-
-
-  - cuáles son DERIVED (generadas por sync),
-
-
-  - y qué tipo de derivación se aplica (FULL-copy por defecto en HUMAN).
-
-
-
-
-
-04.20_REGLAS_GENERALES (CANON)
-
-
-- CANON:
-
-
-  - se edita manualmente solo en el archivo dueño del dominio.
-
-
-- DERIVED:
-
-
-  - se reemplaza automáticamente por SYNC.RUNNER,
-
-
-  - no se edita manualmente.
-
-
-- HUMAN requiere:
-
-
-  - DERIVED_MODE=FULL (copia completa) por defecto.
-
-
-
-
-
-04.30_ENTRADA_ESTANDAR (FORMATO)
-
-
-CANON_ENTRY_ID.....: <ID_UNICO>
-
-
-DOMINIO............: <nombre>
-
-
-SOURCE_DOC_ID......: <ID_UNICO archivo fuente>
-
-
-SOURCE_SECTION_WBS.: <WBS sección fuente>
-
-
-SOURCE_TITLE.......: <título sección fuente>
-
-
-TARGET_FILES.......: <lista de archivos destino>
-
-
-DERIVED_MODE........: FULL | OVERRIDE
-
-
-NOTES..............: <por qué se replica>
-
-
-STATUS.............: DRAFT | CANON
-
-
-OWNER..............: HUMAN
-
-
-
-
-
-==========
-
-
-05.00_SINGLE-EDIT_RULES_(REGLAS_DE_EDICION_UNICA)
-
-
-==========
-
-
-
-
-
-05.10_OBJETIVO
-
-
-- Prevenir propagación manual multiarchivo.
-
-
-
-
-
-05.20_REGLAS (CANON)
-
-
-- Todo contenido bajo un dominio se edita solo en su archivo dueño.
-
-
-- Si se necesita ver el mismo contenido en otro archivo, se usa DERIVED FULL-copy.
-
-
-- Si alguien edita manualmente el derivado:
-
-
-  - se considera “DIRTY” y se corrige re-sincronizando desde la fuente.
-
-
-
-
-
-==========
-
-
-06.00_SYNC.MANIFEST.SPEC_(ESPECIFICACION)
-
-
-==========
-
-
-
-
-
-06.10_OBJETIVO
-
-
-- Definir el formato del manifiesto de sincronización.
-
-
-
-
-
-06.30_ENTRADA_ESTANDAR
-
-
-SYNC_ENTRY_ID.......: <ID_UNICO>
-
-
-SOURCE_DOC_ID........: <ID_UNICO archivo fuente>
-
-
-SOURCE_SECTION_WBS...: <WBS sección>
-
-
-TARGET_FILE..........: <archivo destino>
-
-
-DERIVED_BLOCK_ID.....: <ID único del bloque derivado>
-
-
-MODE.................: FULL | OVERRIDE
-
-
-NOTES................: <contexto>
-
-
-
-
-
-==========
-
-
-06.50_DERIVED_BLOCKS_(FULL-COPY_SYNC_TARGETS)
-
-
-==========
-
-
-
-
-
-06.50.10_NOTA_IMPORTANTE
-
-
-- Bloques DERIVED (Derivados) que se sincronizan automáticamente desde fuentes canónicas.
-
-
-- Regla: NO editar manualmente dentro de BEGIN/END.
-
-
-- Modo por defecto: FULL-copy (copia completa), no resumen (HUMAN académico).
-
-
-
-
-
-06.50.20_PF0_RITUALES_(DERIVED)
-
-
-<<<DERIVED_BEGIN ID=DERIVED.PF0.RITUALS.MASTER.0001 SOURCE=HUMAN.PF0.0001::04.00 MODE=FULL>>>
-
-
-[SYNC_TARGET_EMPTY]
-
-
-<<<DERIVED_END ID=DERIVED.PF0.RITUALS.MASTER.0001>>>
-
-
-
-
-
-06.50.30_RADAR_NIVELES_(DERIVED)
-
-
-<<<DERIVED_BEGIN ID=DERIVED.RADAR.LEVELS.MASTER.0001 SOURCE=HUMAN.RADAR.0001::02.00 MODE=FULL>>>
-
-
-[SYNC_TARGET_EMPTY]
-
-
-<<<DERIVED_END ID=DERIVED.RADAR.LEVELS.MASTER.0001>>>
-
-
-
-
-
-06.50.50_PF0_TEMPLATES_(DERIVED)
-
-
-<<<DERIVED_BEGIN ID=DERIVED.PF0.TEMPLATES.MASTER.0001 SOURCE=HUMAN.PF0.0001::11.00 MODE=FULL>>>
-
-
-[SYNC_TARGET_EMPTY]
-
-
-<<<DERIVED_END ID=DERIVED.PF0.TEMPLATES.MASTER.0001>>>
-
-
-
-
-
-06.50.60_CIS_TEMPLATES_(DERIVED)
-
-
-<<<DERIVED_BEGIN ID=DERIVED.CIS.TEMPLATES.MASTER.0001 SOURCE=HUMAN.CIS.0001::12.00 MODE=FULL>>>
-
-
-[SYNC_TARGET_EMPTY]
-
-
-<<<DERIVED_END ID=DERIVED.CIS.TEMPLATES.MASTER.0001>>>
-
-
-
-
-
-==========
-
-
-07.00_MARCADORES_DERIVED_(FORMATO_ESTANDAR)
-
-
-==========
-
-
-
-Inicio:
-
-
-<<<DERIVED_BEGIN ID=<DERIVED_BLOCK_ID> SOURCE=<SOURCE_DOC_ID>::<SOURCE_WBS> MODE=FULL>>>
-
-
-Fin:
-
-
-<<<DERIVED_END ID=<DERIVED_BLOCK_ID>>>
-
-
-
-==========
-12.00_CHANGELOG
-==========
-
-
-
-
-
-2026-02-28, v1.1-DRAFT
-
-
-- Se agregan placeholders DERIVED para PF0 templates y CIS templates (evita FAIL en SYNC).
-
-
-
-
-
-
+- reducir lectura dispersa
+- mostrar texto real
+- evitar asumir versiones equivocadas
+- permitir ubicar bloques originales
+- disminuir riesgo de parche ciego
+
+16.30 Límite:
+el patch siempre debe aplicarse
+sobre el archivo fuente real
+y bajo control humano/CIS.
+
+========================================================================
+17.00_GUARDRAILS_OPERATIVOS
+========================================================================
+
+17.10 Guardrail documental
+
+Debe quedar explícito en HIA que:
+
+- RADAR.ps1 = único runner canónico
+- RADAR.DEV.ps1 = solo laboratorio
+- RADAR.DEV.ps1 no puede ser invocado por triggers
+
+17.20 Guardrail técnico
+
+Los validadores o controles futuros
+pueden fallar si detectan que
+un trigger o flujo canónico
+llama a RADAR.DEV.ps1.
+
+17.30 Guardrail operativo
+
+Orden recomendado cuando aplique:
+
+- generar o actualizar outputs necesarios
+- ejecutar RADAR canónico
+- ejecutar RADAR.DEV solo si hay trabajo experimental
+- validar
+- recién después checkpoint Git
+
+========================================================================
+18.00_LIMITES_DUROS_DE_RADAR
+========================================================================
+
+18.10 RADAR no puede:
+
+- entender intención humana completa
+- decidir valor de negocio
+- sustituir criterio experto
+- otorgar permisos
+- validar verdad semántica absoluta
+- reemplazar lectura humana crítica
+- reparar por sí solo
+- cerrar fases
+- certificar integridad total por sí solo
+
+18.20 Sobreestimar RADAR
+es tan peligroso
+como ignorarlo.
+
+========================================================================
+19.00_RIESGOS_DE_MAL_USO
+========================================================================
+
+19.10 Son usos indebidos de RADAR:
+
+- usarlo como autorización de cambio
+- usarlo como reemplazo de CIS
+- usarlo como criterio final de decisión
+- pedirle resumen creativo cuando el output debe ser fiel
+- meter exceso de señales y volverlo ruido
+- mezclar RADAR con outputs derivados sin frontera
+- usar RADAR.DEV como si fuera oficial
+- inflar RADAR.Core con material muerto o pesado
+
+19.20 El objetivo de RADAR
+no es ser omnipresente.
+Es ser preciso y útil.
+
+========================================================================
+20.00_VIGENCIA
+========================================================================
+
+20.10 Este archivo sigue vigente mientras HIA:
+
+- opere con txt-first
+- necesite continuidad entre humano e IA
+- priorice trazabilidad
+- use RADAR como mecanismo de observación pasiva
+- mantenga separación entre observación y acción
+
+========================================================================
+21.00_CHANGELOG
+========================================================================
+
+21.10_2026-03-10_v2.0-DRAFT
+
+- reconstrucción completa del archivo
+- definición explícita de Index, Core, Lite y DEV
+- definición de política fija de inclusión para Core
+- eliminación conceptual de “relevancia dinámica” dentro de Core
+- refuerzo del principio de no interpretación en Core
+- incorporación de guardrail RADAR.ps1 canónico / RADAR.DEV.ps1 laboratorio
+- alineación con BATON, CIS, Git y patching
+- limpieza conceptual para evitar mezclar RADAR con decisión o ejecución
+
+======================================================================
+FIN DEL ARCHIVO
+======================================================================

@@ -1,367 +1,547 @@
 <#
-DATE......: 2026-03-03
-TIME......: HH:MM
-TZ........: America/Santiago
-CITY......: Santiago, Chile
-VERSION...: v1.0-DRAFT
-ID_UNICO..: HIA.TOO.RADAR2.0001
-NOMBRE....: radar.2.ps1
-UBICACION.: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\02_TOOLS\radar.2.ps1
-AUTOR.....: SYSTEM (ChatGPT) + HUMANO (PABLO/ADMIN)
-ALCANCE...:
-- Consolidar contenido COMPLETO (sin truncation) de carpetas objetivo a archivos RADAR dedicados.
-- Excluir carpetas irrelevantes (Raw, DeadHistory, 03_ARTIFACTS\DeadHistory) y archivos binarios por extensión.
-- Outputs separados por dominio (HUMAN, TOOLS, FRAMEWORK, etc.).
+========================================================================
+00.00_METADATOS_DEL_SCRIPT
+========================================================================
 
-NO_CUBRE..:
-- No reemplaza RADAR.ps1 principal (no genera INDEX/LITE/CORE/FULL).
-- No hace hashing, ni comparación de deltas, ni segmentación automática (salvo que el usuario la active).
+ID_UNICO..........: HIA.TOOL.RADAR.DEV.0001
+NOMBRE_SUGERIDO...: RADAR.DEV.ps1
+VERSION...........: v3.1-DRAFT
+FECHA.............: 2026-03-10
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: Santiago, Chile
+UBICACION_SISTEMA.: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\02_TOOLS\RADAR.DEV.ps1
+AUTOR_HUMANO......: PABLO (ADMIN)
+AUTOR_IA..........: GPT-5.4 Thinking
 
-DEPENDENCIAS:
-- PowerShell 7 recomendado (funciona en Windows PowerShell 5.1 con caveats).
-- Permisos de lectura sobre el proyecto.
+OBJETIVO
+- Laboratorio RADAR de HIA.
+- Generar salidas por target sin contaminar outputs canónicos.
+- Permitir exploración de carpetas específicas.
+- Opcionalmente producir un RADAR.Full DEV_ONLY.
 
-COMO_SE_EJECUTA:
-1) Abrir Terminal (PowerShell) en:
-   C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
-2) Ejecutar:
-   pwsh -NoProfile -File .\02_TOOLS\radar.2.ps1
-   (o en Windows PowerShell 5.1):
-   powershell -NoProfile -ExecutionPolicy Bypass -File .\02_TOOLS\radar.2.ps1
+REGLAS DURAS
+- Este script NO es runner canónico.
+- Este script NO debe ser invocado por triggers canónicos.
+- Este script NO reemplaza RADAR.ps1.
 
-3) Ver outputs en:
-   .\03_ARTIFACTS\RADAR\Radar.*.txt
-
-INDICE_WBS:
-00.00 Metadatos
-01.00 Parámetros y defaults
-02.00 Reglas de exclusión e inclusión
-03.00 Lectura segura de texto (BOM/encodings)
-04.00 Consolidación por carpeta objetivo
-05.00 Escritura de outputs (header + file blocks)
-06.00 Main
+COMO_EJECUTAR
+pwsh -NoProfile -File .\02_TOOLS\RADAR.DEV.ps1
+pwsh -NoProfile -File .\02_TOOLS\RADAR.DEV.ps1 -Targets "HUMAN.README","02_TOOLS","00_FRAMEWORK"
+pwsh -NoProfile -File .\02_TOOLS\RADAR.DEV.ps1 -IncludeFull
 #>
 
-# =========================
-# 01.00_PARAMETROS_DEFAULT
-# =========================
 [CmdletBinding()]
 param(
-  [Parameter(Mandatory = $false)]
-  [string] $ProjectRoot = $null,
+    [Parameter(Mandatory = $false)]
+    [string]$ProjectRoot = $null,
 
-  [Parameter(Mandatory = $false)]
-  [string] $OutDirRel = "03_ARTIFACTS\RADAR",
+    [Parameter(Mandatory = $false)]
+    [string]$OutDirRel = "03_ARTIFACTS\RADAR",
 
-  # 0 = no split (sin límites). Si pones un número > 0, parte el output en segmentos.
-  [Parameter(Mandatory = $false)]
-  [long] $MaxBytesPerOutput = 0,
+    [Parameter(Mandatory = $false)]
+    [string[]]$Targets = @("HUMAN.README", "02_TOOLS", "05_Triggers", "00_FRAMEWORK", "04_PROJECTS", "DragnDrop"),
 
-  [Parameter(Mandatory = $false)]
-  [switch] $IncludeHidden,
+    [Parameter(Mandatory = $false)]
+    [ValidateSet("None", "Text", "All")]
+    [string]$HashMode = "Text",
 
-  [Parameter(Mandatory = $false)]
-  [switch] $VerboseLog
+    [Parameter(Mandatory = $false)]
+    [long]$MaxOutputBytes = 8388608,
+
+    [Parameter(Mandatory = $false)]
+    [switch]$IncludeFull
 )
-
-# Default ProjectRoot: 1 nivel arriba de 02_TOOLS (PROJECT_ROOT)
-if (-not $ProjectRoot) {
-  try {
-    $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-  } catch {
-    throw "No se pudo resolver ProjectRoot desde PSScriptRoot. Pasa -ProjectRoot explícito. Error=$($_.Exception.Message)"
-  }
-}
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-# =========================
-# 02.00_REGLAS_INCLUSION_EXCLUSION
-# =========================
+# ========================================================================
+# 01.00_FUNCIONES_BASE
+# ========================================================================
 
-# 02.10 Carpetas irrelevantes (se excluyen siempre, aunque existan dentro del target)
-# Nota: match por "path segment contains" simple. Mantener barato, predecible.
-$ExcludedPathContains = @(
-  "\Raw\",
-  "\DeadHistory\",
-  "\03_ARTIFACTS\DeadHistory\"
-)
+function New-DirectoryIfMissing {
+    param([Parameter(Mandatory = $true)][string]$Path)
 
-# 02.20 Extensiones binarias (excluir)
-$BinaryExt = @(
-  ".jpg",".jpeg",".png",".gif",".webp",".bmp",".tiff",".ico",
-  ".mp4",".mov",".avi",".mkv",".mp3",".wav",".flac",
-  ".zip",".7z",".rar",".gz",".tar",".iso",
-  ".exe",".dll",".sys",".msi",
-  ".pdf", # <- ojo: si quieres incluir PDFs como texto, hay que OCR/parsers: fuera de scope
-  ".pdb",".obj",".class",
-  ".woff",".woff2",".ttf",".otf"
-)
-
-# 02.30 Extensiones de texto (incluir)
-# Nota: NO es truncation. Solo decide qué se considera "texto relevante" para consolidar.
-$TextExt = @(
-  ".txt",".md",".ps1",".psm1",".psd1",".json",".yaml",".yml",".xml",".csv",".ini",".cfg",".conf",".toml",".sql",
-  ".py",".js",".ts",".tsx",".java",".cs",".go",".rs",".rb",".php",".sh",".bat",".cmd"
-)
-
-# 02.40 Dotfiles “texto relevante” (sin extensión)
-$TextDotFilesByName = @(
-  ".gitignore",".gitattributes",".editorconfig",".npmrc",".yarnrc",".prettierrc",".eslintrc"
-)
-
-function Test-IsExcludedPath {
-  param([Parameter(Mandatory=$true)][string]$FullPath)
-
-  $p = $FullPath.Replace("/", "\")
-  foreach ($frag in $ExcludedPathContains) {
-    if ($p -like "*$frag*") { return $true }
-  }
-  return $false
+    if (-not [System.IO.Directory]::Exists($Path)) {
+        [void][System.IO.Directory]::CreateDirectory($Path)
+    }
 }
 
-function Test-IsBinaryExt {
-  param([Parameter(Mandatory=$true)][string]$Ext)
-  if ([string]::IsNullOrWhiteSpace($Ext)) { return $false }
-  $e = $Ext.ToLowerInvariant()
-  return $BinaryExt -contains $e
+function Get-FullPathSafe {
+    param([Parameter(Mandatory = $true)][string]$Path)
+    return [System.IO.Path]::GetFullPath($Path)
 }
 
-function Test-IsTextEligible {
-  param(
-    [Parameter(Mandatory=$true)][string]$FullPath
-  )
+function Get-RelativePathSafe {
+    param(
+        [Parameter(Mandatory = $true)][string]$RootPath,
+        [Parameter(Mandatory = $true)][string]$FullPath
+    )
 
-  $leaf = Split-Path $FullPath -Leaf
-  $ext  = [System.IO.Path]::GetExtension($leaf)
+    $root = (Get-FullPathSafe -Path $RootPath).TrimEnd('\')
+    $full = Get-FullPathSafe -Path $FullPath
 
-  # Dotfiles allowlist (sin ext o con ext raro)
-  $leafLower = $leaf.ToLowerInvariant()
-  if ($TextDotFilesByName -contains $leafLower) { return $true }
+    if ($full.StartsWith($root, [System.StringComparison]::OrdinalIgnoreCase)) {
+        return $full.Substring($root.Length).TrimStart('\')
+    }
 
-  # Si es binario => fuera
-  if (Test-IsBinaryExt $ext) { return $false }
-
-  # Ext texto => dentro
-  if (-not [string]::IsNullOrWhiteSpace($ext)) {
-    return ($TextExt -contains $ext.ToLowerInvariant())
-  }
-
-  # Sin extensión y no está allowlisted => fuera (para no comerse blobs)
-  return $false
+    return $full
 }
 
-# =========================
-# 03.00_LECTURA_TEXTO_SEGURA
-# =========================
-function Get-TextFromBytes {
-  param([Parameter(Mandatory=$true)][byte[]]$Bytes)
+function Get-Sha256Hex {
+    param([Parameter(Mandatory = $true)][string]$Path)
 
-  # Detect BOMs comunes
-  if ($Bytes.Length -ge 3 -and $Bytes[0] -eq 0xEF -and $Bytes[1] -eq 0xBB -and $Bytes[2] -eq 0xBF) {
-    return [System.Text.Encoding]::UTF8.GetString($Bytes, 3, $Bytes.Length - 3)
-  }
-  if ($Bytes.Length -ge 2 -and $Bytes[0] -eq 0xFF -and $Bytes[1] -eq 0xFE) {
-    return [System.Text.Encoding]::Unicode.GetString($Bytes, 2, $Bytes.Length - 2) # UTF-16 LE
-  }
-  if ($Bytes.Length -ge 2 -and $Bytes[0] -eq 0xFE -and $Bytes[1] -eq 0xFF) {
-    return [System.Text.Encoding]::BigEndianUnicode.GetString($Bytes, 2, $Bytes.Length - 2) # UTF-16 BE
-  }
-  if ($Bytes.Length -ge 4 -and $Bytes[0] -eq 0xFF -and $Bytes[1] -eq 0xFE -and $Bytes[2] -eq 0x00 -and $Bytes[3] -eq 0x00) {
-    return [System.Text.Encoding]::UTF32.GetString($Bytes, 4, $Bytes.Length - 4) # UTF-32 LE
-  }
-  if ($Bytes.Length -ge 4 -and $Bytes[0] -eq 0x00 -and $Bytes[1] -eq 0x00 -and $Bytes[2] -eq 0xFE -and $Bytes[3] -eq 0xFF) {
-    return [System.Text.Encoding]::GetEncoding("utf-32BE").GetString($Bytes, 4, $Bytes.Length - 4) # UTF-32 BE
-  }
-
-  # Fallback: UTF-8 sin BOM (y si revienta, Default)
-  try {
-    return [System.Text.Encoding]::UTF8.GetString($Bytes)
-  } catch {
-    return [System.Text.Encoding]::Default.GetString($Bytes)
-  }
+    $sha = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        $fs = [System.IO.File]::Open($Path, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
+        try {
+            $hash = $sha.ComputeHash($fs)
+            return ([BitConverter]::ToString($hash)).Replace("-", "").ToLowerInvariant()
+        }
+        finally {
+            $fs.Dispose()
+        }
+    }
+    finally {
+        $sha.Dispose()
+    }
 }
 
-function Get-FileText {
-  param([Parameter(Mandatory=$true)][string]$FullPath)
-  try {
-    $bytes = [System.IO.File]::ReadAllBytes($FullPath)
-    return Get-TextFromBytes -Bytes $bytes
-  } catch {
-    return "[READ_FAIL: $($_.Exception.Message)]"
-  }
+function Get-TextExtensionSet {
+    $set = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
+
+    @(
+        ".txt",".md",".json",".yaml",".yml",".xml",".ini",".cfg",".conf",".toml",".env",
+        ".ps1",".psm1",".psd1",".py",".js",".ts",".tsx",".jsx",".java",".cs",".go",".rs",".rb",".php",".sh",".bat",".cmd",
+        ".sql",".csv"
+    ) | ForEach-Object { [void]$set.Add($_) }
+
+    return $set
 }
 
-# =========================
-# 04.00_CONSOLIDACION
-# =========================
-function Get-FileInventory {
-  param(
-    [Parameter(Mandatory=$true)][string]$RootPath
-  )
+function Get-HashAllowlistNameSet {
+    $set = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
 
-  if (-not (Test-Path -LiteralPath $RootPath)) {
-    throw "RootPath no existe: $RootPath"
-  }
+    @(".gitignore",".gitattributes",".editorconfig",".npmrc",".yarnrc",".prettierrc",".eslintrc") | ForEach-Object { [void]$set.Add($_) }
 
-  $gciParams = @{
-    LiteralPath = $RootPath
-    Recurse     = $true
-    File        = $true
-    Force       = [bool]$IncludeHidden
-  }
-
-  $files = Get-ChildItem @gciParams | Sort-Object FullName
-
-  $out = New-Object System.Collections.Generic.List[object]
-
-  foreach ($f in $files) {
-    $full = $f.FullName
-
-    if (Test-IsExcludedPath $full) { continue }
-
-    $eligible = Test-IsTextEligible -FullPath $full
-    if (-not $eligible) { continue }
-
-    $rel = $full.Substring($RootPath.Length).TrimStart("\")
-    $out.Add([pscustomobject]@{
-      FullPath = $full
-      RelPath  = $rel
-      Length   = $f.Length
-      LastWriteTime = $f.LastWriteTime
-    }) | Out-Null
-  }
-
-  # Fuerza retorno como array, siempre.
-  return @($out.ToArray())
+    return $set
 }
 
-# =========================
-# 05.00_ESCRITURA_OUTPUT
-# =========================
-function Write-ConsolidatedOutput {
-  param(
-    [Parameter(Mandatory=$true)][string]$TargetRoot,
-    [Parameter(Mandatory=$true)][string]$OutFilePath,
-    [Parameter(Mandatory=$true)][string]$Label
-  )
+function Test-ExcludedPath {
+    param(
+        [Parameter(Mandatory = $true)][string]$FullPath,
+        [Parameter(Mandatory = $true)][string[]]$ExcludedContains
+    )
 
-  $runTs = Get-Date
-  $inv = Get-FileInventory -RootPath $TargetRoot
+    $normalized = $FullPath.Replace('/', '\')
 
-  # Header
-  $lines = New-Object System.Collections.Generic.List[string]
-  $lines.Add("==========") | Out-Null
-  $lines.Add("HIA_RADAR2_OUTPUT") | Out-Null
-  $lines.Add("==========") | Out-Null
-  $lines.Add("LABEL........: $Label") | Out-Null
-  $lines.Add("RUN_UTC......: " + ($runTs.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss"))) | Out-Null
-  $lines.Add("RUN_LOCAL....: " + ($runTs.ToString("yyyy-MM-dd HH:mm:ss"))) | Out-Null
-  $lines.Add("PROJECT_ROOT.: $ProjectRoot") | Out-Null
-  $lines.Add("TARGET_ROOT..: $TargetRoot") | Out-Null
-  $lines.Add("OUT_FILE.....: $OutFilePath") | Out-Null
-  $lines.Add("FILE_COUNT...: " + (@($inv).Count)) | Out-Null
-  $lines.Add("MAX_BYTES_OUT: " + $MaxBytesPerOutput) | Out-Null
-  $lines.Add("EXCLUDED_PATH: " + ($ExcludedPathContains -join "; ")) | Out-Null
-  $lines.Add("EXCLUDED_EXT.: " + ($BinaryExt -join "; ")) | Out-Null
-  $lines.Add("TEXT_EXT.....: " + ($TextExt -join "; ")) | Out-Null
-  $lines.Add("DOTFILES.....: " + ($TextDotFilesByName -join "; ")) | Out-Null
-  $lines.Add("") | Out-Null
+    foreach ($frag in $ExcludedContains) {
+        if ($normalized.IndexOf($frag, [System.StringComparison]::OrdinalIgnoreCase) -ge 0) {
+            return $true
+        }
+    }
 
-  # Index
-  $lines.Add("==========") | Out-Null
-  $lines.Add("SECTION: FILE_INDEX") | Out-Null
-  $lines.Add("==========") | Out-Null
-  foreach ($r in $inv) {
-    $lines.Add(("FILE: {0} | bytes={1} | mtime={2}" -f $r.RelPath, $r.Length, $r.LastWriteTime)) | Out-Null
-  }
-  $lines.Add("") | Out-Null
+    return $false
+}
 
-  # Content blocks
-  $lines.Add("==========") | Out-Null
-  $lines.Add("SECTION: CONTENT") | Out-Null
-  $lines.Add("==========") | Out-Null
+function Test-TextEligiblePath {
+    param(
+        [Parameter(Mandatory = $true)][string]$FullPath,
+        [Parameter(Mandatory = $true)][System.Collections.Generic.HashSet[string]]$TextExtSet,
+        [Parameter(Mandatory = $true)][System.Collections.Generic.HashSet[string]]$AllowlistNameSet
+    )
 
-  foreach ($r in $inv) {
-    $lines.Add("-----BEGIN_FILE-----") | Out-Null
-    $lines.Add("REL_PATH...: " + $r.RelPath) | Out-Null
-    $lines.Add("FULL_PATH..: " + $r.FullPath) | Out-Null
-    $lines.Add("BYTES......: " + $r.Length) | Out-Null
-    $lines.Add("MTIME......: " + $r.LastWriteTime) | Out-Null
-    $lines.Add("-----CONTENT-----") | Out-Null
+    $leaf = [System.IO.Path]::GetFileName($FullPath)
 
-    $txt = Get-FileText -FullPath $r.FullPath
-    $lines.Add($txt) | Out-Null
+    if ($AllowlistNameSet.Contains($leaf)) {
+        return $true
+    }
+
+    $ext = [System.IO.Path]::GetExtension($leaf)
+    if ([string]::IsNullOrWhiteSpace($ext)) {
+        return $false
+    }
+
+    return $TextExtSet.Contains($ext)
+}
+
+function Convert-BytesToText {
+    param([Parameter(Mandatory = $true)][byte[]]$Bytes)
+
+    if ($Bytes.Length -ge 3 -and $Bytes[0] -eq 0xEF -and $Bytes[1] -eq 0xBB -and $Bytes[2] -eq 0xBF) {
+        return [System.Text.Encoding]::UTF8.GetString($Bytes, 3, $Bytes.Length - 3)
+    }
+    if ($Bytes.Length -ge 2 -and $Bytes[0] -eq 0xFF -and $Bytes[1] -eq 0xFE) {
+        return [System.Text.Encoding]::Unicode.GetString($Bytes, 2, $Bytes.Length - 2)
+    }
+    if ($Bytes.Length -ge 2 -and $Bytes[0] -eq 0xFE -and $Bytes[1] -eq 0xFF) {
+        return [System.Text.Encoding]::BigEndianUnicode.GetString($Bytes, 2, $Bytes.Length - 2)
+    }
+
+    try {
+        return [System.Text.Encoding]::UTF8.GetString($Bytes)
+    }
+    catch {
+        return [System.Text.Encoding]::Default.GetString($Bytes)
+    }
+}
+
+function Get-FileTextSafe {
+    param([Parameter(Mandatory = $true)][string]$Path)
+
+    try {
+        $bytes = [System.IO.File]::ReadAllBytes($Path)
+        return Convert-BytesToText -Bytes $bytes
+    }
+    catch {
+        return "[READ_FAIL: " + $_.Exception.Message + "]"
+    }
+}
+
+function Get-LogicalType {
+    param(
+        [Parameter(Mandatory = $true)][string]$FullPath,
+        [Parameter(Mandatory = $true)][System.Collections.Generic.HashSet[string]]$TextExtSet,
+        [Parameter(Mandatory = $true)][System.Collections.Generic.HashSet[string]]$AllowlistNameSet
+    )
+
+    if (Test-TextEligiblePath -FullPath $FullPath -TextExtSet $TextExtSet -AllowlistNameSet $AllowlistNameSet) {
+        return "text"
+    }
+
+    $ext = [System.IO.Path]::GetExtension($FullPath)
+    if ([string]::IsNullOrWhiteSpace($ext)) { return "no_ext" }
+
+    $binaryLike = @(".exe",".dll",".png",".jpg",".jpeg",".webp",".gif",".pdf",".xlsx",".xls",".pptx",".docx",".zip",".7z",".rar",".bin")
+    if ($binaryLike -contains $ext.ToLowerInvariant()) { return "binary" }
+
+    return "other"
+}
+
+function Get-FileEntryListDeterministic {
+    param(
+        [Parameter(Mandatory = $true)][string]$TargetRoot,
+        [Parameter(Mandatory = $true)][string[]]$ExcludedContains,
+        [Parameter(Mandatory = $true)][System.Collections.Generic.HashSet[string]]$TextExtSet,
+        [Parameter(Mandatory = $true)][System.Collections.Generic.HashSet[string]]$AllowlistNameSet,
+        [Parameter(Mandatory = $true)][string]$HashMode
+    )
+
+    $options = New-Object System.IO.EnumerationOptions
+    $options.RecurseSubdirectories = $true
+    $options.IgnoreInaccessible = $true
+    $options.ReturnSpecialDirectories = $false
+    $options.AttributesToSkip = [System.IO.FileAttributes]::ReparsePoint
+
+    $records = New-Object System.Collections.Generic.List[object]
+
+    foreach ($full in [System.IO.Directory]::EnumerateFiles($TargetRoot, "*", $options)) {
+        if (Test-ExcludedPath -FullPath $full -ExcludedContains $ExcludedContains) {
+            continue
+        }
+
+        $info = [System.IO.FileInfo]::new($full)
+        $type = Get-LogicalType -FullPath $full -TextExtSet $TextExtSet -AllowlistNameSet $AllowlistNameSet
+
+        if ($type -ne "text") {
+            continue
+        }
+
+        $sha = ""
+        if ($HashMode -eq "All" -or $HashMode -eq "Text") {
+            $sha = Get-Sha256Hex -Path $full
+        }
+
+        $records.Add([pscustomobject]@{
+            RelPath     = Get-RelativePathSafe -RootPath $TargetRoot -FullPath $full
+            FullPath    = $full
+            Size        = [int64]$info.Length
+            ModifiedUtc = $info.LastWriteTimeUtc.ToString("o")
+            Sha256      = $sha
+        }) | Out-Null
+    }
+
+    return @($records.ToArray() | Sort-Object -Property RelPath)
+}
+
+function Write-SegmentedTextFile {
+    param(
+        [Parameter(Mandatory = $true)][string]$ActivePath,
+        [Parameter(Mandatory = $true)][string]$Content,
+        [Parameter(Mandatory = $true)][long]$MaxBytes
+    )
+
+    $utf8 = New-Object System.Text.UTF8Encoding($false)
+    $bytes = $utf8.GetBytes($Content)
+
+    if ($bytes.Length -le $MaxBytes) {
+        [System.IO.File]::WriteAllText($ActivePath, $Content, $utf8)
+        return @($ActivePath)
+    }
+
+    $dir = Split-Path -Parent $ActivePath
+    $base = [System.IO.Path]::GetFileNameWithoutExtension($ActivePath)
+    $ext  = [System.IO.Path]::GetExtension($ActivePath)
+
+    $segments = New-Object System.Collections.Generic.List[string]
+    $lines = $Content -split "`r?`n"
+    $builder = New-Object System.Text.StringBuilder
+    $segmentIndex = 1
+
+    foreach ($line in $lines) {
+        $candidate = if ($builder.Length -eq 0) { $line } else { $builder.ToString() + "`r`n" + $line }
+        $candidateBytes = $utf8.GetByteCount($candidate)
+
+        if ($candidateBytes -gt $MaxBytes -and $builder.Length -gt 0) {
+            $segPath = Join-Path $dir ($base + ".seg." + $segmentIndex.ToString("000") + $ext)
+            [System.IO.File]::WriteAllText($segPath, $builder.ToString(), $utf8)
+            $segments.Add($segPath) | Out-Null
+            $builder.Clear() | Out-Null
+            [void]$builder.Append($line)
+            $segmentIndex++
+        }
+        else {
+            $builder.Clear() | Out-Null
+            [void]$builder.Append($candidate)
+        }
+    }
+
+    if ($builder.Length -gt 0) {
+        $segPath = Join-Path $dir ($base + ".seg." + $segmentIndex.ToString("000") + $ext)
+        [System.IO.File]::WriteAllText($segPath, $builder.ToString(), $utf8)
+        $segments.Add($segPath) | Out-Null
+    }
+
+    $pointer = New-Object System.Collections.Generic.List[string]
+    $pointer.Add("RADAR_SEGMENTED_OUTPUT") | Out-Null
+    $pointer.Add("ACTIVE_FILE: " + $ActivePath) | Out-Null
+    $pointer.Add("SEGMENT_COUNT: " + $segments.Count) | Out-Null
+    $pointer.Add("SEGMENTS:") | Out-Null
+    foreach ($p in $segments) {
+        $pointer.Add(" - " + $p) | Out-Null
+    }
+
+    [System.IO.File]::WriteAllText($ActivePath, ($pointer -join "`r`n"), $utf8)
+    return @($ActivePath) + @($segments.ToArray())
+}
+
+function Write-DevTargetOutput {
+    param(
+        [Parameter(Mandatory = $true)][string]$ProjectRoot,
+        [Parameter(Mandatory = $true)][string]$TargetRoot,
+        [Parameter(Mandatory = $true)][string]$OutFilePath,
+        [Parameter(Mandatory = $true)][string]$Label,
+        [Parameter(Mandatory = $true)][string[]]$ExcludedContains,
+        [Parameter(Mandatory = $true)][System.Collections.Generic.HashSet[string]]$TextExtSet,
+        [Parameter(Mandatory = $true)][System.Collections.Generic.HashSet[string]]$AllowlistNameSet,
+        [Parameter(Mandatory = $true)][string]$HashMode,
+        [Parameter(Mandatory = $true)][long]$MaxBytes
+    )
+
+    if (-not [System.IO.Directory]::Exists($TargetRoot)) {
+        throw "TargetRoot no existe: " + $TargetRoot
+    }
+
+    $records = Get-FileEntryListDeterministic `
+        -TargetRoot $TargetRoot `
+        -ExcludedContains $ExcludedContains `
+        -TextExtSet $TextExtSet `
+        -AllowlistNameSet $AllowlistNameSet `
+        -HashMode $HashMode
+
+    $lines = New-Object System.Collections.Generic.List[string]
+    $lines.Add("RADAR_DEV_OUTPUT — HIA") | Out-Null
+    $lines.Add("LABEL: " + $Label) | Out-Null
+    $lines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
+    $lines.Add("PROJECT_ROOT: " + $ProjectRoot) | Out-Null
+    $lines.Add("TARGET_ROOT: " + $TargetRoot) | Out-Null
+    $lines.Add("FILES_COUNT: " + $records.Count) | Out-Null
+    $lines.Add("MODE: DEV_ONLY") | Out-Null
+    $lines.Add("") | Out-Null
+
+    $lines.Add("SECTION: FILE_INDEX") | Out-Null
+    $lines.Add("FIELDS: relpath | size | modified_utc | sha256") | Out-Null
+    $lines.Add("") | Out-Null
+
+    foreach ($r in $records) {
+        $line = $r.RelPath + " | " + $r.Size + " | " + $r.ModifiedUtc + " | " + $r.Sha256
+        $lines.Add($line) | Out-Null
+    }
 
     $lines.Add("") | Out-Null
-    $lines.Add("-----END_FILE-----") | Out-Null
+    $lines.Add("SECTION: CONTENT") | Out-Null
     $lines.Add("") | Out-Null
-  }
 
-  # Ensure out dir
-  $outDir = Split-Path -Parent $OutFilePath
-  New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+    foreach ($r in $records) {
+        $lines.Add("======================================================================") | Out-Null
+        $lines.Add("INICIO_ARCHIVO_INCLUIDO") | Out-Null
+        $lines.Add("ARCHIVO: " + [System.IO.Path]::GetFileName($r.FullPath)) | Out-Null
+        $lines.Add("RUTA_TARGET_REL: " + $r.RelPath) | Out-Null
+        $lines.Add("RUTA_PROJECT_REL: " + (Get-RelativePathSafe -RootPath $ProjectRoot -FullPath $r.FullPath)) | Out-Null
+        $lines.Add("SIZE: " + $r.Size) | Out-Null
+        $lines.Add("MODIFIED_UTC: " + $r.ModifiedUtc) | Out-Null
+        $lines.Add("SHA256: " + $r.Sha256) | Out-Null
+        $lines.Add("======================================================================") | Out-Null
+        $lines.Add("") | Out-Null
 
-  # Sin límites: escribir completo.
-  # Si MaxBytesPerOutput > 0, segmenta por chunks de bytes del output final (no trunca contenido; solo parte el archivo).
-  $content = ($lines -join "`r`n") + "`r`n"
+        $lines.Add((Get-FileTextSafe -Path $r.FullPath)) | Out-Null
+        $lines.Add("") | Out-Null
 
-  if ($MaxBytesPerOutput -le 0) {
-    [System.IO.File]::WriteAllText($OutFilePath, $content, [System.Text.Encoding]::UTF8)
-    if ($VerboseLog) { Write-Host ("WROTE: {0} bytes={1}" -f $OutFilePath, ([System.Text.Encoding]::UTF8.GetByteCount($content))) }
-    return
-  }
+        $lines.Add("======================================================================") | Out-Null
+        $lines.Add("FIN_ARCHIVO_INCLUIDO") | Out-Null
+        $lines.Add("ARCHIVO: " + [System.IO.Path]::GetFileName($r.FullPath)) | Out-Null
+        $lines.Add("RUTA_TARGET_REL: " + $r.RelPath) | Out-Null
+        $lines.Add("======================================================================") | Out-Null
+        $lines.Add("") | Out-Null
+    }
 
-  # Segmentación opcional (si el usuario decide activarla)
-  $bytes = [System.Text.Encoding]::UTF8.GetBytes($content)
-  $total = $bytes.Length
-  $seg = 1
-  $offset = 0
-
-  while ($offset -lt $total) {
-    $take = [Math]::Min($MaxBytesPerOutput, $total - $offset)
-    $slice = New-Object byte[] $take
-    [Array]::Copy($bytes, $offset, $slice, 0, $take)
-
-    $segPath = "{0}.seg.{1:000}" -f $OutFilePath, $seg
-    [System.IO.File]::WriteAllBytes($segPath, $slice)
-
-    if ($VerboseLog) { Write-Host ("WROTE: {0} bytes={1}" -f $segPath, $take) }
-    $seg++
-    $offset += $take
-  }
+    $content = $lines -join "`r`n"
+    [void](Write-SegmentedTextFile -ActivePath $OutFilePath -Content $content -MaxBytes $MaxBytes)
 }
 
-# =========================
-# 06.00_MAIN
-# =========================
+function Remove-LegacyDevOutputs {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$OutDir
+    )
+
+    $legacy = @(
+        "Radar.Human.txt",
+        "Radar.Tools.txt",
+        "Radar.05_Triggers.txt",
+        "Radar.00_FRAMEWORK.txt",
+        "Radar.04_PROJECTS.txt",
+        "Radar.DragnDrop.txt"
+    )
+
+    foreach ($name in $legacy) {
+        $path = Join-Path $OutDir $name
+        if ([System.IO.File]::Exists($path)) {
+            Remove-Item -LiteralPath $path -Force
+        }
+    }
+}
+
+# ========================================================================
+# 02.00_RESOLUCION_BASE
+# ========================================================================
+
+if (-not $ProjectRoot) {
+    try {
+        $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+    }
+    catch {
+        throw "No se pudo resolver ProjectRoot desde PSScriptRoot. Error=" + $_.Exception.Message
+    }
+}
+
+$ProjectRoot = Get-FullPathSafe -Path $ProjectRoot
 $OutDir = Join-Path $ProjectRoot $OutDirRel
 
-$Targets = @(
-  @{ Label = "HUMAN.README";  Root = (Join-Path $ProjectRoot "HUMAN.README");  Out = (Join-Path $OutDir "Radar.Human.txt") },
-  @{ Label = "02_TOOLS";      Root = (Join-Path $ProjectRoot "02_TOOLS");      Out = (Join-Path $OutDir "Radar.Tools.txt") },
-  @{ Label = "05_Triggers";   Root = (Join-Path $ProjectRoot "05_Triggers");   Out = (Join-Path $OutDir "Radar.05_Triggers.txt") },
-  @{ Label = "00_FRAMEWORK";  Root = (Join-Path $ProjectRoot "00_FRAMEWORK");  Out = (Join-Path $OutDir "Radar.00_FRAMEWORK.txt") },
-  @{ Label = "04_PROJECTS";   Root = (Join-Path $ProjectRoot "04_PROJECTS");   Out = (Join-Path $OutDir "Radar.04_PROJECTS.txt") },
-  @{ Label = "DragnDrop";     Root = (Join-Path $ProjectRoot "DragnDrop");     Out = (Join-Path $OutDir "Radar.DragnDrop.txt") }
+New-DirectoryIfMissing -Path $OutDir
+Remove-LegacyDevOutputs -OutDir $OutDir
+
+$TextExtSet       = Get-TextExtensionSet
+$AllowlistNameSet = Get-HashAllowlistNameSet
+
+$ExcludedContains = @(
+    "\.git\",
+    "\node_modules\",
+    "\dist\",
+    "\build\",
+    "\__pycache__\",
+    "\.venv\",
+    "\.pytest_cache\",
+    "\Raw\",
+    "\DeadHistory\",
+    "\03_ARTIFACTS\DeadHistory\",
+    "\archive\",
+    "\bin\",
+    "\obj\"
 )
 
-Write-Host ("[RADAR2] RUN_START ProjectRoot={0}" -f $ProjectRoot)
+Write-Host ("[RADAR.DEV] RUN_START ProjectRoot=" + $ProjectRoot)
 
-foreach ($t in $Targets) {
-  $root = $t.Root
-  $out  = $t.Out
-  $lab  = $t.Label
+$TargetTable = @{}
+$TargetTable["HUMAN.README"] = @{ Root = (Join-Path $ProjectRoot "HUMAN.README"); Out = (Join-Path $OutDir "Radar.DEV.Human.ACTIVE.txt") }
+$TargetTable["02_TOOLS"]     = @{ Root = (Join-Path $ProjectRoot "02_TOOLS");     Out = (Join-Path $OutDir "Radar.DEV.Tools.ACTIVE.txt") }
+$TargetTable["05_Triggers"]  = @{ Root = (Join-Path $ProjectRoot "05_Triggers");  Out = (Join-Path $OutDir "Radar.DEV.Triggers.ACTIVE.txt") }
+$TargetTable["00_FRAMEWORK"] = @{ Root = (Join-Path $ProjectRoot "00_FRAMEWORK"); Out = (Join-Path $OutDir "Radar.DEV.Framework.ACTIVE.txt") }
+$TargetTable["04_PROJECTS"]  = @{ Root = (Join-Path $ProjectRoot "04_PROJECTS");  Out = (Join-Path $OutDir "Radar.DEV.Projects.ACTIVE.txt") }
+$TargetTable["DragnDrop"]    = @{ Root = (Join-Path $ProjectRoot "DragnDrop");    Out = (Join-Path $OutDir "Radar.DEV.DragnDrop.ACTIVE.txt") }
 
-  Write-Host ("[RADAR2] TARGET {0} -> {1}" -f $lab, $out)
-  try {
-    Write-ConsolidatedOutput -TargetRoot $root -OutFilePath $out -Label $lab
-  } catch {
-    Write-Host ("[RADAR2] WARN target_failed label={0} root={1} err={2}" -f $lab, $root, $_.Exception.Message)
-    continue
-  }
+$GeneratedDevOutputs = New-Object System.Collections.Generic.List[string]
+
+foreach ($targetName in $Targets) {
+    if (-not $TargetTable.ContainsKey($targetName)) {
+        Write-Host ("[RADAR.DEV] WARN target_unknown=" + $targetName)
+        continue
+    }
+
+    $target = $TargetTable[$targetName]
+    $root   = $target.Root
+    $out    = $target.Out
+
+    Write-Host ("[RADAR.DEV] TARGET " + $targetName + " -> " + $out)
+
+    try {
+        Write-DevTargetOutput `
+            -ProjectRoot $ProjectRoot `
+            -TargetRoot $root `
+            -OutFilePath $out `
+            -Label $targetName `
+            -ExcludedContains $ExcludedContains `
+            -TextExtSet $TextExtSet `
+            -AllowlistNameSet $AllowlistNameSet `
+            -HashMode $HashMode `
+            -MaxBytes $MaxOutputBytes
+
+        $GeneratedDevOutputs.Add($out) | Out-Null
+    }
+    catch {
+        Write-Host ("[RADAR.DEV] WARN target_failed=" + $targetName + " err=" + $_.Exception.Message)
+        continue
+    }
 }
 
-Write-Host "[RADAR2] RUN_END OK"
+if ($IncludeFull) {
+    $fullPath = Join-Path $OutDir "Radar.DEV.Full.ACTIVE.txt"
+
+    $fullLines = New-Object System.Collections.Generic.List[string]
+    $fullLines.Add("RADAR_DEV_FULL — HIA") | Out-Null
+    $fullLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
+    $fullLines.Add("MODE: DEV_ONLY") | Out-Null
+    $fullLines.Add("") | Out-Null
+    $fullLines.Add("GENERATED_OUTPUTS:") | Out-Null
+
+    foreach ($p in $GeneratedDevOutputs) {
+        $fullLines.Add(" - " + $p) | Out-Null
+    }
+
+    $fullLines.Add("") | Out-Null
+
+    foreach ($p in $GeneratedDevOutputs) {
+        $fullLines.Add("======================================================================") | Out-Null
+        $fullLines.Add("INICIO_DEV_OUTPUT") | Out-Null
+        $fullLines.Add("RUTA: " + $p) | Out-Null
+        $fullLines.Add("======================================================================") | Out-Null
+        $fullLines.Add("") | Out-Null
+
+        $fullLines.Add((Get-FileTextSafe -Path $p)) | Out-Null
+        $fullLines.Add("") | Out-Null
+
+        $fullLines.Add("======================================================================") | Out-Null
+        $fullLines.Add("FIN_DEV_OUTPUT") | Out-Null
+        $fullLines.Add("RUTA: " + $p) | Out-Null
+        $fullLines.Add("======================================================================") | Out-Null
+        $fullLines.Add("") | Out-Null
+    }
+
+    $fullContent = $fullLines -join "`r`n"
+    [void](Write-SegmentedTextFile -ActivePath $fullPath -Content $fullContent -MaxBytes $MaxOutputBytes)
+    $GeneratedDevOutputs.Add($fullPath) | Out-Null
+}
+
+Write-Host "[RADAR.DEV] RUN_END OK"
+Write-Host ("[RADAR.DEV] OUTPUTS: " + ($GeneratedDevOutputs -join "; "))
 exit 0
