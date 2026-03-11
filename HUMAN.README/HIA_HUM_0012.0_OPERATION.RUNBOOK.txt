@@ -46,7 +46,7 @@ REGLA DE AUTORIDAD:
 - Radar solo por toggle manual:
   - Index
   - IndexLite
-- RADAR_FULL no entra por defecto en paquetes DragnDrop.
+- RADAR_FULL (no es output canónico; solo forensics autorizados) no entra por defecto en paquetes DragnDrop.
 
 ==========
 03.00_TIPO_DE_CAMBIO_Y_DONDE_EDITAR

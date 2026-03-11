@@ -6,7 +6,7 @@ DATE......: 2026-03-03
 TIME......: HH:MM
 TZ........: America/Santiago
 CITY......: Santiago, Chile
-VERSION...: v1.0-DRAFT
+VERSION...: v1.1-DRAFT
 
 OBJETIVO:
   Generar DragnDrop\<Phase>\ como build output (generated-only) a partir de HUMAN.README,
@@ -153,6 +153,35 @@ if (@($entries).Count -eq 0) {
   throw "FAIL: no se encontraron DD_COPY_ENTRY_ID para $Phase en el manifest."
 }
 
+function Resolve-EntrySourcePath {
+  param(
+    [Parameter(Mandatory=$true)][pscustomobject]$Entry,
+    [Parameter(Mandatory=$true)][string]$Root,
+    [Parameter(Mandatory=$true)][string]$CurrentPhase,
+    [Parameter(Mandatory=$true)][string]$LogFile
+  )
+
+  $srcAbs = Join-Path $Root $Entry.Source
+  if (Test-Path -LiteralPath $srcAbs) {
+    return $srcAbs
+  }
+
+  # Compat Phase0: START_RITUAL legacy (underscore) solo como fallback explícito.
+  if (
+    $CurrentPhase -eq "Phase0" -and
+    ($Entry.Source -eq "HUMAN.README\09.0_HUMAN.START.RITUAL.txt")
+  ) {
+    $legacySrc = Join-Path $Root "HUMAN.README\09.0_HUMAN.START_RITUAL.txt"
+    if (Test-Path -LiteralPath $legacySrc) {
+      Write-Log -File $LogFile -Message ("WARN_PHASE0_LEGACY_SOURCE {0} -> {1}" -f $legacySrc,$Entry.Source) -Level "WARN"
+      return $legacySrc
+    }
+  }
+
+  return $srcAbs
+}
+
+
 # Prepare dest (clean)
 if (Test-Path -LiteralPath $ddDir) {
   Write-Log -File $runLog -Message ("CLEAN_DEST {0}" -f $ddDir)
@@ -165,14 +194,8 @@ if (Test-Path -LiteralPath $ddDir) {
 # Copy files
 $copied = @()
 
-# FAIL si no hay entradas para Phase
-if (@($entries).Count -eq 0) {
-  Write-Log -File $runLog -Message ("FAIL_NO_DD_ENTRIES Phase={0} Manifest={1}" -f $Phase,$manifest) -Level "ERROR"
-  throw "FAIL: no se encontraron DD_COPY_ENTRY_ID para $Phase en el manifest."
-}
-
 foreach ($e in $entries) {
-  $srcAbs = Join-Path $ProjectRoot $e.Source
+  $srcAbs = Resolve-EntrySourcePath -Entry $e -Root $ProjectRoot -CurrentPhase $Phase -LogFile $runLog
   $tgtAbs = Join-Path $ProjectRoot $e.Target
   $tgtParent = Split-Path -Parent $tgtAbs
 
@@ -190,7 +213,6 @@ foreach ($e in $entries) {
   $copied += (Split-Path -Leaf $tgtAbs)
   Write-Log -File $runLog -Message ("COPIED id={0} {1} -> {2}" -f $e.Id,$e.Source,$e.Target)
 }
-
 # Optional RADAR toggle (DEFAULT NONE)
 $radarDir = Join-Path $ProjectRoot "03_ARTIFACTS\RADAR"
 
@@ -198,9 +220,9 @@ if ($IncludeRadar -ne "None") {
   if (-not (Test-Path -LiteralPath $radarDir)) {
     Write-Log -File $runLog -Message ("WARN IncludeRadar={0} pero no existe RADAR dir: {1}" -f $IncludeRadar,$radarDir) -Level "WARN"
   } else {
-    $radarWanted = @("HIA_RAD_INDEX.REPO.ACTIVE.txt")
+    $radarWanted = @("Radar.Index.ACTIVE.txt")
     if ($IncludeRadar -eq "IndexLite") {
-      $radarWanted += "HIA_RAD_0001_LITE.ACTIVE.txt"
+      $radarWanted += "Radar.Lite.ACTIVE.txt"
     }
 
     foreach ($rf in $radarWanted) {
@@ -220,7 +242,6 @@ if ($IncludeRadar -ne "None") {
 }
 
 # Generate README (contract determinista para tester + peatón)
-$IncludeRadar = "None"  # este tool no activa radar; toggle manual fuera del trigger
 $readme = Join-Path $ddDir "README.txt"
 
 $readmeLines = New-Object System.Collections.Generic.List[string]

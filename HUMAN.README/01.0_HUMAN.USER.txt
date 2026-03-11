@@ -80,7 +80,7 @@ Paso 4: ¿Debo subir algo a IA cloud? (Adjuntos)
   - Raw/
   - 03_ARTIFACTS/
   - logs completos
-  - RADAR_FULL (salvo forensic puntual).
+  - RADAR_FULL (solo forensics explícitos; no es output canónico ni parte del flujo estándar).
 
 Paso 5: Ejecutar y cerrar
 - Termina con OK/FAIL + evidencia.
@@ -100,7 +100,7 @@ Paso 5: Ejecutar y cerrar
 ==========
 
 TL.Bootstrap (Tooling & Lifecycle Bootstrap): conjunto transversal de métodos/sistemas (RADAR, BATON, CIS, SKILLS, estructura, HUMAN, etc.)
-RADAR (Inventario/Auditoría): “foto” del filesystem; niveles LITE/INDEX/CORE/FULL.
+RADAR (Inventario/Auditoría): “foto” del filesystem; niveles LITE/INDEX/CORE (RADAR_FULL solo como excepción forense).
 RADAR_LITE (Delta): indica qué cambió desde la última corrida relevante.
 RADAR_CORE (Consolidado relevante): texto/código/config relevante para que IA entienda el sistema.
 BATON (Estado operativo): continuidad/handoff entre sesiones/chats.
@@ -178,10 +178,10 @@ Quarantine (Borrado seguro): zona donde van “deletes” por defecto.
     - <PROJECT_ROOT>\HUMAN.README\10.0_HUMAN.HIA.TROUBLE.txt
 
   - RADAR (si la IA necesita ubicarse o auditar):
-    - <PROJECT_ROOT>\03_ARTIFACTS\RADAR\HIA_RAD_INDEX.REPO.ACTIVE.txt
-    - <PROJECT_ROOT>\03_ARTIFACTS\RADAR\HIA_RAD_0001_LITE.ACTIVE.txt
+    - <PROJECT_ROOT>\03_ARTIFACTS\RADAR\Radar.Index.ACTIVE.txt
+    - <PROJECT_ROOT>\03_ARTIFACTS\RADAR\Radar.Lite.ACTIVE.txt
     - (CORE solo si la tarea lo exige):
-      - <PROJECT_ROOT>\03_ARTIFACTS\RADAR\HIA_RAD_0003_CORE.ACTIVE.txt
+      - <PROJECT_ROOT>\03_ARTIFACTS\RADAR\Radar.Core.ACTIVE.txt
 
 ==========
 00.30_DERIVED_BLOCKS_(FULL-COPY_SYNC_TARGETS)
@@ -316,7 +316,7 @@ Pasos:
 
 - MB.DEBUG: troubleshooting
 
-- MB.AUDIT: auditoría (RADAR_CORE/FULL, etc.)
+- MB.AUDIT: auditoría (RADAR_CORE; RADAR_FULL solo si hay forensic autorizado).
 
 05.40_CIERRE_DE_MB (DoD de MB)
 

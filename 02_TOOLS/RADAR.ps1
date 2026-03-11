@@ -263,6 +263,111 @@ function Get-LogicalType {
     return "other"
 }
 
+function Get-RegistryCategoryFromRelPath {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$RelPath,
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("File", "Folder")]
+        [string]$ItemType
+    )
+
+    if ($ItemType -eq "Folder") {
+        return "DIR"
+    }
+
+    if ($RelPath -like "02_TOOLS\*.ps1") {
+        return "TOL"
+    }
+
+    $ext = [System.IO.Path]::GetExtension($RelPath).ToLowerInvariant()
+    switch ($ext) {
+        ".txt" { return "TXT" }
+        ".ps1" { return "TOL" }
+        ".pdf" { return "PDF" }
+        default { return "OTH" }
+    }
+}
+
+function Get-StableNumericIdFromRelPath {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$RelPath
+    )
+
+    $sha1 = [System.Security.Cryptography.SHA1]::Create()
+    try {
+        $bytes = [System.Text.Encoding]::UTF8.GetBytes($RelPath.ToLowerInvariant())
+        $hash = $sha1.ComputeHash($bytes)
+        $u64 = [BitConverter]::ToUInt64($hash, 0)
+        $num = [int]($u64 % 10000)
+        return $num.ToString("D4")
+    }
+    finally {
+        $sha1.Dispose()
+    }
+}
+
+function Get-RegistryEntryListDeterministic {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectRoot,
+        [Parameter(Mandatory = $true)]
+        [string[]]$ExcludedContains
+    )
+
+    $options = New-Object System.IO.EnumerationOptions
+    $options.RecurseSubdirectories = $true
+    $options.IgnoreInaccessible = $true
+    $options.ReturnSpecialDirectories = $false
+    $options.AttributesToSkip = [System.IO.FileAttributes]::ReparsePoint
+
+    $rows = New-Object System.Collections.Generic.List[object]
+
+    foreach ($full in [System.IO.Directory]::EnumerateDirectories($ProjectRoot, "*", $options)) {
+        $dirCheckPath = if ($full.EndsWith('\')) { $full } else { $full + '\' }
+        if (Test-ExcludedPath -FullPath $dirCheckPath -ExcludedContains $ExcludedContains) {
+            continue
+        }
+
+        $info = [System.IO.DirectoryInfo]::new($full)
+        $rel = Get-RelativePathSafe -RootPath $ProjectRoot -FullPath $full
+        $cat = Get-RegistryCategoryFromRelPath -RelPath $rel -ItemType "Folder"
+        $id = "HIA_{0}_{1}" -f $cat, (Get-StableNumericIdFromRelPath -RelPath $rel)
+
+        $rows.Add([pscustomobject]@{
+            Id          = $id
+            Type        = "Folder"
+            Cat         = $cat
+            RelPath     = $rel
+            SizeBytes   = ""
+            ModifiedUtc = $info.LastWriteTimeUtc.ToString("o")
+        }) | Out-Null
+    }
+
+    foreach ($full in [System.IO.Directory]::EnumerateFiles($ProjectRoot, "*", $options)) {
+        if (Test-ExcludedPath -FullPath $full -ExcludedContains $ExcludedContains) {
+            continue
+        }
+
+        $info = [System.IO.FileInfo]::new($full)
+        $rel = Get-RelativePathSafe -RootPath $ProjectRoot -FullPath $full
+        $cat = Get-RegistryCategoryFromRelPath -RelPath $rel -ItemType "File"
+        $id = "HIA_{0}_{1}" -f $cat, (Get-StableNumericIdFromRelPath -RelPath $rel)
+
+        $rows.Add([pscustomobject]@{
+            Id          = $id
+            Type        = "File"
+            Cat         = $cat
+            RelPath     = $rel
+            SizeBytes   = [int64]$info.Length
+            ModifiedUtc = $info.LastWriteTimeUtc.ToString("o")
+        }) | Out-Null
+    }
+
+    return @($rows.ToArray() | Sort-Object -Property RelPath, Type)
+}
+
 function Convert-BytesToText {
     param(
         [Parameter(Mandatory = $true)]
@@ -538,6 +643,7 @@ New-DirectoryIfMissing -Path $OldDir
 $LiteActive  = Join-Path $RadarDir "Radar.Lite.ACTIVE.txt"
 $IndexActive = Join-Path $RadarDir "Radar.Index.ACTIVE.txt"
 $CoreActive  = Join-Path $RadarDir "Radar.Core.ACTIVE.txt"
+$RegistryActive = Join-Path $RadarDir "Radar.Registry.ACTIVE.txt"
 
 $TextExtSet       = Get-TextExtensionSet
 $AllowlistNameSet = Get-HashAllowlistNameSet
@@ -577,6 +683,7 @@ New-DirectoryIfMissing -Path $OldRunDir
 Move-ActiveFileToArchiveIfExists -Path $LiteActive  -ArchiveDir $OldRunDir -RunStamp $RunStamp
 Move-ActiveFileToArchiveIfExists -Path $IndexActive -ArchiveDir $OldRunDir -RunStamp $RunStamp
 Move-ActiveFileToArchiveIfExists -Path $CoreActive  -ArchiveDir $OldRunDir -RunStamp $RunStamp
+Move-ActiveFileToArchiveIfExists -Path $RegistryActive -ArchiveDir $OldRunDir -RunStamp $RunStamp
 
 Remove-LegacyRadarOutputs -RadarDir $RadarDir
 
@@ -614,9 +721,31 @@ $IndexContent = $IndexLines -join "`r`n"
 [void](Write-SegmentedTextFile -ActivePath $IndexActive -Content $IndexContent -MaxBytes $MaxOutputBytes)
 
 # ========================================================================
-# 06.00_CORE
+# 06.00_REGISTRY (STEP: Generate Registry)
 # ========================================================================
 
+$RegistryRecords = Get-RegistryEntryListDeterministic `
+    -ProjectRoot $RootPath `
+    -ExcludedContains $ExcludedContains
+
+$RegistryLines = New-Object System.Collections.Generic.List[string]
+$RegistryLines.Add("RADAR_REGISTRY — HIA") | Out-Null
+$RegistryLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
+$RegistryLines.Add("ROOT: " + $RootPath) | Out-Null
+$RegistryLines.Add("SOURCE: RADAR.ps1") | Out-Null
+$RegistryLines.Add("FIELDS: id | type | cat | rel_path | size_bytes | modified_utc") | Out-Null
+$RegistryLines.Add("") | Out-Null
+
+foreach ($r in $RegistryRecords) {
+    $RegistryLines.Add($r.Id + " | " + $r.Type + " | " + $r.Cat + " | " + $r.RelPath + " | " + $r.SizeBytes + " | " + $r.ModifiedUtc) | Out-Null
+}
+
+$RegistryContent = $RegistryLines -join "`r`n"
+[void](Write-SegmentedTextFile -ActivePath $RegistryActive -Content $RegistryContent -MaxBytes $MaxOutputBytes)
+
+# ========================================================================
+# 07.00_CORE
+# ========================================================================
 $CoreLines = New-Object System.Collections.Generic.List[string]
 $CoreLines.Add("RADAR_CORE — HIA") | Out-Null
 $CoreLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
@@ -671,7 +800,7 @@ $CoreContent = $CoreLines -join "`r`n"
 [void](Write-SegmentedTextFile -ActivePath $CoreActive -Content $CoreContent -MaxBytes $MaxOutputBytes)
 
 # ========================================================================
-# 07.00_LITE
+# 08.00_LITE
 # ========================================================================
 
 $NewMap  = Get-IndexMapFromFile -Path $IndexActive
@@ -795,9 +924,9 @@ $LiteContent = $LiteLines -join "`r`n"
 [void](Write-SegmentedTextFile -ActivePath $LiteActive -Content $LiteContent -MaxBytes $MaxOutputBytes)
 
 # ========================================================================
-# 08.00_SALIDA_FINAL
+# 09.00_SALIDA_FINAL
 # ========================================================================
 
 Write-Host "OK: RADAR HIA generado correctamente."
-Write-Host ("OUTPUTS: " + $LiteActive + "; " + $IndexActive + "; " + $CoreActive)
+Write-Host ("OUTPUTS: " + $IndexActive + "; " + $CoreActive + "; " + $LiteActive + "; " + $RegistryActive)
 exit 0

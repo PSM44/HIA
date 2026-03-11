@@ -1,7 +1,7 @@
 <#
 ID_UNICO..........: HIA.TOL.0022
 NOMBRE_SUGERIDO...: HIA_TOL_0022_Test-HIADragnDropPackage.ps1
-VERSION...........: v1.0-DRAFT
+VERSION...........: v1.1-DRAFT
 FECHA.............: 2026-03-04
 TZ................: America/Santiago
 CIUDAD............: Santiago, Chile
@@ -68,18 +68,9 @@ $dir = Join-Path $ProjectRoot ("DragnDrop\" + $Phase)
 if (-not (Test-Path -LiteralPath $dir)) { throw "FAIL: No existe carpeta: $dir" }
 
 $must = Get-RequiredLeaf -Phase $Phase
-# Optional BATON for Phase0 (only if continuity exists)
+# Phase0 mantiene BATON como requerido (se valida en foreach($f in $must)).
 if ($Phase -eq "Phase0") {
-  $baton = Join-Path $dir "04.0_HUMAN.BATON.txt"
-  if (Test-Path -LiteralPath $baton) {
-    $batonLen = (Get-Item -LiteralPath $baton).Length
-    if ($batonLen -le 0) {
-      throw "FAIL: BATON opcional presente pero vacío"
-    }
-    Write-Log "OK_OPTIONAL: 04.0_HUMAN.BATON.txt ($batonLen bytes)"
-  } else {
-    Write-Log "WARN: Phase0 sin BATON (aceptable si no existe continuidad)" "WARN"
-  }
+  Write-Log "INFO: Phase0 exige 04.0_HUMAN.BATON.txt (no opcional)."
 }
 
 foreach($f in $must){
@@ -113,8 +104,8 @@ foreach($needle in @("GENERATED-ONLY","PROHIBIDO EDITAR A MANO","PHASE: $Phase",
 }
 
 # Radar toggle checks
-$idx = Join-Path $dir "HIA_RAD_INDEX.REPO.ACTIVE.txt"
-$lite = Join-Path $dir "HIA_RAD_0001_LITE.ACTIVE.txt"
+$idx = Join-Path $dir "Radar.Index.ACTIVE.txt"
+$lite = Join-Path $dir "Radar.Lite.ACTIVE.txt"
 
 if ($IncludeRadar -eq "None") {
   if (Test-Path -LiteralPath $idx) { throw "FAIL: IncludeRadar=None pero existe Index en paquete" }

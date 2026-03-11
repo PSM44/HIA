@@ -203,7 +203,7 @@ FS: filesystem del proyecto.
 - L0: HUMAN/BATON + navegación básica.
 - L1: snippets selectivos.
 - L2: RADAR_CORE por módulo/APP_SCOPE.
-- L3: RADAR_FULL puntual (forensic).
+- L3: RADAR_FULL puntual (solo forensics excepcionales autorizados; no es output estándar).
 
 02.41_POLITICA_COSTO_Y_PERFORMANCE_(NO_POWERPOINT)
 Regla:

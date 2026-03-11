@@ -448,7 +448,7 @@ F1 se cierra cuando:
 - SYNC manifest:
   - <PROJECT_ROOT>\HUMAN.README\08.0_HUMAN.SYNC.MANIFEST.txt
 - (Opcional) RADAR_INDEX o snippet, para ubicarse sin subir repo:
-  - <PROJECT_ROOT>\03_ARTIFACTS\RADAR\HIA_RAD_INDEX.REPO.ACTIVE.txt
+  - <PROJECT_ROOT>\03_ARTIFACTS\RADAR\Radar.Index.ACTIVE.txt
 
 03.30 DragnDrop recomendado para Fase 2 (IA cloud solo si la IA necesita contexto)
 03.30.01 Carpeta
@@ -567,7 +567,7 @@ F3.2 se cierra por MB, no por “fase eterna”:
 06.20 Qué NO subir (por defecto)
 - <PROJECT_ROOT>\Raw\
 - <PROJECT_ROOT>\03_ARTIFACTS\ (logs completos / dumps)
-- RADAR_FULL salvo forensic justificado
+- RADAR_FULL (no es output canónico; solo forensics justificados)
 
 06.30 Alternativas a adjuntar “archivos grandes”
 - Usar snippet (trozo) del bloque relevante.

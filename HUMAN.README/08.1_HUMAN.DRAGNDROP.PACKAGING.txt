@@ -88,11 +88,11 @@ REFERENCIAS_CANONICAS:
 - IncludeRadar=None (default):
   - no incluir outputs RADAR en el paquete.
 - IncludeRadar=Index (toggle manual):
-  - incluir: HIA_RAD_INDEX.REPO.ACTIVE.txt
+  - incluir: Radar.Index.ACTIVE.txt
 - IncludeRadar=IndexLite (toggle manual):
-  - incluir: HIA_RAD_INDEX.REPO.ACTIVE.txt
-  - incluir: HIA_RAD_0001_LITE.ACTIVE.txt
-- Prohibido por defecto: RADAR_FULL (solo forensic con orden explícita).
+  - incluir: Radar.Index.ACTIVE.txt
+  - incluir: Radar.Lite.ACTIVE.txt
+- Prohibido por defecto: RADAR_FULL (no es output canónico; solo forensic autorizado).
 
 ==========
 02.10_PHASE0_(ACTIVACION / HUMAN-FIRST)
