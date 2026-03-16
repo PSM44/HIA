@@ -1,0 +1,51 @@
+{
+  "version": "1.0",
+  "updated_utc": "2026-03-16T22:32:13Z",
+  "tools": {
+    "radar": {
+      "script": "RADAR.ps1",
+      "description": "Genera índice del proyecto",
+      "category": "core"
+    },
+    "validate": {
+      "script": "Invoke-HIAValidators.ps1",
+      "description": "Ejecuta validadores",
+      "category": "core"
+    },
+    "plan": {
+      "script": "HIA_PLAN_ENGINE.ps1",
+      "description": "Crea objeto PLAN",
+      "category": "core"
+    },
+    "apply": {
+      "script": "HIA_APPLY_ENGINE.ps1",
+      "description": "Aprueba y ejecuta PLAN",
+      "category": "core"
+    },
+    "sync": {
+      "script": "Invoke-HIASync.ps1",
+      "description": "Sincroniza artefactos",
+      "category": "maintenance"
+    },
+    "checkpoint": {
+      "script": "HIA_TOL_0008_Invoke-HIAGitCheckpoint.ps1",
+      "description": "Git checkpoint con mensaje",
+      "category": "maintenance"
+    },
+    "smoke": {
+      "script": "Invoke-HIASmoke.ps1",
+      "description": "Smoke test del sistema",
+      "category": "maintenance"
+    },
+    "state": {
+      "script": "HIA_STATE_ENGINE.ps1",
+      "category": "core",
+      "description": "Gestiona estado del proyecto"
+    },
+    "session": {
+      "script": "HIA_SESSION_ENGINE.ps1",
+      "description": "Gestiona ciclo de vida de sesiones",
+      "category": "core"
+    }
+  }
+}

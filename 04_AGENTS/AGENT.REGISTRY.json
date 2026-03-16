@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "updated_utc": "2026-03-16T22:08:38Z",
+  "agents": {
+    "planner": {
+      "script": "HIA_AGENT_001_Planner.ps1",
+      "description": "Agente de planificación",
+      "mode": "plan_only",
+      "requires_approval": true
+    },
+    "executor": {
+      "requires_approval": true,
+      "capabilities": [
+        "run_tool",
+        "run_command",
+        "analyze"
+      ],
+      "description": "Agente de ejecución controlada",
+      "mode": "plan_only",
+      "script": "HIA_AGENT_002_Executor.ps1"
+    }
+  }
+}

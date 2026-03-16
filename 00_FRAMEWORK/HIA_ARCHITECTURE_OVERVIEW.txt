@@ -1,0 +1,443 @@
+DATE......: 2026-03-14
+TIME......: HH:MM
+TZ........: America/Santiago
+CITY......: Santiago, Chile
+VERSION...: v0.1-DRAFT
+ID_HINT...: HIA_ARCH_0001
+
+======================================================================
+00.00_METADATOS_DEL_DOCUMENTO
+======================================================================
+
+ID_UNICO..........: HIA.ARCH.0001
+NOMBRE_SUGERIDO...: HIA_ARCHITECTURE_OVERVIEW.txt
+VERSION...........: v0.1-DRAFT
+FECHA.............: 2026-03-14
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: Santiago, Chile
+UBICACION_SISTEMA.: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\
+AUTOR_HUMANO......: PABLO (ADMIN)
+
+ALCANCE...........:
+Documento arquitectónico que describe cómo se conectan los componentes
+principales del sistema HIA.
+
+Este archivo permite que:
+- una IA en blanco reconstruya la arquitectura del sistema
+- Codex / GPT / Claude entiendan responsabilidades de cada módulo
+- evitar deducciones incorrectas sobre el diseño
+
+NO_CUBRE..........:
+- detalles de implementación de cada herramienta
+- lógica específica de proyectos
+- decisiones de stack particulares
+
+DEPENDENCIAS......:
+HIA_COR_0001_HIA.CORE.txt
+HIA_POL_0001_AI_EXECUTION.txt
+RADAR_INDEX.ACTIVE.txt
+
+======================================================================
+00.10_INDICE_GENERAL_WBS
+======================================================================
+
+00.00 Metadatos
+00.10 Índice
+00.20 Propósito del sistema
+
+01.00 Principios de diseño HIA
+02.00 Arquitectura general del sistema
+03.00 Kernel HIA (mínimo universal)
+04.00 Capas del sistema
+05.00 Flujo operativo
+06.00 Gestión de contexto
+07.00 Integración con IA
+08.00 Evidencia y auditoría
+09.00 Evolución futura
+
+======================================================================
+00.20_PROPOSITO_DEL_SISTEMA
+======================================================================
+
+HIA (Human-Integrated Automation) es un framework para coordinar
+trabajo humano y trabajo de IA dentro de un proyecto estructurado.
+
+El sistema busca:
+
+- mantener gobernanza humana
+- permitir ejecución asistida por IA
+- generar evidencia reproducible
+- preservar contexto de largo plazo
+
+HIA no es un agente autónomo.
+Es un sistema de coordinación humano + IA.
+
+======================================================================
+01.00_PRINCIPIOS_DE_DISENO
+======================================================================
+
+01.01 HUMAN_FIRST
+
+El humano define intención, reglas y alcance.
+
+Solo HUMAN puede editar manualmente los archivos
+dentro de HUMAN.README.
+
+El resto del sistema deriva de esa fuente.
+
+------------------------------------------------
+
+01.02 TXT_FIRST
+
+Todos los artefactos críticos del sistema son texto.
+
+Motivos:
+
+- auditabilidad
+- compatibilidad universal
+- facilidad de versionamiento en Git
+- lectura por humanos e IA
+
+------------------------------------------------
+
+01.03 EVIDENCIA_OBLIGATORIA
+
+Toda ejecución debe generar evidencia mínima.
+
+Formato mínimo:
+
+- resultado OK / FAIL
+- log reproducible
+- referencia de archivos afectados
+
+------------------------------------------------
+
+01.04 REVERSIBILIDAD
+
+Toda modificación del sistema debe poder revertirse.
+
+Rollback primario:
+
+Git
+
+Rollback secundario:
+
+artifacts y logs
+
+------------------------------------------------
+
+01.05 SCOPE_LIMITADO
+
+Las IA operan únicamente dentro del PROJECT_ROOT.
+
+Se prohíbe ejecución arbitraria fuera del repositorio.
+
+======================================================================
+02.00_ARQUITECTURA_GENERAL
+======================================================================
+
+El sistema se organiza en capas.
+
+Representación conceptual:
+
+PEDESTRIAN (usuario)
+        │
+        ▼
+HIA CONSOLE (interfaz)
+        │
+        ▼
+HIA KERNEL (orquestación mínima)
+        │
+ ┌──────┼───────────┐
+ ▼      ▼           ▼
+TOOLS   TRIGGERS   AI ROUTER
+        │
+        ▼
+ARTIFACTS / LOGS / RADAR
+
+======================================================================
+03.00_KERNEL_HIA
+======================================================================
+
+El Kernel es el núcleo mínimo universal del sistema.
+
+Su función es coordinar:
+
+- método de trabajo
+- roles
+- evidencia
+- políticas
+- identidad
+
+El Kernel debe ser pequeño y estable.
+
+Componentes del Kernel:
+
+------------------------------------------------
+
+03.10 METHOD_KERNEL
+
+Flujo obligatorio de trabajo:
+
+PLAN → APPLY → VALIDATE → LOG
+
+PLAN_ONLY es el modo por defecto.
+
+APPLY requiere gate humano.
+
+------------------------------------------------
+
+03.20 ROLES_KERNEL
+
+Roles definidos:
+
+HUMANO
+IA_PLANNER
+IA_EXECUTOR
+
+HUMANO:
+define intención y aprueba cambios.
+
+IA_PLANNER:
+analiza, propone arquitectura o tareas.
+
+IA_EXECUTOR:
+implementa código o ejecuta herramientas.
+
+------------------------------------------------
+
+03.30 EVIDENCE_KERNEL
+
+Todo resultado debe producir evidencia mínima.
+
+Formato:
+
+OK / FAIL
+
++ log
++ paths
++ commit si aplica
+
+------------------------------------------------
+
+03.40 POLICY_KERNEL
+
+Define restricciones de ejecución.
+
+Incluye:
+
+scope boundaries
+quarantine delete
+rollback obligatorio
+gates humanos
+
+------------------------------------------------
+
+03.50 IDENTITY_KERNEL
+
+Define disciplina estructural.
+
+Incluye:
+
+ID_UNICO
+VERSION
+FECHA
+TZ
+WBS
+
+======================================================================
+04.00_CAPAS_DEL_SISTEMA
+======================================================================
+
+04.10 HUMAN
+
+Fuente primaria de intención humana.
+
+Editable manualmente.
+
+Contiene:
+
+contexto
+definiciones
+políticas
+objetivos
+
+------------------------------------------------
+
+04.20 FRAMEWORK
+
+Reglas operativas del sistema.
+
+Incluye:
+
+CORE
+POLICIES
+METHODS
+
+------------------------------------------------
+
+04.30 TOOLS
+
+Scripts y utilidades ejecutables.
+
+Ejemplos:
+
+RADAR
+validators
+maintenance tools
+
+------------------------------------------------
+
+04.40 TRIGGERS
+
+Automatización de procesos.
+
+Ejemplo:
+
+build scripts
+packaging
+sync tasks
+
+------------------------------------------------
+
+04.50 ARTIFACTS
+
+Resultados generados por el sistema.
+
+Ejemplos:
+
+logs
+reports
+radar outputs
+session data
+
+======================================================================
+05.00_FLUJO_OPERATIVO
+======================================================================
+
+Ejemplo de ejecución.
+
+1. HUMANO define tarea.
+
+2. IA_PLANNER analiza problema.
+
+3. PLAN es generado.
+
+4. HUMANO aprueba APPLY.
+
+5. IA_EXECUTOR ejecuta herramientas.
+
+6. VALIDATE verifica resultado.
+
+7. LOG registra evidencia.
+
+======================================================================
+06.00_GESTION_DE_CONTEXTO
+======================================================================
+
+El contexto se maneja mediante:
+
+HUMAN
+BATON
+RADAR
+
+------------------------------------------------
+
+06.10 HUMAN
+
+Contiene intención humana y conocimiento base.
+
+------------------------------------------------
+
+06.20 BATON
+
+Estado actual del trabajo.
+
+Permite retomar ejecución en otra sesión o IA.
+
+------------------------------------------------
+
+06.30 RADAR
+
+Inventario del sistema.
+
+Permite que la IA entienda estructura del repositorio.
+
+======================================================================
+07.00_INTEGRACION_CON_IA
+======================================================================
+
+HIA no depende de un único modelo.
+
+Puede operar con múltiples IA.
+
+Ejemplos:
+
+GPT
+Claude
+Codex
+Ollama
+
+Cada modelo puede cumplir diferentes roles.
+
+------------------------------------------------
+
+07.10 IA_PLANNER
+
+Ejemplos:
+
+GPT
+Claude
+
+------------------------------------------------
+
+07.20 IA_EXECUTOR
+
+Ejemplos:
+
+Codex
+Ollama
+
+======================================================================
+08.00_EVIDENCIA_Y_AUDITORIA
+======================================================================
+
+Toda ejecución debe generar evidencia.
+
+Formato mínimo:
+
+OK / FAIL
+log reproducible
+artifact asociado
+
+Los artifacts se almacenan en:
+
+03_ARTIFACTS
+
+======================================================================
+09.00_EVOLUCION_FUTURA
+======================================================================
+
+El diseño actual corresponde a:
+
+HIA-A (framework de proyectos)
+
+La arquitectura permite evolucionar hacia:
+
+HIA-B (sistema operativo universal humano + IA)
+
+Para lograrlo:
+
+El Kernel debe mantenerse pequeño y estable.
+
+Los perfiles específicos deben implementarse
+fuera del Kernel.
+
+======================================================================
+10.00_CHANGELOG
+======================================================================
+
+2026-03-14
+v0.1-DRAFT
+
+Creación inicial del documento de arquitectura del sistema HIA.

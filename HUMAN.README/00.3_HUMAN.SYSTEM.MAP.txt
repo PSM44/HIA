@@ -1,0 +1,284 @@
+======================================================================
+00.00_METADATOS_DEL_DOCUMENTO
+======================================================================
+
+ID_UNICO..........: HIA.HUMAN.SYSTEM.MAP.0001
+NOMBRE_SUGERIDO...: 00.3_HUMAN.SYSTEM.MAP.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-03-14
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: Santiago, Chile
+
+AUTOR_HUMANO......: PABLO
+AUTOR_IA..........: GPT
+
+TITULO............: HIA — System Structural Map
+SUBTITULO_MEDIO...: Mapa estructural completo del sistema HIA
+SUBTITULO_BAJO....: Documento de navegación estructural que describe cómo se organiza HUMAN.README y su relación con el sistema completo.
+
+UBICACION_SISTEMA.: <PROJECT_ROOT>\HUMAN.README\
+
+
+======================================================================
+01.00_PROPOSITO_DEL_DOCUMENTO
+======================================================================
+
+Este documento describe la estructura del sistema HIA desde el punto de vista documental.
+
+El objetivo principal es permitir que un lector humano comprenda rápidamente
+cómo están organizados los documentos dentro de HUMAN.README y cómo estos
+documentos se relacionan entre sí.
+
+Este documento no explica el sistema en profundidad.
+Ese rol corresponde al documento:
+
+00.2_HUMAN.SYSTEM.OVERVIEW.txt
+
+Este documento tampoco describe procedimientos operativos.
+Ese rol corresponde a documentos como:
+
+02.0_HUMAN.OPERATION
+06.0_HUMAN.PF0
+05.0_HUMAN.CIS
+HIA_HUM_0012_OPERATION.RUNBOOK
+
+El propósito de este documento es ofrecer un mapa estructural del sistema.
+
+El mapa permite identificar:
+
+qué documentos existen
+cómo se agrupan
+qué rol cumple cada grupo
+cómo se navega entre ellos
+
+
+======================================================================
+02.00_ESTRUCTURA_GENERAL_DE_HUMAN.README
+======================================================================
+
+La carpeta HUMAN.README contiene documentos que describen el sistema HIA
+desde la perspectiva humana.
+
+Los documentos se agrupan en cinco categorías principales:
+
+DOCUMENTOS FUNDACIONALES
+DOCUMENTOS DE INTERACCION HUMANA
+DOCUMENTOS DE OPERACION
+DOCUMENTOS DE INFRAESTRUCTURA
+DOCUMENTOS DE SOPORTE
+
+
+======================================================================
+03.00_DOCUMENTOS_FUNDACIONALES
+======================================================================
+
+Estos documentos explican el sistema HIA en su totalidad.
+
+Estos documentos deben ser leídos para comprender qué es HIA y cómo está diseñado.
+
+Documentos incluidos en esta categoría:
+
+00.0_HUMAN.GENERAL.txt
+00.1_HUMAN.READING.ORDER.txt
+00.2_HUMAN.SYSTEM.OVERVIEW.txt
+00.3_HUMAN.SYSTEM.MAP.txt
+
+
+Rol de estos documentos:
+
+explicar la arquitectura conceptual del sistema
+explicar el orden de lectura
+explicar el sistema completo
+explicar la estructura documental
+
+
+======================================================================
+04.00_DOCUMENTOS_DE_INTERACCION_HUMANA
+======================================================================
+
+Estos documentos describen cómo un humano interactúa con el sistema.
+
+El documento principal de esta categoría es:
+
+09.0_HUMAN.START.RITUAL.txt
+
+Este documento describe el flujo mínimo necesario para comenzar a trabajar
+con HIA.
+
+Otros documentos relevantes en esta categoría incluyen:
+
+01.0_HUMAN.USER.txt
+
+Este documento describe el perfil del usuario y la forma en que el humano
+debe interactuar con el sistema.
+
+Rol de esta categoría:
+
+definir cómo comienza una sesión
+definir el rol del usuario
+definir el uso básico del sistema
+
+
+======================================================================
+05.00_DOCUMENTOS_DE_OPERACION
+======================================================================
+
+Estos documentos describen cómo se ejecuta el trabajo dentro del sistema.
+
+Documentos incluidos en esta categoría:
+
+02.0_HUMAN.OPERATION.txt
+02.0_HUMAN.USE.CASE.txt
+06.0_HUMAN.PF0.txt
+05.0_HUMAN.CIS.txt
+HIA_HUM_0012_OPERATION.RUNBOOK.txt
+
+Estos documentos describen:
+
+cómo trabajar con el sistema
+cómo definir tareas
+cómo aplicar cambios
+cómo ejecutar procedimientos técnicos
+cómo realizar operaciones avanzadas
+
+
+======================================================================
+06.00_DOCUMENTOS_DE_INFRAESTRUCTURA
+======================================================================
+
+Estos documentos describen los mecanismos internos del sistema.
+
+Documentos incluidos en esta categoría:
+
+03.0_HUMAN.RADAR.txt
+04.0_HUMAN.BATON.txt
+08.0_HUMAN.SYNC.txt
+
+Estos documentos describen:
+
+observabilidad del sistema
+continuidad de contexto
+mecanismos de sincronización
+estructura de archivos
+
+
+======================================================================
+07.00_DOCUMENTOS_DE_SOPORTE
+======================================================================
+
+Estos documentos se utilizan cuando el sistema presenta problemas o cuando
+se requiere documentación avanzada.
+
+Documentos incluidos:
+
+10.0_HUMAN.HIA.TROUBLE.txt
+CASEBOOK/
+
+Estos documentos describen:
+
+procedimientos de diagnóstico
+solución de problemas
+casos reales de uso
+
+
+======================================================================
+08.00_MAPA_ESTRUCTURAL_DEL_SISTEMA
+======================================================================
+
+La estructura conceptual del sistema puede representarse de la siguiente manera.
+
+HIA
+│
+├ HUMAN.README
+│
+│   ├ FUNDAMENTOS
+│   │
+│   │   ├ GENERAL
+│   │   ├ READING_ORDER
+│   │   ├ SYSTEM_OVERVIEW
+│   │   └ SYSTEM_MAP
+│   │
+│   ├ INTERACCION
+│   │
+│   │   ├ USER
+│   │   └ START_RITUAL
+│   │
+│   ├ OPERACION
+│   │
+│   │   ├ OPERATION
+│   │   ├ USE_CASE
+│   │   ├ PF0
+│   │   ├ CIS
+│   │   └ RUNBOOK
+│   │
+│   ├ INFRAESTRUCTURA
+│   │
+│   │   ├ RADAR
+│   │   ├ BATON
+│   │   └ SYNC
+│   │
+│   └ SOPORTE
+│
+│       ├ TROUBLE
+│       └ CASEBOOK
+
+
+======================================================================
+09.00_NAVEGACION_RECOMENDADA
+======================================================================
+
+El orden recomendado de lectura de los documentos HUMAN es el siguiente.
+
+Primero:
+
+09.0_HUMAN.START.RITUAL.txt
+
+Este documento permite ejecutar HIA por primera vez.
+
+Segundo:
+
+00.2_HUMAN.SYSTEM.OVERVIEW.txt
+
+Este documento explica cómo funciona el sistema completo.
+
+Tercero:
+
+00.3_HUMAN.SYSTEM.MAP.txt
+
+Este documento explica cómo se organizan los documentos.
+
+Cuarto:
+
+02.0_HUMAN.OPERATION.txt
+
+Este documento explica cómo trabajar con el sistema.
+
+Quinto:
+
+03.0_HUMAN.RADAR.txt
+04.0_HUMAN.BATON.txt
+08.0_HUMAN.SYNC.txt
+
+Estos documentos explican los mecanismos internos del sistema.
+
+Finalmente:
+
+CASEBOOK/
+
+Este directorio contiene ejemplos reales.
+
+
+======================================================================
+10.00_CONCLUSION
+======================================================================
+
+La carpeta HUMAN.README es el núcleo documental del sistema HIA.
+
+Esta carpeta contiene los documentos que definen cómo los humanos
+interactúan con el sistema.
+
+El objetivo de este mapa es permitir que cualquier lector humano
+comprenda rápidamente cómo navegar la documentación y cómo los
+documentos se relacionan entre sí.
+
+FIN DEL DOCUMENTO

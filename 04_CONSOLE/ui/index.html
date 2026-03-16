@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang=\"en\">
+<head>
+  <meta charset=\"UTF-8\" />
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />
+  <title>HIA Console v0.1</title>
+  <style>
+    body { font-family: Consolas, 'Fira Code', monospace; background: #0b0c10; color: #e5e5e5; margin: 0; padding: 0; }
+    header { padding: 16px; background: #11141c; border-bottom: 1px solid #1f2733; }
+    h1 { margin: 0; font-size: 20px; letter-spacing: 0.5px; }
+    #actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px; background: #11141c; }
+    button { background: #1f9cf0; color: #fff; border: none; padding: 10px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    button.secondary { background: #2e3544; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    #panel { padding: 16px; }
+    #output { background: #0f1624; border: 1px solid #1f2733; min-height: 320px; padding: 12px; white-space: pre-wrap; border-radius: 8px; box-shadow: 0 0 0 1px #0c111a; }
+    #prompt { width: 100%; box-sizing: border-box; padding: 10px; background: #0f1624; color: #e5e5e5; border: 1px solid #1f2733; border-radius: 6px; margin-top: 12px; font-family: inherit; }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .spacer { flex: 1; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>HIA Console v0.1</h1>
+  </header>
+  <div id=\"actions\">
+    <button onclick=\"run('context')\">hia context</button>
+    <button onclick=\"run('start')\">hia start</button>
+    <button onclick=\"run('stack')\">hia stack</button>
+    <button onclick=\"run('radar')\">hia radar</button>
+    <button onclick=\"runValidate()\">hia validate</button>
+    <button onclick=\"runAI()\">hia ai</button>
+    <button class=\"secondary\" onclick=\"run('close')\">hia close</button>
+    <span class=\"spacer\"></span>
+    <select id=\"mode\">
+      <option value=\"DRAFT\">Mode: DRAFT</option>
+      <option value=\"CANON\">Mode: CANON</option>
+    </select>
+    <select id=\"model\">
+      <option value=\"llama3\">llama3 (default)</option>
+      <option value=\"llama3:8b\">llama3:8b</option>
+      <option value=\"llama2\">llama2</option>
+    </select>
+  </div>
+  <div id=\"panel\">
+    <div class=\"row\">
+      <textarea id=\"prompt\" rows=\"3\" placeholder=\"Ask AI or add notes...\"></textarea>
+    </div>
+    <div id=\"output\">Ready.</div>
+  </div>
+  <script>
+    const output = document.getElementById('output');
+    const promptEl = document.getElementById('prompt');
+    const modelEl = document.getElementById('model');
+    const modeEl = document.getElementById('mode');
+
+    async function run(endpoint, payload = null) {
+      setBusy(true);
+      output.textContent = > hia ...;
+      try {
+        const opts = payload ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) } : { method: 'POST' };
+        const url = endpoint === 'context' ? '/api/context' : /api/;
+        const resp = await fetch(url, endpoint === 'context' ? { method: 'GET' } : opts);
+        const data = await resp.json();
+        render(data, endpoint);
+      } catch (err) {
+        output.textContent = Error: ;
+      } finally {
+        setBusy(false);
+      }
+    }
+
+    function render(data, endpoint) {
+      if (endpoint === 'context') {
+        output.textContent = JSON.stringify(data, null, 2);
+        return;
+      }
+      if (data.stdout || data.stderr) {
+        output.textContent = [
+          cmd: ,
+          eturn: ,
+          data.stdout ? stdout:\n : '',
+          data.stderr ? stderr:\n : ''
+        ].filter(Boolean).join('\n\n');
+      } else {
+        output.textContent = JSON.stringify(data, null, 2);
+      }
+    }
+
+    function setBusy(state) {
+      document.querySelectorAll('button').forEach(b => b.disabled = state);
+    }
+
+    function runValidate() {
+      const mode = modeEl.value;
+      run('validate', { mode });
+    }
+
+    function runAI() {
+      const prompt = promptEl.value.trim();
+      if (!prompt) { output.textContent = 'Add a prompt first.'; return; }
+      const model = modelEl.value;
+      run('ai', { prompt, model });
+    }
+  </script>
+</body>
+</html>

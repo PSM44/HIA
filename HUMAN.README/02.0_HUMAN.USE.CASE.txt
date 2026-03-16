@@ -1,13 +1,276 @@
-02.0_HUMAN.USE.CASE.txt
-DATE......: 2026-03-02
-TIME......: 01:30
-TZ........: America/Santiago
-CITY......: Santiago, Chile
-VERSION......: 0.1
+======================================================================
+00.00_METADATOS_DEL_DOCUMENTO
+======================================================================
 
-01.00_PURPOSE
-Cadena de mando: Use Cases canónicos.
-Los casos detallados se guardan en HUMAN.README\CASEBOOK\ (HIA_HUM_00xx*).
+ID_UNICO..........: HIA.HUMAN.USE.CASE.0001
+NOMBRE_SUGERIDO...: 02.0_HUMAN.USE.CASE.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-03-14
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: Santiago, Chile
 
-02.00_INDEX
-- (pendiente) Caso real: Precio x Absorción -> TIR
+AUTOR_HUMANO......: PABLO
+AUTOR_IA..........: GPT
+
+TITULO............: HIA — Use Case Documentation
+SUBTITULO_MEDIO...: Casos reales de uso del sistema HIA
+SUBTITULO_BAJO....: Documento académico detallado que describe ejemplos prácticos del uso de HIA.
+
+UBICACION_SISTEMA.: <PROJECT_ROOT>\HUMAN.README\
+
+
+======================================================================
+01.00_PROPOSITO_DEL_DOCUMENTO
+======================================================================
+
+Este documento describe casos reales de uso del sistema HIA.
+
+El objetivo es mostrar cómo el sistema HIA se utiliza para resolver
+problemas reales mediante la interacción estructurada entre humano
+e inteligencia artificial.
+
+Muchos documentos dentro de HUMAN.README explican reglas,
+procedimientos y arquitectura del sistema.
+
+Sin embargo, para comprender realmente el sistema es necesario
+observar cómo se utiliza en situaciones reales.
+
+Este documento proporciona ejemplos detallados de uso.
+
+Cada caso de uso incluye:
+
+contexto
+objetivo
+inputs
+proceso
+outputs
+criterios de éxito
+
+
+======================================================================
+02.00_ESTRUCTURA_DE_UN_USE_CASE
+======================================================================
+
+Cada caso de uso documentado en este archivo sigue la misma estructura.
+
+IDENTIFICADOR_DEL_CASO
+
+DESCRIPCION_DEL_PROBLEMA
+
+OBJETIVO_DEL_ANALISIS
+
+INPUTS
+
+PROCESO
+
+OUTPUTS
+
+CRITERIOS_DE_EXITO
+
+Esta estructura permite documentar los casos de uso de manera
+consistente y comparable.
+
+
+======================================================================
+03.00_USE_CASE_001
+======================================================================
+
+IDENTIFICADOR_DEL_CASO
+
+HIA.USECASE.001
+
+DESCRIPCION_DEL_PROBLEMA
+
+Evaluación financiera preliminar de un proyecto inmobiliario.
+
+Se desea analizar si un proyecto inmobiliario es viable desde el
+punto de vista financiero antes de invertir tiempo en un modelo
+financiero detallado.
+
+OBJETIVO_DEL_ANALISIS
+
+Determinar rápidamente si el proyecto tiene potencial económico.
+
+INPUTS
+
+Precio del terreno
+Superficie del terreno
+Normativa urbanística
+Costo estimado de construcción
+Precio estimado de venta
+Velocidad de absorción esperada
+
+PROCESO
+
+El humano entrega los datos iniciales a la IA.
+
+La IA genera una estructura básica de modelo financiero.
+
+Se calcula:
+
+Ingresos estimados
+Costos estimados
+Margen bruto
+TIR preliminar
+VPN preliminar
+
+OUTPUTS
+
+Evaluación preliminar del proyecto.
+
+El resultado puede indicar:
+
+proyecto viable
+proyecto marginal
+proyecto no viable
+
+CRITERIOS_DE_EXITO
+
+El sistema permite generar una evaluación preliminar en menos de
+una sesión de trabajo.
+
+
+======================================================================
+04.00_USE_CASE_002
+======================================================================
+
+IDENTIFICADOR_DEL_CASO
+
+HIA.USECASE.002
+
+DESCRIPCION_DEL_PROBLEMA
+
+Análisis de documentación técnica.
+
+Un humano necesita revisar documentos técnicos extensos y
+extraer los elementos más relevantes.
+
+OBJETIVO_DEL_ANALISIS
+
+Reducir el tiempo necesario para comprender documentos complejos.
+
+INPUTS
+
+Documento técnico
+Contexto del proyecto
+Preguntas específicas
+
+PROCESO
+
+El documento se entrega a la IA.
+
+La IA analiza el documento y responde preguntas específicas.
+
+La IA identifica:
+
+conceptos clave
+riesgos
+información crítica
+
+OUTPUTS
+
+Resumen estructurado del documento.
+
+Lista de elementos críticos identificados.
+
+CRITERIOS_DE_EXITO
+
+El humano obtiene comprensión del documento sin necesidad de
+leer completamente todo el contenido.
+
+
+======================================================================
+05.00_USE_CASE_003
+======================================================================
+
+IDENTIFICADOR_DEL_CASO
+
+HIA.USECASE.003
+
+DESCRIPCION_DEL_PROBLEMA
+
+Diseño de arquitectura de software.
+
+OBJETIVO_DEL_ANALISIS
+
+Definir la arquitectura de un sistema antes de comenzar su
+implementación.
+
+INPUTS
+
+Descripción del problema
+Requerimientos del sistema
+Restricciones técnicas
+
+PROCESO
+
+El humano describe el problema a la IA.
+
+La IA propone una arquitectura inicial.
+
+El humano revisa la propuesta y solicita mejoras.
+
+Este proceso se repite hasta obtener una arquitectura satisfactoria.
+
+OUTPUTS
+
+Documento de arquitectura del sistema.
+
+CRITERIOS_DE_EXITO
+
+Se obtiene una arquitectura clara antes de comenzar el desarrollo.
+
+
+======================================================================
+06.00_IMPORTANCIA_DE_LOS_USE_CASES
+======================================================================
+
+Los casos de uso son fundamentales para comprender cómo se utiliza
+el sistema HIA en la práctica.
+
+Los documentos conceptuales explican cómo funciona el sistema.
+
+Los casos de uso muestran cómo aplicar ese conocimiento.
+
+Con el tiempo, este documento puede ampliarse con nuevos casos de
+uso documentados.
+
+Esto permitirá construir una biblioteca de experiencias reales
+dentro del sistema HIA.
+
+
+======================================================================
+07.00_RELACION_CON_OTROS_DOCUMENTOS
+======================================================================
+
+Este documento se relaciona con los siguientes archivos dentro
+de HUMAN.README.
+
+02.0_HUMAN.OPERATION.txt
+
+Explica cómo trabajar con el sistema.
+
+09.0_HUMAN.START.RITUAL.txt
+
+Explica cómo iniciar una sesión de trabajo.
+
+00.2_HUMAN.SYSTEM.OVERVIEW.txt
+
+Explica el sistema completo.
+
+CASEBOOK/
+
+Contiene ejemplos adicionales y documentación práctica.
+
+
+======================================================================
+08.00_CONCLUSION
+======================================================================
+
+Los casos de uso documentados en este archivo muestran cómo el
+sistema HIA puede aplicarse a problemas reales.
+
+Estos ejemplos ayudan a comprender la utilidad del sistema
+y facilitan el aprendizaje de nuevos usuarios.
+
+FIN DEL DOCUMENTO

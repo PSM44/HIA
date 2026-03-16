@@ -1,0 +1,271 @@
+======================================================================
+00.00_METADATOS_DEL_DOCUMENTO
+======================================================================
+
+ID_UNICO..........: HIA.HUMAN.SESSION.LIFECYCLE.0001
+NOMBRE_SUGERIDO...: 11.0_HUMAN.SESSION.LIFECYCLE.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-03-14
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: Santiago, Chile
+
+AUTOR_HUMANO......: PABLO
+AUTOR_IA..........: GPT
+
+TITULO............: HIA — Session Lifecycle
+SUBTITULO_MEDIO...: Ciclo de vida completo de una sesión de trabajo en HIA
+SUBTITULO_BAJO....: Documento académico detallado que describe todas las fases de una sesión de trabajo dentro del sistema HIA.
+
+UBICACION_SISTEMA.: <PROJECT_ROOT>\HUMAN.README\
+
+
+======================================================================
+01.00_PROPOSITO_DEL_DOCUMENTO
+======================================================================
+
+Este documento describe el ciclo de vida completo de una sesión de trabajo dentro del sistema HIA.
+
+El objetivo es definir con claridad cómo comienza, se desarrolla y se cierra una sesión de trabajo humano–IA.
+
+Muchos documentos dentro de HUMAN.README explican partes del sistema:
+
+START_RITUAL explica cómo comenzar.
+OPERATION explica cómo trabajar.
+CIS explica cómo aplicar cambios.
+RADAR explica cómo observar el sistema.
+BATON explica cómo mantener continuidad.
+
+Sin embargo, estos documentos no describen el flujo completo de una sesión.
+
+Este documento integra todos esos elementos dentro de un único modelo de ciclo de vida.
+
+
+======================================================================
+02.00_CONCEPTO_DE_SESION_EN_HIA
+======================================================================
+
+Una sesión en HIA es un período de trabajo en el cual un humano interactúa con uno o más sistemas de inteligencia artificial para resolver una tarea específica.
+
+Una sesión comienza cuando el humano decide iniciar trabajo dentro del sistema HIA.
+
+Una sesión termina cuando el trabajo se ha completado o cuando el humano decide cerrar la sesión.
+
+Durante una sesión ocurren varias operaciones:
+
+interacción con IA
+lectura de documentación
+análisis de información
+ejecución de herramientas
+generación de resultados
+registro de cambios
+
+
+======================================================================
+03.00_FASES_DE_UNA_SESION
+======================================================================
+
+Una sesión completa en HIA puede dividirse en las siguientes fases.
+
+Fase 1 — Inicio de sesión
+
+Fase 2 — Verificación del entorno
+
+Fase 3 — Observación del estado del sistema
+
+Fase 4 — Trabajo humano–IA
+
+Fase 5 — Validación de resultados
+
+Fase 6 — Registro y persistencia
+
+Fase 7 — Cierre de sesión
+
+
+======================================================================
+04.00_FASE_1_INICIO_DE_SESION
+======================================================================
+
+La sesión comienza cuando el humano decide iniciar trabajo dentro del sistema HIA.
+
+El humano debe seguir el procedimiento descrito en:
+
+09.0_HUMAN.START.RITUAL.txt
+
+El objetivo de esta fase es establecer el contexto inicial de trabajo.
+
+Actividades típicas:
+
+definir el objetivo de la sesión
+identificar el problema a resolver
+establecer el contexto del análisis
+
+
+======================================================================
+05.00_FASE_2_VERIFICACION_DEL_ENTORNO
+======================================================================
+
+Antes de comenzar el trabajo real es necesario verificar que el entorno del sistema se encuentra en condiciones adecuadas.
+
+Actividades típicas:
+
+verificar disponibilidad de herramientas
+verificar estado del repositorio
+verificar acceso a modelos de IA
+
+Herramientas que pueden utilizarse en esta fase:
+
+Check-AIStack.ps1
+Start-Session.ps1
+
+El objetivo de esta fase es asegurar que el sistema está listo para trabajar.
+
+
+======================================================================
+06.00_FASE_3_OBSERVACION_DEL_ESTADO_DEL_SISTEMA
+======================================================================
+
+Antes de realizar cambios en el sistema es recomendable observar el estado actual del repositorio.
+
+La herramienta principal utilizada para este propósito es:
+
+RADAR
+
+RADAR permite identificar:
+
+archivos existentes
+cambios recientes
+estructura del repositorio
+
+El objetivo de esta fase es comprender el estado actual del sistema antes de modificarlo.
+
+
+======================================================================
+07.00_FASE_4_TRABAJO_HUMANO_IA
+======================================================================
+
+Esta es la fase principal de la sesión.
+
+Durante esta fase el humano interactúa con uno o más sistemas de inteligencia artificial.
+
+Actividades típicas:
+
+formular preguntas
+solicitar análisis
+generar contenido
+diseñar soluciones
+evaluar alternativas
+
+El humano mantiene control del proceso.
+
+La IA actúa como herramienta de apoyo.
+
+
+======================================================================
+08.00_FASE_5_VALIDACION_DE_RESULTADOS
+======================================================================
+
+Una vez que la IA ha generado resultados, el humano debe validar dichos resultados.
+
+Actividades típicas:
+
+revisión del contenido generado
+verificación de consistencia
+confirmación de que los resultados responden al problema planteado
+
+La validación es una responsabilidad humana.
+
+La IA no puede validar su propio trabajo de manera confiable.
+
+
+======================================================================
+09.00_FASE_6_REGISTRO_Y_PERSISTENCIA
+======================================================================
+
+Cuando el trabajo ha producido resultados útiles, es necesario registrar dichos resultados dentro del sistema.
+
+Esto puede incluir:
+
+creación o edición de documentos
+registro de decisiones
+actualización de archivos
+
+El objetivo es asegurar que el conocimiento generado durante la sesión no se pierda.
+
+
+======================================================================
+10.00_FASE_7_CIERRE_DE_SESION
+======================================================================
+
+Una vez que el trabajo ha concluido, la sesión debe cerrarse formalmente.
+
+Actividades típicas:
+
+revisión final de resultados
+registro de cambios
+actualización de logs
+ejecución de procedimientos de cierre
+
+Herramientas posibles:
+
+Close-Session.ps1
+
+El objetivo de esta fase es garantizar que la sesión termina de forma ordenada.
+
+
+======================================================================
+11.00_REPRESENTACION_SIMPLIFICADA_DEL_FLUJO
+======================================================================
+
+El flujo completo de una sesión puede representarse de la siguiente forma.
+
+Inicio de sesión
+↓
+Verificación del entorno
+↓
+Observación del sistema
+↓
+Trabajo humano–IA
+↓
+Validación de resultados
+↓
+Registro de resultados
+↓
+Cierre de sesión
+
+
+======================================================================
+12.00_RELACION_CON_OTROS_DOCUMENTOS
+======================================================================
+
+Este documento se relaciona con los siguientes archivos dentro de HUMAN.README.
+
+09.0_HUMAN.START.RITUAL.txt
+
+Describe cómo comenzar una sesión.
+
+02.0_HUMAN.OPERATION.txt
+
+Describe cómo trabajar dentro del sistema.
+
+03.0_HUMAN.RADAR.txt
+
+Describe cómo observar el estado del sistema.
+
+05.0_HUMAN.CIS.txt
+
+Describe cómo aplicar cambios en el sistema.
+
+04.0_HUMAN.BATON.txt
+
+Describe cómo mantener continuidad entre sesiones.
+
+
+======================================================================
+13.00_CONCLUSION
+======================================================================
+
+El ciclo de vida de una sesión en HIA proporciona una estructura clara para trabajar con inteligencia artificial.
+
+Al seguir este ciclo de vida, el humano puede asegurar que el trabajo realizado es ordenado, trazable y reproducible.
+
+FIN DEL DOCUMENTO

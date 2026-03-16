@@ -1,0 +1,329 @@
+======================================================================
+00.00_METADATOS_DEL_DOCUMENTO
+======================================================================
+
+ID_UNICO..........: HUMAN.READING.ORDER.0001
+NOMBRE_SUGERIDO...: 00.1_HUMAN.READING.ORDER.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-03-14
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: Santiago, Chile
+
+AUTOR_HUMANO......: PABLO
+AUTOR_IA..........: GPT
+
+TITULO............: HUMAN Reading Order — Jerarquía y Roadmap de Lectura
+SUBTITULO_MEDIO...: Orden formal de lectura de la carpeta HUMAN.README
+SUBTITULO_BAJO....: Documento académico, detallado y redundante para asegurar comprensión total.
+
+UBICACION_SISTEMA.: <PROJECT_ROOT>\HUMAN.README\
+
+======================================================================
+00.10_PROPOSITO_DEL_DOCUMENTO
+======================================================================
+
+Este documento define la jerarquía completa de lectura de la carpeta HUMAN.README.
+
+Este archivo no contiene la filosofía del sistema, ni las reglas operativas, ni los
+procedimientos técnicos del sistema HIA.
+
+Este documento tiene un único objetivo:
+
+ORGANIZAR LA LECTURA HUMANA DEL SISTEMA.
+
+El propósito principal es evitar que el lector humano enfrente los documentos
+de la carpeta HUMAN.README sin saber:
+
+- qué archivo leer primero
+- qué archivo leer después
+- qué archivo leer solo si necesita profundizar
+- qué archivo corresponde a operación
+- qué archivo corresponde a conceptos
+- qué archivo corresponde a resolución de problemas
+- qué archivo corresponde a aprendizaje avanzado
+
+Este documento establece una PRELACIÓN.
+
+La prelación significa jerarquía de lectura.
+
+La prelación significa orden lógico.
+
+La prelación significa secuencia pedagógica.
+
+Este documento es una guía de lectura.
+
+Este documento no reemplaza ningún archivo.
+
+Este documento no modifica ningún archivo.
+
+Este documento no resume ningún archivo.
+
+Este documento no sintetiza ningún archivo.
+
+Este documento únicamente indica el ORDEN RECOMENDADO PARA LEER.
+
+Este documento está escrito deliberadamente de forma extensa, didáctica,
+académica y repetitiva para asegurar que el lector comprenda perfectamente
+cómo navegar la carpeta HUMAN.README.
+
+======================================================================
+00.20_PRINCIPIO_FUNDAMENTAL_DE_LECTURA
+======================================================================
+
+La carpeta HUMAN.README contiene múltiples documentos.
+
+Cada documento tiene un propósito distinto.
+
+Algunos documentos están diseñados para:
+
+- aprendizaje inicial
+- comprensión conceptual
+- operación del sistema
+- control del sistema
+- resolución de problemas
+- documentación de casos reales
+
+Si un lector abre documentos de forma aleatoria, es altamente probable que:
+
+- no comprenda el contexto
+- no entienda el propósito del documento
+- interprete mal las instrucciones
+- confunda conceptos con operaciones
+
+Por esta razón, se define un ORDEN DE LECTURA.
+
+El orden de lectura no es arbitrario.
+
+El orden de lectura está diseñado para:
+
+1) introducir al lector al sistema
+2) permitir el primer uso del sistema
+3) explicar cómo funciona el sistema
+4) enseñar cómo trabajar correctamente con el sistema
+5) explicar cómo observar y controlar el sistema
+6) explicar cómo resolver problemas
+7) presentar ejemplos reales de uso
+
+Este documento debe ser leído antes de comenzar a explorar la carpeta HUMAN.README.
+
+Este documento es el MAPA DE NAVEGACIÓN.
+
+======================================================================
+01.00_JERARQUIA_GENERAL_DE_DOCUMENTOS
+======================================================================
+
+La carpeta HUMAN.README está organizada en niveles de lectura.
+
+Los niveles de lectura representan el grado de profundidad.
+
+Nivel 1:
+Uso inicial del sistema.
+
+Nivel 2:
+Comprensión conceptual.
+
+Nivel 3:
+Operación práctica del sistema.
+
+Nivel 4:
+Infraestructura de control y observabilidad.
+
+Nivel 5:
+Operación avanzada y resolución de problemas.
+
+Nivel 6:
+Casos reales de uso.
+
+Cada nivel contiene uno o más documentos.
+
+El lector humano debe avanzar nivel por nivel.
+
+======================================================================
+02.00_NIVEL_1_PRIMER_CONTACTO_CON_EL_SISTEMA
+======================================================================
+
+DOCUMENTO PRINCIPAL
+
+09.0_HUMAN.START.RITUAL.txt
+
+Este documento es el manual mínimo del sistema HIA.
+
+Este documento está escrito específicamente para el usuario denominado
+PEATÓN.
+
+El término PEATÓN se utiliza para referirse a un usuario humano que no
+necesariamente conoce la arquitectura del sistema, ni la filosofía completa
+del sistema, ni las herramientas técnicas del sistema.
+
+El documento START_RITUAL está diseñado para permitir que el usuario:
+
+- ejecute HIA por primera vez
+- entienda el flujo básico de trabajo
+- interactúe con la IA de forma disciplinada
+- ejecute tareas simples dentro del sistema
+
+Este documento es intencionalmente operativo.
+
+Este documento es práctico.
+
+Este documento no intenta explicar todo el sistema.
+
+Este documento no intenta explicar toda la arquitectura.
+
+Este documento no intenta explicar todos los conceptos.
+
+El objetivo de START_RITUAL es permitir que el usuario USE HIA.
+
+El objetivo no es que el usuario comprenda completamente HIA.
+
+======================================================================
+03.00_NIVEL_2_COMPRENSION_DEL_SISTEMA
+======================================================================
+
+Una vez que el lector ha ejecutado el START_RITUAL al menos una vez,
+se recomienda leer los siguientes documentos.
+
+DOCUMENTOS
+
+01.0_HUMAN.USER.txt
+
+00.0_HUMAN.GENERAL.txt
+
+Estos documentos explican qué es HIA.
+
+Estos documentos explican la filosofía del sistema.
+
+Estos documentos explican el modelo de trabajo.
+
+Estos documentos explican por qué el sistema está diseñado de esta manera.
+
+Estos documentos no están orientados a la ejecución inmediata.
+
+Estos documentos están orientados a la comprensión.
+
+El lector debe leer estos documentos con calma.
+
+El lector debe comprender que HIA no es simplemente un software.
+
+HIA es una forma disciplinada de trabajar con inteligencia artificial.
+
+======================================================================
+04.00_NIVEL_3_OPERACION_DEL_SISTEMA
+======================================================================
+
+Los siguientes documentos explican cómo trabajar correctamente.
+
+DOCUMENTOS
+
+02.0_HUMAN.OPERATION.txt
+
+06.0_HUMAN.PF0.txt
+
+05.0_HUMAN.CIS.txt
+
+Estos documentos explican cómo se ejecuta el trabajo real dentro del sistema.
+
+Estos documentos explican cómo se interactúa con la IA.
+
+Estos documentos explican cómo se definen tareas.
+
+Estos documentos explican cómo se aplican cambios.
+
+Estos documentos explican cómo se valida el resultado.
+
+Estos documentos explican cómo se mantiene disciplina operacional.
+
+======================================================================
+05.00_NIVEL_4_INFRAESTRUCTURA_DEL_SISTEMA
+======================================================================
+
+Estos documentos explican cómo observar y controlar el sistema.
+
+DOCUMENTOS
+
+03.0_HUMAN.RADAR.txt
+
+04.0_HUMAN.BATON.txt
+
+08.0_HUMAN.SYNC.MANIFEST.txt
+
+08.1_HUMAN.DRAGNDROP.PACKAGING.txt
+
+Estos documentos explican:
+
+cómo observar el estado del proyecto
+cómo registrar cambios
+cómo transportar el contexto del sistema
+cómo continuar el trabajo en nuevas sesiones
+
+Estos documentos son fundamentales para el control del sistema.
+
+Estos documentos explican la continuidad operacional.
+
+======================================================================
+06.00_NIVEL_5_OPERACION_AVANZADA
+======================================================================
+
+Estos documentos explican cómo resolver problemas.
+
+DOCUMENTOS
+
+10.0_HUMAN.HIA.TROUBLE.txt
+
+HIA_HUM_0012.0_OPERATION.RUNBOOK.txt
+
+Estos documentos están orientados a situaciones donde el sistema
+no funciona como se espera.
+
+Estos documentos explican procedimientos de diagnóstico.
+
+Estos documentos explican cómo recuperar el sistema.
+
+======================================================================
+07.00_NIVEL_6_CASOS_REALES
+======================================================================
+
+DIRECTORIO
+
+CASEBOOK
+
+El directorio CASEBOOK contiene documentos que describen
+situaciones reales de uso del sistema.
+
+Estos documentos incluyen:
+
+casos reales
+procedimientos reales
+decisiones reales
+experiencias reales
+
+El CASEBOOK es el lugar donde el conocimiento práctico se documenta.
+
+El CASEBOOK permite aprender del uso real del sistema.
+
+======================================================================
+08.00_CONCLUSION
+======================================================================
+
+La carpeta HUMAN.README no es un único manual.
+
+La carpeta HUMAN.README es un sistema de conocimiento.
+
+El lector humano debe avanzar gradualmente.
+
+El lector humano debe comenzar con START_RITUAL.
+
+Luego debe avanzar hacia comprensión conceptual.
+
+Luego hacia operación.
+
+Luego hacia control del sistema.
+
+Luego hacia operación avanzada.
+
+Finalmente hacia casos reales.
+
+Este documento existe para asegurar que ese recorrido sea claro,
+ordenado y disciplinado.
+
+FIN DEL DOCUMENTO

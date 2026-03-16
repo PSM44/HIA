@@ -1,0 +1,364 @@
+======================================================================
+00.00_METADATOS_DEL_DOCUMENTO
+======================================================================
+
+ID_UNICO..........: HIA.HUMAN.SYSTEM.OVERVIEW.0001
+NOMBRE_SUGERIDO...: 00.2_HUMAN.SYSTEM.OVERVIEW.txt
+VERSION...........: v1.0-DRAFT
+FECHA.............: 2026-03-14
+HORA..............: HH:MM (America/Santiago)
+CIUDAD............: Santiago, Chile
+
+AUTOR_HUMANO......: PABLO
+AUTOR_IA..........: GPT
+
+TITULO............: HIA — System Overview
+SUBTITULO_MEDIO...: Descripción completa del sistema HIA y sus capas
+SUBTITULO_BAJO....: Documento académico detallado que explica la arquitectura completa del sistema.
+
+UBICACION_SISTEMA.: <PROJECT_ROOT>\HUMAN.README\
+
+======================================================================
+01.00_PROPOSITO_DEL_DOCUMENTO
+======================================================================
+
+Este documento describe el sistema HIA de manera integral.
+
+El objetivo de este documento es proporcionar una explicación completa del sistema HIA para un lector humano que desea comprender cómo funciona el sistema en su totalidad.
+
+Este documento no está diseñado como manual operativo.
+
+Este documento tampoco reemplaza otros documentos de la carpeta HUMAN.README.
+
+Este documento existe para responder una pregunta fundamental:
+
+¿Cómo funciona HIA como sistema completo?
+
+Muchos documentos en HUMAN.README explican partes del sistema:
+
+- reglas
+- rituales
+- herramientas
+- procedimientos
+- infraestructura
+
+Sin embargo, ningún documento explica el sistema completo en una sola narrativa.
+
+Este documento cumple ese rol.
+
+======================================================================
+02.00_QUE_ES_HIA
+======================================================================
+
+HIA significa Human–Intelligence Architecture.
+
+HIA es un sistema diseñado para estructurar la interacción entre humanos y sistemas de inteligencia artificial.
+
+HIA no es simplemente un software.
+
+HIA tampoco es únicamente un framework.
+
+HIA es mejor descrito como:
+
+AI Operating System.
+
+Esto significa que HIA proporciona:
+
+- reglas de gobernanza
+- flujos de interacción
+- herramientas de ejecución
+- mecanismos de control
+- trazabilidad completa
+
+HIA permite que un humano trabaje con múltiples sistemas de inteligencia artificial dentro de un entorno estructurado.
+
+El objetivo de HIA es evitar caos, improvisación y pérdida de contexto en el trabajo con IA.
+
+======================================================================
+03.00_PRINCIPIO_DE_GOBERNANZA
+======================================================================
+
+Una de las reglas fundamentales del sistema HIA es la separación entre:
+
+HUMAN
+SYSTEM
+
+El dominio HUMAN define las reglas.
+
+El dominio SYSTEM ejecuta las operaciones.
+
+Esto significa que la inteligencia artificial no tiene autoridad para redefinir las reglas del sistema.
+
+Las reglas del sistema se encuentran en la carpeta:
+
+HUMAN.README
+
+Dentro de esta carpeta se encuentran los documentos que definen:
+
+- filosofía
+- reglas
+- procedimientos
+- contratos de cambio
+- continuidad de contexto
+
+======================================================================
+04.00_CAPAS_DEL_SISTEMA_HIA
+======================================================================
+
+HIA está organizado en capas.
+
+Cada capa cumple una función distinta dentro del sistema.
+
+Las capas del sistema son las siguientes:
+
+HUMAN LAYER
+INTERACTION LAYER
+EXECUTION LAYER
+AI ORCHESTRATION LAYER
+TOOL LAYER
+KNOWLEDGE LAYER
+STORAGE LAYER
+INFRASTRUCTURE LAYER
+
+Estas capas juntas forman el sistema completo.
+
+======================================================================
+05.00_HUMAN_LAYER
+======================================================================
+
+La capa HUMAN es la capa de gobernanza.
+
+Esta capa contiene los documentos que definen las reglas del sistema.
+
+Componentes principales:
+
+HUMAN.GENERAL
+HUMAN.USER
+HUMAN.OPERATION
+HUMAN.RADAR
+HUMAN.BATON
+HUMAN.CIS
+HUMAN.PF0
+HUMAN.MASTER
+HUMAN.START.RITUAL
+HUMAN.HIA.TROUBLE
+
+Funciones de la capa HUMAN:
+
+definir reglas del sistema
+definir rituales operativos
+definir contratos de cambio
+definir continuidad de contexto
+definir procedimientos humanos
+
+La capa HUMAN es la autoridad máxima del sistema.
+
+======================================================================
+06.00_INTERACTION_LAYER
+======================================================================
+
+La capa de interacción define cómo el humano interactúa con el sistema.
+
+Actualmente existen dos formas principales de interacción.
+
+Interacción mediante interfaces conversacionales.
+
+Ejemplos:
+
+ChatGPT
+Claude
+Codex
+
+En esta modalidad el humano interactúa con el sistema mediante lenguaje natural.
+
+Una posible evolución futura del sistema es la creación de una interfaz dedicada denominada:
+
+HIA Console.
+
+Esta interfaz permitiría ejecutar operaciones del sistema mediante una interfaz gráfica o terminal simplificada.
+
+======================================================================
+07.00_EXECUTION_LAYER
+======================================================================
+
+La capa de ejecución es responsable de interpretar las acciones solicitadas por el humano.
+
+En esta capa se decide:
+
+qué herramientas deben ejecutarse
+qué archivos deben modificarse
+qué validaciones deben ejecutarse
+qué modelos de IA deben utilizarse
+
+Actualmente esta capa está distribuida entre:
+
+scripts
+interacción humana
+ejecución manual de herramientas
+
+Una evolución futura del sistema podría incluir un motor central denominado:
+
+HIA Execution Engine.
+
+Este motor actuaría como orquestador central del sistema.
+
+======================================================================
+08.00_AI_ORCHESTRATION_LAYER
+======================================================================
+
+Esta capa es responsable de seleccionar el modelo de inteligencia artificial apropiado para cada tarea.
+
+Ejemplos de modelos que pueden utilizarse dentro de HIA:
+
+GPT
+Claude
+Codex
+Ollama
+
+Cada modelo puede ser especializado para diferentes tipos de tareas.
+
+Por ejemplo:
+
+análisis conceptual
+generación de código
+automatización
+revisión de resultados
+
+La capa de orquestación permite combinar múltiples modelos de manera coordinada.
+
+======================================================================
+09.00_TOOL_LAYER
+======================================================================
+
+La capa de herramientas contiene los scripts que ejecutan operaciones dentro del sistema.
+
+Ejemplos de herramientas existentes en HIA:
+
+RADAR.ps1
+RADAR.DEV.ps1
+Invoke-HIASync.ps1
+Invoke-HIAValidators.ps1
+Start-Session.ps1
+Close-Session.ps1
+Check-AIStack.ps1
+
+Estas herramientas actúan como las llamadas al sistema del entorno HIA.
+
+Permiten ejecutar operaciones de forma controlada.
+
+======================================================================
+10.00_KNOWLEDGE_LAYER
+======================================================================
+
+La capa de conocimiento contiene la documentación que describe el sistema.
+
+Componentes principales:
+
+HUMAN.README
+PROJECT.README
+CASEBOOK
+
+Esta capa actúa como memoria semántica del sistema.
+
+La inteligencia artificial puede consultar esta capa para entender reglas, procedimientos y contexto.
+
+======================================================================
+11.00_STORAGE_LAYER
+======================================================================
+
+La capa de almacenamiento contiene los datos persistentes del sistema.
+
+Carpetas típicas en esta capa incluyen:
+
+03_ARTIFACTS
+LOGS
+RADAR
+DeadHistory
+Raw
+Import
+Export
+
+Estas carpetas permiten mantener:
+
+historial
+logs
+inventario del sistema
+datos intermedios
+
+======================================================================
+12.00_INFRASTRUCTURE_LAYER
+======================================================================
+
+La capa de infraestructura representa el entorno físico y de software donde se ejecuta HIA.
+
+Ejemplo de stack actual:
+
+Windows 11
+PowerShell
+Python
+Git
+VSCode
+Ollama
+Claude Desktop
+Codex Desktop
+
+Este entorno proporciona la base para ejecutar el sistema HIA.
+
+======================================================================
+13.00_FLUJO_GENERAL_DEL_SISTEMA
+======================================================================
+
+El flujo operativo típico de HIA es el siguiente:
+
+Humano
+↓
+Interacción con interfaz
+↓
+Interpretación de solicitud
+↓
+Ejecución de herramientas
+↓
+Uso de modelos de inteligencia artificial
+↓
+Generación de resultados
+↓
+Registro de resultados
+↓
+Actualización de logs y RADAR
+
+Este flujo produce trazabilidad completa.
+
+======================================================================
+14.00_TRAZABILIDAD_DEL_SISTEMA
+======================================================================
+
+Una característica fundamental de HIA es la trazabilidad.
+
+Cada operación realizada dentro del sistema genera evidencia.
+
+Ejemplos de evidencia:
+
+logs
+cambios en archivos
+ejecuciones de RADAR
+commits en Git
+actualizaciones de BATON
+
+Esto permite reconstruir completamente la historia de operaciones del sistema.
+
+======================================================================
+15.00_CONCLUSION
+======================================================================
+
+HIA es un sistema diseñado para organizar el trabajo humano con inteligencia artificial.
+
+El sistema combina:
+
+reglas humanas
+herramientas automatizadas
+modelos de inteligencia artificial
+mecanismos de control
+
+El resultado es un entorno estructurado que permite trabajar con IA de forma disciplinada, trazable y reproducible.
+
+FIN DEL DOCUMENTO

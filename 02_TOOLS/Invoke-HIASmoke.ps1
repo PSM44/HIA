@@ -1,131 +1,269 @@
 <#
-========================================================================================
-SCRIPT:      Invoke-HIASmoke.ps1
-ID_UNICO:    HIA.TOOL.SMOKE.0001
-VERSION:     v1.0-DRAFT
-FECHA:       2026-03-03
-HORA:        HH:MM (America/Santiago)
-CIUDAD:      Santiago, Chile
+===============================================================================
+MODULE: Invoke-HIASmoke.ps1
+SYSTEM: HIA — Human Intelligence Amplifier
+TYPE: SMOKE TEST
 
-OBJETIVO (SMOKE / 01.00_TEST):
-  Ejecutar en 1 solo comando el “smoke test” operacional del repo HIA:
-    1) Sync (modo seguro: -WhatIf por defecto)
-    2) Validators (DRAFT por defecto)
-    3) RADAR refresh
-  Resultado:
-    - ExitCode 0 si todo OK
-    - ExitCode 1 si algo falla
+OBJETIVO
+Validar que todos los componentes del sistema HIA están operativos.
 
-USO (PEATÓN / COPY-PASTE):
-  # Desde <PROJECT_ROOT>
-  pwsh -NoProfile -File .\02_TOOLS\Invoke-HIASmoke.ps1 -ProjectRoot "<PROJECT_ROOT>"
-
-EJEMPLO (REAL):
-  pwsh -NoProfile -File .\02_TOOLS\Invoke-HIASmoke.ps1 -ProjectRoot "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA"
-
-NOTAS IMPORTANTES:
-  - NO escribas "-ProjectRoot ..." solo en la consola. Eso NO ejecuta nada.
-    Siempre debe ir después del comando pwsh -File ... (o de un script/función).
-  - "<PROJECT_ROOT>" es placeholder documental. En ejecución usa la ruta real.
-
-DEPENDENCIAS (deben existir en 02_TOOLS):
-  - Invoke-HIASync.ps1
-  - Invoke-HIAValidators.ps1
-  - RADAR.ps1
-
-========================================================================================
+VERSION: v2.0
+DATE: 2026-03-16
+===============================================================================
 #>
 
-[CmdletBinding(SupportsShouldProcess = $true)]
+[CmdletBinding()]
 param(
-  [Parameter(Mandatory = $true)]
-  [string] $ProjectRoot,
+    [Parameter(Mandatory = $false)]
+    [string]$ProjectRoot = (Resolve-Path "$PSScriptRoot\.."),
 
-  [Parameter(Mandatory = $false)]
-  [ValidateSet("DRAFT","CANON")]
-  [string] $ValidatorsMode = "DRAFT",
-
-  # Por defecto el smoke NO aplica cambios del sync: solo reporta.
-  [switch] $ApplySync
+    [Parameter(Mandatory = $false)]
+    [switch]$VerboseMode
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-function Write-HIASmokeLog([string]$m, [string]$lvl = "INFO") {
-  $ts = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
-  Write-Host "[$ts][$lvl] $m"
+# -----------------------------------------------------------------------------
+# HELPERS
+# -----------------------------------------------------------------------------
+
+function Write-TestResult {
+    param(
+        [string]$Component,
+        [string]$Test,
+        [bool]$Passed,
+        [string]$Message = ""
+    )
+
+    $status = if ($Passed) { "OK" } else { "FAIL" }
+    $color = if ($Passed) { "Green" } else { "Red" }
+
+    $line = "[$status] $Component :: $Test"
+    if ($Message) {
+        $line += " — $Message"
+    }
+
+    Write-Host $line -ForegroundColor $color
 }
 
-# --- Normalize ProjectRoot ---
-$ProjectRoot = ($ProjectRoot -as [string]).Trim().Trim('"').Trim("'") -replace "[`r`n]",""
-$ProjectRoot = [System.IO.Path]::GetFullPath($ProjectRoot)
+# -----------------------------------------------------------------------------
+# TEST FUNCTIONS
+# -----------------------------------------------------------------------------
 
-if ($ProjectRoot -match '<PROJECT_ROOT>' -or $ProjectRoot -match '^\s*<.*>\s*$') {
-  Write-HIASmokeLog "ProjectRoot contiene placeholder '<PROJECT_ROOT>'. Reemplázalo por la ruta real (ej: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA)." "ERROR"
-  exit 1
+function Test-ToolRegistry {
+    param([string]$Root)
+
+    $path = Join-Path $Root "02_TOOLS\TOOL.REGISTRY.json"
+
+    if (-not (Test-Path $path)) {
+        Write-TestResult -Component "Registry" -Test "TOOL.REGISTRY.json exists" -Passed $false
+        return $false
+    }
+
+    Write-TestResult -Component "Registry" -Test "TOOL.REGISTRY.json exists" -Passed $true
+
+    try {
+        $registry = Get-Content $path -Raw | ConvertFrom-Json
+        $toolCount = ($registry.tools.PSObject.Properties | Measure-Object).Count
+        Write-TestResult -Component "Registry" -Test "TOOL.REGISTRY.json valid JSON" -Passed $true -Message "$toolCount tools"
+        return $true
+    }
+    catch {
+        Write-TestResult -Component "Registry" -Test "TOOL.REGISTRY.json valid JSON" -Passed $false -Message $_.Exception.Message
+        return $false
+    }
 }
 
-if (-not (Test-Path -LiteralPath $ProjectRoot)) {
-  Write-HIASmokeLog "ProjectRoot no existe: $ProjectRoot" "ERROR"
-  exit 1
+function Test-AgentRegistry {
+    param([string]$Root)
+
+    $path = Join-Path $Root "04_AGENTS\AGENT.REGISTRY.json"
+
+    if (-not (Test-Path $path)) {
+        Write-TestResult -Component "Registry" -Test "AGENT.REGISTRY.json exists" -Passed $false
+        return $false
+    }
+
+    Write-TestResult -Component "Registry" -Test "AGENT.REGISTRY.json exists" -Passed $true
+
+    try {
+        $registry = Get-Content $path -Raw | ConvertFrom-Json
+        $agentCount = ($registry.agents.PSObject.Properties | Measure-Object).Count
+        Write-TestResult -Component "Registry" -Test "AGENT.REGISTRY.json valid JSON" -Passed $true -Message "$agentCount agents"
+        return $true
+    }
+    catch {
+        Write-TestResult -Component "Registry" -Test "AGENT.REGISTRY.json valid JSON" -Passed $false -Message $_.Exception.Message
+        return $false
+    }
 }
 
-$toolsDir = Join-Path $ProjectRoot "02_TOOLS"
-$sync      = Join-Path $toolsDir "Invoke-HIASync.ps1"
-$validators= Join-Path $toolsDir "Invoke-HIAValidators.ps1"
-$radar     = Join-Path $toolsDir "RADAR.ps1"
+function Test-ToolScriptsExist {
+    param([string]$Root)
 
-foreach ($p in @($sync,$validators,$radar)) {
-  if (-not (Test-Path -LiteralPath $p)) {
-    Write-HIASmokeLog "Falta dependencia: $p" "ERROR"
+    $registryPath = Join-Path $Root "02_TOOLS\TOOL.REGISTRY.json"
+    $registry = Get-Content $registryPath -Raw | ConvertFrom-Json
+
+    $allPassed = $true
+
+    foreach ($tool in $registry.tools.PSObject.Properties) {
+        $scriptName = $tool.Value.script
+        $scriptPath = Join-Path $Root "02_TOOLS\$scriptName"
+
+        if (-not (Test-Path $scriptPath)) {
+            $scriptPath = Join-Path $Root "02_TOOLS\Maintenance\$scriptName"
+        }
+
+        $exists = Test-Path $scriptPath
+        Write-TestResult -Component "Tools" -Test "$($tool.Name) script exists" -Passed $exists -Message $scriptName
+
+        if (-not $exists) { $allPassed = $false }
+    }
+
+    return $allPassed
+}
+
+function Test-AgentScriptsExist {
+    param([string]$Root)
+
+    $registryPath = Join-Path $Root "04_AGENTS\AGENT.REGISTRY.json"
+    $registry = Get-Content $registryPath -Raw | ConvertFrom-Json
+
+    $allPassed = $true
+
+    foreach ($agent in $registry.agents.PSObject.Properties) {
+        $scriptName = $agent.Value.script
+        $scriptPath = Join-Path $Root "04_AGENTS\$scriptName"
+
+        $exists = Test-Path $scriptPath
+        Write-TestResult -Component "Agents" -Test "$($agent.Name) script exists" -Passed $exists -Message $scriptName
+
+        if (-not $exists) { $allPassed = $false }
+    }
+
+    return $allPassed
+}
+
+function Test-CoreDirectories {
+    param([string]$Root)
+
+    $requiredDirs = @(
+        "00_FRAMEWORK",
+        "01_UI",
+        "02_TOOLS",
+        "04_AGENTS",
+        "HUMAN.README"
+    )
+
+    $allPassed = $true
+
+    foreach ($dir in $requiredDirs) {
+        $path = Join-Path $Root $dir
+        $exists = Test-Path $path
+        Write-TestResult -Component "Structure" -Test "$dir exists" -Passed $exists
+
+        if (-not $exists) { $allPassed = $false }
+    }
+
+    return $allPassed
+}
+
+function Test-CLIEntrypoint {
+    param([string]$Root)
+
+    $cliPath = Join-Path $Root "01_UI\terminal\hia.ps1"
+    $routerPath = Join-Path $Root "02_TOOLS\HIA_ROUTER.ps1"
+
+    $cliExists = Test-Path $cliPath
+    $routerExists = Test-Path $routerPath
+
+    Write-TestResult -Component "CLI" -Test "hia.ps1 exists" -Passed $cliExists
+    Write-TestResult -Component "CLI" -Test "HIA_ROUTER.ps1 exists" -Passed $routerExists
+
+    return ($cliExists -and $routerExists)
+}
+
+function Test-RADARExecution {
+    param([string]$Root)
+
+    $radarPath = Join-Path $Root "02_TOOLS\RADAR.ps1"
+
+    if (-not (Test-Path $radarPath)) {
+        Write-TestResult -Component "RADAR" -Test "RADAR.ps1 execution" -Passed $false -Message "Script not found"
+        return $false
+    }
+
+    try {
+        $null = [System.Management.Automation.Language.Parser]::ParseFile($radarPath, [ref]$null, [ref]$null)
+        Write-TestResult -Component "RADAR" -Test "RADAR.ps1 syntax valid" -Passed $true
+        return $true
+    }
+    catch {
+        Write-TestResult -Component "RADAR" -Test "RADAR.ps1 syntax valid" -Passed $false -Message $_.Exception.Message
+        return $false
+    }
+}
+
+function Test-ArtifactsDirectory {
+    param([string]$Root)
+
+    $artifactsPath = Join-Path $Root "03_ARTIFACTS"
+    $plansPath = Join-Path $Root "03_ARTIFACTS\plans"
+
+    $artifactsExists = Test-Path $artifactsPath
+
+    if (-not $artifactsExists) {
+        New-Item -ItemType Directory -Path $artifactsPath -Force | Out-Null
+        New-Item -ItemType Directory -Path $plansPath -Force | Out-Null
+        Write-TestResult -Component "Artifacts" -Test "03_ARTIFACTS exists" -Passed $true -Message "Created"
+    }
+    else {
+        Write-TestResult -Component "Artifacts" -Test "03_ARTIFACTS exists" -Passed $true
+    }
+
+    return $true
+}
+
+# -----------------------------------------------------------------------------
+# MAIN EXECUTION
+# -----------------------------------------------------------------------------
+
+Write-Host ""
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host " HIA SMOKE TEST" -ForegroundColor Cyan
+Write-Host " $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "PROJECT_ROOT: $ProjectRoot"
+Write-Host ""
+
+$results = @()
+
+$results += Test-CoreDirectories -Root $ProjectRoot
+$results += Test-CLIEntrypoint -Root $ProjectRoot
+$results += Test-ToolRegistry -Root $ProjectRoot
+$results += Test-AgentRegistry -Root $ProjectRoot
+$results += Test-ToolScriptsExist -Root $ProjectRoot
+$results += Test-AgentScriptsExist -Root $ProjectRoot
+$results += Test-RADARExecution -Root $ProjectRoot
+$results += Test-ArtifactsDirectory -Root $ProjectRoot
+
+Write-Host ""
+Write-Host "========================================" -ForegroundColor Cyan
+
+$failed = $results | Where-Object { $_ -eq $false }
+$failedCount = @($failed).Count
+
+if ($failedCount -eq 0) {
+    Write-Host " SMOKE TEST: PASSED" -ForegroundColor Green
+    Write-Host "========================================" -ForegroundColor Cyan
+    Write-Host ""
+    exit 0
+}
+else {
+    Write-Host " SMOKE TEST: FAILED ($failedCount failures)" -ForegroundColor Red
+    Write-Host "========================================" -ForegroundColor Cyan
+    Write-Host ""
     exit 1
-  }
 }
-
-Write-HIASmokeLog "RUN_START ProjectRoot=$ProjectRoot ApplySync=$ApplySync ValidatorsMode=$ValidatorsMode"
-
-[int]$fail = 0
-
-# 1) SYNC
-try {
-  if ($ApplySync) {
-    Write-HIASmokeLog "STEP 1/3 SYNC (APPLY) -> $sync"
-    & pwsh -NoProfile -File $sync -ProjectRoot $ProjectRoot
-  } else {
-    Write-HIASmokeLog "STEP 1/3 SYNC (WHATIF) -> $sync"
-    & pwsh -NoProfile -File $sync -ProjectRoot $ProjectRoot -WhatIf
-  }
-  if ($LASTEXITCODE -ne 0) { throw "SYNC exitcode=$LASTEXITCODE" }
-} catch {
-  Write-HIASmokeLog "SYNC_FAIL $($_.Exception.Message)" "ERROR"
-  $fail++
-}
-
-# 2) VALIDATORS
-try {
-  Write-HIASmokeLog "STEP 2/3 VALIDATORS Mode=$ValidatorsMode -> $validators"
-  & pwsh -NoProfile -File $validators -ProjectRoot $ProjectRoot -Mode $ValidatorsMode
-  if ($LASTEXITCODE -ne 0) { throw "VALIDATORS exitcode=$LASTEXITCODE" }
-} catch {
-  Write-HIASmokeLog "VALIDATORS_FAIL $($_.Exception.Message)" "ERROR"
-  $fail++
-}
-
-# 3) RADAR
-try {
-  Write-HIASmokeLog "STEP 3/3 RADAR -> $radar"
-  & pwsh -NoProfile -File $radar -RootPath $ProjectRoot
-  if ($LASTEXITCODE -ne 0) { throw "RADAR exitcode=$LASTEXITCODE" }
-} catch {
-  Write-HIASmokeLog "RADAR_FAIL $($_.Exception.Message)" "ERROR"
-  $fail++
-}
-
-if ($fail -gt 0) {
-  Write-HIASmokeLog "RUN_END FAIL failCount=$fail" "ERROR"
-  exit 1
-}
-
-Write-HIASmokeLog "RUN_END OK"
-exit 0

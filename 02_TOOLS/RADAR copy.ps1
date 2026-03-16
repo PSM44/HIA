@@ -160,7 +160,6 @@ function Get-CoreIncludeRootSet {
 
     $candidateRelPaths = @(
         "HUMAN.README",
-        "01_UI",
         "02_TOOLS",
         "BATON",
         "BACKLOG",
@@ -751,7 +750,7 @@ $CoreLines = New-Object System.Collections.Generic.List[string]
 $CoreLines.Add("RADAR_CORE — HIA") | Out-Null
 $CoreLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
 $CoreLines.Add("ROOT: " + $RootPath) | Out-Null
-$CoreLines.Add("POLICY: HUMAN.README + 01_UI + 02_TOOLS + BATON/BACKLOG/SKILLS if present") | Out-Null
+$CoreLines.Add("POLICY: HUMAN.README + 02_TOOLS + BATON/BACKLOG/SKILLS if present") | Out-Null
 $CoreLines.Add("EXCLUDED_CONTAINS: " + ($ExcludedContains -join " | ")) | Out-Null
 $CoreLines.Add("") | Out-Null
 
