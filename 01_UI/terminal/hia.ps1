@@ -13,6 +13,19 @@ param(
     [string[]]$RouterArgs
 )
 
+# -----------------------------------------------------------------------------
+# NORMALIZE COMMAND (ANTI "hia apply" ERROR)
+# -----------------------------------------------------------------------------
+
+if ($Command -eq "hia" -and $RouterArgs.Count -gt 0) {
+    $Command = $RouterArgs[0]
+    if ($RouterArgs.Count -gt 1) {
+        $RouterArgs = $RouterArgs[1..($RouterArgs.Count - 1)]
+    } else {
+        $RouterArgs = @()
+    }
+}
+
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 

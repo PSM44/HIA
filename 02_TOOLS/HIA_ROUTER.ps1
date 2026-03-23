@@ -249,10 +249,11 @@ function Invoke-HIARouter {
             }
 
             switch ($Command.ToLower()) {
-                "plan" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "plan" -ToolArgs $Args }
-                "apply" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "apply" -ToolArgs $Args }
-                "validate" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "validate" -ToolArgs $Args }
-                "radar" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "radar" -ToolArgs $Args }
+               "plan" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "plan" -ToolArgs $Args }
+"apply" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "apply" -ToolArgs $Args }
+"run" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "run" -ToolArgs $Args }
+"validate" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "validate" -ToolArgs $Args }
+"radar" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "radar" -ToolArgs $Args }
                 default {
                     Write-Host "ERROR: Unknown command '$Command'. Use 'hia help' for available commands." -ForegroundColor Red
                 }

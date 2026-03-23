@@ -57,12 +57,15 @@ function Invoke-HIAApply {
     Write-Host "PLAN STATUS: $status"
     Write-Host ""
 
-    if ($status -ne "planned") {
+if ($status -eq "approved") {
+    Write-Host "PLAN already approved."
+    return
+}
 
-        Write-Host "PLAN is not in planned state."
-        return
-
-    }
+if ($status -ne "planned") {
+    Write-Host "INVALID PLAN STATE: $status"
+    return
+}
 
     Write-Host "PLAN_ID: $PlanId"
     Write-Host "TASK: $task"
@@ -96,9 +99,19 @@ function Invoke-HIAApply {
 
     }
 
-    $updatedContent = $content -replace "STATUS\s+planned", "STATUS`napproved"
+# -------------------------------------------------------
+# UPDATE STATUS (SAFE)
+# -------------------------------------------------------
 
-    Set-Content -Path $planPath -Value $updatedContent -Encoding UTF8
+$statusIndex = $content.IndexOf("STATUS") + 1
+
+if ($statusIndex -le 0 -or $statusIndex -ge $content.Count) {
+    throw "STATUS block not found in PLAN."
+}
+
+$content[$statusIndex] = "approved"
+
+Set-Content -Path $planPath -Value $content -Encoding UTF8
 
     Write-Host ""
     Write-Host "PLAN APPROVED" -ForegroundColor Green

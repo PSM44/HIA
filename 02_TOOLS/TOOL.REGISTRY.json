@@ -7,6 +7,10 @@
       "description": "Genera índice del proyecto",
       "category": "core"
     },
+    "run": {
+  "description": "Execute approved PLAN",
+  "script": "HIA_RUN_ENGINE.ps1"
+},
     "validate": {
       "script": "Invoke-HIAValidators.ps1",
       "description": "Ejecuta validadores",
