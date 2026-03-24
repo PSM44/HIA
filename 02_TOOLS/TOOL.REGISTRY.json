@@ -51,6 +51,11 @@
       "script": "HIA_SESSION_ENGINE.ps1",
       "description": "Gestiona ciclo de vida de sesiones",
       "category": "core"
+    },
+    "context": {
+      "script": "HIA_CONTEXT_ENGINE.ps1",
+      "description": "Construye paquete de contexto operativo",
+      "category": "core"
     }
   }
 }

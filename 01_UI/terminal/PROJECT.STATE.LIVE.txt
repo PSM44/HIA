@@ -2,7 +2,7 @@
 FILE: PROJECT.STATE.LIVE.txt
 SYSTEM: HIA - Human Intelligence Amplifier
 TYPE: Operational State (LIVE)
-GENERATED: 2026-03-24 10:43:08
+GENERATED: 2026-03-24 17:29:27
 ================================================================================
 
 FOCO_ACTUAL
@@ -23,13 +23,13 @@ MINIBATTLES_COMPLETADOS
 
 ESTADISTICAS
 ------------------------------------------------------------------------------
-TOOLS_REGISTRADOS: 10
+TOOLS_REGISTRADOS: 11
 AGENTS_REGISTRADOS: 2
 PLANS_TOTAL: 6
 PLANS_COMPLETADOS: 2
 PLANS_PENDIENTES: 3
-ULTIMO_RADAR: 2026-03-23 23:01 UTC
-ULTIMA_ACTIVIDAD: 2026-03-24 13:43 UTC
+ULTIMO_RADAR: 2026-03-24 20:00 UTC
+ULTIMA_ACTIVIDAD: 2026-03-24 20:29 UTC
 
 COMANDOS_DISPONIBLES
 ------------------------------------------------------------------------------
@@ -37,6 +37,7 @@ hia agent executor             - Agente de ejecución controlada
 hia agent planner              - Agente de planificación
 hia apply PLAN_0001            - Aprueba y ejecuta PLAN
 hia checkpoint                 - Git checkpoint con mensaje
+hia context                    - Construye paquete de contexto operativo
 hia help                       - Lista todos los comandos
 hia plan "task"                - Crea objeto PLAN
 hia radar                      - Genera índice del proyecto

@@ -1,0 +1,280 @@
+================================================================================
+00.00 METADATOS
+================================================================================
+ID_UNICO: HIA_CTX_0001
+TITLE: CONTEXT.ENGINE CONTRACT
+SYSTEM: HIA - Human Intelligence Amplifier
+TYPE: FRAMEWORK CONTRACT
+VERSION: 1.0.0
+STATUS: ACTIVE
+DATE: 2026-03-24
+TZ: America/Santiago
+SCOPE: Filesystem + Artifacts + Routing
+OWNER: HIA FRAMEWORK
+================================================================================
+
+00.10 INDICE (WBS)
+================================================================================
+00.00 Metadatos
+00.10 Indice
+00.20 Proposito
+00.30 Definiciones base
+01.00 Rol del Context Engine
+02.00 Principios de diseno
+03.00 Fuentes de contexto
+04.00 Niveles de contexto
+05.00 Contrato con Project State Engine
+06.00 Contrato con Session Engine
+07.00 Contrato con AI Router
+08.00 Contrato con Tools / Agents / Models
+09.00 Artefactos canonicos
+10.00 Source of truth
+11.00 No-scope y anti-patrones
+12.00 Flujo operativo
+13.00 Definition of Done para MVP minimo
+14.00 Changelog
+================================================================================
+
+00.20 PROPOSITO
+================================================================================
+Formalizar el contrato del Context Engine como ensamblador operativo de contexto
+para ejecucion AI en HIA.
+
+Este documento define responsabilidades, entradas, salidas y limites entre:
+- Project State Engine
+- Session Engine
+- Context Engine
+- AI Router
+
+Objetivo principal:
+entregar contexto util, trazable y consistente, sin invadir responsabilidades de
+estado, sesion, enrutamiento o ejecucion de herramientas.
+================================================================================
+
+00.30 DEFINICIONES BASE
+================================================================================
+STATE decide que esta pasando.
+SESSION decide que sesion esta viva.
+CONTEXT decide que contexto se entrega.
+ROUTER decide a quien se entrega.
+
+Context Package:
+derivado operativo para consumo de runtime; NO es canon de gobernanza.
+
+Canon:
+documento/fuente considerada autoridad de verdad en su capa.
+
+Derivado:
+artefacto construido desde fuentes canonicas para ejecucion.
+================================================================================
+
+01.00 ROL DEL CONTEXT ENGINE
+================================================================================
+01.10 Ensamblar contexto relevante desde fuentes primarias y secundarias.
+01.20 Normalizar salida para consumo por Router, Tools y Agents.
+01.30 Publicar artefactos de contexto activos e historicos.
+01.40 Mantener trazabilidad de que fuentes fueron usadas y en que orden.
+01.50 No modificar la semantica de fuentes canonicas.
+================================================================================
+
+02.00 PRINCIPIOS DE DISENO
+================================================================================
+02.10 TXT-first y filesystem-first.
+02.20 Determinismo: misma entrada, mismo paquete.
+02.30 Trazabilidad: toda salida debe incluir manifest de origen.
+02.40 Minimo acoplamiento: Context no ejecuta herramientas.
+02.50 Seguridad operativa: lectura por defecto, sin mutacion de SoT.
+02.60 Degradacion controlada: ante faltantes, marcar UNKNOWN y continuar.
+================================================================================
+
+03.00 FUENTES DE CONTEXTO
+================================================================================
+03.10 Fuentes primarias (obligatorias cuando existan)
+- HUMAN.README/**
+- HUMAN.BATON/**
+- 01_UI/terminal/PROJECT.STATE.LIVE.txt
+- 03_ARTIFACTS/sessions/SESSION.ACTIVE.json (si existe)
+
+03.20 Fuentes secundarias (segun necesidad y disponibilidad)
+- 03_ARTIFACTS/RADAR/Radar.Index.ACTIVE.txt
+- 03_ARTIFACTS/RADAR/Radar.Core.ACTIVE.txt
+- 03_ARTIFACTS/plans/**
+- 03_ARTIFACTS/** relevantes al comando objetivo
+
+03.30 Regla de uso
+- Primarias primero.
+- Secundarias solo para completar, nunca para contradecir primarias.
+================================================================================
+
+04.00 NIVELES DE CONTEXTO
+================================================================================
+L0 - MINIMO OPERATIVO
+- Estado activo + sesion activa + instruccion inmediata.
+- Uso: comandos simples y validaciones rapidas.
+
+L1 - OPERATIVO ESTANDAR
+- L0 + baton + resumen de objetivos y restricciones vigentes.
+- Uso: ejecucion diaria CLI.
+
+L2 - OPERATIVO AMPLIADO
+- L1 + radar index/core + planes recientes + artefactos de sesion.
+- Uso: tareas multi-paso con dependencias.
+
+L3 - INVESTIGACION / FORENSIC
+- L2 + historial extendido y evidencia contextual profunda.
+- Uso: analisis de incidentes, drift y auditoria.
+================================================================================
+
+05.00 CONTRATO CON PROJECT STATE ENGINE
+================================================================================
+05.10 Entrada esperada
+- PROJECT.STATE.LIVE.txt vigente.
+
+05.20 Garantia del State Engine
+- Proveer estado operativo actual, legible y sincronizable.
+
+05.30 Garantia del Context Engine
+- Leer estado en modo solo lectura.
+- No redefinir ni corregir el estado.
+- Reportar UNKNOWN si el estado no esta disponible.
+
+05.40 Integracion
+- Context consume estado como ancla temporal y operativa.
+================================================================================
+
+06.00 CONTRATO CON SESSION ENGINE
+================================================================================
+06.10 Entrada esperada
+- SESSION.ACTIVE.json (si hay sesion viva).
+- Historial de sesiones para trazabilidad cuando aplique.
+
+06.20 Garantia del Session Engine
+- Definir una unica sesion activa o ausencia explicita.
+
+06.30 Garantia del Context Engine
+- Detectar sesion activa y agregar metadatos operativos al paquete.
+- No iniciar, cerrar ni alterar sesiones.
+
+06.40 Integracion
+- Si no existe sesion activa, el contexto debe seguir funcionando con bandera:
+  SESSION_STATE = NONE.
+================================================================================
+
+07.00 CONTRATO CON AI ROUTER
+================================================================================
+07.10 Entrada al Router desde Context
+- Context Package activo.
+- Manifest de fuentes usadas.
+- Nivel de contexto requerido (L0-L3).
+
+07.20 Responsabilidad del Router
+- Seleccionar destino (tool/agent/model).
+- Aplicar reglas de despacho.
+
+07.30 Limites
+- Context no enruta.
+- Router no recompone contexto base fuera del contrato.
+================================================================================
+
+08.00 CONTRATO CON TOOLS / AGENTS / MODELS
+================================================================================
+08.10 Tools
+- Reciben contexto segun necesidad declarada.
+- No deben asumir acceso directo a todas las fuentes.
+
+08.20 Agents
+- Consumen contexto empaquetado + manifest.
+- Deben preservar trazabilidad de insumos usados.
+
+08.30 Models
+- Consumen solo el payload que Router entregue.
+- No son source of truth.
+================================================================================
+
+09.00 ARTEFACTOS CANONICOS
+================================================================================
+09.10 Artefactos del Context Engine (canonicos para su capa operativa)
+- 03_ARTIFACTS\context\CONTEXT.PACKAGE.ACTIVE.json
+- 03_ARTIFACTS\context\CONTEXT.MANIFEST.ACTIVE.txt
+- 03_ARTIFACTS\context\history\CONTEXT_<id>.json
+
+09.20 Regla clave
+- CONTEXT.PACKAGE.ACTIVE.json es DERIVADO OPERATIVO, no canon de gobernanza.
+- El canon de gobernanza sigue en HUMAN/STATE/SESSION segun su capa.
+================================================================================
+
+10.00 SOURCE OF TRUTH
+================================================================================
+10.10 Orden de precedencia
+1) HUMAN governance vigente
+2) PROJECT.STATE.LIVE
+3) SESSION.ACTIVE
+4) HUMAN.BATON
+5) RADAR (index/core) y artefactos secundarios
+6) Context Package derivado
+
+10.20 Conflictos
+- Si una fuente secundaria contradice una primaria, prevalece primaria.
+- El manifest debe registrar conflicto detectado.
+================================================================================
+
+11.00 NO-SCOPE Y ANTI-PATRONES
+================================================================================
+11.10 Context Engine NO debe:
+- enrutar
+- ejecutar tools
+- redefinir estado
+- reemplazar BATON
+- mutar fuentes canonicas
+
+11.20 Anti-patrones
+- hardcodear conclusiones en el package
+- mezclar estado viejo con sesion nueva sin trazabilidad
+- usar artefactos historicos como si fueran activos
+- ocultar faltantes en vez de marcar UNKNOWN
+================================================================================
+
+12.00 FLUJO OPERATIVO
+================================================================================
+12.10 Trigger
+- Comando CLI/Router solicita contexto para accion concreta.
+
+12.20 Resolucion
+- Determinar nivel requerido (L0-L3).
+
+12.30 Recoleccion
+- Leer primarias, luego secundarias aplicables.
+
+12.40 Ensamble
+- Construir CONTEXT.PACKAGE.ACTIVE.json.
+- Construir CONTEXT.MANIFEST.ACTIVE.txt con fuentes y timestamp.
+
+12.50 Publicacion
+- Persistir activos en 03_ARTIFACTS\context\.
+- Persistir snapshot historico en history\CONTEXT_<id>.json.
+
+12.60 Entrega
+- Router consume package + manifest para despacho.
+================================================================================
+
+13.00 DEFINITION OF DONE PARA MVP MINIMO
+================================================================================
+13.10 DONE cuando:
+- existe contrato implementado en tooling sin romper CLI actual
+- se generan package + manifest + history
+- package usa fuentes primarias definidas
+- faltantes quedan marcados con UNKNOWN
+- Router consume salida del Context Engine sin acoplamiento circular
+- trazabilidad completa por manifest
+
+13.20 NO DONE cuando:
+- Context enruta o ejecuta
+- package reemplaza fuentes canonicas
+- no hay historial de contexto generado
+================================================================================
+
+14.00 CHANGELOG
+================================================================================
+2026-03-24 | v1.0.0 | Creacion del contrato canonico del Context Engine para
+                     | integracion con State, Session y Router en HIA.
+================================================================================

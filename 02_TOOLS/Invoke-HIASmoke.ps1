@@ -345,6 +345,54 @@ function Test-SessionEngineFlow {
     return $allPassed
 }
 
+function Test-ContextEngineFlow {
+    param([string]$Root)
+
+    $cliPath = Join-Path $Root "01_UI\terminal\hia.ps1"
+    $packagePath = Join-Path $Root "03_ARTIFACTS\context\CONTEXT.PACKAGE.ACTIVE.json"
+    $manifestPath = Join-Path $Root "03_ARTIFACTS\context\CONTEXT.MANIFEST.ACTIVE.txt"
+
+    if (-not (Test-Path $cliPath)) {
+        Write-TestResult -Component "Context" -Test "CLI exists for context flow" -Passed $false
+        return $false
+    }
+
+    $allPassed = $true
+
+    $buildOutput = & pwsh -NoProfile -File $cliPath context build 2>&1
+    $buildOk = ($LASTEXITCODE -eq 0)
+    Write-TestResult -Component "Context" -Test "hia context build" -Passed $buildOk
+    if (-not $buildOk) { $allPassed = $false }
+
+    $packageExists = Test-Path $packagePath
+    Write-TestResult -Component "Context" -Test "CONTEXT.PACKAGE.ACTIVE.json exists" -Passed $packageExists -Message $packagePath
+    if (-not $packageExists) { $allPassed = $false }
+
+    $manifestExists = Test-Path $manifestPath
+    Write-TestResult -Component "Context" -Test "CONTEXT.MANIFEST.ACTIVE.txt exists" -Passed $manifestExists -Message $manifestPath
+    if (-not $manifestExists) { $allPassed = $false }
+
+    if ($packageExists) {
+        try {
+            $package = Get-Content -Path $packagePath -Raw | ConvertFrom-Json
+
+            $hasFocus = -not [string]::IsNullOrWhiteSpace([string]$package.focus_actual)
+            Write-TestResult -Component "Context" -Test "package contains focus_actual" -Passed $hasFocus
+            if (-not $hasFocus) { $allPassed = $false }
+
+            $hasContextLevel = -not [string]::IsNullOrWhiteSpace([string]$package.context_level)
+            Write-TestResult -Component "Context" -Test "package contains context_level" -Passed $hasContextLevel
+            if (-not $hasContextLevel) { $allPassed = $false }
+        }
+        catch {
+            Write-TestResult -Component "Context" -Test "package is valid JSON" -Passed $false -Message $_.Exception.Message
+            $allPassed = $false
+        }
+    }
+
+    return $allPassed
+}
+
 # -----------------------------------------------------------------------------
 # MAIN EXECUTION
 # -----------------------------------------------------------------------------
@@ -370,6 +418,7 @@ $results += Test-RADARExecution -Root $ProjectRoot
 $results += Test-ArtifactsDirectory -Root $ProjectRoot
 $results += Test-StateEngineFlow -Root $ProjectRoot
 $results += Test-SessionEngineFlow -Root $ProjectRoot
+$results += Test-ContextEngineFlow -Root $ProjectRoot
 
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan
