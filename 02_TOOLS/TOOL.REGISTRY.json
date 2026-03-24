@@ -8,9 +8,10 @@
       "category": "core"
     },
     "run": {
-  "description": "Execute approved PLAN",
-  "script": "HIA_RUN_ENGINE.ps1"
-},
+      "script": "HIA_RUN_ENGINE.ps1",
+      "description": "Execute approved PLAN",
+      "category": "core"
+    },
     "validate": {
       "script": "Invoke-HIAValidators.ps1",
       "description": "Ejecuta validadores",

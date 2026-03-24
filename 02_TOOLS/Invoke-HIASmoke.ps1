@@ -225,6 +225,126 @@ function Test-ArtifactsDirectory {
     return $true
 }
 
+function Test-StateEngineFlow {
+    param([string]$Root)
+
+    $cliPath = Join-Path $Root "01_UI\terminal\hia.ps1"
+    $livePath = Join-Path $Root "01_UI\terminal\PROJECT.STATE.LIVE.txt"
+
+    if (-not (Test-Path $cliPath)) {
+        Write-TestResult -Component "State" -Test "hia state command" -Passed $false -Message "CLI not found"
+        return $false
+    }
+
+    $allPassed = $true
+
+    $stateOutput = & pwsh -NoProfile -File $cliPath state 2>&1
+    $stateOk = ($LASTEXITCODE -eq 0)
+    Write-TestResult -Component "State" -Test "hia state command" -Passed $stateOk
+    if (-not $stateOk) { $allPassed = $false }
+
+    $syncOutput = & pwsh -NoProfile -File $cliPath state sync 2>&1
+    $syncOk = ($LASTEXITCODE -eq 0)
+    Write-TestResult -Component "State" -Test "hia state sync command" -Passed $syncOk
+    if (-not $syncOk) { $allPassed = $false }
+
+    $liveExists = Test-Path $livePath
+    Write-TestResult -Component "State" -Test "PROJECT.STATE.LIVE exists" -Passed $liveExists -Message $livePath
+    if (-not $liveExists) { $allPassed = $false }
+
+    if ($liveExists) {
+        $liveContent = Get-Content -Path $livePath -Raw
+
+        $hasMvp = $liveContent -match '(?m)^MVP_ACTIVO\s*$'
+        Write-TestResult -Component "State" -Test "LIVE contains MVP_ACTIVO" -Passed $hasMvp
+        if (-not $hasMvp) { $allPassed = $false }
+
+        $hasNextStep = $liveContent -match '(?m)^PROXIMO_PASO\s*$'
+        Write-TestResult -Component "State" -Test "LIVE contains PROXIMO_PASO" -Passed $hasNextStep
+        if (-not $hasNextStep) { $allPassed = $false }
+    }
+
+    return $allPassed
+}
+
+function Test-SessionEngineFlow {
+    param([string]$Root)
+
+    $cliPath = Join-Path $Root "01_UI\terminal\hia.ps1"
+    $activeSessionPath = Join-Path $Root "03_ARTIFACTS\sessions\SESSION.ACTIVE.json"
+    $historyDir = Join-Path $Root "03_ARTIFACTS\sessions\history"
+    $livePath = Join-Path $Root "01_UI\terminal\PROJECT.STATE.LIVE.txt"
+
+    if (-not (Test-Path $cliPath)) {
+        Write-TestResult -Component "Session" -Test "CLI exists for session flow" -Passed $false
+        return $false
+    }
+
+    $allPassed = $true
+
+    if (Test-Path $activeSessionPath) {
+        $null = & pwsh -NoProfile -File $cliPath session close -NoGitCheckpoint -Message "Smoke pre-clean" 2>&1
+    }
+
+    $startOutput = & pwsh -NoProfile -File $cliPath session start 2>&1
+    $startOk = ($LASTEXITCODE -eq 0)
+    Write-TestResult -Component "Session" -Test "hia session start" -Passed $startOk
+    if (-not $startOk) { $allPassed = $false }
+
+    $statusOutput = & pwsh -NoProfile -File $cliPath session status 2>&1
+    $statusOk = ($LASTEXITCODE -eq 0)
+    Write-TestResult -Component "Session" -Test "hia session status (active)" -Passed $statusOk
+    if (-not $statusOk) { $allPassed = $false }
+
+    $logOutput = & pwsh -NoProfile -File $cliPath session log -Message "Smoke session log" 2>&1
+    $logOk = ($LASTEXITCODE -eq 0)
+    Write-TestResult -Component "Session" -Test "hia session log" -Passed $logOk
+    if (-not $logOk) { $allPassed = $false }
+
+    $closeStart = (Get-Date).ToUniversalTime().AddSeconds(-1)
+    $closeOutput = & pwsh -NoProfile -File $cliPath session close -NoGitCheckpoint -Message "Smoke session close" 2>&1
+    $closeOk = ($LASTEXITCODE -eq 0)
+    Write-TestResult -Component "Session" -Test "hia session close" -Passed $closeOk
+    if (-not $closeOk) { $allPassed = $false }
+
+    $activeCleared = -not (Test-Path $activeSessionPath)
+    Write-TestResult -Component "Session" -Test "SESSION.ACTIVE cleared" -Passed $activeCleared
+    if (-not $activeCleared) { $allPassed = $false }
+
+    $historyExists = Test-Path $historyDir
+    $hasArchive = $false
+    if ($historyExists) {
+        $archives = Get-ChildItem -Path $historyDir -File -Filter "SESSION_*.json" -ErrorAction SilentlyContinue
+        $hasArchive = @($archives).Count -gt 0
+    }
+    Write-TestResult -Component "Session" -Test "Session archive created" -Passed $hasArchive
+    if (-not $hasArchive) { $allPassed = $false }
+
+    $syncUpdatedLive = $false
+    if (Test-Path $livePath) {
+        $syncUpdatedLive = (Get-Item $livePath).LastWriteTimeUtc -ge $closeStart
+    }
+    Write-TestResult -Component "Session" -Test "close triggers state sync" -Passed $syncUpdatedLive
+    if (-not $syncUpdatedLive) { $allPassed = $false }
+
+    $statusNoSession = & pwsh -NoProfile -File $cliPath session status 2>&1
+    $statusNoSessionOk = ($LASTEXITCODE -eq 0)
+    Write-TestResult -Component "Session" -Test "status without active session (controlled)" -Passed $statusNoSessionOk
+    if (-not $statusNoSessionOk) { $allPassed = $false }
+
+    $logNoSession = & pwsh -NoProfile -File $cliPath session log -Message "Should fail" 2>&1
+    $logNoSessionExpectedFail = ($LASTEXITCODE -ne 0) -or (($logNoSession -join "`n") -match "No active session")
+    Write-TestResult -Component "Session" -Test "log without active session fails controlled" -Passed $logNoSessionExpectedFail
+    if (-not $logNoSessionExpectedFail) { $allPassed = $false }
+
+    $closeNoSession = & pwsh -NoProfile -File $cliPath session close -NoGitCheckpoint -Message "Should fail" 2>&1
+    $closeNoSessionExpectedFail = ($LASTEXITCODE -ne 0) -or (($closeNoSession -join "`n") -match "No active session")
+    Write-TestResult -Component "Session" -Test "close without active session fails controlled" -Passed $closeNoSessionExpectedFail
+    if (-not $closeNoSessionExpectedFail) { $allPassed = $false }
+
+    return $allPassed
+}
+
 # -----------------------------------------------------------------------------
 # MAIN EXECUTION
 # -----------------------------------------------------------------------------
@@ -248,6 +368,8 @@ $results += Test-ToolScriptsExist -Root $ProjectRoot
 $results += Test-AgentScriptsExist -Root $ProjectRoot
 $results += Test-RADARExecution -Root $ProjectRoot
 $results += Test-ArtifactsDirectory -Root $ProjectRoot
+$results += Test-StateEngineFlow -Root $ProjectRoot
+$results += Test-SessionEngineFlow -Root $ProjectRoot
 
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan

@@ -223,8 +223,9 @@ function Invoke-HIARouter {
     )
 
     $projectRoot = Resolve-Path "$PSScriptRoot\.."
+    $normalizedCommand = $Command.ToLowerInvariant()
 
-    switch ($Command.ToLower()) {
+    switch ($normalizedCommand) {
         "help" {
             Show-HIAHelp -ProjectRoot $projectRoot
         }
@@ -243,17 +244,19 @@ function Invoke-HIARouter {
         }
         default {
             $toolReg = Get-ToolRegistry -ProjectRoot $projectRoot
-            if ($toolReg -and $toolReg.tools.$Command) {
-                Invoke-HIATool -ProjectRoot $projectRoot -ToolName $Command -ToolArgs $Args
+            if ($toolReg -and $toolReg.tools.($normalizedCommand)) {
+                Invoke-HIATool -ProjectRoot $projectRoot -ToolName $normalizedCommand -ToolArgs $Args
                 return
             }
 
-            switch ($Command.ToLower()) {
-               "plan" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "plan" -ToolArgs $Args }
-"apply" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "apply" -ToolArgs $Args }
-"run" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "run" -ToolArgs $Args }
-"validate" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "validate" -ToolArgs $Args }
-"radar" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "radar" -ToolArgs $Args }
+            switch ($normalizedCommand) {
+                "plan" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "plan" -ToolArgs $Args }
+                "apply" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "apply" -ToolArgs $Args }
+                "run" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "run" -ToolArgs $Args }
+                "validate" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "validate" -ToolArgs $Args }
+                "radar" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "radar" -ToolArgs $Args }
+                "state" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "state" -ToolArgs $Args }
+                "session" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "session" -ToolArgs $Args }
                 default {
                     Write-Host "ERROR: Unknown command '$Command'. Use 'hia help' for available commands." -ForegroundColor Red
                 }

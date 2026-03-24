@@ -1,8 +1,8 @@
 ================================================================================
 FILE: PROJECT.STATE.LIVE.txt
-SYSTEM: HIA — Human Intelligence Amplifier
+SYSTEM: HIA - Human Intelligence Amplifier
 TYPE: Operational State (LIVE)
-GENERATED: 2026-03-16 20:04:09
+GENERATED: 2026-03-24 10:43:08
 ================================================================================
 
 FOCO_ACTUAL
@@ -19,31 +19,36 @@ MINIBATTLES_COMPLETADOS
 [MB-0.2] Tool & Agent Registry (2026-03-16)
 [MB-0.3] Smoke Test (2026-03-16)
 [MB-0.4] Agent Executor (2026-03-16)
+[MB-0.5] State Sync (2026-03-23)
 
 ESTADISTICAS
 ------------------------------------------------------------------------------
-TOOLS_REGISTRADOS: 9
+TOOLS_REGISTRADOS: 10
 AGENTS_REGISTRADOS: 2
-PLANS_TOTAL: 3
-PLANS_COMPLETADOS: 1
-PLANS_PENDIENTES: 1
-ULTIMO_RADAR: 2026-03-16 18:42
-ULTIMA_ACTIVIDAD: 2026-03-16 20:03
+PLANS_TOTAL: 6
+PLANS_COMPLETADOS: 2
+PLANS_PENDIENTES: 3
+ULTIMO_RADAR: 2026-03-23 23:01 UTC
+ULTIMA_ACTIVIDAD: 2026-03-24 13:43 UTC
 
 COMANDOS_DISPONIBLES
 ------------------------------------------------------------------------------
-hia help          - Lista todos los comandos
-hia smoke         - Ejecuta smoke test
-hia plan "task"   - Crea nuevo PLAN
-hia apply ID      - Aprueba PLAN
-hia state         - Muestra este estado
-hia state sync    - Sincroniza estado
-hia agent planner - Agente de planificacion
-hia agent executor - Agente de ejecucion
+hia agent executor             - Agente de ejecución controlada
+hia agent planner              - Agente de planificación
+hia apply PLAN_0001            - Aprueba y ejecuta PLAN
+hia checkpoint                 - Git checkpoint con mensaje
+hia help                       - Lista todos los comandos
+hia plan "task"                - Crea objeto PLAN
+hia radar                      - Genera índice del proyecto
+hia run PLAN_0001              - Execute approved PLAN
+hia session                    - Gestiona ciclo de vida de sesiones
+hia smoke                      - Smoke test del sistema
+hia state [show|sync|history]  - Gestiona estado del proyecto
+hia sync                       - Sincroniza artefactos
+hia validate                   - Ejecuta validadores
 
 PROXIMO_PASO
 ------------------------------------------------------------------------------
-- MB-0.5: State Sync (en progreso)
 - MB-0.6: Session Lifecycle
 - MB-1.0: Console Web MVP
 
