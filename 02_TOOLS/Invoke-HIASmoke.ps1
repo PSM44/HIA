@@ -276,8 +276,9 @@ function Test-SessionEngineFlow {
     param([string]$Root)
 
     $cliPath = Join-Path $Root "01_UI\terminal\hia.ps1"
-    $activeSessionPath = Join-Path $Root "03_ARTIFACTS\sessions\SESSION.ACTIVE.json"
-    $historyDir = Join-Path $Root "03_ARTIFACTS\sessions\history"
+    $sessionsDir = Join-Path $Root "03_ARTIFACTS\sessions"
+    $activeSessionPath = Join-Path $sessionsDir "ACTIVE_SESSION.json"
+    $legacyActiveSessionPath = Join-Path $sessionsDir "SESSION.ACTIVE.json"
     $livePath = Join-Path $Root "01_UI\terminal\PROJECT.STATE.LIVE.txt"
 
     if (-not (Test-Path $cliPath)) {
@@ -287,17 +288,24 @@ function Test-SessionEngineFlow {
 
     $allPassed = $true
 
-    if (Test-Path $activeSessionPath) {
+    if ((Test-Path $activeSessionPath) -or (Test-Path $legacyActiveSessionPath)) {
         $null = & pwsh -NoProfile -File $cliPath session close -NoGitCheckpoint -Message "Smoke pre-clean" 2>&1
     }
+
+    $jsonBefore = @(Get-ChildItem -Path $sessionsDir -Filter "SESSION_*.json" -File -ErrorAction SilentlyContinue).Count
+    $logBefore = @(Get-ChildItem -Path $sessionsDir -Filter "SESSION_*.log.txt" -File -ErrorAction SilentlyContinue).Count
 
     $startOutput = & pwsh -NoProfile -File $cliPath session start 2>&1
     $startOk = ($LASTEXITCODE -eq 0)
     Write-TestResult -Component "Session" -Test "hia session start" -Passed $startOk
     if (-not $startOk) { $allPassed = $false }
 
+    $activeExists = Test-Path $activeSessionPath
+    Write-TestResult -Component "Session" -Test "ACTIVE_SESSION.json created" -Passed $activeExists -Message $activeSessionPath
+    if (-not $activeExists) { $allPassed = $false }
+
     $statusOutput = & pwsh -NoProfile -File $cliPath session status 2>&1
-    $statusOk = ($LASTEXITCODE -eq 0)
+    $statusOk = ($LASTEXITCODE -eq 0) -and (($statusOutput -join "`n") -match "STATUS:\s*active")
     Write-TestResult -Component "Session" -Test "hia session status (active)" -Passed $statusOk
     if (-not $statusOk) { $allPassed = $false }
 
@@ -312,18 +320,18 @@ function Test-SessionEngineFlow {
     Write-TestResult -Component "Session" -Test "hia session close" -Passed $closeOk
     if (-not $closeOk) { $allPassed = $false }
 
-    $activeCleared = -not (Test-Path $activeSessionPath)
-    Write-TestResult -Component "Session" -Test "SESSION.ACTIVE cleared" -Passed $activeCleared
+    $activeCleared = (-not (Test-Path $activeSessionPath)) -and (-not (Test-Path $legacyActiveSessionPath))
+    Write-TestResult -Component "Session" -Test "active session cleared" -Passed $activeCleared
     if (-not $activeCleared) { $allPassed = $false }
 
-    $historyExists = Test-Path $historyDir
-    $hasArchive = $false
-    if ($historyExists) {
-        $archives = Get-ChildItem -Path $historyDir -File -Filter "SESSION_*.json" -ErrorAction SilentlyContinue
-        $hasArchive = @($archives).Count -gt 0
-    }
-    Write-TestResult -Component "Session" -Test "Session archive created" -Passed $hasArchive
-    if (-not $hasArchive) { $allPassed = $false }
+    $jsonAfter = @(Get-ChildItem -Path $sessionsDir -Filter "SESSION_*.json" -File -ErrorAction SilentlyContinue).Count
+    $logAfter = @(Get-ChildItem -Path $sessionsDir -Filter "SESSION_*.log.txt" -File -ErrorAction SilentlyContinue).Count
+    $archiveCreated = $jsonAfter -gt $jsonBefore
+    $logCreated = $logAfter -gt $logBefore
+    Write-TestResult -Component "Session" -Test "session summary artifact created" -Passed $archiveCreated
+    Write-TestResult -Component "Session" -Test "session log artifact created" -Passed $logCreated
+    if (-not $archiveCreated) { $allPassed = $false }
+    if (-not $logCreated) { $allPassed = $false }
 
     $syncUpdatedLive = $false
     if (Test-Path $livePath) {
@@ -333,19 +341,29 @@ function Test-SessionEngineFlow {
     if (-not $syncUpdatedLive) { $allPassed = $false }
 
     $statusNoSession = & pwsh -NoProfile -File $cliPath session status 2>&1
-    $statusNoSessionOk = ($LASTEXITCODE -eq 0)
+    $statusNoSessionOk = ($LASTEXITCODE -eq 0) -and (($statusNoSession -join "`n") -match "STATUS:\s*NONE")
     Write-TestResult -Component "Session" -Test "status without active session (controlled)" -Passed $statusNoSessionOk
     if (-not $statusNoSessionOk) { $allPassed = $false }
 
     $logNoSession = & pwsh -NoProfile -File $cliPath session log -Message "Should fail" 2>&1
-    $logNoSessionExpectedFail = ($LASTEXITCODE -ne 0) -or (($logNoSession -join "`n") -match "No active session")
+    $logNoSessionExpectedFail = (($LASTEXITCODE -ne 0) -or (($logNoSession -join "`n") -match "No active session"))
     Write-TestResult -Component "Session" -Test "log without active session fails controlled" -Passed $logNoSessionExpectedFail
     if (-not $logNoSessionExpectedFail) { $allPassed = $false }
 
     $closeNoSession = & pwsh -NoProfile -File $cliPath session close -NoGitCheckpoint -Message "Should fail" 2>&1
-    $closeNoSessionExpectedFail = ($LASTEXITCODE -ne 0) -or (($closeNoSession -join "`n") -match "No active session")
+    $closeNoSessionExpectedFail = (($LASTEXITCODE -ne 0) -or (($closeNoSession -join "`n") -match "No active session"))
     Write-TestResult -Component "Session" -Test "close without active session fails controlled" -Passed $closeNoSessionExpectedFail
     if (-not $closeNoSessionExpectedFail) { $allPassed = $false }
+
+    if (Test-Path $livePath) {
+        $liveContent = Get-Content -Path $livePath -Raw
+        $hasMvp = $liveContent -match '(?m)^MVP_ACTIVO\s*$'
+        $hasNextStep = $liveContent -match '(?m)^PROXIMO_PASO\s*$'
+        Write-TestResult -Component "Session" -Test "LIVE keeps MVP_ACTIVO after close" -Passed $hasMvp
+        Write-TestResult -Component "Session" -Test "LIVE keeps PROXIMO_PASO after close" -Passed $hasNextStep
+        if (-not $hasMvp) { $allPassed = $false }
+        if (-not $hasNextStep) { $allPassed = $false }
+    }
 
     return $allPassed
 }

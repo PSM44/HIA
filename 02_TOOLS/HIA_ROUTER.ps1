@@ -278,6 +278,62 @@ function Invoke-HIARouter {
                     }
                     Get-HIAProjects
                 }
+                "project" {
+                    if (
+                        -not (Get-Command New-HIAProject -ErrorAction SilentlyContinue) -or
+                        -not (Get-Command Open-HIAProject -ErrorAction SilentlyContinue) -or
+                        -not (Get-Command Continue-HIAProject -ErrorAction SilentlyContinue) -or
+                        -not (Get-Command Show-HIAProjectStatus -ErrorAction SilentlyContinue) -or
+                        -not (Get-Command Start-HIAProjectSession -ErrorAction SilentlyContinue) -or
+                        -not (Get-Command Get-HIAProjectSessionStatus -ErrorAction SilentlyContinue) -or
+                        -not (Get-Command Close-HIAProjectSession -ErrorAction SilentlyContinue)
+                    ) {
+                        $projectEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_PROJECT_ENGINE.ps1"
+                        if (-not (Test-Path $projectEnginePath)) {
+                            throw "Project engine not found: $projectEnginePath"
+                        }
+                        . $projectEnginePath
+                    }
+
+                    $projectUsage = "Usage: hia project new <PROJECT_ID> OR hia project open <PROJECT_ID> OR hia project continue <PROJECT_ID> OR hia project status <PROJECT_ID>"
+                    $projectSessionUsage = "Usage: hia project session start <PROJECT_ID> OR hia project session status <PROJECT_ID> OR hia project session close <PROJECT_ID>"
+
+                    if (-not $Args -or $Args.Count -lt 1) {
+                        throw $projectUsage
+                    }
+
+                    $projectAction = $Args[0].ToLowerInvariant()
+
+                    if ($projectAction -eq "session") {
+                        if (-not $Args -or $Args.Count -lt 3) {
+                            throw $projectSessionUsage
+                        }
+
+                        $sessionAction = $Args[1].ToLowerInvariant()
+                        $projectId = $Args[2]
+
+                        switch ($sessionAction) {
+                            "start" { Start-HIAProjectSession -ProjectId $projectId }
+                            "status" { Get-HIAProjectSessionStatus -ProjectId $projectId }
+                            "close" { Close-HIAProjectSession -ProjectId $projectId }
+                            default { throw $projectSessionUsage }
+                        }
+                        return
+                    }
+
+                    if (-not $Args -or $Args.Count -lt 2) {
+                        throw $projectUsage
+                    }
+
+                    $projectId = $Args[1]
+                    switch ($projectAction) {
+                        "new" { New-HIAProject -ProjectId $projectId }
+                        "open" { Open-HIAProject -ProjectId $projectId }
+                        "continue" { Continue-HIAProject -ProjectId $projectId }
+                        "status" { Show-HIAProjectStatus -ProjectId $projectId }
+                        default { throw $projectUsage }
+                    }
+                }
                 default {
                     Write-Host "ERROR: Unknown command '$Command'. Use 'hia help' for available commands." -ForegroundColor Red
                 }

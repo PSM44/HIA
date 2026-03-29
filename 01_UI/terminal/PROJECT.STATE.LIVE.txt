@@ -2,7 +2,7 @@
 FILE: PROJECT.STATE.LIVE.txt
 SYSTEM: HIA - Human Intelligence Amplifier
 TYPE: Operational State (LIVE)
-GENERATED: 2026-03-26 17:05:48
+GENERATED: 2026-03-29 14:03:36
 ================================================================================
 
 FOCO_ACTUAL
@@ -28,8 +28,8 @@ AGENTS_REGISTRADOS: 2
 PLANS_TOTAL: 6
 PLANS_COMPLETADOS: 2
 PLANS_PENDIENTES: 3
-ULTIMO_RADAR: 2026-03-26 19:47 UTC
-ULTIMA_ACTIVIDAD: 2026-03-26 20:05 UTC
+ULTIMO_RADAR: 2026-03-29 03:45 UTC
+ULTIMA_ACTIVIDAD: 2026-03-29 17:03 UTC
 
 COMANDOS_DISPONIBLES
 ------------------------------------------------------------------------------

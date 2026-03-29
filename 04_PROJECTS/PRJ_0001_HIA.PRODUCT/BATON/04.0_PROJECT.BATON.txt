@@ -2,7 +2,7 @@
 FILE: 04.0_PROJECT.BATON.txt
 PROJECT: PRJ_0001_HIA.PRODUCT
 TYPE: PROJECT BATON
-VERSION: v0.1-DRAFT
+VERSION: v0.2-DRAFT
 DATE: 2026-03-29
 TZ: America/Santiago
 OWNER: HUMAN + SYSTEM
@@ -12,17 +12,23 @@ OWNER: HUMAN + SYSTEM
 Mantener continuidad operativa del proyecto entre sesiones e IAs.
 
 02.00_ESTADO_ACTUAL
-Proyecto recién inicializado.
+Proyecto inicializado y ya navegable desde HIA.
 
-03.00_OBJETIVO_ACTUAL
-Construir el Project Engine básico de HIA.
+03.00_LOGROS_RECIENTES
+03.01 hia projects operativo.
+03.02 hia project new <PROJECT_ID> operativo.
+03.03 hia project open <PROJECT_ID> operativo.
+03.04 hia project continue <PROJECT_ID> operativo.
 
-04.00_BLOQUEO_ACTUAL
+04.00_OBJETIVO_ACTUAL
+Implementar estado básico del proyecto desde HIA.
+
+05.00_SIGUIENTE_MINIBATTLE
+PRJPB_003 | mostrar estado básico del proyecto | ready
+
+06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
-Falta crear navegación por proyecto y apertura de proyecto específico.
 
-05.00_SIGUIENTE_PASO
-Implementar comando para abrir proyecto específico desde CLI.
-
-06.00_NOTAS
-El proyecto debe mantener HUMAN, BATON y RADAR propios.
+07.00_NOTAS
+07.01 Cada proyecto debe mantener HUMAN, BATON y RADAR propios.
+07.02 El backlog del proyecto debe mantenerse alineado con la realidad operativa.

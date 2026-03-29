@@ -5,16 +5,16 @@ SYSTEM: HIA - Human Intelligence Amplifier
 TYPE: SESSION LIFECYCLE
 
 OBJETIVO
-Gestionar sesiones activas con persistencia en archivos.
+Gestionar sesiones activas con persistencia real en 03_ARTIFACTS\sessions.
 
 COMMANDS:
-- start: inicia una sesion activa
-- status: muestra estado de sesion
-- log: agrega trazabilidad a sesion activa
-- close: cierra sesion y sincroniza estado LIVE
+- start: inicia sesion
+- status: muestra sesion activa
+- log: agrega trazabilidad
+- close: cierra sesion, sincroniza estado y opcionalmente crea checkpoint git
 
-VERSION: v1.1
-DATE: 2026-03-24
+VERSION: v1.2
+DATE: 2026-03-29
 ===============================================================================
 #>
 
@@ -47,7 +47,7 @@ function Get-HIAProjectRoot {
     param([string]$CandidateRoot)
 
     if ($CandidateRoot) {
-        $resolved = (Resolve-Path $CandidateRoot).Path
+        $resolved = (Resolve-Path -LiteralPath $CandidateRoot).Path
         if (Test-Path (Join-Path $resolved "02_TOOLS")) {
             return $resolved
         }
@@ -70,38 +70,66 @@ function Get-HIAProjectRoot {
 
 $script:ProjectRoot = Get-HIAProjectRoot -CandidateRoot $ProjectRoot
 $script:SessionsDir = Join-Path $script:ProjectRoot "03_ARTIFACTS\sessions"
-$script:ActiveSessionFile = Join-Path $script:SessionsDir "SESSION.ACTIVE.json"
-$script:SessionHistoryDir = Join-Path $script:SessionsDir "history"
+$script:ActiveSessionPath = Join-Path $script:SessionsDir "ACTIVE_SESSION.json"
+$script:LegacyActiveSessionPath = Join-Path $script:SessionsDir "SESSION.ACTIVE.json"
 $script:StateEnginePath = Join-Path $script:ProjectRoot "02_TOOLS\HIA_STATE_ENGINE.ps1"
 
-foreach ($dir in @($script:SessionsDir, $script:SessionHistoryDir)) {
-    if (-not (Test-Path $dir)) {
-        New-Item -ItemType Directory -Path $dir -Force | Out-Null
+if (-not (Test-Path -LiteralPath $script:SessionsDir)) {
+    New-Item -ItemType Directory -Path $script:SessionsDir -Force | Out-Null
+}
+
+function Convert-HIAUtcString {
+    param([object]$Value)
+
+    if ($null -eq $Value) { return "NONE" }
+    if ($Value -is [datetime]) { return $Value.ToUniversalTime().ToString("o") }
+    $text = [string]$Value
+    if ([string]::IsNullOrWhiteSpace($text)) { return "NONE" }
+    return $text
+}
+
+function Get-HIASessionId {
+    $candidate = "SESSION_" + (Get-Date).ToString("yyyyMMdd_HHmmss")
+    $summaryPath = Join-Path $script:SessionsDir "$candidate.json"
+    if (-not (Test-Path -LiteralPath $summaryPath)) {
+        return $candidate
+    }
+
+    return ("SESSION_{0}" -f [guid]::NewGuid().ToString("N"))
+}
+
+function Get-HIASessionArtifacts {
+    param([string]$SessionId)
+
+    return @{
+        SummaryPath = Join-Path $script:SessionsDir ("{0}.json" -f $SessionId)
+        LogPath = Join-Path $script:SessionsDir ("{0}.log.txt" -f $SessionId)
     }
 }
 
-function Get-HIAActiveSession {
-    if (-not (Test-Path $script:ActiveSessionFile)) {
-        return $null
-    }
+function Write-HIASessionLogLine {
+    param(
+        [string]$SessionId,
+        [string]$Message
+    )
 
-    try {
-        return (Get-Content -Path $script:ActiveSessionFile -Raw | ConvertFrom-Json)
-    }
-    catch {
-        Write-Host "ERROR: SESSION.ACTIVE.json is invalid." -ForegroundColor Red
-        return $null
-    }
+    $artifacts = Get-HIASessionArtifacts -SessionId $SessionId
+    $line = "[{0}] {1}" -f ((Get-Date).ToUniversalTime().ToString("o")), $Message
+    Add-Content -Path $artifacts.LogPath -Value $line -Encoding UTF8
 }
 
 function Save-HIAActiveSession {
     param([object]$Session)
-    $Session | ConvertTo-Json -Depth 10 | Set-Content -Path $script:ActiveSessionFile -Encoding UTF8
+
+    $Session | ConvertTo-Json -Depth 20 | Set-Content -Path $script:ActiveSessionPath -Encoding UTF8
 }
 
 function Remove-HIAActiveSession {
-    if (Test-Path $script:ActiveSessionFile) {
-        Remove-Item -Path $script:ActiveSessionFile -Force
+    if (Test-Path -LiteralPath $script:ActiveSessionPath) {
+        Remove-Item -LiteralPath $script:ActiveSessionPath -Force
+    }
+    if (Test-Path -LiteralPath $script:LegacyActiveSessionPath) {
+        Remove-Item -LiteralPath $script:LegacyActiveSessionPath -Force
     }
 }
 
@@ -120,23 +148,52 @@ function Set-HIASessionValue {
     $Session.$Key = $Value
 }
 
-function Get-HIASessionStats {
-    param([string]$Root)
-
-    $stats = @{
-        plans_created = 0
-        logs_count = 0
+function Get-HIAActiveSession {
+    $candidatePath = $null
+    if (Test-Path -LiteralPath $script:ActiveSessionPath) {
+        $candidatePath = $script:ActiveSessionPath
+    }
+    elseif (Test-Path -LiteralPath $script:LegacyActiveSessionPath) {
+        $candidatePath = $script:LegacyActiveSessionPath
     }
 
-    $plansDir = Join-Path $Root "03_ARTIFACTS\plans"
-    if (Test-Path $plansDir) {
-        $recentPlans = Get-ChildItem -Path $plansDir -File -ErrorAction SilentlyContinue | Where-Object {
-            $_.Name -match '^PLAN_.*\.txt$|^.*\.json$' -and $_.LastWriteTimeUtc -gt (Get-Date).ToUniversalTime().AddHours(-24)
+    if (-not $candidatePath) {
+        return $null
+    }
+
+    try {
+        $session = Get-Content -Path $candidatePath -Raw | ConvertFrom-Json
+        $sessionId = [string]$session.id
+        if ([string]::IsNullOrWhiteSpace($sessionId)) {
+            $sessionId = [string]$session.session_id
         }
-        $stats.plans_created = @($recentPlans).Count
+        if ([string]::IsNullOrWhiteSpace($sessionId)) {
+            $sessionId = Get-HIASessionId
+            $session | Add-Member -NotePropertyName "id" -NotePropertyValue $sessionId -Force
+        }
+        $session | Add-Member -NotePropertyName "__path" -NotePropertyValue $candidatePath -Force
+        return $session
+    }
+    catch {
+        throw ("Invalid session file: {0}" -f $candidatePath)
+    }
+}
+
+function Get-HIASessionStats {
+    param([object]$Session)
+
+    $plansCreated = 0
+    $plansDir = Join-Path $script:ProjectRoot "03_ARTIFACTS\plans"
+    if (Test-Path -LiteralPath $plansDir) {
+        $plansCreated = @(Get-ChildItem -Path $plansDir -File -ErrorAction SilentlyContinue | Where-Object {
+            $_.LastWriteTimeUtc -gt (Get-Date).ToUniversalTime().AddHours(-24)
+        }).Count
     }
 
-    return $stats
+    return @{
+        plans_created_24h = $plansCreated
+        logs_count = @($Session.logs).Count
+    }
 }
 
 function Format-HIADuration {
@@ -152,14 +209,12 @@ function Format-HIADuration {
 }
 
 function Invoke-HIAStateSync {
-    param([string]$Root)
-
-    if (-not (Test-Path $script:StateEnginePath)) {
-        Write-Host "WARNING: HIA_STATE_ENGINE.ps1 not found, state sync skipped." -ForegroundColor Yellow
+    if (-not (Test-Path -LiteralPath $script:StateEnginePath)) {
+        Write-Host "WARNING: HIA_STATE_ENGINE.ps1 not found. State sync skipped." -ForegroundColor Yellow
         return $false
     }
 
-    & $script:StateEnginePath -Command sync -ProjectRoot $Root
+    & $script:StateEnginePath -Command sync -ProjectRoot $script:ProjectRoot
 
     $exitVar = Get-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue
     if ($null -eq $exitVar) {
@@ -170,12 +225,9 @@ function Invoke-HIAStateSync {
 }
 
 function Invoke-HIAGitCheckpoint {
-    param(
-        [string]$Root,
-        [string]$Message
-    )
+    param([string]$CommitMessage)
 
-    Push-Location $Root
+    Push-Location $script:ProjectRoot
     try {
         $hasChanges = @(git status --porcelain 2>$null).Count -gt 0
         if (-not $hasChanges) {
@@ -184,12 +236,12 @@ function Invoke-HIAGitCheckpoint {
         }
 
         git add -A | Out-Null
-        git commit -m $Message | Out-Null
+        git commit -m $CommitMessage | Out-Null
         Write-Host "  Git checkpoint created." -ForegroundColor Green
         return $true
     }
     catch {
-        Write-Host "  Git checkpoint failed: $($_.Exception.Message)" -ForegroundColor Yellow
+        Write-Host ("  Git checkpoint failed: {0}" -f $_.Exception.Message) -ForegroundColor Yellow
         return $false
     }
     finally {
@@ -204,9 +256,9 @@ function Start-HIASession {
     if ($existing) {
         Write-Host ""
         Write-Host "ERROR: Session already active." -ForegroundColor Red
-        Write-Host "  ID: $($existing.id)"
-        Write-Host "  Operator: $($existing.operator)"
-        Write-Host "  Started: $($existing.started_at)"
+        Write-Host ("  ID: {0}" -f $existing.id)
+        Write-Host ("  Operator: {0}" -f $existing.operator)
+        Write-Host ("  Started: {0}" -f $existing.started_at)
         Write-Host ""
         Write-Host "Use 'hia session close' first." -ForegroundColor Yellow
         Write-Host ""
@@ -214,34 +266,28 @@ function Start-HIASession {
     }
 
     $now = Get-Date
+    $sessionId = Get-HIASessionId
     $session = [ordered]@{
-        id = "SESSION_" + $now.ToString("yyyyMMdd_HHmmss")
+        id = $sessionId
+        session_id = $sessionId
         operator = $OperatorName
         status = "active"
         started_at = $now.ToString("yyyy-MM-dd HH:mm:ss")
         started_utc = $now.ToUniversalTime().ToString("o")
-        timezone = "America/Santiago"
+        closed_utc = $null
         project_root = $script:ProjectRoot
         logs = @()
     }
 
     Save-HIAActiveSession -Session $session
+    Write-HIASessionLogLine -SessionId $sessionId -Message ("SESSION STARTED by {0}" -f $OperatorName)
 
     Write-Host ""
-    Write-Host "========================================" -ForegroundColor Green
-    Write-Host " SESSION STARTED" -ForegroundColor Green
-    Write-Host "========================================" -ForegroundColor Green
+    Write-Host "PROJECT SESSION STARTED" -ForegroundColor Green
+    Write-Host ("ID: {0}" -f $sessionId)
+    Write-Host ("OPERATOR: {0}" -f $OperatorName)
+    Write-Host ("PATH: {0}" -f $script:ActiveSessionPath)
     Write-Host ""
-    Write-Host "  ID:        $($session.id)"
-    Write-Host "  Operator:  $($session.operator)"
-    Write-Host "  Started:   $($session.started_at)"
-    Write-Host ""
-    Write-Host "Commands:" -ForegroundColor Yellow
-    Write-Host "  hia session status"
-    Write-Host "  hia session log -Message `"note`""
-    Write-Host "  hia session close"
-    Write-Host ""
-
     return $true
 }
 
@@ -249,44 +295,33 @@ function Show-HIASessionStatus {
     $session = Get-HIAActiveSession
 
     Write-Host ""
-    Write-Host "========================================" -ForegroundColor Cyan
-    Write-Host " SESSION STATUS" -ForegroundColor Cyan
-    Write-Host "========================================" -ForegroundColor Cyan
-    Write-Host ""
+    Write-Host "PROJECT SESSION STATUS" -ForegroundColor Cyan
 
     if (-not $session) {
-        Write-Host "  No active session." -ForegroundColor DarkGray
-        Write-Host "  Use 'hia session start' to begin." -ForegroundColor Yellow
+        Write-Host "STATUS: NONE"
+        Write-Host ("PATH: {0}" -f $script:ActiveSessionPath)
         Write-Host ""
         return $true
     }
 
-    $duration = (Get-Date) - [DateTime]::Parse($session.started_at)
-    $logCount = @($session.logs).Count
-
-    Write-Host "  Status:    ACTIVE" -ForegroundColor Green
-    Write-Host "  ID:        $($session.id)"
-    Write-Host "  Operator:  $($session.operator)"
-    Write-Host "  Started:   $($session.started_at)"
-    Write-Host "  Duration:  $(Format-HIADuration -Duration $duration)"
-    Write-Host "  Logs:      $logCount"
-    Write-Host ""
-
-    if ($logCount -gt 0) {
-        Write-Host "Recent logs:" -ForegroundColor Yellow
-        foreach ($log in (@($session.logs) | Select-Object -Last 5)) {
-            Write-Host "  [$($log.time)] $($log.message)" -ForegroundColor DarkGray
-        }
-        Write-Host ""
+    $status = [string]$session.status
+    if ([string]::IsNullOrWhiteSpace($status)) {
+        $status = "active"
     }
 
+    Write-Host ("STATUS: {0}" -f $status)
+    Write-Host ("SESSION_ID: {0}" -f $session.id)
+    Write-Host ("STARTED_UTC: {0}" -f (Convert-HIAUtcString -Value $session.started_utc))
+    Write-Host ("CLOSED_UTC: {0}" -f (Convert-HIAUtcString -Value $session.closed_utc))
+    Write-Host ("PATH: {0}" -f $script:ActiveSessionPath)
+    Write-Host ""
     return $true
 }
 
 function Add-HIASessionLog {
     param([string]$LogMessage)
 
-    if (-not $LogMessage) {
+    if ([string]::IsNullOrWhiteSpace($LogMessage)) {
         Write-Host ""
         Write-Host "ERROR: -Message required." -ForegroundColor Red
         Write-Host ""
@@ -294,7 +329,7 @@ function Add-HIASessionLog {
     }
 
     $session = Get-HIAActiveSession
-    if (-not $session) {
+    if (-not $session -or [string]$session.status -ne "active") {
         Write-Host ""
         Write-Host "ERROR: No active session." -ForegroundColor Red
         Write-Host "Use 'hia session start' first." -ForegroundColor Yellow
@@ -313,9 +348,10 @@ function Add-HIASessionLog {
     $session.logs = $logs
 
     Save-HIAActiveSession -Session $session
+    Write-HIASessionLogLine -SessionId $session.id -Message ("LOG: {0}" -f $LogMessage)
 
     Write-Host ""
-    Write-Host "LOG ADDED: $LogMessage" -ForegroundColor Green
+    Write-Host ("LOG ADDED: {0}" -f $LogMessage) -ForegroundColor Green
     Write-Host ""
     return $true
 }
@@ -327,7 +363,7 @@ function Close-HIASession {
     )
 
     $session = Get-HIAActiveSession
-    if (-not $session) {
+    if (-not $session -or [string]$session.status -ne "active") {
         Write-Host ""
         Write-Host "ERROR: No active session." -ForegroundColor Red
         Write-Host "Use 'hia session start' first." -ForegroundColor Yellow
@@ -336,10 +372,16 @@ function Close-HIASession {
     }
 
     $now = Get-Date
-    $duration = $now - [DateTime]::Parse($session.started_at)
-    $summary = if ($SummaryMessage) { $SummaryMessage } else { "Session completed" }
-    $stats = Get-HIASessionStats -Root $script:ProjectRoot
-    $stats.logs_count = @($session.logs).Count
+    $startedRaw = Convert-HIAUtcString -Value $session.started_utc
+    if ($startedRaw -eq "NONE") {
+        $startedRaw = Convert-HIAUtcString -Value $session.started_at
+    }
+    if ($startedRaw -eq "NONE") {
+        $startedRaw = $now.ToUniversalTime().ToString("o")
+    }
+    $startedAtUtc = [DateTime]::Parse($startedRaw)
+    $duration = $now.ToUniversalTime() - $startedAtUtc.ToUniversalTime()
+    $summary = if ([string]::IsNullOrWhiteSpace($SummaryMessage)) { "Session completed" } else { $SummaryMessage }
 
     Set-HIASessionValue -Session $session -Key "status" -Value "closed"
     Set-HIASessionValue -Session $session -Key "closed_at" -Value $now.ToString("yyyy-MM-dd HH:mm:ss")
@@ -347,22 +389,16 @@ function Close-HIASession {
     Set-HIASessionValue -Session $session -Key "duration_seconds" -Value ([math]::Floor($duration.TotalSeconds))
     Set-HIASessionValue -Session $session -Key "duration_formatted" -Value (Format-HIADuration -Duration $duration)
     Set-HIASessionValue -Session $session -Key "summary" -Value $summary
-    Set-HIASessionValue -Session $session -Key "stats" -Value $stats
+    Set-HIASessionValue -Session $session -Key "stats" -Value (Get-HIASessionStats -Session $session)
+
+    $artifacts = Get-HIASessionArtifacts -SessionId $session.id
+    $session | ConvertTo-Json -Depth 20 | Set-Content -Path $artifacts.SummaryPath -Encoding UTF8
+    Write-HIASessionLogLine -SessionId $session.id -Message ("SESSION CLOSED: {0}" -f $summary)
 
     Write-Host ""
-    Write-Host "========================================" -ForegroundColor Cyan
-    Write-Host " CLOSING SESSION" -ForegroundColor Cyan
-    Write-Host "========================================" -ForegroundColor Cyan
-    Write-Host ""
-    Write-Host "  ID:        $($session.id)"
-    Write-Host "  Operator:  $($session.operator)"
-    Write-Host "  Duration:  $($session.duration_formatted)"
-    Write-Host "  Logs:      $($stats.logs_count)"
-    Write-Host "  Plans:     $($stats.plans_created) created (24h)"
-    Write-Host ""
+    Write-Host "CLOSING SESSION..." -ForegroundColor Cyan
 
-    Write-Host "Syncing state..." -ForegroundColor Cyan
-    $stateSynced = Invoke-HIAStateSync -Root $script:ProjectRoot
+    $stateSynced = Invoke-HIAStateSync
     if ($stateSynced) {
         Write-Host "  State synced." -ForegroundColor Green
     }
@@ -371,23 +407,19 @@ function Close-HIASession {
     }
 
     if ($DoGitCheckpoint) {
-        Write-Host ""
-        Write-Host "Creating Git checkpoint..." -ForegroundColor Cyan
-        $commitMsg = "SESSION: $($session.id) - $summary"
-        $null = Invoke-HIAGitCheckpoint -Root $script:ProjectRoot -Message $commitMsg
+        Write-Host "  Creating optional Git checkpoint..." -ForegroundColor Cyan
+        $checkpointMessage = "SESSION: $($session.id) - $summary"
+        $null = Invoke-HIAGitCheckpoint -CommitMessage $checkpointMessage
     }
 
-    $archivePath = Join-Path $script:SessionHistoryDir "$($session.id).json"
-    $session | ConvertTo-Json -Depth 10 | Set-Content -Path $archivePath -Encoding UTF8
     Remove-HIAActiveSession
 
     Write-Host ""
-    Write-Host "========================================" -ForegroundColor Green
-    Write-Host " SESSION CLOSED" -ForegroundColor Green
-    Write-Host "========================================" -ForegroundColor Green
-    Write-Host ""
-    Write-Host "  Summary:  $summary"
-    Write-Host "  Archive:  $archivePath"
+    Write-Host "PROJECT SESSION CLOSED" -ForegroundColor Green
+    Write-Host ("ID: {0}" -f $session.id)
+    Write-Host ("DURATION: {0}" -f $session.duration_formatted)
+    Write-Host ("SUMMARY_PATH: {0}" -f $artifacts.SummaryPath)
+    Write-Host ("LOG_PATH: {0}" -f $artifacts.LogPath)
     Write-Host ""
 
     return $stateSynced
@@ -397,21 +429,11 @@ $commandResult = $true
 $useGitCheckpoint = $GitCheckpoint -and (-not $NoGitCheckpoint)
 
 switch ($Command) {
-    "start" {
-        $commandResult = Start-HIASession -OperatorName $Operator
-    }
-    "status" {
-        $commandResult = Show-HIASessionStatus
-    }
-    "log" {
-        $commandResult = Add-HIASessionLog -LogMessage $Message
-    }
-    "close" {
-        $commandResult = Close-HIASession -SummaryMessage $Message -DoGitCheckpoint $useGitCheckpoint
-    }
-    default {
-        $commandResult = Show-HIASessionStatus
-    }
+    "start" { $commandResult = Start-HIASession -OperatorName $Operator }
+    "status" { $commandResult = Show-HIASessionStatus }
+    "log" { $commandResult = Add-HIASessionLog -LogMessage $Message }
+    "close" { $commandResult = Close-HIASession -SummaryMessage $Message -DoGitCheckpoint $useGitCheckpoint }
+    default { $commandResult = Show-HIASessionStatus }
 }
 
 if ($commandResult) { exit 0 }

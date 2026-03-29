@@ -1,5 +1,7 @@
 ID | TYPE | PRIORITY | TITLE | VALUE | EFFORT | STATUS
-PRJPB_001 | minibattle | P0 | abrir proyecto específico desde HIA | habilita navegación real por proyecto | S | ready
-PRJPB_002 | minibattle | P0 | mostrar estado básico del proyecto | permite continuidad operativa | S | backlog
-PRJPB_003 | minibattle | P1 | leer baton del proyecto | habilita continuidad por proyecto | S | backlog
-PRJPB_004 | feature | P1 | integrar radar del proyecto | habilita contexto por proyecto | M | backlog
+PRJPB_001 | minibattle | P0 | abrir proyecto específico desde HIA | habilita navegación real por proyecto | S | done
+PRJPB_002 | minibattle | P0 | continuar desarrollo del proyecto desde HIA | habilita recomendación operativa desde backlog | S | done
+PRJPB_003 | minibattle | P0 | mostrar estado básico del proyecto | permite continuidad operativa visible | S | ready
+PRJPB_004 | minibattle | P1 | leer baton del proyecto en comando de estado | habilita continuidad por proyecto | S | backlog
+PRJPB_005 | feature | P1 | integrar radar del proyecto | habilita contexto por proyecto | M | backlog
+PRJPB_006 | feature | P1 | crear sesión persistente por proyecto | habilita continuidad real por proyecto | M | backlog

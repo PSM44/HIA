@@ -113,8 +113,16 @@ if ($Command.ToLowerInvariant() -eq "agile") {
 # -----------------------------------------------------------------------------
 
 try {
+    Remove-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue
     Invoke-HIARouter -Command $Command -Args $RouterArgs
-    exit 0
+
+    $routerExitCode = 0
+    $lastExit = Get-Variable -Name LASTEXITCODE -Scope Global -ValueOnly -ErrorAction SilentlyContinue
+    if ($null -ne $lastExit) {
+        $routerExitCode = [int]$lastExit
+    }
+
+    exit $routerExitCode
 }
 catch {
     Write-Host ""
