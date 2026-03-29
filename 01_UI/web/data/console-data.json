@@ -1,0 +1,96 @@
+{
+  "status": {
+    "project_root": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA",
+    "generated_live": "2026-03-29 14:03:36",
+    "foco_actual": "Sistema de orquestacion multi-agente con CLI funcional.",
+    "mvp_activo": "MVP-0 — Kernel CLI estable",
+    "proximo_paso": "- MB-0.6: Session Lifecycle\r\n- MB-1.0: Console Web MVP",
+    "ultimo_radar": "2026-03-29 03:45 UTC",
+    "ultima_actividad": "2026-03-29 17:03 UTC",
+    "live_path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\01_UI\\terminal\\PROJECT.STATE.LIVE.txt"
+  },
+  "session": {
+    "status": "closed",
+    "session_id": "SESSION_20260329_140334",
+    "operator": "aazcl",
+    "started_utc": "2026-03-29T17:03:34.0632310Z",
+    "closed_utc": "2026-03-29T17:03:36.0756062Z",
+    "summary_path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\03_ARTIFACTS\\sessions\\SESSION_20260329_140334.json",
+    "log_path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\03_ARTIFACTS\\sessions\\SESSION_20260329_140334.log.txt",
+    "source": "latest_closed"
+  },
+  "plan_summary": {
+    "plans_total": 6,
+    "plans_completed": 2,
+    "plans_pending": 3,
+    "plans_other": 1,
+    "minibattles_completed": 5,
+    "minibattle_actual": "- MB-0.6: Session Lifecycle"
+  },
+  "plans": [
+    {
+      "plan_id": "PLAN_0001",
+      "status": "planned",
+      "task": "test path fix",
+      "updated_utc": "2026-03-16T15:35:52.7710474Z",
+      "source_file": "PLAN_0001.txt"
+    },
+    {
+      "plan_id": "PLAN_0002",
+      "status": "planned",
+      "task": "test CLI",
+      "updated_utc": "2026-03-16T21:56:55.6270744Z",
+      "source_file": "PLAN_0002.txt"
+    },
+    {
+      "plan_id": "PLAN_0003",
+      "status": "executed",
+      "task": "run radar",
+      "updated_utc": "2026-03-23T22:19:04.7560227Z",
+      "source_file": "PLAN_0003.txt"
+    },
+    {
+      "plan_id": "EXEC_20260316_190912",
+      "status": "planned",
+      "task": "run smoke test",
+      "updated_utc": "2026-03-16T22:09:12.4775151Z",
+      "source_file": "EXEC_20260316_190912.json"
+    },
+    {
+      "plan_id": "EXEC_20260316_191046",
+      "status": "completed",
+      "task": "run smoke test",
+      "updated_utc": "2026-03-16T22:15:23.2094340Z",
+      "source_file": "EXEC_20260316_191046.json"
+    },
+    {
+      "plan_id": "PLAN.20260316_185407",
+      "status": "unknown",
+      "task": "unknown request",
+      "updated_utc": "2026-03-16T21:54:07.6859059Z",
+      "source_file": "PLAN.20260316_185407.json"
+    }
+  ],
+  "sources": [
+    {
+      "exists": true,
+      "path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\01_UI\\terminal\\PROJECT.STATE.LIVE.txt",
+      "label": "PROJECT.STATE.LIVE"
+    },
+    {
+      "exists": true,
+      "path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\03_ARTIFACTS\\sessions",
+      "label": "Sessions"
+    },
+    {
+      "exists": true,
+      "path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\03_ARTIFACTS\\plans",
+      "label": "Plans"
+    }
+  ],
+  "diagnostics": {
+    "generated_utc": "2026-03-29T17:54:18.1331890Z",
+    "generator": "HIA_WEB_CONSOLE_EXPORT.ps1",
+    "warnings": []
+  }
+}

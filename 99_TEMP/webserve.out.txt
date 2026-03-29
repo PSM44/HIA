@@ -1,0 +1,8 @@
+TIP: Refresh data before browser reload with:
+  pwsh -NoProfile -File "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\\02_TOOLS\\HIA_WEB_CONSOLE_EXPORT.ps1"
+
+HIA WEB CONSOLE SERVER RUNNING
+ROOT: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\01_UI\web
+URL:  http://localhost:8091/
+Press Ctrl+C to stop.
+

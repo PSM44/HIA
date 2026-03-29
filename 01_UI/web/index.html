@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HIA Console MVP</title>
+  <link rel="stylesheet" href="./assets/app.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>HIA Console MVP</h1>
+      <p class="subtitle">Lectura local de estado, sesiones y planes</p>
+    </div>
+    <div class="actions">
+      <button id="refreshBtn" type="button">Refresh</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="card">
+      <h2>Status</h2>
+      <div id="statusGrid" class="grid two"></div>
+    </section>
+
+    <section class="card">
+      <h2>Session</h2>
+      <div id="sessionGrid" class="grid two"></div>
+    </section>
+
+    <section class="card">
+      <h2>Plans / Minibattles</h2>
+      <div id="plansSummary" class="grid two"></div>
+      <div class="table-wrap">
+        <table id="plansTable">
+          <thead>
+            <tr>
+              <th>Plan ID</th>
+              <th>Status</th>
+              <th>Task</th>
+              <th>Updated</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Raw Sources</h2>
+      <div id="sourcesGrid" class="grid one"></div>
+    </section>
+
+    <section class="card">
+      <h2>Diagnostics</h2>
+      <pre id="diagnostics"></pre>
+    </section>
+  </main>
+
+  <script src="./assets/app.js"></script>
+</body>
+</html>
