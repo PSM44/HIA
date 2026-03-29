@@ -1,0 +1,135 @@
+{
+  "version": "1.0",
+  "updated_utc": "2026-03-26T00:00:00Z",
+  "defaults": {
+    "task_type": "REASONING",
+    "provider": "OPENAI"
+  },
+  "task_type_policy": {
+    "CODE": {
+      "preferred_providers": [
+        "CLAUDE",
+        "DEEPSEEK",
+        "OLLAMA"
+      ]
+    },
+    "REASONING": {
+      "preferred_providers": [
+        "OPENAI"
+      ]
+    },
+    "DOCUMENTATION": {
+      "preferred_providers": [
+        "OPENAI"
+      ]
+    },
+    "ANALYSIS": {
+      "preferred_providers": [
+        "OPENAI",
+        "OLLAMA"
+      ]
+    },
+    "LOCAL_TOOL": {
+      "preferred_providers": [
+        "LOCAL_TOOL"
+      ]
+    }
+  },
+  "providers": {
+    "OPENAI": {
+      "execution_mode": "dry_run",
+      "capabilities": [
+        "REASONING",
+        "DOCUMENTATION",
+        "ANALYSIS"
+      ],
+      "preferred_for": [
+        "REASONING",
+        "DOCUMENTATION",
+        "ANALYSIS"
+      ],
+      "priority": 10,
+      "availability_source": "env:OPENAI_API_KEY",
+      "default_target": "gpt-5.4",
+      "fallback_order": [
+        "CLAUDE",
+        "DEEPSEEK",
+        "OLLAMA",
+        "LOCAL_TOOL"
+      ]
+    },
+    "CLAUDE": {
+      "execution_mode": "dry_run",
+      "capabilities": [
+        "CODE",
+        "REASONING"
+      ],
+      "preferred_for": [
+        "CODE"
+      ],
+      "priority": 20,
+      "availability_source": "env:ANTHROPIC_API_KEY",
+      "default_target": "claude-opus",
+      "fallback_order": [
+        "DEEPSEEK",
+        "OLLAMA",
+        "OPENAI",
+        "LOCAL_TOOL"
+      ]
+    },
+    "DEEPSEEK": {
+      "execution_mode": "dry_run",
+      "capabilities": [
+        "CODE",
+        "REASONING"
+      ],
+      "preferred_for": [
+        "CODE"
+      ],
+      "priority": 30,
+      "availability_source": "env:DEEPSEEK_API_KEY",
+      "default_target": "deepseek-chat",
+      "fallback_order": [
+        "CLAUDE",
+        "OLLAMA",
+        "OPENAI",
+        "LOCAL_TOOL"
+      ]
+    },
+    "OLLAMA": {
+      "execution_mode": "dry_run",
+      "capabilities": [
+        "CODE",
+        "ANALYSIS"
+      ],
+      "preferred_for": [
+        "CODE",
+        "ANALYSIS"
+      ],
+      "priority": 40,
+      "availability_source": "command:ollama",
+      "default_target": "qwen2.5-coder:latest",
+      "fallback_order": [
+        "CLAUDE",
+        "DEEPSEEK",
+        "OPENAI",
+        "LOCAL_TOOL"
+      ]
+    },
+    "LOCAL_TOOL": {
+      "execution_mode": "live",
+      "capabilities": [
+        "LOCAL_TOOL"
+      ],
+      "preferred_for": [
+        "LOCAL_TOOL"
+      ],
+      "priority": 50,
+      "availability_source": "always",
+      "default_target": "powershell-allowlist",
+      "fallback_order": [
+        "OPENAI"
+      ]
+    }
+  }
+}

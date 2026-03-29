@@ -1,0 +1,19 @@
+===============================================================================
+FILE: HIA_AGL_0006_VAULT.IDEAS.txt
+SYSTEM: HIA - Human Intelligence Amplifier
+TYPE: IDEA VAULT (P2/P3 BACKLOG)
+STAMP_UTC: 2026-03-29T02:03:03.8632748Z
+SOURCE: HIA_AGILE_ENGINE.ps1
+===============================================================================
+
+RULE: P2/P3 items are out of active release scope and move to vault.
+
+ID | TYPE | PRIORITY | TITLE | VALUE | EFFORT | STATUS
+-------------------------------------------------------------------------------
+PB_007 | feature | P2 | menú CLI autoexpandible desde registry | mejora escalabilidad UX | M | backlog
+PB_008 | feature | P2 | task orchestrator básico | prepara ejecución más compleja | M | backlog
+PB_009 | feature | P2 | live sync entre AGILE y PROJECT.STATE.LIVE | reduce drift entre estado y backlog | M | backlog
+PB_010 | feature | P3 | web console MVP | mejora interfaz futura | L | backlog
+PB_011 | feature | P3 | multi-agent executor federation | arquitectura avanzada posterior | L | backlog
+PB_012 | feature | P3 | cost routing operativo | optimización posterior al primer MVP real | M | backlog
+

@@ -1,0 +1,26 @@
+===============================================================================
+FILE: HIA_AGL_0001_ROADMAP.txt
+SYSTEM: HIA - Human Intelligence Amplifier
+TYPE: AGILE ROADMAP (DERIVED)
+STAMP_UTC: 2026-03-29T02:03:03.8632748Z
+SOURCE: HIA_AGILE_ENGINE.ps1
+===============================================================================
+
+VISION_EXTRACT
+-------------------------------------------------------------------------------
+===============================================================================
+FILE: HIA_AGL_0000_PRODUCT.VISION.txt
+SYSTEM: HIA - Human Intelligence Amplifier
+TYPE: PRODUCT VISION (CANONICAL / HUMAN-EDITED)
+VERSION: v0.1-DRAFT
+DATE: 2026-03-28
+
+ACTIVE_RELEASE_SCOPE (P0/P1)
+-------------------------------------------------------------------------------
+PB_001 | minibattle | P0 | ejecutar comando task simple desde HIA | habilita primer caso de uso real | S | ready
+PB_002 | minibattle | P0 | crear archivo real en filesystem desde HIA | demuestra ejecución visible y verificable | S | ready
+PB_003 | minibattle | P0 | registrar log mínimo de task execution | entrega evidencia operativa | S | backlog
+PB_004 | minibattle | P1 | validar task execution con smoke o test mínimo | evita falso positivo de ejecución | S | backlog
+PB_005 | feature | P1 | menú CLI seleccionable básico | reduce fricción peatón-first | M | backlog
+PB_006 | feature | P1 | integrar agile warnings al flujo operativo | alerta desvíos de scope y backlog | S | backlog
+

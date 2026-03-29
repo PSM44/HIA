@@ -1,0 +1,75 @@
+graph TD;
+
+    subgraph I["01. INTERFACES"]
+        CLI["HIA CLI"]
+        UX["HUMAN UX/UI"]
+    end
+
+    subgraph K["02. HIA KERNEL"]
+        CR["COMMAND ROUTER"]
+        SE["SESSION ENGINE"]
+        ST["STATE ENGINE"]
+        CTX["CONTEXT ENGINE"]
+        AR["AI ROUTER"]
+        AUD["AUDIT / LOGGING"]
+    end
+
+    subgraph E["03. EXECUTOR LAYER"]
+        OPC["OPENCODE"]
+        CDX["CODEX"]
+        CCD["CLAUDE CODE"]
+        TLR["LOCAL TOOL RUNNER"]
+    end
+
+    subgraph P["04. MODEL / PROVIDER LAYER"]
+        OAI["OPENAI"]
+        ANT["ANTHROPIC"]
+        DSK["DEEPSEEK"]
+        OLL["OLLAMA"]
+        LCL["LOCAL IA"]
+        FREE["FREE / LOW-COST MODELS"]
+    end
+
+    subgraph O["05. OUTPUT CONTROL"]
+        OPE["OUTPUT / PATCH / EDIT ENGINE"]
+        RAD["RADAR"]
+        ART["ARTIFACTS"]
+    end
+
+    CLI --> CR
+    UX --> CR
+
+    CR --> SE
+    CR --> ST
+    CR --> CTX
+    CR --> AR
+
+    ST --> CTX
+    SE --> CTX
+    CTX --> AR
+
+    AR --> OPC
+    AR --> CDX
+    AR --> CCD
+    AR --> TLR
+
+    OPC --> OAI
+    OPC --> ANT
+    OPC --> DSK
+    OPC --> OLL
+
+    CDX --> OAI
+    CDX --> OLL
+
+    CCD --> ANT
+    CCD --> OLL
+
+    TLR --> LCL
+    TLR --> FREE
+
+    OAI --> OPE
+    ANT --> OPE
+    DSK --> OPE
+    OLL --> OPE
+    LCL --> OPE
+    FREE --> OPE

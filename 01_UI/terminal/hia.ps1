@@ -90,9 +90,45 @@ if (-not $RouterArgs) {
 }
 
 # -----------------------------------------------------------------------------
+# DIRECT HOOKS
+# -----------------------------------------------------------------------------
+
+if ($Command.ToLowerInvariant() -eq "agile") {
+    $agileEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_AGILE_ENGINE.ps1"
+    if (-not (Test-Path $agileEnginePath)) {
+        throw "Agile engine not found."
+    }
+
+    & $agileEnginePath @RouterArgs
+    $engineExitCode = 0
+    $lastExit = Get-Variable -Name LASTEXITCODE -ValueOnly -ErrorAction SilentlyContinue
+    if ($null -ne $lastExit) {
+        $engineExitCode = [int]$lastExit
+    }
+    exit $engineExitCode
+}
+
+# -----------------------------------------------------------------------------
 # EXECUTE
 # -----------------------------------------------------------------------------
 
-Invoke-HIARouter -Command $Command -Args $RouterArgs
+try {
+    Invoke-HIARouter -Command $Command -Args $RouterArgs
+    exit 0
+}
+catch {
+    Write-Host ""
+    Write-Host "HIA CLI ERROR" -ForegroundColor Red
+    Write-Host ("MESSAGE: {0}" -f $_.Exception.Message) -ForegroundColor Red
+
+    if ($_.InvocationInfo) {
+        Write-Host ("SCRIPT:  {0}" -f $_.InvocationInfo.ScriptName) -ForegroundColor DarkRed
+        Write-Host ("LINE:    {0}" -f $_.InvocationInfo.ScriptLineNumber) -ForegroundColor DarkRed
+        Write-Host ("COMMAND: {0}" -f $_.InvocationInfo.Line.Trim()) -ForegroundColor DarkRed
+    }
+
+    Write-Host ""
+    exit 1
+}
 
 

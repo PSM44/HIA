@@ -1,0 +1,294 @@
+HIA — HUMAN INTELLIGENCE AMPLIFIER
+DIAGRAM SYSTEM DOCUMENTATION
+FILE ID: HIA_DGM_0000
+LOCATION: 00_FRAMEWORK
+VERSION: 1.0
+
+INTRODUCCIÓN
+
+Este documento describe el sistema de diagramas utilizado por HIA para representar la arquitectura, memoria, decisiones de routing y flujos operativos del sistema.
+
+Los diagramas tienen tres objetivos:
+
+Permitir comprensión rápida de la arquitectura del sistema.
+Facilitar comunicación entre humano, IA y desarrolladores.
+Servir como referencia estable para evolución del sistema.
+
+Los diagramas no reemplazan las especificaciones técnicas ni las políticas del sistema.
+Son representaciones estructurales de alto nivel.
+
+Todos los diagramas se almacenan en formato Mermaid (.mmd).
+
+Esto permite:
+
+versionado en Git
+visualización automática
+modificación programática por IA
+integración en documentación técnica
+01. PRINCIPIOS DEL SISTEMA DE DIAGRAMAS
+01.01 Diagrama ≠ documentación completa
+
+Los diagramas muestran estructura y relaciones.
+
+No contienen:
+
+reglas completas
+especificaciones de implementación
+lógica detallada
+
+La lógica vive en:
+
+FRAMEWORK
+POLICIES
+ROUTING RULES
+ENGINES
+
+01.02 Diagramas modulares
+
+HIA utiliza múltiples diagramas especializados en lugar de un único diagrama gigante.
+
+Esto permite:
+
+claridad
+mantenimiento
+evolución independiente
+
+Cada diagrama representa un dominio específico del sistema.
+
+01.03 Diagramas como artefactos versionados
+
+Todos los diagramas son archivos versionados en Git.
+
+Esto permite:
+
+auditoría de cambios
+evolución del sistema
+trazabilidad arquitectónica
+
+Los diagramas son considerados artefactos de arquitectura.
+
+02. ESTRUCTURA DEL SISTEMA DE DIAGRAMAS
+
+Los diagramas de HIA se organizan en cuatro tipos principales.
+
+02.01 SYSTEM ARCHITECTURE
+
+Archivo:
+
+HIA_DGM_0001_SYSTEM.ARCHITECTURE.mmd
+
+Propósito:
+
+Representar la arquitectura general del sistema HIA.
+
+Este diagrama describe las capas principales del sistema:
+
+Interfaces humanas
+Kernel HIA
+Executors
+Model Providers
+Output Control
+
+Este diagrama responde a la pregunta:
+
+“¿Cómo está estructurado el sistema?”
+
+02.02 MEMORY MAP
+
+Archivo:
+
+HIA_DGM_0002_MEMORY.MAP.mmd
+
+Propósito:
+
+Representar la estructura de memoria del sistema.
+
+Incluye:
+
+Human canonical memory
+State memory
+Session memory
+Context memory
+Knowledge memory
+Work memory
+
+Este diagrama responde a la pregunta:
+
+“¿Dónde vive la información dentro de HIA?”
+
+02.03 ROUTING DECISION
+
+Archivo:
+
+HIA_DGM_0003_ROUTING.DECISION.mmd
+
+Propósito:
+
+Representar cómo el sistema decide:
+
+qué agente usar
+qué modelo usar
+qué proveedor usar
+qué herramienta ejecutar
+
+Este diagrama describe el proceso de decisión del AI Router.
+
+Este diagrama responde a la pregunta:
+
+“¿Cómo decide HIA qué IA ejecutar?”
+
+02.04 TASK FLOW
+
+Archivo:
+
+HIA_DGM_0004_TASK.FLOW.mmd
+
+Propósito:
+
+Representar el flujo operativo del sistema.
+
+Incluye:
+
+human request
+kernel processing
+context building
+routing
+execution
+output control
+artifact generation
+
+Este diagrama responde a la pregunta:
+
+“¿Qué ocurre cuando HIA ejecuta una tarea?”
+
+03. CONVENCIONES DE DIAGRAMAS
+
+Para mantener consistencia todos los diagramas siguen estas reglas.
+
+03.01 Formato
+
+Todos los diagramas utilizan Mermaid.
+
+Extensión de archivo:
+
+.mmd
+
+Esto permite:
+
+render automático
+compatibilidad con herramientas
+edición simple
+03.02 Nomenclatura
+
+Formato de nombre:
+
+HIA_DGM_XXXX_DESCRIPTIVE.NAME.mmd
+
+Ejemplo:
+
+HIA_DGM_0001_SYSTEM.ARCHITECTURE.mmd
+
+Donde:
+
+DGM = Diagram
+XXXX = identificador único
+DESCRIPTIVE.NAME = descripción del contenido
+
+03.03 Ubicación
+
+Todos los diagramas se almacenan en:
+
+00_FRAMEWORK
+
+Esto asegura que forman parte del núcleo conceptual del sistema.
+
+03.04 Estabilidad
+
+Los diagramas deben mantenerse relativamente estables.
+
+Cambios frecuentes indican:
+
+arquitectura inmadura
+diseño inestable
+falta de definición conceptual
+
+Los cambios deben ser intencionales y documentados.
+
+04. LO QUE LOS DIAGRAMAS NO REPRESENTAN
+
+Los diagramas no representan:
+
+implementación detallada
+código real
+dependencias de librerías
+rutas de archivos completas
+
+Los diagramas representan arquitectura conceptual.
+
+05. RELACIÓN CON OTROS COMPONENTES
+
+Los diagramas se relacionan con otros documentos del sistema.
+
+FRAMEWORK
+
+Define reglas y estructura del sistema.
+
+ROUTING POLICY
+
+Define reglas reales del AI Router.
+
+STATE FILES
+
+Representan estado real del sistema.
+
+RADAR
+
+Representa inventario y contenido del sistema.
+
+BATON
+
+Representa estado transferible entre sesiones.
+
+06. USO POR IA
+
+Los diagramas pueden ser utilizados por IA para:
+
+entender arquitectura del sistema
+razonar sobre componentes
+generar mejoras estructurales
+evitar modificaciones incoherentes
+
+Los diagramas no deben ser utilizados para inferir comportamiento no definido.
+
+La autoridad siempre pertenece a:
+
+FRAMEWORK
+POLICIES
+STATE
+
+07. EVOLUCIÓN DEL SISTEMA
+
+El sistema de diagramas puede evolucionar con el proyecto.
+
+Posibles diagramas futuros incluyen:
+
+AGENT ARCHITECTURE
+COST ROUTING SYSTEM
+SECURITY MODEL
+PLUGIN SYSTEM
+AUTONOMOUS EXECUTION MODEL
+
+Estos diagramas se agregarán cuando el sistema alcance la madurez necesaria.
+
+08. RESUMEN
+
+El sistema de diagramas de HIA permite:
+
+comprender arquitectura
+visualizar memoria
+explicar decisiones del sistema
+entender flujo operativo
+
+Los diagramas son herramientas de claridad arquitectónica.
+
+No sustituyen las reglas del sistema.

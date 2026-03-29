@@ -56,6 +56,11 @@
       "script": "HIA_CONTEXT_ENGINE.ps1",
       "description": "Construye paquete de contexto operativo",
       "category": "core"
+    },
+    "ai": {
+      "script": "HIA_AI_ROUTER.ps1",
+      "description": "Enruta tareas a proveedores AI",
+      "category": "core"
     }
   }
 }

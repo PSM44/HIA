@@ -1,0 +1,17 @@
+===============================================================================
+FILE: HIA_AGL_0005_MINIBATTLES.ACTIVE.txt
+SYSTEM: HIA - Human Intelligence Amplifier
+TYPE: MINIBATTLES ACTIVE (DERIVED)
+STAMP_UTC: 2026-03-29T02:03:03.8632748Z
+SOURCE: HIA_AGILE_ENGINE.ps1
+===============================================================================
+
+TYPE RULE: TYPE=minibattle generates a minibattle entry.
+
+ID | PRIORITY | TITLE | VALUE | STATUS
+-------------------------------------------------------------------------------
+PB_001 | P0 | ejecutar comando task simple desde HIA | habilita primer caso de uso real | ready
+PB_002 | P0 | crear archivo real en filesystem desde HIA | demuestra ejecución visible y verificable | ready
+PB_003 | P0 | registrar log mínimo de task execution | entrega evidencia operativa | backlog
+PB_004 | P1 | validar task execution con smoke o test mínimo | evita falso positivo de ejecución | backlog
+

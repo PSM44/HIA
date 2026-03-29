@@ -1,0 +1,71 @@
+===============================================================================
+FILE: HIA_AGL_0008_DEFINITION.OF.DONE.txt
+SYSTEM: HIA - Human Intelligence Amplifier
+TYPE: DEFINITION OF DONE (STABLE)
+VERSION: v0.1-DRAFT
+DATE: 2026-03-28
+TZ: America/Santiago
+OWNER: HUMAN + SYSTEM
+===============================================================================
+
+00.00_PROPOSITO
+Definir cuándo un backlog item o minibattle puede considerarse DONE dentro del
+desarrollo de HIA.
+
+01.00_DEFINITION_OF_DONE_GENERAL
+Un item está DONE solo si:
+
+01.01 Existe resultado verificable.
+01.02 El resultado corresponde al objetivo del item.
+01.03 Existe evidencia mínima de ejecución o validación.
+01.04 No depende de interpretación verbal ambigua.
+01.05 El resultado puede mostrarse o repetirse.
+
+02.00_DEFINITION_OF_DONE_PARA_MINIBATTLE
+Una minibattle está DONE solo si:
+
+02.01 Produce output verificable.
+02.02 El output está dentro del PROJECT_ROOT.
+02.03 Existe comando o flujo claro para repetirla.
+02.04 El estado final es visible.
+02.05 El item puede pasar a review sin explicación extra.
+
+03.00_DEFINITION_OF_DONE_PARA_CLI
+Un cambio CLI está DONE solo si:
+
+03.01 El comando existe.
+03.02 El comando corre sin ambigüedad.
+03.03 La salida es legible para humano.
+03.04 La ubicación y el uso pueden explicarse de forma exacta.
+03.05 No rompe comandos existentes.
+
+04.00_DEFINITION_OF_DONE_PARA_OUTPUTS_DERIVADOS
+Un archivo derivado está DONE solo si:
+
+04.01 Se genera automáticamente desde fuente canónica.
+04.02 Es idempotente.
+04.03 No requiere edición manual posterior.
+04.04 No contradice la fuente humana.
+04.05 Tiene formato estable y legible.
+
+05.00_DEFINITION_OF_DONE_PARA_RELEASE_ACTUAL
+El release actual está DONE solo si:
+
+05.01 HIA ejecuta una tarea real sobre filesystem.
+05.02 La tarea deja output verificable.
+05.03 Existe log o evidencia mínima.
+05.04 El flujo puede repetirse.
+05.05 El incremento se puede demostrar a un usuario peatón.
+
+06.00_NOT_DONE_CONDITIONS
+Un item NO está DONE si:
+
+06.01 Solo existe diseño o diagrama.
+06.02 Solo existe código no probado.
+06.03 Solo existe output verbal en chat.
+06.04 Requiere “explicarlo mucho” para que parezca terminado.
+06.05 El output no se puede verificar.
+
+07.00_NOTAS
+07.01 DONE no significa perfecto; significa verificable, usable y trazable.
+07.02 Si hay duda seria, el item no está DONE.

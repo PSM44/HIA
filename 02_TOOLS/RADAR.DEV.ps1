@@ -359,6 +359,22 @@ function Write-DevTargetOutput {
     $lines.Add("MODE: DEV_ONLY") | Out-Null
     $lines.Add("") | Out-Null
 
+    if ($Label -eq "00_FRAMEWORK") {
+        $lines.Add("SECTION: AGILE_SCOPE") | Out-Null
+        $lines.Add("CANONICAL_HUMAN_SOURCES:") | Out-Null
+        $lines.Add(" - AGILE\\HIA_AGL_0000_PRODUCT.VISION.txt") | Out-Null
+        $lines.Add(" - AGILE\\HIA_AGL_0003_PRODUCT.BACKLOG.txt") | Out-Null
+        $lines.Add(" - AGILE\\HIA_AGL_0008_DEFINITION.OF.DONE.txt") | Out-Null
+        $lines.Add("DERIVED_OUTPUTS:") | Out-Null
+        $lines.Add(" - AGILE\\HIA_AGL_0001_ROADMAP.txt") | Out-Null
+        $lines.Add(" - AGILE\\HIA_AGL_0002_RELEASE.PLAN.txt") | Out-Null
+        $lines.Add(" - AGILE\\HIA_AGL_0004_KANBAN.ACTIVE.txt") | Out-Null
+        $lines.Add(" - AGILE\\HIA_AGL_0005_MINIBATTLES.ACTIVE.txt") | Out-Null
+        $lines.Add(" - AGILE\\HIA_AGL_0006_VAULT.IDEAS.txt") | Out-Null
+        $lines.Add(" - AGILE\\HIA_AGL_0007_WARNINGS.ACTIVE.txt") | Out-Null
+        $lines.Add("") | Out-Null
+    }
+
     $lines.Add("SECTION: FILE_INDEX") | Out-Null
     $lines.Add("FIELDS: relpath | size | modified_utc | sha256") | Out-Null
     $lines.Add("") | Out-Null
@@ -411,7 +427,9 @@ function Remove-LegacyDevOutputs {
         "Radar.05_Triggers.txt",
         "Radar.00_FRAMEWORK.txt",
         "Radar.04_PROJECTS.txt",
-        "Radar.DragnDrop.txt"
+        "Radar.DragnDrop.txt",
+        "Radar.DEV.Agile.ACTIVE.txt",
+        "Radar.DEV.Full.ACTIVE.txt"
     )
 
     foreach ($name in $legacy) {

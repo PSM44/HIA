@@ -1,0 +1,34 @@
+===============================================================================
+FILE: 01.0_HUMAN.PROJECT.txt
+PROJECT: PRJ_0001_HIA.PRODUCT
+TYPE: HUMAN PROJECT SPIRIT
+VERSION: v0.1-DRAFT
+DATE: 2026-03-29
+TZ: America/Santiago
+OWNER: HUMAN
+===============================================================================
+
+01.00_PROPOSITO
+Definir el espíritu, criterio de trabajo y dirección humana del proyecto.
+
+02.00_VISION
+HIA debe convertirse en un sistema operativo para desarrollar proyectos de
+cualquier índole con apoyo eficiente de múltiples IAs.
+
+03.00_CRITERIOS_DE_TRABAJO
+03.01 Human-first.
+03.02 IA como amplificador, no como reemplazo ciego.
+03.03 Contexto derivado desde RADAR.
+03.04 Cada incremento debe ser demostrable.
+03.05 El sistema debe reducir distracción, dispersión y desviación.
+
+04.00_ROL_DE_IA_EN_ESTE_PROYECTO
+04.01 Proponer.
+04.02 Criticar.
+04.03 Orquestar.
+04.04 Documentar.
+04.05 Crear, editar, testear y eliminar código cuando corresponda.
+
+05.00_REGLA_HUMAN
+Los archivos HUMAN son el espíritu del proyecto.
+La IA ayuda a iterarlos, pero no los impone.

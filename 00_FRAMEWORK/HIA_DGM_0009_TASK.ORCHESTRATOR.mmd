@@ -1,0 +1,53 @@
+flowchart TD
+
+    HR["HUMAN REQUEST"]
+
+    subgraph A["HIA KERNEL"]
+        AR["AI ROUTER"]
+        CE["CONTEXT ENGINE"]
+        AG["AGENT MANAGER"]
+    end
+
+    subgraph B["TASK ORCHESTRATOR"]
+        TQ["TASK QUEUE"]
+        TS["TASK SCHEDULER"]
+        TE["TASK EXECUTOR"]
+        TR["TASK RETRY"]
+        TL["TASK LOG"]
+    end
+
+    subgraph C["AGENT RUNTIME"]
+        OPC["OPENCODE"]
+        CDX["CODEX CLI"]
+        CCD["CLAUDE CODE"]
+    end
+
+    subgraph D["EXECUTION"]
+        WS["WORKSPACE"]
+        FS["FILESYSTEM"]
+        GIT["GIT"]
+        SCR["SCRIPTS"]
+    end
+
+    HR --> AR
+    AR --> CE
+    CE --> AG
+
+    AG --> TQ
+
+    TQ --> TS
+    TS --> TE
+    TE --> TR
+    TE --> TL
+
+    TE --> OPC
+    TE --> CDX
+    TE --> CCD
+
+    OPC --> WS
+    CDX --> WS
+    CCD --> WS
+
+    WS --> FS
+    WS --> GIT
+    WS --> SCR

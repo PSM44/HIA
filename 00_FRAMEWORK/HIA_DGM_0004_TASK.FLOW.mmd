@@ -1,0 +1,29 @@
+sequenceDiagram
+    participant H as Human
+    participant I as Interface CLI / UX
+    participant K as HIA Kernel
+    participant S as State Engine
+    participant N as Session Engine
+    participant C as Context Engine
+    participant R as AI Router
+    participant E as Executor
+    participant O as Output Engine
+    participant A as Artifacts / Radar
+
+    H->>I: Request
+    I->>K: Command / Intent
+    K->>N: Check active session
+    K->>S: Read current state
+    S-->>K: State snapshot
+    N-->>K: Session snapshot
+    K->>C: Build context package
+    C-->>K: Context package
+    K->>R: Route task
+    R->>E: Dispatch to executor/provider
+    E-->>R: Result / patch / response
+    R-->>K: Routing result
+    K->>O: Validate output / edit
+    O->>A: Update radar / artifacts / logs
+    O->>S: Trigger state sync
+    O->>N: Append session trace
+    A-->>H: Evidence available

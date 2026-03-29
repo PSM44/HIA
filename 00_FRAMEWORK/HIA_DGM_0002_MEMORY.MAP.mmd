@@ -1,0 +1,84 @@
+flowchart TB
+
+    subgraph M0["00. HUMAN / CANONICAL MEMORY"]
+        HUM["HUMAN.README"]
+        BAT["BATON"]
+        FRM["FRAMEWORK RULES / POLICIES"]
+    end
+
+    subgraph M1["01. STATE MEMORY"]
+        PSL["PROJECT.STATE.LIVE"]
+        PSH["PROJECT.STATE.HISTORY"]
+    end
+
+    subgraph M2["02. SESSION MEMORY"]
+        SAC["SESSION.ACTIVE.json"]
+        SHI["SESSION HISTORY"]
+        SLOG["SESSION LOGS"]
+    end
+
+    subgraph M3["03. CONTEXT MEMORY"]
+        CPA["CONTEXT.PACKAGE.ACTIVE.json"]
+        CMA["CONTEXT.MANIFEST.ACTIVE.txt"]
+        CHI["CONTEXT HISTORY"]
+    end
+
+    subgraph M4["04. KNOWLEDGE MEMORY"]
+        SKL["SKILLS"]
+        DEC["DECISIONS"]
+        PAT["PATTERNS / LESSONS"]
+        KNO["KNOWLEDGE / MEMORY STORE"]
+    end
+
+    subgraph M5["05. DELIVERY MEMORY"]
+        RAD["RADAR"]
+        ART["ARTIFACTS"]
+        LOG["AUDIT / EXECUTION LOGS"]
+    end
+
+    subgraph M6["06. WORK MEMORY"]
+        BKL["BACKLOG"]
+        VLT["VAULT / IDEAS"]
+        EXP["EXPERIMENTS / FUTURE PATHS"]
+    end
+
+    HUM --> CPA
+    BAT --> CPA
+    FRM --> CPA
+
+    PSL --> CPA
+    SAC --> CPA
+
+    SE1["STATE ENGINE"] --> PSL
+    SE1 --> PSH
+
+    SE2["SESSION ENGINE"] --> SAC
+    SE2 --> SHI
+    SE2 --> SLOG
+
+    CE["CONTEXT ENGINE"] --> CPA
+    CE --> CMA
+    CE --> CHI
+
+    ME["MEMORY ENGINE (future)"] --> SKL
+    ME --> DEC
+    ME --> PAT
+    ME --> KNO
+    ME --> BKL
+    ME --> VLT
+    ME --> EXP
+
+    RE["RADAR / OUTPUT / AUDIT"] --> RAD
+    RE --> ART
+    RE --> LOG
+
+    CPA --> AR["AI ROUTER"]
+    CMA --> AR
+    PSL --> AR
+    BAT --> AR
+
+    BKL --> PSL
+    DEC --> CPA
+    SKL --> CPA
+    RAD --> CPA
+    ART --> CPA

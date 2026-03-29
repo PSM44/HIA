@@ -1,0 +1,19 @@
+===============================================================================
+FILE: HIA_AGL_0004_KANBAN.ACTIVE.txt
+SYSTEM: HIA - Human Intelligence Amplifier
+TYPE: KANBAN ACTIVE BOARD (DERIVED)
+STAMP_UTC: 2026-03-29T02:03:03.8632748Z
+SOURCE: HIA_AGILE_ENGINE.ps1
+===============================================================================
+
+STATUS MAP: backlog->READY, ready->READY, inprogress->IN_PROGRESS, blocked->BLOCKED, done->DONE
+
+ID | TITLE | KANBAN_STATUS | PRIORITY | TYPE
+-------------------------------------------------------------------------------
+PB_001 | ejecutar comando task simple desde HIA | READY | P0 | minibattle
+PB_002 | crear archivo real en filesystem desde HIA | READY | P0 | minibattle
+PB_003 | registrar log mínimo de task execution | READY | P0 | minibattle
+PB_004 | validar task execution con smoke o test mínimo | READY | P1 | minibattle
+PB_005 | menú CLI seleccionable básico | READY | P1 | feature
+PB_006 | integrar agile warnings al flujo operativo | READY | P1 | feature
+

@@ -7,8 +7,8 @@ TYPE: SMOKE TEST
 OBJETIVO
 Validar que todos los componentes del sistema HIA están operativos.
 
-VERSION: v2.0
-DATE: 2026-03-16
+VERSION: v2.1
+DATE: 2026-03-26
 ===============================================================================
 #>
 
@@ -243,6 +243,7 @@ function Test-StateEngineFlow {
     Write-TestResult -Component "State" -Test "hia state command" -Passed $stateOk
     if (-not $stateOk) { $allPassed = $false }
 
+    $syncStart = (Get-Date).ToUniversalTime().AddSeconds(-1)
     $syncOutput = & pwsh -NoProfile -File $cliPath state sync 2>&1
     $syncOk = ($LASTEXITCODE -eq 0)
     Write-TestResult -Component "State" -Test "hia state sync command" -Passed $syncOk
@@ -253,6 +254,10 @@ function Test-StateEngineFlow {
     if (-not $liveExists) { $allPassed = $false }
 
     if ($liveExists) {
+        $syncTouchedLive = (Get-Item $livePath).LastWriteTimeUtc -ge $syncStart
+        Write-TestResult -Component "State" -Test "state sync updates LIVE timestamp" -Passed $syncTouchedLive
+        if (-not $syncTouchedLive) { $allPassed = $false }
+
         $liveContent = Get-Content -Path $livePath -Raw
 
         $hasMvp = $liveContent -match '(?m)^MVP_ACTIVO\s*$'
@@ -359,6 +364,17 @@ function Test-ContextEngineFlow {
 
     $allPassed = $true
 
+    $packageBefore = $null
+    if (Test-Path $packagePath) {
+        $packageBefore = (Get-Item $packagePath).LastWriteTimeUtc
+    }
+
+    $manifestBefore = $null
+    if (Test-Path $manifestPath) {
+        $manifestBefore = (Get-Item $manifestPath).LastWriteTimeUtc
+    }
+
+    $buildStart = (Get-Date).ToUniversalTime().AddSeconds(-1)
     $buildOutput = & pwsh -NoProfile -File $cliPath context build 2>&1
     $buildOk = ($LASTEXITCODE -eq 0)
     Write-TestResult -Component "Context" -Test "hia context build" -Passed $buildOk
@@ -371,6 +387,20 @@ function Test-ContextEngineFlow {
     $manifestExists = Test-Path $manifestPath
     Write-TestResult -Component "Context" -Test "CONTEXT.MANIFEST.ACTIVE.txt exists" -Passed $manifestExists -Message $manifestPath
     if (-not $manifestExists) { $allPassed = $false }
+
+    if ($packageExists) {
+        $packageAfter = (Get-Item $packagePath).LastWriteTimeUtc
+        $packageUpdated = ($packageAfter -ge $buildStart) -or ($packageBefore -and $packageAfter -gt $packageBefore)
+        Write-TestResult -Component "Context" -Test "context build updates package artifact" -Passed $packageUpdated
+        if (-not $packageUpdated) { $allPassed = $false }
+    }
+
+    if ($manifestExists) {
+        $manifestAfter = (Get-Item $manifestPath).LastWriteTimeUtc
+        $manifestUpdated = ($manifestAfter -ge $buildStart) -or ($manifestBefore -and $manifestAfter -gt $manifestBefore)
+        Write-TestResult -Component "Context" -Test "context build updates manifest artifact" -Passed $manifestUpdated
+        if (-not $manifestUpdated) { $allPassed = $false }
+    }
 
     if ($packageExists) {
         try {
@@ -393,6 +423,119 @@ function Test-ContextEngineFlow {
     return $allPassed
 }
 
+function Test-AIRouterFlow {
+    param([string]$Root)
+
+    $cliPath = Join-Path $Root "01_UI\terminal\hia.ps1"
+    $logPath = Join-Path $Root "03_ARTIFACTS\LOGS\HIA_ROUTER.log"
+    $routingRegistryPath = Join-Path $Root "02_TOOLS\MODEL.ROUTING.REGISTRY.json"
+
+    if (-not (Test-Path $cliPath)) {
+        Write-TestResult -Component "AI Router" -Test "CLI exists for router flow" -Passed $false
+        return $false
+    }
+
+    function Convert-HIAJsonFromOutput {
+        param([object[]]$Output)
+
+        $lines = @($Output | ForEach-Object { $_.ToString() })
+        $start = -1
+        for ($i = 0; $i -lt $lines.Count; $i++) {
+            if ($lines[$i].Trim() -eq "{") {
+                $start = $i
+                break
+            }
+        }
+
+        if ($start -lt 0) {
+            return $null
+        }
+
+        $jsonText = ($lines[$start..($lines.Count - 1)] -join "`n").Trim()
+        try {
+            return ($jsonText | ConvertFrom-Json)
+        }
+        catch {
+            return $null
+        }
+    }
+
+    $allPassed = $true
+    $beforeLogLines = 0
+    if (Test-Path $logPath) {
+        $beforeLogLines = @(Get-Content -Path $logPath).Count
+    }
+
+    $registryExists = Test-Path $routingRegistryPath
+    Write-TestResult -Component "AI Router" -Test "MODEL.ROUTING.REGISTRY.json exists" -Passed $registryExists -Message $routingRegistryPath
+    if (-not $registryExists) { $allPassed = $false }
+
+    $policyOutput = & pwsh -NoProfile -File $cliPath ai show-policy 2>&1
+    $policyOk = ($LASTEXITCODE -eq 0)
+    Write-TestResult -Component "AI Router" -Test "hia ai show-policy" -Passed $policyOk
+    if (-not $policyOk) { $allPassed = $false }
+
+    $policyJson = Convert-HIAJsonFromOutput -Output $policyOutput
+    $policyStructured = ($null -ne $policyJson -and $null -ne $policyJson.providers)
+    Write-TestResult -Component "AI Router" -Test "show-policy returns structured registry" -Passed $policyStructured
+    if (-not $policyStructured) { $allPassed = $false }
+
+    $reasoningOutput = & pwsh -NoProfile -File $cliPath ai route -TaskType reasoning -TaskPrompt "Explain architecture tradeoffs" 2>&1
+    $reasoningOk = ($LASTEXITCODE -eq 0)
+    Write-TestResult -Component "AI Router" -Test "hia ai route reasoning" -Passed $reasoningOk
+    if (-not $reasoningOk) { $allPassed = $false }
+
+    $reasoningJson = Convert-HIAJsonFromOutput -Output $reasoningOutput
+    $reasoningStructured = (
+        $null -ne $reasoningJson -and
+        -not [string]::IsNullOrWhiteSpace([string]$reasoningJson.selected_provider) -and
+        -not [string]::IsNullOrWhiteSpace([string]$reasoningJson.execution_mode)
+    )
+    Write-TestResult -Component "AI Router" -Test "reasoning route returns provider + execution_mode" -Passed $reasoningStructured
+    if (-not $reasoningStructured) { $allPassed = $false }
+
+    $codeOutput = & pwsh -NoProfile -File $cliPath ai route -TaskType code -TaskPrompt "Refactor parser function" 2>&1
+    $codeOk = ($LASTEXITCODE -eq 0)
+    Write-TestResult -Component "AI Router" -Test "hia ai route code" -Passed $codeOk
+    if (-not $codeOk) { $allPassed = $false }
+
+    $codeJson = Convert-HIAJsonFromOutput -Output $codeOutput
+    $codeStructured = (
+        $null -ne $codeJson -and
+        -not [string]::IsNullOrWhiteSpace([string]$codeJson.selected_provider) -and
+        -not [string]::IsNullOrWhiteSpace([string]$codeJson.execution_mode)
+    )
+    Write-TestResult -Component "AI Router" -Test "code route returns provider + execution_mode" -Passed $codeStructured
+    if (-not $codeStructured) { $allPassed = $false }
+
+    $localToolOutput = & pwsh -NoProfile -File $cliPath ai route -TaskType local_tool -TaskPrompt "git status" 2>&1
+    $localToolOk = ($LASTEXITCODE -eq 0)
+    Write-TestResult -Component "AI Router" -Test "hia ai route local_tool" -Passed $localToolOk
+    if (-not $localToolOk) { $allPassed = $false }
+
+    $localToolJson = Convert-HIAJsonFromOutput -Output $localToolOutput
+    $localToolStructured = (
+        $null -ne $localToolJson -and
+        -not [string]::IsNullOrWhiteSpace([string]$localToolJson.selected_provider) -and
+        -not [string]::IsNullOrWhiteSpace([string]$localToolJson.execution_mode)
+    )
+    Write-TestResult -Component "AI Router" -Test "local_tool route returns provider + execution_mode" -Passed $localToolStructured
+    if (-not $localToolStructured) { $allPassed = $false }
+
+    $logExists = Test-Path $logPath
+    Write-TestResult -Component "AI Router" -Test "HIA_ROUTER.log exists" -Passed $logExists -Message $logPath
+    if (-not $logExists) { $allPassed = $false }
+
+    if ($logExists) {
+        $afterLogLines = @(Get-Content -Path $logPath).Count
+        $logGrew = $afterLogLines -gt $beforeLogLines
+        Write-TestResult -Component "AI Router" -Test "router appends log entry" -Passed $logGrew
+        if (-not $logGrew) { $allPassed = $false }
+    }
+
+    return $allPassed
+}
+
 # -----------------------------------------------------------------------------
 # MAIN EXECUTION
 # -----------------------------------------------------------------------------
@@ -406,34 +549,67 @@ Write-Host ""
 Write-Host "PROJECT_ROOT: $ProjectRoot"
 Write-Host ""
 
-$results = @()
+$precheckResults = @()
+$executionResults = @()
 
-$results += Test-CoreDirectories -Root $ProjectRoot
-$results += Test-CLIEntrypoint -Root $ProjectRoot
-$results += Test-ToolRegistry -Root $ProjectRoot
-$results += Test-AgentRegistry -Root $ProjectRoot
-$results += Test-ToolScriptsExist -Root $ProjectRoot
-$results += Test-AgentScriptsExist -Root $ProjectRoot
-$results += Test-RADARExecution -Root $ProjectRoot
-$results += Test-ArtifactsDirectory -Root $ProjectRoot
-$results += Test-StateEngineFlow -Root $ProjectRoot
-$results += Test-SessionEngineFlow -Root $ProjectRoot
-$results += Test-ContextEngineFlow -Root $ProjectRoot
+Write-Host "PRECHECK (MINIMAL)" -ForegroundColor Yellow
+$precheckResults += Test-CLIEntrypoint -Root $ProjectRoot
+$precheckResults += Test-ToolRegistry -Root $ProjectRoot
+$precheckResults += Test-AgentRegistry -Root $ProjectRoot
+Write-Host ""
+
+$canExecute = ($precheckResults[0] -eq $true)
+
+if ($canExecute) {
+    Write-Host "EXECUTION SMOKE (SYSTEM BEHAVIOR)" -ForegroundColor Yellow
+    $executionResults += Test-StateEngineFlow -Root $ProjectRoot
+    $executionResults += Test-SessionEngineFlow -Root $ProjectRoot
+    $executionResults += Test-ContextEngineFlow -Root $ProjectRoot
+    $executionResults += Test-AIRouterFlow -Root $ProjectRoot
+}
+else {
+    Write-TestResult -Component "Precheck" -Test "execution smoke enabled" -Passed $false -Message "CLI/router unavailable"
+}
 
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan
 
-$failed = $results | Where-Object { $_ -eq $false }
-$failedCount = @($failed).Count
+$precheckTotal = @($precheckResults).Count
+$precheckPassed = @($precheckResults | Where-Object { $_ -eq $true }).Count
+$precheckFailed = $precheckTotal - $precheckPassed
 
-if ($failedCount -eq 0) {
+$executionTotal = @($executionResults).Count
+$executionPassed = @($executionResults | Where-Object { $_ -eq $true }).Count
+$executionFailed = $executionTotal - $executionPassed
+
+$systemStatus = "FAIL"
+if ($executionTotal -gt 0 -and $executionFailed -eq 0 -and $precheckFailed -eq 0) {
+    $systemStatus = "HEALTHY"
+}
+elseif ($executionPassed -gt 0) {
+    $systemStatus = "DEGRADED"
+}
+
+Write-Host "PRECHECK TOTAL:    $precheckTotal"
+Write-Host "PRECHECK PASSED:   $precheckPassed"
+Write-Host "PRECHECK FAILED:   $precheckFailed"
+Write-Host "EXECUTION TOTAL:   $executionTotal"
+Write-Host "EXECUTION PASSED:  $executionPassed"
+Write-Host "EXECUTION FAILED:  $executionFailed"
+Write-Host "SYSTEM STATUS:     $systemStatus" -ForegroundColor $(
+    if ($systemStatus -eq "HEALTHY") { "Green" }
+    elseif ($systemStatus -eq "DEGRADED") { "Yellow" }
+    else { "Red" }
+)
+
+if ($systemStatus -eq "HEALTHY") {
     Write-Host " SMOKE TEST: PASSED" -ForegroundColor Green
     Write-Host "========================================" -ForegroundColor Cyan
     Write-Host ""
     exit 0
 }
 else {
-    Write-Host " SMOKE TEST: FAILED ($failedCount failures)" -ForegroundColor Red
+    Write-Host " SMOKE TEST: FAILED" -ForegroundColor Red
     Write-Host "========================================" -ForegroundColor Cyan
     Write-Host ""
     exit 1

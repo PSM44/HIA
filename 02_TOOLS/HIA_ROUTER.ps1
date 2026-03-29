@@ -79,12 +79,17 @@ function Invoke-HIATool {
 
     $toolReg = Get-ToolRegistry -ProjectRoot $ProjectRoot
 
-    if (-not $toolReg -or -not $toolReg.tools.$ToolName) {
+    $toolEntry = $null
+    if ($toolReg -and $toolReg.tools) {
+        $toolEntry = $toolReg.tools.PSObject.Properties[$ToolName]
+    }
+
+    if (-not $toolEntry) {
         Write-Host "ERROR: Tool '$ToolName' not found in registry." -ForegroundColor Red
         return
     }
 
-    $script = $toolReg.tools.$ToolName.script
+    $script = $toolEntry.Value.script
     $scriptPath = Join-Path $ProjectRoot "02_TOOLS\$script"
 
     if (-not (Test-Path $scriptPath)) {
@@ -244,7 +249,12 @@ function Invoke-HIARouter {
         }
         default {
             $toolReg = Get-ToolRegistry -ProjectRoot $projectRoot
-            if ($toolReg -and $toolReg.tools.($normalizedCommand)) {
+            $toolEntry = $null
+            if ($toolReg -and $toolReg.tools) {
+                $toolEntry = $toolReg.tools.PSObject.Properties[$normalizedCommand]
+            }
+
+            if ($toolEntry) {
                 Invoke-HIATool -ProjectRoot $projectRoot -ToolName $normalizedCommand -ToolArgs $Args
                 return
             }
@@ -257,6 +267,17 @@ function Invoke-HIARouter {
                 "radar" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "radar" -ToolArgs $Args }
                 "state" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "state" -ToolArgs $Args }
                 "session" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "session" -ToolArgs $Args }
+                "projects" {
+                    if (-not (Get-Command Get-HIAProjects -ErrorAction SilentlyContinue)) {
+                        $projectEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_PROJECT_ENGINE.ps1"
+                        if (-not (Test-Path $projectEnginePath)) {
+                            Write-Host "ERROR: Project engine not found: $projectEnginePath" -ForegroundColor Red
+                            return
+                        }
+                        . $projectEnginePath
+                    }
+                    Get-HIAProjects
+                }
                 default {
                     Write-Host "ERROR: Unknown command '$Command'. Use 'hia help' for available commands." -ForegroundColor Red
                 }

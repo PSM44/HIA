@@ -1,0 +1,48 @@
+flowchart TD
+
+    T["TASK REQUEST"]
+
+    subgraph A["TASK ANALYSIS"]
+        TT["TASK TYPE"]
+        CM["CONTEXT SIZE"]
+        RC["RISK CRITICALITY"]
+        QL["QUALITY LEVEL REQUIRED"]
+    end
+
+    subgraph B["COST POLICY ENGINE"]
+        BUD["BUDGET LIMIT"]
+        LOC["LOCAL MODEL AVAILABLE"]
+        FREE["FREE MODEL AVAILABLE"]
+        PAY["PAID MODEL REQUIRED"]
+    end
+
+    subgraph C["MODEL OPTIONS"]
+        OLL["OLLAMA LOCAL"]
+        FRM["FREE MODELS"]
+        MID["MID COST MODELS"]
+        PRM["PREMIUM MODELS"]
+    end
+
+    T --> TT
+    T --> CM
+    T --> RC
+    T --> QL
+
+    TT --> BUD
+    CM --> BUD
+    RC --> BUD
+    QL --> BUD
+
+    BUD --> LOC
+    BUD --> FREE
+    BUD --> PAY
+
+    LOC --> OLL
+    FREE --> FRM
+    PAY --> MID
+    PAY --> PRM
+
+    OLL --> AR["AI ROUTER"]
+    FRM --> AR
+    MID --> AR
+    PRM --> AR

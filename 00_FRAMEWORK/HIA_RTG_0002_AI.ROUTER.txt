@@ -1,0 +1,91 @@
+================================================================================
+00.00 METADATA
+================================================================================
+ID_UNICO: HIA_RTG_0002
+TITLE: AI.ROUTER CONTRACT
+SYSTEM: HIA - Human Intelligence Amplifier
+TYPE: FRAMEWORK CONTRACT
+VERSION: 1.0.0
+STATUS: ACTIVE
+DATE: 2026-03-25
+TZ: America/Santiago
+SCOPE: Task routing across AI providers and local execution
+================================================================================
+
+01.00 PURPOSE
+================================================================================
+Define the minimum viable routing contract for dispatching HIA tasks to:
+- OpenAI
+- Claude
+- DeepSeek
+- Ollama
+- Local execution tools
+================================================================================
+
+02.00 TASK TYPES
+================================================================================
+CODE
+REASONING
+DOCUMENTATION
+ANALYSIS
+LOCAL_TOOL
+================================================================================
+
+03.00 BASE ROUTING POLICY
+================================================================================
+CODE -> Claude or DeepSeek
+REASONING -> OpenAI
+DOCUMENTATION -> OpenAI
+ANALYSIS -> OpenAI
+LOCAL_TOOL -> Local execution
+================================================================================
+
+04.00 OLLAMA OVERRIDE POLICY
+================================================================================
+If a local model is available, prefer Ollama for:
+- code generation
+- large-context analysis
+================================================================================
+
+05.00 ROUTER RUNTIME CONTRACT
+================================================================================
+INPUT
+- task_type
+- task_prompt
+
+OUTPUT
+- provider
+- response
+- tokens_used
+- latency_ms
+
+The router returns an operational response object and writes a log entry.
+================================================================================
+
+06.00 LOGGING CONTRACT
+================================================================================
+Append one line per execution to:
+03_ARTIFACTS/LOGS/HIA_ROUTER.log
+
+Minimum fields:
+- utc timestamp
+- task_type
+- provider
+- latency_ms
+- prompt length
+- response length
+================================================================================
+
+07.00 LIMITS (MVP)
+================================================================================
+- No advanced model orchestration
+- No autonomous retry trees
+- No UI coupling
+- No changes to RADAR behavior
+- No changes to STATE behavior
+================================================================================
+
+08.00 CHANGELOG
+================================================================================
+2026-03-25 | v1.0.0 | Initial AI Router contract (MVP)
+================================================================================

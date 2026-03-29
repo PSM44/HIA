@@ -1,0 +1,75 @@
+===============================================================================
+FILE: HIA_AGL_0000_PRODUCT.VISION.txt
+SYSTEM: HIA - Human Intelligence Amplifier
+TYPE: PRODUCT VISION (CANONICAL / HUMAN-EDITED)
+VERSION: v0.1-DRAFT
+DATE: 2026-03-28
+TZ: America/Santiago
+OWNER: HUMAN
+===============================================================================
+
+00.00_PROPOSITO
+Definir la visión del producto HIA, el release actual, el scope activo y el
+no-scope inmediato.
+
+Este archivo es una fuente canónica humana.
+No es derivado.
+No debe ser reescrito automáticamente por el engine Agile.
+
+01.00_PRODUCTO
+HIA — Human Intelligence Amplifier
+
+02.00_PRODUCT_VISION
+HIA es un sistema operativo de colaboración humano + IA para ejecutar trabajo
+real dentro de proyectos, con gobernanza, trazabilidad, contexto estructurado,
+routing de IA y evidencia reproducible.
+
+03.00_RELEASE_ACTUAL
+MVP-01 — REAL TASK EXECUTION
+
+04.00_RELEASE_GOAL
+Lograr que HIA ejecute un caso de uso real y demostrable sobre filesystem
+desde CLI, con evidencia, validación mínima y trazabilidad.
+
+05.00_SCOPE_ACTUAL
+05.01 CLI funcional como punto de entrada.
+05.02 Ejecución de una tarea real y simple desde HIA.
+05.03 Salida verificable en filesystem.
+05.04 Logging mínimo reproducible.
+05.05 Agile sync operativo con backlog fuente humana.
+05.06 Menú CLI seleccionable en evolución incremental.
+05.07 No más de 10 archivos RADAR + RADAR.DEV como outputs canónicos.
+
+06.00_NO_SCOPE_ACTUAL
+06.01 Multi-agent complejo.
+06.02 Web console madura.
+06.03 Memoria autónoma avanzada.
+06.04 Cost routing engine operativo.
+06.05 Orquestación autónoma completa.
+06.06 Auto-desarrollo pleno de HIA sin supervisión humana.
+
+07.00_PRIORIDAD_ESTRATEGICA
+Primero capacidad real de ejecución.
+Después usabilidad CLI/menu.
+Después routing/agentes avanzados.
+Después autonomía.
+
+08.00_PRINCIPIOS_DE_GOBIERNO
+08.01 HUMAN manda.
+08.02 PLAN_ONLY por defecto.
+08.03 Cada incremento debe ser demostrable.
+08.04 Cada minibattle debe producir output verificable.
+08.05 El backlog manda el desarrollo; el vault guarda ideas fuera de scope.
+08.06 BATON se mantiene solo como handoff/continuidad, no como backlog del producto.
+
+09.00_RELEASE_SUCCESS_CRITERIA
+09.01 HIA ejecuta una tarea real sobre filesystem.
+09.02 El resultado queda visible y verificable.
+09.03 Existe evidencia/log mínimo.
+09.04 El flujo puede repetirse sin ambigüedad.
+09.05 El incremento se puede mostrar a un usuario peatón.
+
+10.00_NOTAS
+10.01 Si una idea no empuja el release actual, va a VAULT.
+10.02 Si un item no tiene output demostrable, no entra a minibattles activas.
+10.03 Si el roadmap crece más rápido que la ejecución real, el sistema se está desviando.

@@ -1,0 +1,58 @@
+flowchart TB
+
+    subgraph A["HIA AGENT SYSTEM"]
+        AR["AI ROUTER"]
+        AGS["AGENT MANAGER"]
+    end
+
+    subgraph B["AGENT TYPES"]
+        PLN["PLANNER AGENT"]
+        COD["CODER AGENT"]
+        REV["REVIEW AGENT"]
+        OPS["OPS / EXECUTION AGENT"]
+        ANA["ANALYSIS AGENT"]
+    end
+
+    subgraph C["AGENT RUNTIMES"]
+        OPC["OPENCODE"]
+        CDX["CODEX CLI"]
+        CCD["CLAUDE CODE"]
+        LOC["LOCAL AGENT RUNTIME"]
+    end
+
+    subgraph D["TOOLS"]
+        FS["FILE SYSTEM"]
+        GIT["GIT OPERATIONS"]
+        RAD["RADAR ENGINE"]
+        VAL["VALIDATORS"]
+        SCR["SCRIPT EXECUTION"]
+    end
+
+    AR --> AGS
+
+    AGS --> PLN
+    AGS --> COD
+    AGS --> REV
+    AGS --> OPS
+    AGS --> ANA
+
+    PLN --> OPC
+    COD --> OPC
+    COD --> CDX
+    REV --> CCD
+    OPS --> LOC
+    ANA --> OPC
+
+    OPC --> FS
+    OPC --> GIT
+    OPC --> RAD
+    OPC --> VAL
+
+    CDX --> FS
+    CDX --> GIT
+
+    CCD --> FS
+    CCD --> VAL
+
+    LOC --> SCR
+    LOC --> FS

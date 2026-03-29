@@ -1,0 +1,41 @@
+flowchart TD
+
+    T["TASK REQUEST"] --> TT["TASK TYPE"]
+    T --> RL["RISK LEVEL"]
+    T --> CL["CONTEXT LEVEL"]
+    T --> CB["COST BUDGET"]
+    T --> LM["LOCAL MODE AVAILABLE?"]
+
+    TT --> RS["ROUTING SCORE / POLICY"]
+    RL --> RS
+    CL --> RS
+    CB --> RS
+    LM --> RS
+
+    RS --> EX["SELECT EXECUTOR"]
+    RS --> MP["SELECT MODEL / PROVIDER"]
+    RS --> TL["SELECT TOOL PATH"]
+
+    EX --> OPC["OPENCODE"]
+    EX --> CDX["CODEX"]
+    EX --> CCD["CLAUDE CODE"]
+    EX --> LTR["LOCAL TOOL RUNNER"]
+
+    MP --> OAI["OPENAI"]
+    MP --> ANT["ANTHROPIC"]
+    MP --> DSK["DEEPSEEK"]
+    MP --> OLL["OLLAMA"]
+    MP --> FMD["FREE / LOW-COST MODELS"]
+
+    TL --> OUT["OUTPUT / PATCH / EDIT"]
+    OPC --> OUT
+    CDX --> OUT
+    CCD --> OUT
+    LTR --> OUT
+    OAI --> OUT
+    ANT --> OUT
+    DSK --> OUT
+    OLL --> OUT
+    FMD --> OUT
+
+    OUT --> RAD["RADAR / ARTIFACTS / LOGS"]

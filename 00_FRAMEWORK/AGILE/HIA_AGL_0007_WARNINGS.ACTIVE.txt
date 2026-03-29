@@ -1,0 +1,19 @@
+===============================================================================
+FILE: HIA_AGL_0007_WARNINGS.ACTIVE.txt
+SYSTEM: HIA - Human Intelligence Amplifier
+TYPE: AGILE WARNINGS (DERIVED)
+STAMP_UTC: 2026-03-29T02:03:03.8632748Z
+SOURCE: HIA_AGILE_ENGINE.ps1
+===============================================================================
+
+RULES: missing TITLE, minibattle without VALUE, outside release scope.
+
+WARNING_CODE | ITEM_ID | DETAIL
+-------------------------------------------------------------------------------
+WARN_OUTSIDE_RELEASE_SCOPE | PB_007 | Priority P2 outside active release
+WARN_OUTSIDE_RELEASE_SCOPE | PB_008 | Priority P2 outside active release
+WARN_OUTSIDE_RELEASE_SCOPE | PB_009 | Priority P2 outside active release
+WARN_OUTSIDE_RELEASE_SCOPE | PB_010 | Priority P3 outside active release
+WARN_OUTSIDE_RELEASE_SCOPE | PB_011 | Priority P3 outside active release
+WARN_OUTSIDE_RELEASE_SCOPE | PB_012 | Priority P3 outside active release
+

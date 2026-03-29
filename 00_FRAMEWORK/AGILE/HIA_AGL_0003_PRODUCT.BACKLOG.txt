@@ -1,0 +1,40 @@
+===============================================================================
+FILE: HIA_AGL_0003_PRODUCT.BACKLOG.txt
+SYSTEM: HIA - Human Intelligence Amplifier
+TYPE: PRODUCT BACKLOG (CANONICAL / HUMAN-EDITED)
+VERSION: v0.1-DRAFT
+DATE: 2026-03-28
+TZ: America/Santiago
+OWNER: HUMAN
+===============================================================================
+
+00.00_PROPOSITO
+Definir el product backlog priorizado de HIA en formato tabular canónico para
+ser consumido por HIA_AGILE_ENGINE.ps1.
+
+00.10_REGLAS
+00.10.01 Solo P0/P1 entran a release activa.
+00.10.02 P2/P3 se derivan a vault.
+00.10.03 TYPE=minibattle genera entrada en MINIBATTLES.ACTIVE.
+00.10.04 Cada item debe tener TITLE y VALUE.
+00.10.05 STATUS permitido: backlog, ready, inprogress, blocked, done.
+
+01.00_BACKLOG_TABLE
+ID | TYPE | PRIORITY | TITLE | VALUE | EFFORT | STATUS
+PB_001 | minibattle | P0 | ejecutar comando task simple desde HIA | habilita primer caso de uso real | S | ready
+PB_002 | minibattle | P0 | crear archivo real en filesystem desde HIA | demuestra ejecución visible y verificable | S | ready
+PB_003 | minibattle | P0 | registrar log mínimo de task execution | entrega evidencia operativa | S | backlog
+PB_004 | minibattle | P1 | validar task execution con smoke o test mínimo | evita falso positivo de ejecución | S | backlog
+PB_005 | feature | P1 | menú CLI seleccionable básico | reduce fricción peatón-first | M | backlog
+PB_006 | feature | P1 | integrar agile warnings al flujo operativo | alerta desvíos de scope y backlog | S | backlog
+PB_007 | feature | P2 | menú CLI autoexpandible desde registry | mejora escalabilidad UX | M | backlog
+PB_008 | feature | P2 | task orchestrator básico | prepara ejecución más compleja | M | backlog
+PB_009 | feature | P2 | live sync entre AGILE y PROJECT.STATE.LIVE | reduce drift entre estado y backlog | M | backlog
+PB_010 | feature | P3 | web console MVP | mejora interfaz futura | L | backlog
+PB_011 | feature | P3 | multi-agent executor federation | arquitectura avanzada posterior | L | backlog
+PB_012 | feature | P3 | cost routing operativo | optimización posterior al primer MVP real | M | backlog
+
+02.00_NOTAS
+02.01 El release actual debe concentrarse en PB_001 a PB_004.
+02.02 PB_005 puede entrar solo si no desplaza ejecución real.
+02.03 Todo item nuevo debe mapear a PRODUCT.VISION.
