@@ -1,0 +1,146 @@
+================================================================================
+FILE: HIA_RTG_0004_AI.EXECUTION.PLAYBOOKS.txt
+SYSTEM: HIA - Human Intelligence Amplifier
+TYPE: AI Execution Playbooks (MB-1.4)
+VERSION: v1.0
+DATE: 2026-03-30
+================================================================================
+
+OBJETIVO
+Playbooks canónicos para decidir y ejecutar el uso del AI stack en HIA:
+- Por TaskType y nivel de riesgo: primaria/secundaria/fallback + anti-patrones
+- Por herramienta: cómo usar, límites, cuándo NO usar, cuándo escalar
+- Reglas operativas: costo/contexto/calidad + trazabilidad + validación real
+
+SISTEMA DE REGLAS (OBLIGATORIAS)
+R1) Exclusión de escritura:
+    - No usar dos IAs escribiendo el mismo cambio al mismo tiempo.
+    - Si se requiere doble revisión, la segunda IA revisa (no reescribe) salvo
+      que el operador lo ordene explícitamente.
+R2) High-risk requiere doble revisión + validación real.
+R3) Modelo local NO define canon por sí solo.
+R4) Arquitectura crítica NO se delega a quick_local.
+R5) Código crítico NO se acepta sin validación real (tests/validators/smoke).
+R6) Costo y contexto influyen en la decisión (no solo “calidad teórica”).
+R7) Trazabilidad mínima:
+    - Registrar provider/target/mode en logs del router.
+    - Preferir playbooks + policy sobre decisiones ad-hoc.
+
+NIVELES DE RIESGO
+- LOW: cambios pequeños, reversibles, no críticos.
+- MED: cambios con impacto moderado, requiere revisión humana.
+- HIGH: cambios críticos (seguridad, datos, ejecución, governance, pipelines).
+
+TASKTYPES (MINIMO)
+- ARCHITECTURE
+- REPO_READ
+- CODE_CHANGE
+- REFACTOR
+- VALIDATION
+- AUDIT
+- DOCS
+- QUICK_LOCAL
+- FALLBACK
+- COST_SENSITIVE
+- HIGH_RISK_CHANGE
+
+MATRIZ POR TASKTYPE + RIESGO (CANÓNICA)
+Formato: Primaria / Secundaria / Fallback — NO usar — Escalar/2da revisión
+
+--------------------------------------------------------------------------------
+ARCHITECTURE
+- LOW/MED: ChatGPT (OPENAI) / Claude cloud / Claude Code — Local (Ollama/OpenCode)
+  NO usar: QUICK_LOCAL como sustituto de diseño; local si contexto no alcanza.
+  Escalar: si hay incertidumbre o tradeoffs complejos -> cloud + segunda opinión.
+- HIGH: ChatGPT + Claude cloud (doble revisión) / Claude Code (revisión repo)
+  Fallback: ninguno sin revisión humana.
+
+REPO_READ
+- LOW/MED: Claude Code / ChatGPT / OpenCode — Ollama si repo pequeño
+  NO usar: local si no puedes empaquetar contexto o el repo es grande.
+  Escalar: si el resumen influye decisiones críticas -> segunda revisión cloud.
+- HIGH: Claude Code + ChatGPT (segunda revisión) / Claude cloud
+
+CODE_CHANGE
+- LOW: Claude Code / Codex / OpenCode — Ollama si cambio acotado
+  NO usar: local para cambios no testeables o de impacto desconocido.
+  Escalar: si aparece ambigüedad o falla validación -> cloud + revisión humana.
+- MED: Claude Code / Codex / ChatGPT — Fallback: OpenCode
+  2da revisión: recomendada (otra IA o humano) si toca rutas críticas.
+- HIGH: HIGH_RISK_CHANGE (ver abajo).
+
+REFACTOR
+- LOW/MED: Claude Code / Codex / ChatGPT — Fallback: OpenCode
+  NO usar: Ollama como única fuente si no hay tests.
+  Escalar: si el refactor cruza módulos críticos -> cloud + 2da revisión.
+- HIGH: HIGH_RISK_CHANGE.
+
+VALIDATION
+- Todos los riesgos: LOCAL_TOOL (validators/smoke/tests) / ChatGPT/Claude para
+  interpretar fallos / Fallback: Codex
+  NO usar: cloud para “inventar” resultados; siempre ejecutar herramientas reales.
+
+AUDIT
+- LOW/MED: ChatGPT / Claude cloud / Claude Code — Fallback: Ollama si acotado
+  NO usar: QUICK_LOCAL como auditoría.
+  Escalar: si es seguridad o compliance -> doble revisión cloud + humano.
+- HIGH: ChatGPT + Claude cloud + revisión humana obligatoria.
+
+DOCS
+- LOW/MED: ChatGPT / Claude cloud / Claude Code — Fallback: OpenCode
+  NO usar: local si no se puede mantener estilo/consistencia.
+  2da revisión: si el doc es contractual/operativo crítico.
+
+QUICK_LOCAL
+- LOW: LOCAL_TOOL / Ollama — Fallback: OpenCode
+  NO usar: cloud si la tarea es determinista y barata localmente.
+- MED/HIGH: solo para soporte (no para decisiones canónicas).
+
+FALLBACK
+- LOW/MED: ChatGPT / Claude cloud / Codex — Fallback: LOCAL_TOOL
+  NO usar: continuar “a ciegas” sin disponibilidad confirmada.
+
+COST_SENSITIVE
+- LOW/MED: Ollama / OpenCode — Sec: Claude Code — Fallback: ChatGPT
+  NO usar: cloud caro en tareas repetitivas si local es suficiente.
+  Escalar: si la calidad local no alcanza -> cloud.
+
+HIGH_RISK_CHANGE
+- HIGH: Codex + Claude Code (doble revisión) + VALIDATION (LOCAL_TOOL)
+  Fallback: ninguno sin revisión humana.
+  NO usar: Ollama/OpenCode como único “autor” del cambio crítico.
+
+--------------------------------------------------------------------------------
+
+PLAYBOOKS POR HERRAMIENTA (MINIMO)
+
+1) Codex (CLI/desktop)
+- Usar para: cambios complejos con trazabilidad, tareas de repo y ejecución guiada.
+- No usar para: ejecutar comandos no permitidos / acciones destructivas.
+- Reglas: si toca rutas críticas, exigir VALIDATION + segunda revisión.
+
+2) Claude Code (CLI)
+- Usar para: repo_read, code_change, refactor con enfoque de ingeniería.
+- No usar para: decisiones canónicas sin revisión (especialmente HIGH).
+- Escalar: si hay ambigüedad o impacto alto -> ChatGPT/Claude cloud.
+
+3) ChatGPT (OPENAI cloud)
+- Usar para: arquitectura, auditoría, docs, decisiones de alto nivel.
+- No usar para: “validación” sin ejecutar herramientas reales.
+- Segunda revisión: requerida en HIGH_RISK_CHANGE junto a otra herramienta.
+
+4) Claude cloud
+- Usar para: segunda opinión, code review, alternativas de diseño.
+- No usar para: reemplazar validación real ni acciones locales deterministas.
+
+5) Ollama (local)
+- Usar para: cost_sensitive, quick_local, borradores, análisis acotados.
+- No usar para: canon, high-risk, ni cuando el contexto no cabe.
+- Escalar: si el resultado afecta decisiones críticas -> cloud + humano.
+
+6) OpenCode (local)
+- Usar para: soporte local si está disponible y su UX encaja.
+- No usar como core por defecto si no hay evidencia operativa superior.
+
+================================================================================
+

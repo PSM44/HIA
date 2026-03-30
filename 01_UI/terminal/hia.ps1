@@ -79,9 +79,16 @@ if (-not (Test-Path $routerPath)) {
 # -----------------------------------------------------------------------------
 
 if (-not $Command) {
+    $interactiveEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_INTERACTIVE_ENGINE.ps1"
+    if (-not (Test-Path $interactiveEnginePath)) {
+        Write-Host "Interactive engine not found. Falling back to help." -ForegroundColor Yellow
+        Show-HIAHelp -ProjectRoot $projectRoot
+        exit 0
+    }
 
-    Show-HIAHelp
-    exit
+    . $interactiveEnginePath
+    Invoke-HIAInteractiveEntrypoint -ProjectRoot $projectRoot
+    exit 0
 
 }
 
@@ -92,6 +99,11 @@ if (-not $RouterArgs) {
 # -----------------------------------------------------------------------------
 # DIRECT HOOKS
 # -----------------------------------------------------------------------------
+
+if ($Command.ToLowerInvariant() -in @("help", "-h", "--help", "/?")) {
+    Show-HIAHelp -ProjectRoot $projectRoot
+    exit 0
+}
 
 if ($Command.ToLowerInvariant() -eq "agile") {
     $agileEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_AGILE_ENGINE.ps1"

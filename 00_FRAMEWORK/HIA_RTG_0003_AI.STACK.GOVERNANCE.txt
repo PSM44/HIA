@@ -1,0 +1,148 @@
+================================================================================
+FILE: HIA_RTG_0003_AI.STACK.GOVERNANCE.txt
+SYSTEM: HIA - Human Intelligence Amplifier
+TYPE: Canonical Governance + Routing Policy (MB-1.2)
+VERSION: v1.0
+DATE: 2026-03-30
+================================================================================
+
+OBJETIVO
+Crear una primera capa operativa de gobernanza del AI stack en HIA:
+- Definir qué herramienta usar por tipo de tarea (TaskType)
+- Validar disponibilidad del stack (check técnico)
+- Evitar mal uso, duplicación y drift
+- Mantener trazabilidad sin vender humo (no prometer runtime multiagente)
+
+DEFINICIONES
+- Tool: interfaz de ejecución (Codex CLI/Claude Code/Ollama/OpenCode/PowerShell)
+- Provider: categoría de tool en el router
+- TaskType: clasificación operativa (no natural language chat)
+- Live vs Dry-run:
+  - Live: ejecuta comando local (ej: ollama) o tool allowlist
+  - Dry-run: decisión + trazabilidad, sin ejecutar llamadas cloud
+
+PRINCIPIOS DE GOBERNANZA (MVP)
+1) Human governance: el operador decide; HIA sugiere y registra.
+2) No mentir: si una tool no está disponible, se marca WARN/FAIL.
+3) Costo/Calidad/Contexto:
+   - Preferir herramientas de alta calidad en cambios de alto riesgo.
+   - Preferir local (Ollama/OpenCode) en tareas cost_sensitive y quick_local
+     cuando el modelo local sea suficiente y esté disponible.
+4) Trazabilidad:
+   - Registrar decisiones de routing (provider/target/mode) en logs.
+   - Mantener inventario canónico del stack.
+5) Anti-drift:
+   - Un solo policy canónico (MODEL.ROUTING.REGISTRY.json) y un solo check.
+   - Evitar scripts duplicados de “stack check” (si existen, planificar).
+
+RUTEO POR TASKTYPE (MINIMO REQUERIDO)
+Nota: la “herramienta” es una recomendación; la “disponibilidad” la valida el
+script Check-AIStack y el router solo ejecuta live cuando aplica.
+
+--------------------------------------------------------------------------------
+TASKTYPE: ARCHITECTURE
+Primaria: OPENAI (Codex/ChatGPT) en modo razonamiento / arquitectura
+Secundaria: CLAUDE_CODE para lectura crítica + alternativas de diseño
+NO usar:
+- OLLAMA si no hay modelo local suficientemente competente para arquitectura.
+- LOCAL_TOOL si el prompt no es un comando permitido.
+
+TASKTYPE: REPO_READ
+Primaria: CLAUDE_CODE (navegación/lectura de repo, resúmenes técnicos)
+Secundaria: OPENAI
+NO usar:
+- OLLAMA si el repo es grande y el modelo local no soporta el contexto.
+
+TASKTYPE: CODE_CHANGE
+Primaria: CLAUDE_CODE (cambios concretos y refactor guiado)
+Secundaria: OPENAI
+NO usar:
+- OLLAMA si no puedes validar con tests/linters y la calidad es incierta.
+
+TASKTYPE: REFACTOR
+Primaria: CLAUDE_CODE
+Secundaria: OPENAI
+NO usar:
+- OLLAMA salvo refactor acotado, con tests y criterios claros.
+
+TASKTYPE: VALIDATION
+Primaria: LOCAL_TOOL (tests/validators/smoke) + revisión humana
+Secundaria: OPENAI/CLAUDE_CODE para interpretar fallos y proponer fixes
+NO usar:
+- Cloud LLM para “inventar” resultados (siempre correr herramientas reales).
+
+TASKTYPE: AUDIT
+Primaria: OPENAI (análisis/seguridad/consistencia)
+Secundaria: CLAUDE_CODE (segunda opinión)
+NO usar:
+- LOCAL_TOOL como “auditoría” si no hay comando objetivo.
+
+TASKTYPE: DOCS
+Primaria: OPENAI
+Secundaria: CLAUDE_CODE
+NO usar:
+- OLLAMA si el estilo/consistencia documental queda bajo sin revisión.
+
+TASKTYPE: QUICK_LOCAL
+Primaria: LOCAL_TOOL (acciones deterministas y seguras)
+Secundaria: OLLAMA (respuestas rápidas sin costo cloud, si disponible)
+NO usar:
+- Cloud si la tarea es trivial y cost_sensitive.
+
+TASKTYPE: COST_SENSITIVE
+Primaria: OLLAMA u OPENCODE (si disponibles y suficiente)
+Secundaria: OPENAI (cuando el local no alcanza)
+NO usar:
+- Modelos cloud caros en tareas repetitivas si local es suficiente.
+
+TASKTYPE: HIGH_RISK_CHANGE
+Primaria: OPENAI + CLAUDE_CODE (doble revisión)
+Secundaria: LOCAL_TOOL (validación real) + revisión humana
+NO usar:
+- OLLAMA como única fuente de verdad en cambios críticos.
+
+TASKTYPE: FALLBACK
+Primaria: OPENAI
+Secundaria: LOCAL_TOOL (cuando no hay provider cloud disponible)
+NO usar:
+- Ejecutar comandos no allowlist.
+
+--------------------------------------------------------------------------------
+
+ROLES OFICIALES (MVP)
+- Codex / OPENAI (cloud): razonamiento, docs, análisis; “gold” en high risk.
+- Claude Code (tool): lectura de repo, code_change/refactor; excelente para PRs.
+- Ollama (local): cost_sensitive, quick_local, prototipos; no reemplaza validación.
+- OpenCode (local/dev): base preparada; usar solo si está instalado/validado.
+- Local Tool: ejecución real de comandos allowlist (smoke/validate/state/etc.).
+
+ACTIVACIÓN OPERATIVA (MB-1.3)
+- Claude Code:
+  - Requisito: comando `claude` accesible en PATH
+  - Validación: `hia stack` y/o `hia claude status`
+  - Uso: `hia claude run <args...>` (passthrough al CLI)
+- Ollama:
+  - Requisito: comando `ollama` accesible en PATH
+  - Validación: `hia stack` y/o `hia ollama status`
+  - Modelos: `hia ollama models`
+  - Uso: `hia ollama run <model> <prompt>` (passthrough al CLI)
+- OpenCode:
+  - No es camino crítico MB-1.3; solo se considera si `opencode` existe.
+
+LÍMITES EXPLÍCITOS (NO IMPLEMENTADO TODAVÍA)
+- Runtime multiagente completo
+- Chat unificado multi-vendor
+- Ejecución automática distribuida
+- Memoria federada entre vendors
+
+ARQUITECTURA CANÓNICA PROPUESTA
+00_FRAMEWORK/
+  HIA_RTG_0003_AI.STACK.GOVERNANCE.txt   (este documento)
+  HIA_RTG_0004_AI.EXECUTION.PLAYBOOKS.txt (playbooks operativos)
+02_TOOLS/
+  MODEL.ROUTING.REGISTRY.json           (policy ejecutable por router)
+  AI.STACK.INVENTORY.json               (inventario esperado + criterios)
+  Maintenance/
+    HIA_TOL_0043_Check-AIStack.ps1      (chequeo técnico OK/WARN/FAIL)
+
+================================================================================

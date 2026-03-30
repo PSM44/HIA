@@ -6,6 +6,85 @@
     "provider": "OPENAI"
   },
   "task_type_policy": {
+    "ARCHITECTURE": {
+      "preferred_providers": [
+        "OPENAI",
+        "CLAUDE_CODE",
+        "OLLAMA"
+      ]
+    },
+    "REPO_READ": {
+      "preferred_providers": [
+        "CLAUDE_CODE",
+        "OPENAI",
+        "OLLAMA"
+      ]
+    },
+    "CODE_CHANGE": {
+      "preferred_providers": [
+        "CLAUDE_CODE",
+        "OPENAI",
+        "OLLAMA"
+      ]
+    },
+    "REFACTOR": {
+      "preferred_providers": [
+        "CLAUDE_CODE",
+        "OPENAI",
+        "OLLAMA"
+      ]
+    },
+    "VALIDATION": {
+      "preferred_providers": [
+        "LOCAL_TOOL",
+        "OPENAI",
+        "CLAUDE_CODE"
+      ]
+    },
+    "AUDIT": {
+      "preferred_providers": [
+        "OPENAI",
+        "CLAUDE_CODE",
+        "OLLAMA"
+      ]
+    },
+    "DOCS": {
+      "preferred_providers": [
+        "OPENAI",
+        "CLAUDE_CODE"
+      ]
+    },
+    "QUICK_LOCAL": {
+      "preferred_providers": [
+        "LOCAL_TOOL",
+        "OLLAMA",
+        "OPENCODE",
+        "OPENAI"
+      ]
+    },
+    "COST_SENSITIVE": {
+      "preferred_providers": [
+        "OLLAMA",
+        "OPENCODE",
+        "OPENAI",
+        "CLAUDE_CODE"
+      ]
+    },
+    "HIGH_RISK_CHANGE": {
+      "preferred_providers": [
+        "OPENAI",
+        "CLAUDE_CODE",
+        "LOCAL_TOOL"
+      ]
+    },
+    "FALLBACK": {
+      "preferred_providers": [
+        "OPENAI",
+        "CLAUDE_CODE",
+        "OLLAMA",
+        "LOCAL_TOOL"
+      ]
+    },
     "CODE": {
       "preferred_providers": [
         "CLAUDE",
@@ -77,6 +156,30 @@
         "LOCAL_TOOL"
       ]
     },
+    "CLAUDE_CODE": {
+      "execution_mode": "dry_run",
+      "capabilities": [
+        "REPO_READ",
+        "CODE_CHANGE",
+        "REFACTOR",
+        "ARCHITECTURE",
+        "AUDIT",
+        "DOCS"
+      ],
+      "preferred_for": [
+        "REPO_READ",
+        "CODE_CHANGE",
+        "REFACTOR"
+      ],
+      "priority": 25,
+      "availability_source": "command:claude",
+      "default_target": "claude-code",
+      "fallback_order": [
+        "OPENAI",
+        "OLLAMA",
+        "LOCAL_TOOL"
+      ]
+    },
     "DEEPSEEK": {
       "execution_mode": "dry_run",
       "capabilities": [
@@ -112,6 +215,25 @@
       "fallback_order": [
         "CLAUDE",
         "DEEPSEEK",
+        "OPENAI",
+        "LOCAL_TOOL"
+      ]
+    },
+    "OPENCODE": {
+      "execution_mode": "dry_run",
+      "capabilities": [
+        "CODE_CHANGE",
+        "REFACTOR",
+        "COST_SENSITIVE"
+      ],
+      "preferred_for": [
+        "COST_SENSITIVE"
+      ],
+      "priority": 45,
+      "availability_source": "command:opencode",
+      "default_target": "opencode-default",
+      "fallback_order": [
+        "OLLAMA",
         "OPENAI",
         "LOCAL_TOOL"
       ]

@@ -1,0 +1,17 @@
+1
+1
+ENTER
+X
+3
+2
+ENTER
+X
+6
+4
+ENTER
+X
+5
+1
+ENTER
+X
+0

@@ -73,7 +73,21 @@ function Get-HIATaskType {
     )
 
     if ($ProvidedTaskType) {
-        return $ProvidedTaskType.ToUpperInvariant()
+        $t = $ProvidedTaskType.ToUpperInvariant()
+        switch ($t) {
+            "ARCHITECTURE" { return "ARCHITECTURE" }
+            "REPO_READ" { return "REPO_READ" }
+            "CODE_CHANGE" { return "CODE_CHANGE" }
+            "REFACTOR" { return "REFACTOR" }
+            "VALIDATION" { return "VALIDATION" }
+            "AUDIT" { return "AUDIT" }
+            "DOCS" { return "DOCS" }
+            "QUICK_LOCAL" { return "QUICK_LOCAL" }
+            "COST_SENSITIVE" { return "COST_SENSITIVE" }
+            "HIGH_RISK_CHANGE" { return "HIGH_RISK_CHANGE" }
+            "FALLBACK" { return "FALLBACK" }
+            default { return $t }
+        }
     }
 
     if (-not $Prompt) {
@@ -81,10 +95,14 @@ function Get-HIATaskType {
     }
 
     $p = $Prompt.ToLowerInvariant()
-    if ($p -match '(code|script|function|bug|refactor|powershell|python)') { return "CODE" }
-    if ($p -match '(readme|documentation|document|spec|manual)') { return "DOCUMENTATION" }
-    if ($p -match '(analysis|analyze|audit|investigate|diagnostic)') { return "ANALYSIS" }
-    if ($p -match '(run|execute|tool|command|shell|git)') { return "LOCAL_TOOL" }
+    if ($p -match '(readme|documentation|document|spec|manual)') { return "DOCS" }
+    if ($p -match '(architecture|design|system design|diagram)') { return "ARCHITECTURE" }
+    if ($p -match '(audit|investigate|diagnostic|security)') { return "AUDIT" }
+    if ($p -match '(validate|validator|test|smoke)') { return "VALIDATION" }
+    if ($p -match '(refactor)') { return "REFACTOR" }
+    if ($p -match '(code change|implement|fix bug|bug|powershell|python|function)') { return "CODE_CHANGE" }
+    if ($p -match '(read repo|repo read|scan repo|summarize repo)') { return "REPO_READ" }
+    if ($p -match '(run|execute|tool|command|shell|git)') { return "QUICK_LOCAL" }
     return "REASONING"
 }
 
@@ -110,6 +128,12 @@ function Test-HIAProviderAvailability {
     if ($source.StartsWith("command:", [System.StringComparison]::OrdinalIgnoreCase)) {
         $commandName = $source.Substring(8)
         return ($null -ne (Get-Command $commandName -ErrorAction SilentlyContinue))
+    }
+
+    if ($source.StartsWith("path:", [System.StringComparison]::OrdinalIgnoreCase)) {
+        $path = $source.Substring(5)
+        if ([string]::IsNullOrWhiteSpace($path)) { return $false }
+        return (Test-Path -LiteralPath $path)
     }
 
     return $false

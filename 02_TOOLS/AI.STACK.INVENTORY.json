@@ -1,0 +1,67 @@
+{
+  "version": "1.0",
+  "updated_utc": "2026-03-30T00:00:00Z",
+  "scope": {
+    "project_id": "HIA",
+    "project_root_hint": "Repo root containing 02_TOOLS"
+  },
+  "governance": {
+    "canonical_policy_file": "00_FRAMEWORK/HIA_RTG_0003_AI.STACK.GOVERNANCE.txt",
+    "execution_playbooks_file": "00_FRAMEWORK/HIA_RTG_0004_AI.EXECUTION.PLAYBOOKS.txt",
+    "router_registry_file": "02_TOOLS/MODEL.ROUTING.REGISTRY.json",
+    "check_script_file": "02_TOOLS/Maintenance/HIA_TOL_0043_Check-AIStack.ps1"
+  },
+  "providers_expected": {
+    "OPENAI": {
+      "type": "cloud",
+      "availability": {
+        "env_any_of": ["OPENAI_API_KEY"],
+        "notes": "API key is optional for this repo MVP; routing may run dry-run."
+      }
+    },
+    "CLAUDE_CODE": {
+      "type": "tool",
+      "availability": {
+        "command_any_of": ["claude"],
+        "notes": "Operational in HIA via: hia claude status | hia claude run ..."
+      }
+    },
+    "OLLAMA": {
+      "type": "local",
+      "availability": {
+        "command_any_of": ["ollama"],
+        "notes": "If present, models can be queried via 'ollama list'."
+      },
+      "preferred_models": [
+        "qwen2.5-coder:latest",
+        "llama3.1:latest"
+      ]
+    },
+    "OPENCODE": {
+      "type": "local",
+      "availability": {
+        "command_any_of": ["opencode"],
+        "notes": "Optional; not in critical path for MB-1.3."
+      }
+    },
+    "LOCAL_TOOL": {
+      "type": "internal",
+      "availability": {
+        "always": true
+      }
+    }
+  },
+  "routing_tasktypes_minimum": [
+    "ARCHITECTURE",
+    "REPO_READ",
+    "CODE_CHANGE",
+    "REFACTOR",
+    "VALIDATION",
+    "AUDIT",
+    "DOCS",
+    "QUICK_LOCAL",
+    "FALLBACK",
+    "COST_SENSITIVE",
+    "HIGH_RISK_CHANGE"
+  ]
+}

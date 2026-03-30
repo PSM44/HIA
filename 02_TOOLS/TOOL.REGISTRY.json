@@ -61,6 +61,21 @@
       "script": "HIA_AI_ROUTER.ps1",
       "description": "Enruta tareas a proveedores AI",
       "category": "core"
+    },
+    "stack": {
+      "script": "HIA_TOL_0043_Check-AIStack.ps1",
+      "description": "Chequea disponibilidad del AI stack",
+      "category": "maintenance"
+    },
+    "claude": {
+      "script": "HIA_CLAUDE_CODE_ENGINE.ps1",
+      "description": "Wrapper operativo para Claude Code (CLI)",
+      "category": "core"
+    },
+    "ollama": {
+      "script": "HIA_OLLAMA_ENGINE.ps1",
+      "description": "Wrapper operativo para Ollama (local)",
+      "category": "core"
     }
   }
 }
