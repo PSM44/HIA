@@ -79,15 +79,22 @@ if (-not (Test-Path $routerPath)) {
 # -----------------------------------------------------------------------------
 
 if (-not $Command) {
-    $interactiveEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_INTERACTIVE_ENGINE.ps1"
-    if (-not (Test-Path $interactiveEnginePath)) {
-        Write-Host "Interactive engine not found. Falling back to help." -ForegroundColor Yellow
-        Show-HIAHelp -ProjectRoot $projectRoot
+    $portfolioEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_PORTFOLIO_ENGINE.ps1"
+    if (-not (Test-Path $portfolioEnginePath)) {
+        Write-Host "Portfolio engine not found. Falling back to project shell." -ForegroundColor Yellow
+        $interactiveEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_INTERACTIVE_ENGINE.ps1"
+        if (-not (Test-Path $interactiveEnginePath)) {
+            Write-Host "Interactive engine not found. Falling back to help." -ForegroundColor Yellow
+            Show-HIAHelp -ProjectRoot $projectRoot
+            exit 0
+        }
+        . $interactiveEnginePath
+        Invoke-HIAInteractiveEntrypoint -ProjectRoot $projectRoot
         exit 0
     }
 
-    . $interactiveEnginePath
-    Invoke-HIAInteractiveEntrypoint -ProjectRoot $projectRoot
+    . $portfolioEnginePath
+    Invoke-HIAPortfolioShell -ProjectRoot $projectRoot
     exit 0
 
 }

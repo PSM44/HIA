@@ -1,0 +1,154 @@
+================================================================================
+FILE: HIA_RTG_0005_AI.PROMPT.PACKS.txt
+SYSTEM: HIA - Human Intelligence Amplifier
+TYPE: AI Prompt Packs & Execution Contracts (MB-1.6)
+VERSION: v1.0
+DATE: 2026-03-30
+================================================================================
+
+OBJETIVO
+Definir cómo pedir trabajo correctamente a cada herramienta (contracts + prompts)
+para que HIA mantenga consistencia, restricciones y validación esperada.
+
+PRINCIPIOS
+P1) Contratos antes que improvisación: cada ejecución debe respetar el contrato.
+P2) Sin humo: no afirmar autenticación/ready si no está verificado.
+P3) Validación real manda: siempre especificar validación esperada.
+P4) No paralelizar escritura: una sola IA escribe cambios por vez.
+P5) High-risk_change exige doble revisión + validación real.
+P6) Local (Ollama/OpenCode) nunca define canon por sí sola.
+
+ESTRUCTURA DE CONTRATO (OBLIGATORIA)
+Cada pack debe incluir al menos:
+- objetivo
+- cuándo usarla
+- cuándo NO usarla
+- input esperado
+- restricciones
+- validación esperada
+- formato de salida obligatorio
+- warnings importantes
+- fallback / escalamiento
+
+HERRAMIENTAS CUBIERTAS
+- CODEX
+- CLAUDE_CODE
+- CHATGPT
+- CLAUDE_CLOUD
+- OLLAMA
+- OPENCODE (opcional/experimental)
+
+TASKTYPES MÍNIMOS
+- ARCHITECTURE
+- REPO_READ
+- CODE_CHANGE
+- REFACTOR
+- VALIDATION
+- AUDIT
+- DOCS
+- QUICK_LOCAL
+- FALLBACK
+- COST_SENSITIVE
+- HIGH_RISK_CHANGE
+
+FORMATO DE OUTPUT OBLIGATORIO (para cualquier IA)
+Siempre pedir salida en este formato:
+
+SECTION: SUMMARY
+- 3–6 bullets de resultado
+
+SECTION: ASSUMPTIONS
+- supuestos explícitos (si faltan datos)
+
+SECTION: RISKS
+- riesgos y mitigaciones
+
+SECTION: NEXT_ACTIONS
+- comandos exactos o pasos verificables
+
+SECTION: TRACE
+- qué registrar (session log / artifacts / rutas)
+
+REGLAS ESPECIALES POR HERRAMIENTA
+
+CODEX (Coding agent)
+- Objetivo: cambios en repo con precisión, siguiendo estructura del proyecto.
+- No usar: para commit automático, push automático, o acciones destructivas.
+- Restricciones: no borrar/mover sin DELETE_PLAN; respetar AGENTS.md.
+- Validación: ejecutar validate/smoke cuando cambie comportamiento.
+
+CLAUDE_CODE (Coding CLI)
+- Objetivo: lectura de repo + implementación acotada + refactor guiado.
+- No usar: para reescribir todo el repo; cambios masivos sin plan.
+- Restricciones: cambios pequeños, no paralelizar con otra IA escritora.
+- Validación: siempre pedir cómo validar localmente.
+
+CHATGPT (Cloud governance)
+- Objetivo: arquitectura, auditoría, políticas, decisiones canónicas.
+- No usar: para “validar” sin ejecutar herramientas reales.
+- Restricciones: no inventar estado del repo; pedir evidencia.
+- Validación: exigir pasos de verificación.
+
+CLAUDE_CLOUD (Cloud second opinion)
+- Objetivo: segunda opinión fuerte (review largo, alternativa de diseño).
+- No usar: para sustituir validación real.
+
+OLLAMA (Local)
+- Objetivo: cost_sensitive / quick_local / borradores.
+- No usar: como canon; no high-risk como único autor.
+- Restricciones: prompts acotados; pedir incertidumbre y escalamiento.
+- Validación: pedir “cuando escalar a cloud”.
+
+OPENCODE (Local experimental)
+- Objetivo: soporte local opcional si está disponible.
+- No usar: como core si no hay evidencia de superioridad operativa.
+
+CONTRATOS POR TASKTYPE (MÍNIMOS)
+
+ARCHITECTURE
+- Objetivo: propuesta de arquitectura + tradeoffs + decisiones trazables.
+- Validación: checklist de riesgos + próximos pasos con comandos.
+- Warnings: no delegar a quick_local ni local como canon.
+
+REPO_READ
+- Objetivo: mapa del repo + rutas relevantes + riesgos.
+- Validación: referenciar rutas/archivos; no inventar.
+
+CODE_CHANGE
+- Objetivo: cambio acotado, reversible, con plan y validación.
+- Validación: comandos concretos; no dos IAs escribiendo.
+
+REFACTOR
+- Objetivo: refactor por etapas; definir “done”.
+- Validación: tests/validators por etapa.
+
+VALIDATION
+- Objetivo: ejecutar herramientas reales; interpretar resultados.
+- Validación: output real + siguiente acción.
+
+AUDIT
+- Objetivo: findings + severidad + evidencia + mitigación.
+- Validación: pasos reproducibles, sin humo.
+
+DOCS
+- Objetivo: docs consistentes con canon; incluir ejemplos.
+- Validación: revisión humana para docs críticos.
+
+QUICK_LOCAL
+- Objetivo: tareas deterministas; comandos exactos.
+- Validación: mostrar output esperado o cómo confirmarlo.
+
+FALLBACK
+- Objetivo: recuperar operación cuando la primaria no está ready.
+- Validación: primero `hia stack` y luego plan.
+
+COST_SENSITIVE
+- Objetivo: minimizar costo manteniendo calidad suficiente.
+- Validación: “cuándo escalar” explícito.
+
+HIGH_RISK_CHANGE
+- Objetivo: cambio crítico con doble revisión y validación real.
+- Validación: `hia validate`/`hia smoke` + segunda revisión obligatoria.
+
+================================================================================
+

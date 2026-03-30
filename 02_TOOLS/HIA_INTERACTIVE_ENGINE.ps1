@@ -235,7 +235,7 @@ function Get-HIAReplayQueue {
     if ($lines.Count -eq 0) { return $null }
     $q = [System.Collections.Generic.Queue[string]]::new()
     foreach ($l in $lines) { $q.Enqueue($l) }
-    return $q
+    return ,$q
 }
 
 function Read-HIAInteractiveInput {
@@ -458,6 +458,10 @@ function Show-HIAHelpTechToolsExtra {
     Write-Host "Acciones:" -ForegroundColor Yellow
     Write-Host "- AI Stack Check: valida disponibilidad de Codex/Claude Code/Ollama/OpenCode."
     Write-Host "  CLI directa: hia stack"
+    Write-Host "- AI Task Dispatch: recomienda herramienta por TaskType segun playbooks."
+    Write-Host "  CLI directa: hia ai <tasktype>"
+    Write-Host "- AI Prompt Packs: resuelve prompt/contract por tool+tasktype."
+    Write-Host "  CLI directa: hia ai prompt <tool> <tasktype>"
     Write-Host ""
 }
 
@@ -794,6 +798,8 @@ function Invoke-HIAInteractiveMenuTools {
             "3.- Smoke",
             "4.- State Sync",
             "5.- AI Stack Check",
+            "6.- AI Task Dispatch",
+            "7.- AI Prompt Packs",
             "F1.- Ayuda",
             "X.- Volver"
         )
@@ -807,6 +813,34 @@ function Invoke-HIAInteractiveMenuTools {
             "3" { Invoke-HIAInteractiveAction -ProjectRoot $ProjectRoot -Command "smoke" -CommandArgs @() -ReplayQueue $ReplayQueue }
             "4" { Invoke-HIAInteractiveAction -ProjectRoot $ProjectRoot -Command "state" -CommandArgs @("sync") -ReplayQueue $ReplayQueue }
             "5" { Invoke-HIAInteractiveAction -ProjectRoot $ProjectRoot -Command "stack" -CommandArgs @() -ReplayQueue $ReplayQueue }
+            "6" {
+                Write-Host ""
+                Write-Host "AI TASK DISPATCH" -ForegroundColor Yellow
+                Write-Host "TaskTypes: architecture, repo_read, code_change, refactor, validation, audit, docs, quick_local, fallback, cost_sensitive, high_risk_change"
+                Write-Host ""
+                $tt = Read-HIAInteractiveInput -Prompt " TaskType: " -ReplayQueue $ReplayQueue
+                if ([string]::IsNullOrWhiteSpace($tt)) {
+                    Write-Host "CANCELLED." -ForegroundColor Yellow
+                    Pause-HIAInteractive -ReplayQueue $ReplayQueue
+                    continue
+                }
+                Invoke-HIAInteractiveAction -ProjectRoot $ProjectRoot -Command "ai" -CommandArgs @($tt.Trim()) -ReplayQueue $ReplayQueue
+            }
+            "7" {
+                Write-Host ""
+                Write-Host "AI PROMPT PACKS" -ForegroundColor Yellow
+                Write-Host "Tools: codex, claude_code, chatgpt, claude_cloud, ollama, opencode"
+                Write-Host "TaskTypes: architecture, repo_read, code_change, refactor, validation, audit, docs, quick_local, fallback, cost_sensitive, high_risk_change"
+                Write-Host ""
+                $tool = Read-HIAInteractiveInput -Prompt " Tool: " -ReplayQueue $ReplayQueue
+                $tt = Read-HIAInteractiveInput -Prompt " TaskType: " -ReplayQueue $ReplayQueue
+                if ([string]::IsNullOrWhiteSpace($tool) -or [string]::IsNullOrWhiteSpace($tt)) {
+                    Write-Host "CANCELLED." -ForegroundColor Yellow
+                    Pause-HIAInteractive -ReplayQueue $ReplayQueue
+                    continue
+                }
+                Invoke-HIAInteractiveAction -ProjectRoot $ProjectRoot -Command "ai" -CommandArgs @("prompt", $tool.Trim(), $tt.Trim()) -ReplayQueue $ReplayQueue
+            }
             default { Write-Host "Seleccion invalida." -ForegroundColor Yellow; Pause-HIAInteractive -ReplayQueue $ReplayQueue }
         }
     }
@@ -1008,16 +1042,21 @@ function Invoke-HIAInteractiveLoop {
 }
 
 function Invoke-HIAInteractiveEntrypoint {
-    param([string]$ProjectRoot)
+    param(
+        [string]$ProjectRoot,
+        [System.Collections.Generic.Queue[string]]$ReplayQueue
+    )
 
     $root = Get-HIAProjectRootFromEntrypoint -ProjectRoot $ProjectRoot
 
-    $replayPath = $env:HIA_INTERACTIVE_REPLAY
-    $queue = Get-HIAReplayQueue -ReplayPath $replayPath
-
-    if ($queue) {
-        Write-Host ("[REPLAY MODE] Using HIA_INTERACTIVE_REPLAY: {0}" -f $replayPath) -ForegroundColor DarkGray
-        Start-Sleep -Milliseconds 250
+    $queue = $ReplayQueue
+    if (-not $queue) {
+        $replayPath = $env:HIA_INTERACTIVE_REPLAY
+        $queue = Get-HIAReplayQueue -ReplayPath $replayPath
+        if ($queue) {
+            Write-Host ("[REPLAY MODE] Using HIA_INTERACTIVE_REPLAY: {0}" -f $replayPath) -ForegroundColor DarkGray
+            Start-Sleep -Milliseconds 250
+        }
     }
 
     Invoke-HIAInteractiveLoop -ProjectRoot $root -ReplayQueue $queue
