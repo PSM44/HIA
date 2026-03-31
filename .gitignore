@@ -13,3 +13,6 @@ Thumbs.db
 # --- HIA: carpeta de cachureo / NO versionar ---
 Raw/
 Raw/**
+
+# Claude Code session cache
+.claude/

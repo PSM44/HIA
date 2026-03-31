@@ -1,17 +1,3 @@
-00.00_METADATA_ADDED
-DATE......: 2026-03-01
-TIME......: 18:55
-TZ........: America/Santiago
-CITY......: Santiago, Chile
-VERSION......: 0.1
-NOTE......: Metadata agregado en modo office. No altera el contenido conceptual HUMAN.
-ID_HINT...: 
-==============================
-TANDA 6/6.A
-ARCHIVO: 07.0_HUMAN.MASTER.txt
-ACCION: REEMPLAZAR (archivo completo)
-==============================
-
 ==========
 00.00_METADATOS_DEL_DOCUMENTO
 ==========
@@ -40,7 +26,7 @@ DEPENDENCIAS.......:
 - HUMAN.BATON (continuidad/handoff)
 - HUMAN.RADAR (inventario/auditoría)
 - HUMAN.CIS (contratos de cambio)
-- SYNC_MANIFEST (HIA_SYN_0001_SYNC_MANIFEST.txt)
+- HUMAN.SYNC.MANIFEST (08.0_HUMAN.SYNC.MANIFEST.txt)
 
 ==========
 00.10_GLOSARIO_MINIMO_(ABREVIACIONES_EXPLICADAS)
@@ -82,6 +68,7 @@ Gate (Aprobación humana): permiso explícito para APPLY.
 
 01.10_PROPOSITO
 - Si editas 10 copias manualmente, te vuelves lento y te frustras.
+- MASTER gobierna sincronización y autoridad documental; no define el núcleo doctrinal de HIA.
 - MASTER define: single-edit canon + FULL-copy por SYNC = ultra detalle sin trabajo manual infernal.
 
 01.20_MENTAL_MODEL
@@ -122,12 +109,12 @@ Gate (Aprobación humana): permiso explícito para APPLY.
 ==========
 
 DOMINIO...........................: ARCHIVO_DUENO..........................: NOTA
-- Operación humana (usuario)       : HUMAN.USER.0001.txt                    : Cómo opera el humano, gates, rutina.
-- PF.0 método mínimo               : HUMAN.PF0.0001.txt                     : Ritual/MB/MVP.HIA/DoD/Sync readiness.
-- Continuidad / BATON              : 02.00_HUMAN.BATON.txt                  : Plantilla y reglas baton/handoff.
-- Inventario / RADAR               : 03.00_HUMAN.RADAR.txt                  : Definiciones niveles + exclusiones.
-- Contratos / CIS                  : HUMAN.CIS.txt                          : Contratos de cambio + atomic apply.
-- Meta-gobernanza documental        : HUMAN.MASTER.txt                       : Autoridad y sync.
+- Operación humana (usuario)       : 01.0_HUMAN.USER.txt                    : Cómo opera el humano, gates, rutina.
+- PF.0 método mínimo               : 06.0_HUMAN.PF0.txt                     : Ritual/MB/MVP.HIA/DoD/Sync readiness.
+- Continuidad / BATON              : 04.0_HUMAN.BATON.txt                  : Plantilla y reglas baton/handoff.
+- Inventario / RADAR               : 03.0_HUMAN.RADAR.txt                  : Definiciones niveles + exclusiones.
+- Contratos / CIS                  : 05.0_HUMAN.CIS.txt                          : Contratos de cambio + atomic apply.
+- Meta-gobernanza documental        : 07.0_HUMAN.MASTER.txt                       : Autoridad y sync.
 
 Regla de conflicto:
 - manda el dueño del dominio.
@@ -675,6 +662,10 @@ NOTES................:
 12.00_CHANGELOG
 ==========
 
+2026-03-30, v1.3-DRAFT
+- Limpieza de contaminación office.
+- Corrección de referencias/rutas.
+- Aclaración de rango doctrinal de MASTER.
 2026-02-28, v1.2-DRAFT
 - Corrige drift de nombres (USER/BATON IDs reales).
 - Elimina “pendientes” y alinea a SYNC manifest de 9 entradas.

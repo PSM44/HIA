@@ -4,7 +4,7 @@
 
 ID_UNICO..........: HUMAN.READING.ORDER.0001
 NOMBRE_SUGERIDO...: 00.1_HUMAN.READING.ORDER.txt
-VERSION...........: v1.0-DRAFT
+VERSION...........: v1.1-DRAFT
 FECHA.............: 2026-03-14
 HORA..............: HH:MM (America/Santiago)
 CIUDAD............: Santiago, Chile
@@ -178,89 +178,49 @@ El objetivo no es que el usuario comprenda completamente HIA.
 
 ======================================================================
 03.00_NIVEL_2_COMPRENSION_DEL_SISTEMA
-======================================================================
 
 Una vez que el lector ha ejecutado el START_RITUAL al menos una vez,
 se recomienda leer los siguientes documentos.
 
 DOCUMENTOS
 
+00.0_HUMAN.GENERAL.txt
 01.0_HUMAN.USER.txt
 
-00.0_HUMAN.GENERAL.txt
+Estos documentos explican qué es HIA, su doctrina y su modelo de trabajo.
+Estos documentos están orientados a la comprensión conceptual, no a la ejecución inmediata.
 
-Estos documentos explican qué es HIA.
-
-Estos documentos explican la filosofía del sistema.
-
-Estos documentos explican el modelo de trabajo.
-
-Estos documentos explican por qué el sistema está diseñado de esta manera.
-
-Estos documentos no están orientados a la ejecución inmediata.
-
-Estos documentos están orientados a la comprensión.
-
-El lector debe leer estos documentos con calma.
-
-El lector debe comprender que HIA no es simplemente un software.
-
-HIA es una forma disciplinada de trabajar con inteligencia artificial.
-
-======================================================================
 04.00_NIVEL_3_OPERACION_DEL_SISTEMA
-======================================================================
 
 Los siguientes documentos explican cómo trabajar correctamente.
 
 DOCUMENTOS
 
 02.0_HUMAN.OPERATION.txt
-
 06.0_HUMAN.PF0.txt
-
 05.0_HUMAN.CIS.txt
 
 Estos documentos explican cómo se ejecuta el trabajo real dentro del sistema.
 
-Estos documentos explican cómo se interactúa con la IA.
-
-Estos documentos explican cómo se definen tareas.
-
-Estos documentos explican cómo se aplican cambios.
-
-Estos documentos explican cómo se valida el resultado.
-
-Estos documentos explican cómo se mantiene disciplina operacional.
-
-======================================================================
 05.00_NIVEL_4_INFRAESTRUCTURA_DEL_SISTEMA
-======================================================================
 
 Estos documentos explican cómo observar y controlar el sistema.
 
 DOCUMENTOS
 
 03.0_HUMAN.RADAR.txt
-
 04.0_HUMAN.BATON.txt
-
+07.0_HUMAN.MASTER.txt
 08.0_HUMAN.SYNC.MANIFEST.txt
-
 08.1_HUMAN.DRAGNDROP.PACKAGING.txt
 
 Estos documentos explican:
 
-cómo observar el estado del proyecto
-cómo registrar cambios
-cómo transportar el contexto del sistema
-cómo continuar el trabajo en nuevas sesiones
+observabilidad del sistema
+continuidad de contexto
+jerarquía documental y sincronización
+packaging/handoff/fallback (no núcleo doctrinal)
 
-Estos documentos son fundamentales para el control del sistema.
-
-Estos documentos explican la continuidad operacional.
-
-======================================================================
 06.00_NIVEL_5_OPERACION_AVANZADA
 ======================================================================
 

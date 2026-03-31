@@ -21,11 +21,12 @@ ser consumido por HIA_AGILE_ENGINE.ps1.
 
 01.00_BACKLOG_TABLE
 ID | TYPE | PRIORITY | TITLE | VALUE | EFFORT | STATUS
-PB_001 | minibattle | P0 | ejecutar comando task simple desde HIA | habilita primer caso de uso real | S | ready
-PB_002 | minibattle | P0 | crear archivo real en filesystem desde HIA | demuestra ejecución visible y verificable | S | ready
-PB_003 | minibattle | P0 | registrar log mínimo de task execution | entrega evidencia operativa | S | backlog
+PB_001 | minibattle | P0 | ejecutar comando task simple desde HIA | habilita primer caso de uso real | S | done
+PB_002 | minibattle | P0 | crear archivo real en filesystem desde HIA | demuestra ejecución visible y verificable | S | done
+PB_003 | minibattle | P0 | registrar log mínimo de task execution | entrega evidencia operativa | S | done
+PB_013 | minibattle | P0 | llevar task execution a contexto de proyecto | habilita tarea simple orientada a proyecto (sin scope extra) | S | ready
 PB_004 | minibattle | P1 | validar task execution con smoke o test mínimo | evita falso positivo de ejecución | S | backlog
-PB_005 | feature | P1 | menú CLI seleccionable básico | reduce fricción peatón-first | M | backlog
+PB_005 | feature | P1 | menú CLI seleccionable básico | reduce fricción peatón-first | M | done
 PB_006 | feature | P1 | integrar agile warnings al flujo operativo | alerta desvíos de scope y backlog | S | backlog
 PB_007 | feature | P2 | menú CLI autoexpandible desde registry | mejora escalabilidad UX | M | backlog
 PB_008 | feature | P2 | task orchestrator básico | prepara ejecución más compleja | M | backlog
@@ -35,6 +36,6 @@ PB_011 | feature | P3 | multi-agent executor federation | arquitectura avanzada 
 PB_012 | feature | P3 | cost routing operativo | optimización posterior al primer MVP real | M | backlog
 
 02.00_NOTAS
-02.01 El release actual debe concentrarse en PB_001 a PB_004.
+02.01 El release actual debe concentrarse en PB_004 y PB_013.
 02.02 PB_005 puede entrar solo si no desplaza ejecución real.
 02.03 Todo item nuevo debe mapear a PRODUCT.VISION.

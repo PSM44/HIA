@@ -1,23 +1,10 @@
-00.00_METADATA_ADDED
-DATE......: 2026-03-01
-TIME......: 18:55
-TZ........: America/Santiago
-CITY......: Santiago, Chile
-VERSION......: 0.1
-NOTE......: Metadata agregado en modo office. No altera el contenido conceptual HUMAN.
-ID_HINT...: 
-==============================
-ARCHIVO: 01.0_HUMAN.USER.txt
-ACCION: CREAR (archivo nuevo)
-==============================
-
 ==========
 00.00_METADATOS_DEL_DOCUMENTO
 ==========
 
 ID_UNICO..........: HUMAN.USER.0001
 NOMBRE_SUGERIDO...: 01.0_HUMAN.USER.txt
-VERSION...........: v1.1-DRAFT
+VERSION...........: v1.2-DRAFT
 FECHA.............: 2026-02-28
 HORA..............: HH:MM (America/Santiago)
 CIUDAD............: <CIUDAD>, <PAIS>
@@ -38,7 +25,7 @@ ALCANCE...........:
 
 NO_CUBRE..........:
 - Arquitectura técnica específica.
-- Implementación de scripts (vive en TOOLS/SKILLS).
+- Implementación de scripts y tooling (vive en la capa de herramientas, fuera de este documento).
 
 ==========
 00.05_QUICKSTART_PEATON_(COMO_COMENZAR_EN_90_SEGUNDOS)
@@ -119,6 +106,7 @@ Quarantine (Borrado seguro): zona donde van “deletes” por defecto.
 00.20_INDICE_GENERAL_WBS
 ==========
 
+00.00 Metadatos
 00.05 QuickStart peatón (cómo comenzar en 90 segundos)
 00.06 Cómo avanzar sin perderte (mapa en 1 línea)
 00.10 Glosario mínimo
@@ -813,5 +801,7 @@ Antes de aprobar exigir:
 13.00_CHANGELOG
 ==========
 
+2026-03-30, v1.2-DRAFT
+- Limpieza de contaminación office y ajuste editorial de índice.
 2026-02-28, v1.1-DRAFT
 - Se agregan placeholders DERIVED para PF0 templates y CIS templates (evita FAIL en SYNC).

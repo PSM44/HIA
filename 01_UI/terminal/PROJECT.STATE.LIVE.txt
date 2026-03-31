@@ -2,16 +2,18 @@
 FILE: PROJECT.STATE.LIVE.txt
 SYSTEM: HIA - Human Intelligence Amplifier
 TYPE: Operational State (LIVE)
-GENERATED: 2026-03-29 14:03:36
+GENERATED: 2026-03-30 19:29:08
 ================================================================================
 
 FOCO_ACTUAL
 ------------------------------------------------------------------------------
-Sistema de orquestacion multi-agente con CLI funcional.
+Shells operativas completas (portfolio/project/vault/bootstrap).
+MVP-01 activo: task execution con contexto de proyecto (MB-2.1).
 
 MVP_ACTIVO
 ------------------------------------------------------------------------------
-MVP-0 — Kernel CLI estable
+MVP-0 DONE — Kernel CLI estable + shells operativas MVP (MB-0.x + MB-1.x)
+MVP-01 IN PROGRESS — Real Task Execution (PB_001/PB_002/PB_003 DONE)
 
 MINIBATTLES_COMPLETADOS
 ------------------------------------------------------------------------------
@@ -20,6 +22,17 @@ MINIBATTLES_COMPLETADOS
 [MB-0.3] Smoke Test (2026-03-16)
 [MB-0.4] Agent Executor (2026-03-16)
 [MB-0.5] State Sync (2026-03-23)
+[MB-0.6] Session Lifecycle + CLI exit code hardening (2026-03-29)
+[MB-1.0] Web Console local read-only + export pipeline (2026-03-29)
+[MB-1.1] Guided Interactive CLI shell (2026-03-29)
+[MB-1.3a] Harden AI Stack Check (2026-03-30)
+[MB-1.4] Canonical AI Execution Playbooks (2026-03-30)
+[MB-1.5] AI Task Dispatch Engine (2026-03-30)
+[MB-1.6] Prompt Pack Resolver (2026-03-30)
+[MB-1.7] Portfolio Shell MVP (2026-03-30)
+[MB-1.8] Project Bootstrap Shell MVP + Create Project Wizard (2026-03-30)
+[MB-1.9] Vault Shell MVP (2026-03-30)
+[MB-2.0] CLI task create-file real + guardrails + evidencia minima (2026-03-30)
 
 ESTADISTICAS
 ------------------------------------------------------------------------------
@@ -29,7 +42,7 @@ PLANS_TOTAL: 6
 PLANS_COMPLETADOS: 2
 PLANS_PENDIENTES: 3
 ULTIMO_RADAR: 2026-03-29 03:45 UTC
-ULTIMA_ACTIVIDAD: 2026-03-29 17:03 UTC
+ULTIMA_ACTIVIDAD: 2026-03-30 19:29:08
 
 COMANDOS_DISPONIBLES
 ------------------------------------------------------------------------------
@@ -47,11 +60,13 @@ hia session                    - Gestiona ciclo de vida de sesiones
 hia smoke                      - Smoke test del sistema
 hia state [show|sync|history]  - Gestiona estado del proyecto
 hia sync                       - Sincroniza artefactos
+hia task create-file <path>    - Crea archivo real dentro de PROJECT_ROOT
 hia validate                   - Ejecuta validadores
 
 PROXIMO_PASO
 ------------------------------------------------------------------------------
-- MB-0.6: Session Lifecycle
-- MB-1.0: Console Web MVP
+- MB-2.1: llevar task execution a contexto de proyecto (PB_013 — P0)
+- MB-2.2: task simple orientada a proyecto (create-file en PROJECT_PATH) (PB_013 — P0)
+- MB-2.3: validacion smoke minima de task execution (PB_004 — P1)
 
 ================================================================================

@@ -1,142 +1,16 @@
-ID_UNICO..........: HUMAN.PF0.0001
-
-
-00.00_METADATA_ADDED
-
-
-DATE......: 2026-03-01
-
-
-TIME......: 18:55
-
-
-TZ........: America/Santiago
-
-
-CITY......: Santiago, Chile
-
-
-VERSION......: 0.1
-
-
-NOTE......: Metadata agregado en modo office. No altera el contenido conceptual HUMAN.
-
-
-ID_HINT...: 
-
-
-==============================
-
-
-ARCHIVO: 06.0_HUMAN.PF0.txt
-
-ACCION: CREAR (archivo nuevo)
-==============================
-
 ==========
 00.00_METADATOS_DEL_DOCUMENTO
 ==========
 
+ID_UNICO..........: HUMAN.PF0.0001
 NOMBRE_SUGERIDO...: 06.0_HUMAN.PF0.txt
-VERSION...........: v1.0-DRAFT
-
-
+VERSION...........: v1.1-DRAFT
 FECHA.............: 2026-02-27
-
-
 HORA..............: HH:MM (America/Santiago)
-
-
 CIUDAD............: <CIUDAD>, <PAIS>
-
-
-UBICACION_SISTEMA.: <TL_BOOTSTRAP_ROOT>\01_HUMAN\
-
-
+UBICACION_SISTEMA.: <TL_BOOTSTRAP_ROOT>\HUMAN.README\
 AUTOR_HUMANO......: PABLO (ADMIN)
-
-
 AUTOR_IA..........: GPT-5.2 Thinking
-
-
-
-
-
-TITULO............: HUMAN — PF.0 (PFundations Level 0) — Operating Model Mínimo
-
-
-SUBTITULO_MEDIO...: Método operativo mínimo para HIA (Human + IA) sin fricción: rituales, minibattles, MVP, DoD, gates, evidencia.
-
-
-SUBTITULO_BAJO....: Peatón-first. Académico. Sin abreviaciones sin explicar. Sin “manual frío”.
-
-
-
-
-
-DOMINIO_DUENO......: PF.0 (PFundations Level 0: método mínimo operativo)
-
-
-AUTORIDAD..........: Este archivo manda en PF.0. Si hay conflicto sobre PF.0, manda este documento.
-
-
-ESTADO_CANON........: DRAFT (no oficial hasta promoción humana)
-
-
-
-
-
-ALCANCE............:
-
-
-- Definir PF.0 como el método mínimo operativo para ejecutar proyectos con colaboración Humano + IA bajo HIA (Human + IA).
-
-
-- PF.0 incluye: rituales de sesión, MiniBattles (Minibattles), MVP (Minimum Viable Product) de HIA, Definition of Done (Definición de Terminado) por fase HIA, gates (aprobaciones), evidencia, y disciplina de ejecución.
-
-
-- PF.0 NO define stack tecnológico fijo; define cómo iterar hasta encontrar el mejor stack/setup según el proyecto (Stack Discovery by Iteration).
-
-
-
-
-
-NO_CUBRE...........:
-
-
-- Implementación de scripts (eso vive en TOOLS/SKILLS).
-
-
-- Reglas RADAR y BATON completas (viven en sus archivos dueños).
-
-
-- Contratos CIS completos (viven en CIS).
-
-
-
-
-
-DEPENDENCIAS.......:
-
-
-- HUMAN.USER (operación humana)
-
-
-- HUMAN.BATON (continuidad/handoff)
-
-
-- HUMAN.RADAR (foto/delta, core scope)
-
-
-- HUMAN.CIS (contratos de cambio)
-
-
-- HUMAN.MASTER (mapa de autoridad + sync manifest)
-
-
-
-
-
 ==========
 
 
@@ -1028,6 +902,11 @@ Fin:
 ==========
 16.00_CHANGELOG
 ==========
+
+2026-03-30, v1.1-DRAFT
+- Limpieza de contaminación office.
+- Aclaración: phases como contrato operativo/pedagógico, no núcleo permanente.
+- Ajuste de redacción de tooling.
 
 2026-02-27, v1.0-DRAFT
 

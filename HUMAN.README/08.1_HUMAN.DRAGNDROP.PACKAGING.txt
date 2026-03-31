@@ -1,15 +1,10 @@
-==============================
-ARCHIVO: 08.1_HUMAN.DRAGNDROP.PACKAGING.txt
-ACCION: CREAR (archivo completo)
-==============================
-
 ==========
 00.00_METADATOS_DEL_DOCUMENTO
 ==========
 
 ID_UNICO..........: HUMAN.DRAGNDROP.PACKAGING.0001
 NOMBRE_SUGERIDO...: 08.1_HUMAN.DRAGNDROP.PACKAGING.txt
-VERSION...........: v0.1-DRAFT
+VERSION...........: v0.3-DRAFT
 FECHA.............: 2026-03-03
 HORA..............: HH:MM (America/Santiago)
 CIUDAD............: Santiago, Chile
@@ -57,6 +52,13 @@ REFERENCIAS_CANONICAS:
 ==========
 01.00_PRINCIPIOS
 ==========
+
+01.05_RANGO_DOCTRINAL
+- DragnDrop es capa de transporte, activación y packaging para contextos específicos (especialmente IA cloud y handoff controlado).
+- Es generated-only y release artifact; no define el núcleo permanente del sistema.
+- Si existe orquestador maduro, CLI robusta o UI/UX dedicada, DragnDrop puede perder protagonismo sin invalidar HIA.
+- Las phases son contrato operativo/pedagógico de activación, no definición ontológica de HIA.
+
 
 01.10 DragnDrop = “build artifact”, NO “source”
 - Los archivos dentro de DragnDrop se consideran OUTPUTS generables.
@@ -271,6 +273,11 @@ Un release DragnDrop (por phase) se considera válido solo si:
 07.00_CHANGELOG
 ==========
 
+07.30_2026-03-30_v0.3-DRAFT
+- Eliminación de header office residual.
+- Incorporación de 01.05_RANGO_DOCTRINAL.
+- Aclaración: DragNDrop es packaging/handoff/fallback, no núcleo permanente.
+- Aclaración: phases son contrato operativo/pedagógico, no esencia de HIA.
 07.20_2026-03-04_v0.2-DRAFT
 - Se extendió el contrato de packaging a Phase1..Phase3.2.
 - Se definió IncludeRadar=None por defecto + toggle manual (Index/IndexLite).

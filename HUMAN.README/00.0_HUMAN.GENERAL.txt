@@ -1,23 +1,10 @@
-00.00_METADATA_ADDED
-DATE......: 2026-03-01
-TIME......: 18:55
-TZ........: America/Santiago
-CITY......: Santiago, Chile
-VERSION......: 0.1
-NOTE......: Metadata agregado en modo office. No altera el contenido conceptual HUMAN.
-ID_HINT...: 
-==============================
-ARCHIVO: 00.0_HUMAN.GENERAL.txt
-ACCION: REEMPLAZAR (archivo completo)
-==============================
-
 ==========
 00.00_METADATOS_DEL_DOCUMENTO
 ==========
 
 ID_UNICO..........: HUMAN.GENERAL.0001
 NOMBRE_SUGERIDO...: 00.0_HUMAN.GENERAL.txt
-VERSION...........: v1.1-DRAFT
+VERSION...........: v1.2-DRAFT
 FECHA.............: 2026-02-28
 HORA..............: HH:MM (America/Santiago)
 CIUDAD............: <CIUDAD>, <PAIS>
@@ -30,7 +17,7 @@ SUBTITULO_MEDIO...: Filosofía, gobernanza, fases, gates, CANON, RADAR, CIS, Git
 SUBTITULO_BAJO....: Documento para peatones primero. IA segundo. No recorta conceptos.
 
 ALCANCE...........:
-- Marco general para operar proyectos TI con soporte de IA (no específico de una app).
+- Marco general para el desarrollo y operación de cualquier tipo de proyecto, siempre que se defina su gobernanza, su contexto y su tooling.
 - Pirámide de autoridad: HUMAN arriba (máxima definición).
 - Fases end-to-end (0 → 3.2 + transversal) con DoD (Definition of Done = Definición de Terminado).
 - Gobernanza: PLAN→APPLY→VALIDATE→LOG, gates humanos, CANON, delete=quarantine, Git.
@@ -55,6 +42,7 @@ DEPENDENCIAS......:
 00.00 Metadatos
 00.10 Índice
 00.20 Contexto y propósito
+00.25 VERSION_PEATON (identidad doctrinal del sistema)
 00.30 Definiciones base (taxonomía mínima)
 
 01.00 Filosofía y principios (constitución)
@@ -67,7 +55,9 @@ DEPENDENCIAS......:
 02.10 Roles: Humano / IA Planner / IA Executor
 02.20 Gates: PLAN_ONLY vs APPLY_APPROVED
 02.30 Ciclo operativo: PLAN → APPLY → VALIDATE → LOG
-02.40 Política de costo/performance (Context Levels)
+02.40 Context Levels (control de performance/contexto)
+02.41 Política de costo/performance (no powerpoint)
+02.42 Stack sin religión (iterar por caso)
 
 03.00 Gestión documental (txt-first)
 03.10 Estándar mínimo archivo .txt
@@ -104,6 +94,7 @@ DEPENDENCIAS......:
 08.10 Cierre de sesión (BATON)
 08.20 Gestión de performance (drift, migración de chat)
 08.30 Escalamiento futuro (pocas carpetas, archivos grandes)
+08.40 Tipos de memoria y control de dispersión
 
 09.00 Riesgos y mejoras
 10.00 CHANGELOG
@@ -126,6 +117,66 @@ DEPENDENCIAS......:
 - Si algo queda obsoleto:
   - se marca DEPRECATED,
   - o se mueve a historial (DeadHistory) con registro.
+
+==========
+00.25_VERSION_PEATON
+==========
+00.25.10_QUE_ES_HIA
+HIA es un sistema operativo de trabajo humano + IA para desarrollar y operar proyectos con foco, orden, continuidad y trazabilidad.
+HIA existe para establecer un método que transforme intención humana en avance verificable y auditable, y para sostener ese avance a través de múltiples sesiones y múltiples herramientas, sin perder gobierno humano.
+
+00.25.20_HIA_NO_ES
+HIA no es:
+
+una sola IA,
+solo un chat,
+solo memoria,
+solo scripts,
+solo RADAR,
+solo CIS,
+solo BATON,
+solo tooling.
+
+00.25.30_HIA_PARA_QUE_EXISTE (PROPOSITO)
+HIA está pensado para el desarrollo y operación de cualquier tipo de proyecto, siempre que se defina su gobernanza, su contexto y su tooling.
+Ese “cualquier tipo” no significa ausencia de método: significa que el método es transversal y el stack es iterativo.
+
+00.25.40_QUE_PERMITE (CAPACIDADES DOCTRINALES)
+HIA permite:
+
+crear proyectos y mantenerlos gobernados,
+definir objetivo, no-alcance y riesgos de forma explícita,
+organizar avance por backlog, MiniBattles y MVPs,
+ejecutar trabajo real con apoyo de múltiples herramientas IA (locales y cloud) sin perder trazabilidad,
+mantener continuidad entre sesiones y proyectos,
+registrar decisiones, estado y evidencia,
+reducir dispersión y controlar drift,
+aprender mediante skills y mejores prácticas reusables,
+derivar ideas laterales hacia un vault (sin contaminar el foco vivo),
+integrar herramientas IA presentes y futuras como apoyo de análisis y ejecución bajo gobernanza (gates, evidencia, continuidad), sin delegar autoridad doctrinal.
+
+00.25.50_UNIDAD_REAL_DE_AVANCE (NO_ES_CONVERSAR)
+En HIA, “conversar” no es avance por sí mismo.
+La unidad real de avance es producir trabajo verificable y trazable, típicamente expresado como:
+
+una MiniBattle cerrada con evidencia,
+un incremento dentro del MVP sin expansión silenciosa,
+un delta auditable (archivos, decisiones, logs, commits),
+y un estado de continuidad explícito para retomar (BATON).
+
+00.25.60_GOBERNANZA_Y_MULTI-IA (CONTROL SIN DOGMA)
+HIA asume multi-IA y multi-herramienta como realidad operacional.
+La gobernanza no depende de “la mejor IA”, sino de:
+
+autoridad humana,
+gates de ejecución,
+ciclo PLAN → APPLY → VALIDATE → LOG,
+y disciplina de artefactos (evidencia, continuidad, historial).
+La IA puede acelerar, proponer, ejecutar bajo gate y validar; pero no reemplaza la jerarquía doctrinal ni el control de dispersión.
+
+00.25.70_MEMORIA_Y_FOCO (ANTICIPACION DEL BLOQUE 08.40)
+La memoria correcta no es la que guarda todo, sino la que guarda cada cosa en su lugar.
+Por eso HIA distingue entre doctrina (HUMAN), continuidad (BATON), estado operativo (sesión/proyecto), historia y derivaciones laterales (vault), y aprendizaje reusable (skills), y ordena el avance por backlog, MiniBattles y MVP para proteger el foco vivo.
 
 ==========
 00.30_DEFINICIONES_BASE_(ABREVIACIONES_EXPLICADAS)
@@ -356,6 +407,113 @@ Entregable de término:
 - Pocas carpetas, archivos grandes; pero con estrategia explícita de escalamiento.
 
 ==========
+08.40_TIPOS_DE_MEMORIA_Y_CONTROL_DE_DISPERSION
+==========
+08.40.10_PROPOSITO_DEL_BLOQUE
+Este bloque existe para imponer un principio rector: la memoria sin taxonomía produce dispersión; la dispersión destruye foco, continuidad y trazabilidad.
+En HIA, “tener memoria” no es objetivo; el objetivo es operar con foco y con gobierno humano, preservando continuidad y evidencia sin contaminar el trabajo vivo.
+
+08.40.20_EL_PROBLEMA_REAL (DISPERSION)
+La dispersión aparece cuando:
+
+se mezcla doctrina con estado del repo,
+se mezcla foco vivo con ideas laterales,
+se usa la historia como excusa para no decidir,
+se infla el chat como si fuera repositorio canónico,
+se trata BATON como basurero general,
+se trata vault como backlog,
+se confunde una ocurrencia con una skill,
+y se permite que el entusiasmo cambie el foco sin gate y sin backlog.
+Consecuencia: se pierde trazabilidad, se rompe el MVP, se multiplican “pendientes invisibles” y la continuidad se vuelve ficticia.
+
+08.40.30_TAXONOMIA_DOCTRINAL_MINIMA (TIPOS_DE_MEMORIA)
+HIA distingue, como mínimo, las siguientes memorias. Cada una tiene propósito, lugar natural y reglas de contaminación:
+
+MEMORIA_DOCTRINAL
+Qué es: el modelo objetivo, doctrina y jerarquía conceptual.
+Dónde vive: HUMAN.
+Regla: no se degrada al estado del repo; HUMAN no es changelog operativo.
+
+MEMORIA_OPERATIVA_VIVA
+Qué es: el foco activo y los compromisos inmediatos que gobiernan el trabajo en curso.
+Dónde vive: en la MiniBattle activa, su plan inmediato y su evidencia de ejecución/validación.
+Regla: es intencionalmente pequeña; si crece, se dispersa.
+
+MEMORIA_DE_SESION
+Qué es: el estado temporal y decisiones/observaciones de una sesión particular.
+Dónde vive: BATON y logs de sesión, más evidencias asociadas.
+Regla: no reemplaza doctrina; y no debe absorber backlog estructural.
+
+MEMORIA_HISTORICA
+Qué es: el registro de lo que ocurrió (auditoría, commits, deltas, changelogs, evidencia).
+Dónde vive: historia de repo (Git), artifacts, logs, registros.
+Regla: es evidencia y aprendizaje; no es foco.
+
+MEMORIA_LATERAL_DE_IDEAS (VAULT)
+Qué es: derivaciones, ideas laterales, alternativas, mejoras potenciales no comprometidas.
+Dónde vive: vault (conceptual), separado del backlog operativo.
+Regla: vault no es backlog. No se usa como “backlog temprano”. Derivar a vault no crea compromiso ni trabajo futuro estructurado. Una idea lateral solo se promueve a backlog mediante decisión explícita (gobernanza), si y solo si se transforma en trabajo futuro estructurado.
+
+MEMORIA_DE_APRENDIZAJE_REUSABLE (SKILLS)
+Qué es: patrones repetibles, prácticas y capacidades reusables que mejoran ejecución futura.
+Dónde vive: skills (conceptual), como aprendizaje formalizable y reusable.
+Regla: una ocurrencia no es una skill; una skill exige criterio, repetición y validación.
+
+08.40.40_RELACION_ENTRE_MEMORIAS (JERARQUIA Y CONTAMINACION)
+
+La memoria doctrinal gobierna a todas: define la forma correcta, no el estado actual.
+La memoria operativa viva decide el “ahora”: protege el foco y limita el alcance.
+La memoria de sesión preserva continuidad: permite retomar sin reabrir el mundo.
+La memoria histórica preserva evidencia: permite auditar y aprender sin reescribir el pasado.
+La memoria lateral preserva creatividad sin comprometer ejecución.
+La memoria de aprendizaje convierte experiencia en capacidad reusable.
+
+Regla de contaminación:
+
+Si un elemento de memoria inferior intenta comportarse como superior, aparece dispersión.
+
+Ejemplos:
+si BATON intenta ser doctrina, degrada HUMAN;
+si vault intenta ser backlog, rompe el foco;
+si historia intenta ser plan vivo, paraliza.
+
+08.40.50_AMARRE_EXPLICITO (MEMORIA ↔ MINIBATTLE ↔ BACKLOG ↔ MVP ↔ BATON)
+
+MiniBattle: unidad mínima de avance verificable. La MiniBattle define la memoria operativa viva: qué se hace, cómo se valida, qué evidencia queda.
+Backlog: memoria estructurada de trabajo futuro. Todo lo que no cabe en la MiniBattle actual o excede el MVP se convierte en backlog explícito o se deriva a vault si es lateral.
+MVP: límite doctrinal de alcance operativo. El MVP protege el foco: lo que no cabe no se “cuela”; se re-clasifica.
+BATON: memoria de continuidad entre sesiones. BATON no es basurero: contiene lo necesario para retomar, decisiones y estado relevante, no el universo de ideas.
+
+Regla de ensamblaje:
+
+La memoria operativa viva se mantiene pequeña por diseño; el resto se ubica deliberadamente en backlog, vault, BATON e historia según su naturaleza.
+
+08.40.60_ERRORES_COMUNES (PATRONES DE FALLA)
+
+Convertir el chat en repositorio canónico y luego “recordar mal”.
+Inflar la MiniBattle con mejoras laterales (se pierde foco y se rompe el MVP).
+Meter backlog dentro de BATON (continuidad se vuelve deuda y ruido).
+Usar “historia” para evitar decisión (parálisis por evidencia).
+Declarar skills a partir de una sola anécdota (falsa reutilización).
+Convertir vault en una lista de tareas (vault deja de proteger el foco).
+Cambiar foco por entusiasmo sin gate: se produce dispersión por ruptura de gobernanza.
+
+08.40.70_REGLA_DE_CLASIFICACION_Y_CIERRE (OPERACION DOCTRINAL)
+Ante cualquier pieza de información (idea, señal, observación, propuesta), aplicar esta regla:
+
+Si es irrelevante o no aporta a doctrina, continuidad, evidencia o foco: se descarta. HIA no acumula por defecto.
+Si define “la forma correcta” y es estable: MEMORIA_DOCTRINAL (HUMAN).
+Si decide “lo que se hace ahora” y cabe en la MiniBattle: MEMORIA_OPERATIVA_VIVA.
+Si permite retomar una sesión sin reabrir el mundo: MEMORIA_DE_SESION (BATON/logs).
+Si es evidencia de lo que ocurrió: MEMORIA_HISTORICA (Git/artifacts/logs).
+Si es idea lateral sin compromiso: MEMORIA_LATERAL_DE_IDEAS (vault).
+Si es patrón validable y reusable: MEMORIA_DE_APRENDIZAJE_REUSABLE (skills).
+
+Cierre doctrinal:
+La memoria correcta no es la que guarda todo, sino la que guarda cada cosa en su lugar.
+La dispersión se controla no recordando más, sino clasificando mejor, descartando lo irrelevante y gobernando el foco.
+
+==========
 09.00_RIESGOS_Y_MEJORAS
 ==========
 
@@ -377,6 +535,10 @@ Mitigación: exclusiones + CORE por módulo.
 10.00_CHANGELOG
 ==========
 
+2026-03-30, v1.2-DRAFT
+- Se incorpora 00.25_VERSION_PEATON.
+- Se incorpora 08.40_TIPOS_DE_MEMORIA_Y_CONTROL_DE_DISPERSION.
+- Se corrige índice para reflejar 00.25, 08.40 y 02.40/02.41/02.42.
 2026-02-28, v1.1-DRAFT
 - Se alinea con PF.0 + CIS + RADAR exclusiones P0.
 - Se refuerza atomic apply por target como política de runners.

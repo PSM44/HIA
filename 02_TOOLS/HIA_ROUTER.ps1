@@ -64,6 +64,13 @@ function Show-HIAHelp {
     }
 
     Write-Host ""
+    Write-Host "TASKS:" -ForegroundColor Yellow
+    Write-Host "  task create-file <relative_path> Crea archivo dentro de PROJECT_ROOT"
+    Write-Host "  task create-file-project <project_id> <relative_path> Crea archivo dentro de 04_PROJECTS\\<project_id>"
+    Write-Host "  projects status Resumen operativo mínimo del portfolio por proyecto"
+    Write-Host "  project review <project_id> Revisión mínima de output/log recientes del proyecto"
+
+    Write-Host ""
     Write-Host "USAGE:" -ForegroundColor Yellow
     Write-Host "  hia <command> [args]"
     Write-Host "  hia agent <name> [args]"
@@ -267,6 +274,14 @@ function Invoke-HIARouter {
                 "radar" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "radar" -ToolArgs $Args }
                 "state" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "state" -ToolArgs $Args }
                 "session" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "session" -ToolArgs $Args }
+                "task" {
+                    $taskEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_TASK_ENGINE.ps1"
+                    if (-not (Test-Path $taskEnginePath)) {
+                        throw "Task engine not found: $taskEnginePath"
+                    }
+
+                    & $taskEnginePath @Args -ProjectRoot $projectRoot
+                }
                 "projects" {
                     if (-not (Get-Command Get-HIAProjects -ErrorAction SilentlyContinue)) {
                         $projectEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_PROJECT_ENGINE.ps1"
@@ -276,13 +291,24 @@ function Invoke-HIARouter {
                         }
                         . $projectEnginePath
                     }
-                    Get-HIAProjects
+
+                    if (-not $Args -or $Args.Count -eq 0) {
+                        Get-HIAProjects
+                        return
+                    }
+
+                    $projectsAction = $Args[0].ToLowerInvariant()
+                    switch ($projectsAction) {
+                        "status" { Get-HIAProjects -Mode status }
+                        default { throw "Usage: hia projects OR hia projects status" }
+                    }
                 }
                 "project" {
                     if (
                         -not (Get-Command New-HIAProject -ErrorAction SilentlyContinue) -or
                         -not (Get-Command Open-HIAProject -ErrorAction SilentlyContinue) -or
                         -not (Get-Command Continue-HIAProject -ErrorAction SilentlyContinue) -or
+                        -not (Get-Command Review-HIAProject -ErrorAction SilentlyContinue) -or
                         -not (Get-Command Show-HIAProjectStatus -ErrorAction SilentlyContinue) -or
                         -not (Get-Command Start-HIAProjectSession -ErrorAction SilentlyContinue) -or
                         -not (Get-Command Get-HIAProjectSessionStatus -ErrorAction SilentlyContinue) -or
@@ -295,7 +321,7 @@ function Invoke-HIARouter {
                         . $projectEnginePath
                     }
 
-                    $projectUsage = "Usage: hia project new <PROJECT_ID> OR hia project open <PROJECT_ID> OR hia project continue <PROJECT_ID> OR hia project status <PROJECT_ID>"
+                    $projectUsage = "Usage: hia project new <PROJECT_ID> OR hia project open <PROJECT_ID> OR hia project continue <PROJECT_ID> OR hia project status <PROJECT_ID> OR hia project review <PROJECT_ID>"
                     $projectSessionUsage = "Usage: hia project session start <PROJECT_ID> OR hia project session status <PROJECT_ID> OR hia project session close <PROJECT_ID>"
 
                     if (-not $Args -or $Args.Count -lt 1) {
@@ -331,6 +357,7 @@ function Invoke-HIARouter {
                         "open" { Open-HIAProject -ProjectId $projectId }
                         "continue" { Continue-HIAProject -ProjectId $projectId }
                         "status" { Show-HIAProjectStatus -ProjectId $projectId }
+                        "review" { Review-HIAProject -ProjectId $projectId }
                         default { throw $projectUsage }
                     }
                 }

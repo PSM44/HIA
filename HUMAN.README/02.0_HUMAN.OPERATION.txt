@@ -26,12 +26,12 @@ NOTA_CANON........: Este archivo es HUMAN (CANON). Mantener explicación concept
          HUMAN.README\09.0_HUMAN.START.RITUAL.txt
 
 02.01 PRINCIPIOS (WBS)
-02.01.01 START.RITUAL manda (contrato humano–IA).
-02.01.02 Phase0 es “handoff mínimo y determinista” para IA cloud.
-02.01.03 “Tooling y triggers” existen para evitar copy/paste manual y drift.
-02.01.04 Si algo falla: NO parchar a mano DragnDrop\Phase0; se re-ejecuta el trigger.
-02.01.05 Foco: pocas carpetas, archivos grandes, pero con potencial de escala registrado.
-
+02.01.01 START.RITUAL manda como contrato de interacción humano–IA cloud.
+02.01.02 El núcleo permanente de HIA no se define por phases, triggers ni DragnDrop.
+02.01.03 Phases y triggers existen como mecanismos de acceso, activación y ejecución peatón-first.
+02.01.04 DragnDrop existe como capa de packaging, handoff y fallback para contextos cloud; no como corazón permanente del sistema.
+02.01.05 Si algo falla en packaging o activación, no se parchea a mano el derivado: se corrige el canon y se re-ejecuta el trigger o runner correspondiente.
+02.01.06 Foco: pocas carpetas, archivos grandes, pero con potencial de escala registrado.
 02.02 RUTINA DE EJECUCIÓN — PHASE0 (WBS)
 02.02.01 Precondiciones (gates)
 02.02.01.01 Existe PROJECT_ROOT (repo HIA).

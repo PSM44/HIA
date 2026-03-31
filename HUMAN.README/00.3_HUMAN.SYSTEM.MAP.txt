@@ -4,7 +4,7 @@
 
 ID_UNICO..........: HIA.HUMAN.SYSTEM.MAP.0001
 NOMBRE_SUGERIDO...: 00.3_HUMAN.SYSTEM.MAP.txt
-VERSION...........: v1.0-DRAFT
+VERSION...........: v1.1-DRAFT
 FECHA.............: 2026-03-14
 HORA..............: HH:MM (America/Santiago)
 CIUDAD............: Santiago, Chile
@@ -144,7 +144,6 @@ cómo realizar operaciones avanzadas
 
 ======================================================================
 06.00_DOCUMENTOS_DE_INFRAESTRUCTURA
-======================================================================
 
 Estos documentos describen los mecanismos internos del sistema.
 
@@ -152,17 +151,15 @@ Documentos incluidos en esta categoría:
 
 03.0_HUMAN.RADAR.txt
 04.0_HUMAN.BATON.txt
-08.0_HUMAN.SYNC.txt
+07.0_HUMAN.MASTER.txt
+08.0_HUMAN.SYNC.MANIFEST.txt
 
 Estos documentos describen:
 
 observabilidad del sistema
 continuidad de contexto
-mecanismos de sincronización
-estructura de archivos
+jerarquía documental y sincronización
 
-
-======================================================================
 07.00_DOCUMENTOS_DE_SOPORTE
 ======================================================================
 
@@ -183,49 +180,33 @@ casos reales de uso
 
 ======================================================================
 08.00_MAPA_ESTRUCTURAL_DEL_SISTEMA
-======================================================================
 
 La estructura conceptual del sistema puede representarse de la siguiente manera.
 
 HIA
 │
-├ HUMAN.README
+├ NUCLEO_PERMANENTE
+│   ├ HUMAN
+│   ├ BATON
+│   ├ CIS
+│   ├ RADAR
+│   ├ MEMORIA / FOCO / BACKLOG / MINIBATTLES / MVP
+│   └ ROUTING / GOBERNANZA / CONTINUIDAD
 │
-│   ├ FUNDAMENTOS
-│   │
-│   │   ├ GENERAL
-│   │   ├ READING_ORDER
-│   │   ├ SYSTEM_OVERVIEW
-│   │   └ SYSTEM_MAP
-│   │
-│   ├ INTERACCION
-│   │
-│   │   ├ USER
-│   │   └ START_RITUAL
-│   │
-│   ├ OPERACION
-│   │
-│   │   ├ OPERATION
-│   │   ├ USE_CASE
-│   │   ├ PF0
-│   │   ├ CIS
-│   │   └ RUNBOOK
-│   │
-│   ├ INFRAESTRUCTURA
-│   │
-│   │   ├ RADAR
-│   │   ├ BATON
-│   │   └ SYNC
-│   │
-│   └ SOPORTE
+├ CAPAS_DE_ACCESO_EJECUCION
+│   ├ START.RITUAL
+│   ├ PHASES
+│   ├ TRIGGERS
+│   ├ CLI
+│   ├ UI/UX
+│   └ ORQUESTADOR
 │
-│       ├ TROUBLE
-│       └ CASEBOOK
+└ CAPA_DE_PACKAGING_TRANSPORTE_FALLBACK
+    ├ DRAGNDROP
+    ├ HANDOFF_PACKAGE
+    └ EXPORTS_MINIMOS_CLOUD
 
-
-======================================================================
 09.00_NAVEGACION_RECOMENDADA
-======================================================================
 
 El orden recomendado de lectura de los documentos HUMAN es el siguiente.
 
@@ -233,42 +214,30 @@ Primero:
 
 09.0_HUMAN.START.RITUAL.txt
 
-Este documento permite ejecutar HIA por primera vez.
-
 Segundo:
 
-00.2_HUMAN.SYSTEM.OVERVIEW.txt
-
-Este documento explica cómo funciona el sistema completo.
+00.0_HUMAN.GENERAL.txt
+01.0_HUMAN.USER.txt
 
 Tercero:
 
-00.3_HUMAN.SYSTEM.MAP.txt
-
-Este documento explica cómo se organizan los documentos.
+06.0_HUMAN.PF0.txt
+05.0_HUMAN.CIS.txt
+02.0_HUMAN.OPERATION.txt
 
 Cuarto:
 
-02.0_HUMAN.OPERATION.txt
-
-Este documento explica cómo trabajar con el sistema.
-
-Quinto:
-
 03.0_HUMAN.RADAR.txt
 04.0_HUMAN.BATON.txt
-08.0_HUMAN.SYNC.txt
-
-Estos documentos explican los mecanismos internos del sistema.
+07.0_HUMAN.MASTER.txt
+08.0_HUMAN.SYNC.MANIFEST.txt
+08.1_HUMAN.DRAGNDROP.PACKAGING.txt
 
 Finalmente:
 
+10.0_HUMAN.HIA.TROUBLE.txt
 CASEBOOK/
 
-Este directorio contiene ejemplos reales.
-
-
-======================================================================
 10.00_CONCLUSION
 ======================================================================
 

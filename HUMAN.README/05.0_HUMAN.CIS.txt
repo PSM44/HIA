@@ -1,33 +1,10 @@
-ID_UNICO..........: HUMAN.CIS.0001
-
-00.00_METADATA_ADDED
-
-DATE......: 2026-03-01
-
-TIME......: 18:55
-
-TZ........: America/Santiago
-
-CITY......: Santiago, Chile
-
-VERSION......: 0.1
-
-NOTE......: Metadata agregado en modo office. No altera el contenido conceptual HUMAN.
-
-ID_HINT...: 
-
-
-==============================
-ARCHIVO: 05.0_HUMAN.CIS.txt
-ACCION: REEMPLAZAR (archivo completo)
-==============================
-
 ==========
 00.00_METADATOS_DEL_DOCUMENTO
 ==========
 
+ID_UNICO..........: HUMAN.CIS.0001
 NOMBRE_SUGERIDO...: 05.0_HUMAN.CIS.txt
-VERSION...........: v1.1-DRAFT
+VERSION...........: v1.2-DRAFT
 
 
 FECHA.............: 2026-02-28
@@ -160,9 +137,11 @@ Atomic Apply (Aplicación atómica): un target se escribe una sola vez, o no se 
 
 
 00.20_INDICE_GENERAL_WBS
-
-
 ==========
+
+00.00 Metadatos
+00.10 Glosario mínimo (abreviaciones explicadas)
+00.20 Índice general WBS
 
 
 
@@ -1262,6 +1241,10 @@ NOTES................:
 
 ==========
 
+2026-03-30, v1.2-DRAFT
+- Limpieza de contaminación office.
+- Restauración de metadatos iniciales.
+- Ajuste editorial del índice para reflejar la estructura real.
 2026-02-28, v1.1-DRAFT
 
 

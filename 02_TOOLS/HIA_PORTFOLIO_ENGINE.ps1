@@ -2,7 +2,7 @@
 ===============================================================================
 MODULE: HIA_PORTFOLIO_ENGINE.ps1
 SYSTEM: HIA - Human Intelligence Amplifier
-TYPE: PORTFOLIO / PROJECT SELECTOR SHELL (MB-1.7)
+TYPE: PORTFOLIO / PROJECT SELECTOR SHELL (MB-1.7 / MB-1.9)
 ===============================================================================
 
 OBJETIVO
@@ -339,12 +339,17 @@ function Invoke-HIAPortfolioShell {
                 }
             }
             "3" {
-                Write-Host ""
-                Write-Host "VAULT (STUB)" -ForegroundColor Yellow
-                Write-Host "NOT IMPLEMENTED in MB-1.7." -ForegroundColor Yellow
-                Write-Host "Next: implement vault shell in a future minibattle." -ForegroundColor DarkGray
-                Write-Host ""
-                Pause-HIAInteractive -ReplayQueue $queue
+                $vaultEnginePath = Join-Path $ProjectRoot "02_TOOLS\HIA_VAULT_ENGINE.ps1"
+                if (-not (Test-Path -LiteralPath $vaultEnginePath)) {
+                    Write-Host ""
+                    Write-Host "ERROR: HIA_VAULT_ENGINE.ps1 no encontrado." -ForegroundColor Red
+                    Write-Host ("PATH: {0}" -f $vaultEnginePath) -ForegroundColor DarkGray
+                    Write-Host ""
+                    Pause-HIAInteractive -ReplayQueue $queue
+                    continue
+                }
+                . $vaultEnginePath
+                Invoke-HIAVaultShell -ProjectRoot $ProjectRoot -ReplayQueue $queue
             }
             "4" {
                 $projects = @(Get-HIAPortfolioProjects -PortfolioRoot $portfolioRoot)
