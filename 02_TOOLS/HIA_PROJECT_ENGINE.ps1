@@ -256,6 +256,414 @@ function Get-HIAProjectLastActionLog {
     return $result
 }
 
+function Get-HIAProjectEvidenceContinuity {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectRootPath
+    )
+
+    $freshnessHours = 72
+    $timestampToleranceHours = 6
+    $pairingToleranceHours = 6
+
+    $lastActionSnapshot = Get-HIAProjectLastActionSnapshot -ProjectRootPath $ProjectRootPath
+    $lastActionOutput = Get-HIAProjectLastActionOutput -ProjectRootPath $ProjectRootPath
+    $lastActionLog = Get-HIAProjectLastActionLog -ProjectRootPath $ProjectRootPath
+
+    $sourceTask = "N/A"
+    $capturedUtc = "N/A"
+    $sessionId = "N/A"
+    $snapshotOutputPath = $null
+    $snapshotLogPath = $null
+
+    if ($lastActionSnapshot.STATUS -eq "FOUND" -and $lastActionSnapshot.DATA) {
+        $sourceTask = if ([string]::IsNullOrWhiteSpace([string]$lastActionSnapshot.DATA.source_task)) { "N/A" } else { ([string]$lastActionSnapshot.DATA.source_task).Trim() }
+        $capturedUtc = Convert-HIAUtcValueToString -Value $lastActionSnapshot.DATA.captured_utc -Default "N/A"
+        $sessionId = if ([string]::IsNullOrWhiteSpace([string]$lastActionSnapshot.DATA.session_id)) { "N/A" } else { [string]$lastActionSnapshot.DATA.session_id }
+        $snapshotOutputPath = [string]$lastActionSnapshot.DATA.output_path
+        $snapshotLogPath = [string]$lastActionSnapshot.DATA.log_path
+    }
+
+    $hasMismatch = $false
+    $anchorParts = New-Object System.Collections.Generic.List[string]
+    $consistencyIssues = New-Object System.Collections.Generic.List[string]
+
+    # Snapshot precedence and coherence checks
+    if (-not [string]::IsNullOrWhiteSpace($snapshotOutputPath)) {
+        $resolvedSnapOutput = [System.IO.Path]::GetFullPath($snapshotOutputPath) 2>$null
+        if (-not (Test-Path -LiteralPath $resolvedSnapOutput -PathType Leaf)) {
+            $hasMismatch = $true
+        }
+        elseif ($lastActionOutput.STATUS -eq "FOUND") {
+            $resolvedSelectedOutput = [System.IO.Path]::GetFullPath($lastActionOutput.PATH) 2>$null
+            if (-not $resolvedSelectedOutput.Equals($resolvedSnapOutput, [System.StringComparison]::OrdinalIgnoreCase)) {
+                $consistencyIssues.Add("snapshot_output_differs_from_selected_output")
+            }
+        }
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($snapshotLogPath)) {
+        $resolvedSnapLog = [System.IO.Path]::GetFullPath($snapshotLogPath) 2>$null
+        if (-not (Test-Path -LiteralPath $resolvedSnapLog -PathType Leaf)) {
+            $hasMismatch = $true
+        }
+        elseif ($lastActionLog.STATUS -eq "FOUND") {
+            $resolvedSelectedLog = [System.IO.Path]::GetFullPath($lastActionLog.PATH) 2>$null
+            if (-not $resolvedSelectedLog.Equals($resolvedSnapLog, [System.StringComparison]::OrdinalIgnoreCase)) {
+                $consistencyIssues.Add("snapshot_log_differs_from_selected_log")
+            }
+        }
+    }
+
+    # Evidence presence
+    $hasEvidence = ($lastActionSnapshot.STATUS -eq "FOUND" -or $lastActionOutput.STATUS -eq "FOUND" -or $lastActionLog.STATUS -eq "FOUND")
+
+    # Build anchor parts
+    if ($sourceTask -ne "N/A") { $anchorParts.Add(("source={0}" -f $sourceTask)) }
+    if ($capturedUtc -ne "N/A") { $anchorParts.Add(("captured_utc={0}" -f $capturedUtc)) }
+    if ($lastActionOutput.STATUS -eq "FOUND") { $anchorParts.Add(("output={0}" -f $lastActionOutput.PATH)) }
+    if ($lastActionLog.STATUS -eq "FOUND") { $anchorParts.Add(("log={0}" -f $lastActionLog.PATH)) }
+    if ($anchorParts.Count -eq 0) { $anchorParts.Add("no recent artifacts") }
+
+    # Choose reference timestamp for freshness
+    $evidenceTimestamp = $null
+    if ($capturedUtc -ne "N/A") {
+        try { $evidenceTimestamp = [datetime]::Parse($capturedUtc).ToUniversalTime() } catch { $evidenceTimestamp = $null }
+    }
+    if ($null -eq $evidenceTimestamp -and $lastActionOutput.STATUS -eq "FOUND") {
+        try { $evidenceTimestamp = (Get-Item -LiteralPath $lastActionOutput.PATH).LastWriteTimeUtc } catch { $evidenceTimestamp = $null }
+    }
+    if ($null -eq $evidenceTimestamp -and $lastActionLog.STATUS -eq "FOUND") {
+        try { $evidenceTimestamp = (Get-Item -LiteralPath $lastActionLog.PATH).LastWriteTimeUtc } catch { $evidenceTimestamp = $null }
+    }
+
+    $state = "MISSING"
+    $ageHours = "N/A"
+
+    if ($hasMismatch) {
+        $state = "MISMATCH"
+    }
+    elseif (-not $hasEvidence) {
+        $state = "MISSING"
+    }
+    else {
+        if ($null -ne $evidenceTimestamp) {
+            $ageHours = [math]::Round(((Get-Date).ToUniversalTime() - $evidenceTimestamp).TotalHours, 1)
+            if ($ageHours -gt $freshnessHours) {
+                $state = "STALE"
+            }
+            else {
+                $state = "FRESH"
+            }
+        }
+        else {
+            # Evidence present but no timestamp; treat as MISMATCH for safety.
+            $state = "MISMATCH"
+        }
+    }
+
+    $handoff = "No recent action artifacts detected. Refresh project context before continuing."
+    if ($state -eq "FRESH") {
+        $handoff = ("Evidence anchor fresh ({0}). Keep operational loop conservative." -f ($anchorParts -join " | "))
+    }
+    elseif ($state -eq "STALE") {
+        $handoff = ("Evidence anchor stale ({0}). Refresh context before continuing." -f ($anchorParts -join " | "))
+    }
+    elseif ($state -eq "MISMATCH") {
+        $handoff = ("Evidence mismatch ({0}). Refresh context before continuing." -f ($anchorParts -join " | "))
+    }
+
+    $result = [ordered]@{
+        STATE = $state
+        AGE_HOURS = $ageHours
+        SOURCE_TASK = $sourceTask
+        CAPTURED_UTC = $capturedUtc
+        SESSION_ID = $sessionId
+        OUTPUT_STATUS = $lastActionOutput.STATUS
+        OUTPUT_PATH = $lastActionOutput.PATH
+        OUTPUT_PREVIEW = $lastActionOutput.PREVIEW
+        LOG_STATUS = $lastActionLog.STATUS
+        LOG_PATH = $lastActionLog.PATH
+        LOG_PREVIEW = $lastActionLog.PREVIEW
+        ANCHOR = ($anchorParts -join " | ")
+        HANDOFF = $handoff
+        CONSISTENCY = "N/A"
+        CONSISTENCY_NOTES = @()
+    }
+
+    # Consistency checks only if evidence exists and not a hard mismatch
+    if ($hasEvidence -and $state -in @("FRESH", "STALE")) {
+        # Session consistency (only if session file exists and active)
+        $sessionPath = Join-Path $ProjectRootPath "ARTIFACTS\SESSION.ACTIVE.json"
+        if (Test-Path -LiteralPath $sessionPath) {
+            try {
+                $sessionObj = Get-Content -LiteralPath $sessionPath -Raw | ConvertFrom-Json
+                $sessionStatus = [string]$sessionObj.status
+                $activeSessionId = [string]$sessionObj.session_id
+                if ($sourceTask -ne "N/A" -and -not [string]::IsNullOrWhiteSpace($sessionId) -and -not [string]::IsNullOrWhiteSpace($activeSessionId)) {
+                    if ($sessionStatus.ToLowerInvariant() -eq "active" -and -not $sessionId.Equals($activeSessionId, [System.StringComparison]::OrdinalIgnoreCase)) {
+                        $consistencyIssues.Add("snapshot_session_differs_from_active_session")
+                    }
+                }
+            }
+            catch {
+                # Ignore parsing errors to stay deterministic without failing execution
+            }
+        }
+
+        # Output/Log pairing by timestamp proximity
+        if ($lastActionOutput.STATUS -eq "FOUND" -and $lastActionLog.STATUS -eq "FOUND") {
+            try {
+                $outTime = (Get-Item -LiteralPath $lastActionOutput.PATH).LastWriteTimeUtc
+                $logTime = (Get-Item -LiteralPath $lastActionLog.PATH).LastWriteTimeUtc
+                $pairDiff = [math]::Abs((($outTime - $logTime).TotalHours))
+                if ($pairDiff -gt $pairingToleranceHours) {
+                    $consistencyIssues.Add("output_log_timestamp_divergence")
+                }
+            }
+            catch { }
+        }
+
+        # Timestamp order sanity vs captured_utc
+        if ($null -ne $evidenceTimestamp) {
+            if ($lastActionOutput.STATUS -eq "FOUND") {
+                try {
+                    $outTime = (Get-Item -LiteralPath $lastActionOutput.PATH).LastWriteTimeUtc
+                    if ([math]::Abs((($evidenceTimestamp - $outTime).TotalHours)) -gt $timestampToleranceHours) {
+                        $consistencyIssues.Add("captured_vs_output_timestamp_divergence")
+                    }
+                }
+                catch { }
+            }
+            if ($lastActionLog.STATUS -eq "FOUND") {
+                try {
+                    $logTime = (Get-Item -LiteralPath $lastActionLog.PATH).LastWriteTimeUtc
+                    if ([math]::Abs((($evidenceTimestamp - $logTime).TotalHours)) -gt $timestampToleranceHours) {
+                        $consistencyIssues.Add("captured_vs_log_timestamp_divergence")
+                    }
+                }
+                catch { }
+            }
+        }
+
+        # Determine consistency state
+        if ($consistencyIssues.Count -gt 0) {
+            $stateConsistency = "INCONSISTENT"
+        }
+        else {
+            $stateConsistency = "CONSISTENT"
+        }
+        $result.CONSISTENCY = $stateConsistency
+        $result.CONSISTENCY_NOTES = @($consistencyIssues)
+    }
+    else {
+        $result.CONSISTENCY = "N/A"
+        $result.CONSISTENCY_NOTES = @()
+    }
+
+    return $result
+}
+
+function Get-HIASessionSafety {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectRootPath,
+        [int]$MaxActiveHours = 12
+    )
+
+    $sessionPath = Join-Path $ProjectRootPath "ARTIFACTS\SESSION.ACTIVE.json"
+    $state = "N/A"
+    $notes = @()
+    $ageHours = "N/A"
+
+    if (-not (Test-Path -LiteralPath $sessionPath -PathType Leaf)) {
+        return [ordered]@{ STATE = $state; NOTES = $notes; AGE_HOURS = $ageHours }
+    }
+
+    try {
+        $session = Get-Content -LiteralPath $sessionPath -Raw | ConvertFrom-Json
+        $status = [string]$session.status
+        $started = $session.started_utc
+        if (-not [string]::IsNullOrWhiteSpace($status) -and $status.ToLowerInvariant() -eq "active") {
+            $startedUtc = $null
+            try {
+                if ($started -is [datetime]) {
+                    $startedUtc = $started.ToUniversalTime()
+                }
+                else {
+                    $startedUtc = [datetime]::Parse($started, [System.Globalization.CultureInfo]::InvariantCulture, [System.Globalization.DateTimeStyles]::RoundtripKind).ToUniversalTime()
+                }
+            }
+            catch { $startedUtc = $null }
+            if ($null -ne $startedUtc) {
+                $ageHours = [math]::Round(((Get-Date).ToUniversalTime() - $startedUtc).TotalHours,1)
+                if ($ageHours -lt 0) { $ageHours = 0 }
+                if ($ageHours -gt $MaxActiveHours) {
+                    $state = "WARN"
+                    $notes += ("Active session age {0}h > {1}h threshold" -f $ageHours, $MaxActiveHours)
+                }
+                else {
+                    $state = "OK"
+                }
+            }
+            else {
+                $state = "WARN"
+                $notes += "Active session has invalid start time"
+            }
+        }
+    }
+    catch {
+        $state = "N/A"
+        $notes = @()
+    }
+
+    return [ordered]@{
+        STATE = $state
+        NOTES = $notes
+        AGE_HOURS = $ageHours
+    }
+}
+
+function Add-HIADecisionLedgerEntry {
+    param(
+        $ProjectId,
+        $Decision,
+        $ActionText,
+        $Result
+    )
+
+    $projectRoot = Resolve-HIAProjectRoot -ProjectId $ProjectId
+    $ledgerPath = Join-Path $projectRoot "ARTIFACTS\DECISION_LEDGER.txt"
+
+    $utcNow = (Get-Date).ToUniversalTime().ToString("o")
+    $normalize = {
+        param($text)
+        $t = [string]$text
+        if ([string]::IsNullOrWhiteSpace($t)) { return "N/A" }
+        $t = $t -replace '\r','' -replace '\n',''
+        $t = $t -replace '\|','/'
+        return $t.Trim()
+    }
+
+    $entry = "UTC={0} | DECISION={1} | ACTION={2} | RESULT={3}" -f `
+        $utcNow, `
+        (& $normalize $Decision), `
+        (& $normalize $ActionText), `
+        (& $normalize $Result)
+
+    $existing = @()
+    if (Test-Path -LiteralPath $ledgerPath -PathType Leaf) {
+        try { $existing = Get-Content -LiteralPath $ledgerPath -ErrorAction Stop } catch { $existing = @() }
+    }
+
+    $all = @()
+    if ($existing) { $all += $existing }
+    $all += $entry
+    if ($all.Count -gt 3) {
+        $all = $all | Select-Object -Last 3
+    }
+
+    $ledgerDir = [System.IO.Path]::GetDirectoryName($ledgerPath)
+    if (-not (Test-Path -LiteralPath $ledgerDir)) {
+        New-Item -ItemType Directory -Path $ledgerDir -Force | Out-Null
+    }
+
+    $content = $all -join [Environment]::NewLine
+    Set-Content -LiteralPath $ledgerPath -Value $content -Encoding UTF8
+}
+
+function Get-HIADecisionLedgerLatest {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectRootPath
+    )
+
+    $ledgerPath = Join-Path $ProjectRootPath "ARTIFACTS\DECISION_LEDGER.txt"
+    $decisionVal = "N/A"
+    $actionVal = "N/A"
+    $resultVal = "N/A"
+
+    if (-not (Test-Path -LiteralPath $ledgerPath -PathType Leaf)) {
+        return $result
+    }
+
+    try {
+        $lines = Get-Content -LiteralPath $ledgerPath -ErrorAction Stop
+        if ($lines.Count -eq 0) { return [pscustomobject]@{ DECISION = $decisionVal; ACTION = $actionVal; RESULT = $resultVal } }
+        $latest = [string]($lines | Select-Object -Last 1)
+        if ($latest -match "DECISION=([^|]+)") { $decisionVal = ($Matches[1]).Trim() }
+        if ($latest -match "ACTION=([^|]+)") { $actionVal = ($Matches[1]).Trim() }
+        if ($latest -match "RESULT=([^|]+)") { $resultVal = ($Matches[1]).Trim() }
+    }
+    catch {
+        return [pscustomobject]@{ DECISION = $decisionVal; ACTION = $actionVal; RESULT = $resultVal }
+    }
+
+    return [pscustomobject]@{
+        DECISION = $decisionVal
+        ACTION = $actionVal
+        RESULT = $resultVal
+    }
+}
+
+function Test-HIAProjectConfig {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectRootPath,
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectId
+    )
+
+    $configPath = Join-Path $ProjectRootPath "PROJECT.CONFIG.json"
+    $status = "FAIL"
+    $notes = New-Object System.Collections.Generic.List[string]
+
+    if (-not (Test-Path -LiteralPath $configPath -PathType Leaf)) {
+        $notes.Add("config_missing")
+        return [ordered]@{ STATUS = $status; NOTES = $notes }
+    }
+
+    try {
+        $config = Get-Content -LiteralPath $configPath -Raw | ConvertFrom-Json
+    }
+    catch {
+        $notes.Add("config_unreadable_json")
+        return [ordered]@{ STATUS = $status; NOTES = $notes }
+    }
+
+    $projectIdField = $null
+    if ($config.PSObject.Properties.Name -contains "project_id") {
+        $projectIdField = [string]$config.project_id
+    }
+    if ([string]::IsNullOrWhiteSpace($projectIdField)) {
+        $notes.Add("project_id_missing")
+    }
+    elseif (-not $projectIdField.Equals($ProjectId, [System.StringComparison]::OrdinalIgnoreCase)) {
+        $notes.Add(("project_id_mismatch:{0}" -f $projectIdField))
+    }
+
+    $stateField = $null
+    if ($config.PSObject.Properties.Name -contains "state") {
+        $stateField = [string]$config.state
+    }
+    elseif ($config.PSObject.Properties.Name -contains "status") {
+        $stateField = [string]$config.status
+    }
+    if ([string]::IsNullOrWhiteSpace($stateField)) {
+        $notes.Add("state_missing")
+    }
+
+    if ($notes.Count -eq 0) {
+        $status = "OK"
+    }
+
+    return [ordered]@{
+        STATUS = $status
+        NOTES = $notes
+        PATH = $configPath
+    }
+}
+
 function New-HIAProject {
     param(
         [Parameter(Mandatory = $true)]
@@ -434,6 +842,7 @@ function Continue-HIAProject {
     }
 
     $projectRoot = Resolve-HIAProjectRoot -ProjectId $ProjectId
+    $configCheck = Test-HIAProjectConfig -ProjectRootPath $projectRoot -ProjectId $ProjectId
 
     $snapshot = Get-HIAProjectPortfolioSnapshot -ProjectRootPath $projectRoot -ProjectId $ProjectId
     $currentObjective = if ([string]::IsNullOrWhiteSpace([string]$snapshot.CURRENT_OBJECTIVE)) { "N/A" } else { [string]$snapshot.CURRENT_OBJECTIVE }
@@ -493,8 +902,36 @@ function Continue-HIAProject {
         $suggestedCommand = ("hia project status {0}" -f $ProjectId)
     }
 
-    $lastActionOutput = Get-HIAProjectLastActionOutput -ProjectRootPath $projectRoot -PreferredRelativePath $safeTaskPath
-    $lastActionLog = Get-HIAProjectLastActionLog -ProjectRootPath $projectRoot
+    $evidenceContinuity = Get-HIAProjectEvidenceContinuity -ProjectRootPath $projectRoot
+
+    $operationalThread = "NO_EVIDENCE -> Use BATON/BACKLOG + session guidance."
+    if ($evidenceContinuity.STATE -eq "FRESH") {
+        if ($evidenceContinuity.CONSISTENCY -eq "INCONSISTENT") {
+            $operationalThread = ("EVIDENCE_FRESH_INCONSISTENT -> {0}" -f $evidenceContinuity.ANCHOR)
+            $taskGuidance = "Evidence inconsistent. Refresh context (status/radar/session) before executing tasks."
+            $suggestedCommand = ("hia project status {0}" -f $ProjectId)
+        }
+        else {
+            $operationalThread = ("EVIDENCE_ANCHOR[FRESH] -> {0}" -f $evidenceContinuity.ANCHOR)
+            if ($lastSessionStatus -ne "active") {
+                $taskGuidance = "Review evidence anchor then start session before executing next task."
+                $suggestedCommand = ("hia project review {0}" -f $ProjectId)
+            }
+            elseif ($taskGuidance -eq "N/A" -or $taskGuidance -like "No actionable*") {
+                $taskGuidance = "Anchor on last evidence before executing BATON/backlog task."
+            }
+        }
+    }
+    else {
+        $operationalThread = ("EVIDENCE_{0} -> Refresh context before tasks." -f $evidenceContinuity.STATE)
+        $taskGuidance = ("Evidence {0}. Refresh context (status/radar/session) before executing tasks." -f $evidenceContinuity.STATE)
+        $suggestedCommand = ("hia project status {0}" -f $ProjectId)
+    }
+
+    $sessionSafety = Get-HIASessionSafety -ProjectRootPath $projectRoot -MaxActiveHours 12
+    if ($sessionSafety.STATE -eq "WARN") {
+        $taskGuidance = ("Session warning: {0}. " -f (($sessionSafety.NOTES) -join "; ")) + $taskGuidance
+    }
 
     Write-Host ""
     Write-Host "PROJECT CONTINUE" -ForegroundColor Green
@@ -505,20 +942,43 @@ function Continue-HIAProject {
     Write-Host ("RESUME_RECOMMENDATION: {0}" -f $resumeRecommendation)
     Write-Host ("TASK_GUIDANCE: {0}" -f $taskGuidance)
     Write-Host ("SUGGESTED_COMMAND: {0}" -f $suggestedCommand)
-    Write-Host ("LAST_ACTION_OUTPUT_STATUS: {0}" -f $lastActionOutput.STATUS)
-    Write-Host ("LAST_ACTION_OUTPUT_PATH: {0}" -f $lastActionOutput.PATH)
-    Write-Host ("LAST_ACTION_OUTPUT_PREVIEW: {0}" -f $lastActionOutput.PREVIEW)
-    Write-Host ("LAST_ACTION_LOG_STATUS: {0}" -f $lastActionLog.STATUS)
-    Write-Host ("LAST_ACTION_LOG_PATH: {0}" -f $lastActionLog.PATH)
-    Write-Host ("LAST_ACTION_LOG_PREVIEW: {0}" -f $lastActionLog.PREVIEW)
+    Write-Host ("OPERATIONAL_THREAD: {0}" -f $operationalThread)
+    Write-Host ("EVIDENCE_STATE: {0}" -f $evidenceContinuity.STATE)
+    Write-Host ("EVIDENCE_AGE_HOURS: {0}" -f $evidenceContinuity.AGE_HOURS)
+    Write-Host ("EVIDENCE_CONSISTENCY: {0}" -f $evidenceContinuity.CONSISTENCY)
+    Write-Host ("EVIDENCE_CONSISTENCY_NOTES: {0}" -f (($evidenceContinuity.CONSISTENCY_NOTES) -join ", "))
+    Write-Host ("EVIDENCE_ANCHOR: {0}" -f $evidenceContinuity.ANCHOR)
+    Write-Host ("EVIDENCE_CAPTURED_UTC: {0}" -f $evidenceContinuity.CAPTURED_UTC)
+    Write-Host ("EVIDENCE_SESSION_ID: {0}" -f $evidenceContinuity.SESSION_ID)
+    Write-Host ("LATEST_OUTPUT_PATH: {0}" -f $evidenceContinuity.OUTPUT_PATH)
+    Write-Host ("LATEST_LOG_PATH: {0}" -f $evidenceContinuity.LOG_PATH)
+    $debugPointer = "No recent artifacts"
+    if ($evidenceContinuity.OUTPUT_STATUS -eq "FOUND" -and $evidenceContinuity.LOG_STATUS -eq "FOUND") {
+        $debugPointer = "Inspect log then output"
+    }
+    elseif ($evidenceContinuity.LOG_STATUS -eq "FOUND") {
+        $debugPointer = "Inspect log first"
+    }
+    elseif ($evidenceContinuity.OUTPUT_STATUS -eq "FOUND") {
+        $debugPointer = "Inspect output"
+    }
+    Write-Host ("DEBUG_POINTER: {0}" -f $debugPointer)
+    Write-Host ("SESSION_SAFETY: {0}" -f $sessionSafety.STATE)
+    Write-Host ("SESSION_SAFETY_NOTES: {0}" -f (($sessionSafety.NOTES) -join ", "))
+    Write-Host ("SESSION_SAFETY_AGE_HOURS: {0}" -f $sessionSafety.AGE_HOURS)
+    Write-Host ("PROJECT_CONFIG_STATUS: {0}" -f $configCheck.STATUS)
+    Write-Host ("PROJECT_CONFIG_NOTES: {0}" -f (($configCheck.NOTES) -join ", "))
     Write-Host ""
     Write-Host "NEXT_COMMANDS:" -ForegroundColor Yellow
-    $nextCommands = @(
-        $suggestedCommand
-        ("hia project status {0}" -f $ProjectId)
-        ("hia project open {0}" -f $ProjectId)
-        ("hia project session status {0}" -f $ProjectId)
-    ) | Select-Object -Unique
+    $nextCommands = New-Object System.Collections.Generic.List[string]
+    $nextCommands.Add($suggestedCommand) | Out-Null
+    if ($evidenceContinuity.STATE -eq "FRESH" -and $evidenceContinuity.CONSISTENCY -eq "CONSISTENT") {
+        $nextCommands.Add(("hia project continue {0}" -f $ProjectId)) | Out-Null
+    }
+    $nextCommands.Add(("hia project status {0}" -f $ProjectId)) | Out-Null
+    $nextCommands.Add(("hia project open {0}" -f $ProjectId)) | Out-Null
+    $nextCommands.Add(("hia project session status {0}" -f $ProjectId)) | Out-Null
+    $nextCommands = $nextCommands | Select-Object -Unique
     foreach ($cmd in $nextCommands) {
         Write-Host ("- {0}" -f $cmd)
     }
@@ -536,37 +996,105 @@ function Review-HIAProject {
     }
 
     $projectRoot = Resolve-HIAProjectRoot -ProjectId $ProjectId
-    $lastActionOutput = Get-HIAProjectLastActionOutput -ProjectRootPath $projectRoot
-    $lastActionLog = Get-HIAProjectLastActionLog -ProjectRootPath $projectRoot
-    $hasRecentOutput = ([string]$lastActionOutput.STATUS -eq "FOUND")
-    $hasRecentLog = ([string]$lastActionLog.STATUS -eq "FOUND")
-    $hasRecentEvidence = ($hasRecentOutput -or $hasRecentLog)
+    $configCheck = Test-HIAProjectConfig -ProjectRootPath $projectRoot -ProjectId $ProjectId
+    $evidenceContinuity = Get-HIAProjectEvidenceContinuity -ProjectRootPath $projectRoot
 
-    $reviewHandoff = "No recent action artifacts detected. Refresh project context before continuing."
+    # BATON/BACKLOG for sync hint
+    $batonPath = Join-Path $projectRoot "BATON\04.0_PROJECT.BATON.txt"
+    $backlogPath = Join-Path $projectRoot "AGILE\PROJECT.BACKLOG.txt"
+    $nextActionBaton = Get-HIABatonValueByHeaders -BatonPath $batonPath -Headers @(
+        "06.00_NEXT_ACTION","06.00_PROXIMA_ACCION","06.00_SIGUIENTE_ACCION",
+        "05.00_NEXT_ACTION","05.00_PROXIMA_ACCION","05.00_SIGUIENTE_ACCION",
+        "05.00_SIGUIENTE_MINIBATTLE","05.00_NEXT_MINIBATTLE"
+    )
+    $nextReadyBacklog = Get-HIANextReadyBacklogItem -BacklogPath $backlogPath
+
+    $reviewHandoff = $evidenceContinuity.HANDOFF
     $suggestedCommand = ("hia project status {0}" -f $ProjectId)
-    if ($hasRecentEvidence) {
-        $reviewHandoff = "Recent project action artifacts detected. Continue operational loop safely."
+    if ($evidenceContinuity.STATE -eq "FRESH" -and $evidenceContinuity.CONSISTENCY -eq "CONSISTENT") {
         $suggestedCommand = ("hia project continue {0}" -f $ProjectId)
+    }
+
+    $sessionSafety = Get-HIASessionSafety -ProjectRootPath $projectRoot -MaxActiveHours 12
+    $ledgerDecision = "N/A"
+    $ledgerAction = "N/A"
+    $ledgerResult = "N/A"
+    $ledgerPath = Join-Path $projectRoot "ARTIFACTS\DECISION_LEDGER.txt"
+    if (Test-Path -LiteralPath $ledgerPath -PathType Leaf) {
+        try {
+            $latestLedgerLine = [string](Get-Content -LiteralPath $ledgerPath -ErrorAction Stop | Select-Object -Last 1)
+            if ($latestLedgerLine -match "DECISION=([^|]+)") { $ledgerDecision = ($Matches[1]).Trim() }
+            if ($latestLedgerLine -match "ACTION=([^|]+)") { $ledgerAction = ($Matches[1]).Trim() }
+            if ($latestLedgerLine -match "RESULT=([^|]+)") { $ledgerResult = ($Matches[1]).Trim() }
+        }
+        catch { }
     }
 
     Write-Host ""
     Write-Host "PROJECT REVIEW" -ForegroundColor Green
     Write-Host ("PROJECT_ID: {0}" -f $ProjectId)
-    Write-Host ("LAST_ACTION_OUTPUT_STATUS: {0}" -f $lastActionOutput.STATUS)
-    Write-Host ("LAST_ACTION_OUTPUT_PATH: {0}" -f $lastActionOutput.PATH)
-    Write-Host ("LAST_ACTION_LOG_STATUS: {0}" -f $lastActionLog.STATUS)
-    Write-Host ("LAST_ACTION_LOG_PATH: {0}" -f $lastActionLog.PATH)
+    Write-Host ("EVIDENCE_STATE: {0}" -f $evidenceContinuity.STATE)
+    Write-Host ("EVIDENCE_AGE_HOURS: {0}" -f $evidenceContinuity.AGE_HOURS)
+    Write-Host ("EVIDENCE_CONSISTENCY: {0}" -f $evidenceContinuity.CONSISTENCY)
+    Write-Host ("EVIDENCE_CONSISTENCY_NOTES: {0}" -f (($evidenceContinuity.CONSISTENCY_NOTES) -join ", "))
+    Write-Host ("EVIDENCE_ANCHOR: {0}" -f $evidenceContinuity.ANCHOR)
+    Write-Host ("EVIDENCE_CAPTURED_UTC: {0}" -f $evidenceContinuity.CAPTURED_UTC)
+    Write-Host ("EVIDENCE_SESSION_ID: {0}" -f $evidenceContinuity.SESSION_ID)
+    Write-Host ("LATEST_OUTPUT_PATH: {0}" -f $evidenceContinuity.OUTPUT_PATH)
+    Write-Host ("LATEST_LOG_PATH: {0}" -f $evidenceContinuity.LOG_PATH)
+    $debugPointer = "No recent artifacts"
+    if ($evidenceContinuity.OUTPUT_STATUS -eq "FOUND" -and $evidenceContinuity.LOG_STATUS -eq "FOUND") {
+        $debugPointer = "Inspect log then output"
+    }
+    elseif ($evidenceContinuity.LOG_STATUS -eq "FOUND") {
+        $debugPointer = "Inspect log first"
+    }
+    elseif ($evidenceContinuity.OUTPUT_STATUS -eq "FOUND") {
+        $debugPointer = "Inspect output"
+    }
+    Write-Host ("DEBUG_POINTER: {0}" -f $debugPointer)
+    Write-Host ("SESSION_SAFETY: {0}" -f $sessionSafety.STATE)
+    Write-Host ("SESSION_SAFETY_NOTES: {0}" -f (($sessionSafety.NOTES) -join ", "))
+    Write-Host ("SESSION_SAFETY_AGE_HOURS: {0}" -f $sessionSafety.AGE_HOURS)
+    Write-Host ("LEDGER_DECISION: {0}" -f $ledgerDecision)
+    Write-Host ("LEDGER_ACTION: {0}" -f $ledgerAction)
+    Write-Host ("LEDGER_RESULT: {0}" -f $ledgerResult)
+    Write-Host ("PROJECT_CONFIG_STATUS: {0}" -f $configCheck.STATUS)
+    Write-Host ("PROJECT_CONFIG_NOTES: {0}" -f (($configCheck.NOTES) -join ", "))
+    $syncHint = "N/A"
+    $syncNotes = "N/A"
+    if ($nextActionBaton -ne "N/A" -and $nextReadyBacklog -ne "N/A") {
+        $batonToken = ($nextActionBaton -split "\|")[0].Trim()
+        $readyToken = ($nextReadyBacklog -split "\|")[0].Trim()
+        if ([string]::IsNullOrWhiteSpace($batonToken) -or [string]::IsNullOrWhiteSpace($readyToken)) {
+            $syncHint = "N/A"
+            $syncNotes = "Tokens not comparable"
+        }
+        elseif ($batonToken.Equals($readyToken, [System.StringComparison]::OrdinalIgnoreCase)) {
+            $syncHint = "OK"
+            $syncNotes = "BATON and BACKLOG READY aligned"
+        }
+        else {
+            $syncHint = "WARN"
+            $syncNotes = ("BATON={0} vs READY={1}" -f $batonToken, $readyToken)
+        }
+    }
+    Write-Host ("SYNC_HINT: {0}" -f $syncHint)
+    Write-Host ("SYNC_HINT_NOTES: {0}" -f $syncNotes)
     Write-Host ("REVIEW_HANDOFF: {0}" -f $reviewHandoff)
     Write-Host ("SUGGESTED_COMMAND: {0}" -f $suggestedCommand)
     Write-Host ""
     Write-Host "NEXT_COMMANDS:" -ForegroundColor Yellow
-    $nextCommands = @(
-        $suggestedCommand
-        ("hia project continue {0}" -f $ProjectId)
-        ("hia project status {0}" -f $ProjectId)
-        ("hia project open {0}" -f $ProjectId)
-        ("hia project session status {0}" -f $ProjectId)
-    ) | Select-Object -Unique
+    $nextCommands = New-Object System.Collections.Generic.List[string]
+    $nextCommands.Add($suggestedCommand) | Out-Null
+    if ($evidenceContinuity.STATE -eq "FRESH" -and $evidenceContinuity.CONSISTENCY -eq "CONSISTENT") {
+        $nextCommands.Add(("hia project continue {0}" -f $ProjectId)) | Out-Null
+    }
+    $nextCommands.Add(("hia project status {0}" -f $ProjectId)) | Out-Null
+    $nextCommands.Add(("hia project open {0}" -f $ProjectId)) | Out-Null
+    $nextCommands.Add(("hia project session status {0}" -f $ProjectId)) | Out-Null
+
+    $nextCommands = $nextCommands | Select-Object -Unique
     foreach ($cmd in $nextCommands) {
         Write-Host ("- {0}" -f $cmd)
     }
@@ -729,12 +1257,82 @@ function Show-HIAProjectStatus {
         }
     }
 
+    # NEXT STEP SNAPSHOT (MB-2.24)
+    $nextStepSnapshot = "No deterministic next step. Consider hia project review to refresh context."
+    $nextStepReason = "No strong signal detected"
+    $nextStepSource = "N/A"
+
+    if ($nextAction -ne "N/A") {
+        $nextStepSnapshot = $nextAction
+        $nextStepReason = "BATON NEXT_ACTION"
+        $nextStepSource = "BATON"
+    }
+    elseif ($nextReadyItem -ne "N/A") {
+        $nextStepSnapshot = $nextReadyItem
+        $nextStepReason = "BACKLOG first READY item"
+        $nextStepSource = "BACKLOG"
+    }
+    elseif ($lastSessionStatus.ToLowerInvariant() -eq "active") {
+        $nextStepSnapshot = "Session active. Continue or close the session before new work."
+        $nextStepReason = "SESSION active"
+        $nextStepSource = "SESSION"
+    }
+    else {
+        try {
+            $evidenceContinuity = Get-HIAProjectEvidenceContinuity -ProjectRootPath $projectRoot
+            if ($evidenceContinuity.STATE -eq "FRESH") {
+                $anchor = if ([string]::IsNullOrWhiteSpace([string]$evidenceContinuity.ANCHOR)) { "evidence anchor" } else { [string]$evidenceContinuity.ANCHOR }
+                $nextStepSnapshot = ("Continue from evidence: {0}" -f $anchor)
+                $nextStepReason = "EVIDENCE fresh"
+                $nextStepSource = "EVIDENCE"
+            }
+        }
+        catch {
+            # Keep defaults if evidence continuity fails; status should remain deterministic
+        }
+    }
+
     $readmeStatus = if (Test-Path -LiteralPath $readmePath) { "OK" } else { "N/A" }
-    $configStatus = if (Test-Path -LiteralPath $configPath) { "OK" } else { "N/A" }
+    $configCheck = Test-HIAProjectConfig -ProjectRootPath $projectRoot -ProjectId $ProjectId
+    $configStatus = $configCheck.STATUS
     $batonStatus = if (Test-Path -LiteralPath $batonPath) { "OK" } else { "N/A" }
     $backlogStatus = if (Test-Path -LiteralPath $backlogPath) { "OK" } else { "N/A" }
     $sessionFileStatus = if (Test-Path -LiteralPath $sessionPath) { "OK" } else { "N/A" }
     $logsStatus = if (Test-Path -LiteralPath $logsPath) { "OK" } else { "N/A" }
+
+    $ledgerDecision = "N/A"
+    $ledgerAction = "N/A"
+    $ledgerResult = "N/A"
+    $ledgerPath = Join-Path $projectRoot "ARTIFACTS\DECISION_LEDGER.txt"
+    if (Test-Path -LiteralPath $ledgerPath -PathType Leaf) {
+        try {
+            $latestLedgerLine = [string](Get-Content -LiteralPath $ledgerPath -ErrorAction Stop | Select-Object -Last 1)
+            if ($latestLedgerLine -match "DECISION=([^|]+)") { $ledgerDecision = ($Matches[1]).Trim() }
+            if ($latestLedgerLine -match "ACTION=([^|]+)") { $ledgerAction = ($Matches[1]).Trim() }
+            if ($latestLedgerLine -match "RESULT=([^|]+)") { $ledgerResult = ($Matches[1]).Trim() }
+        }
+        catch { }
+    }
+
+    # SYNC HINT (BATON vs BACKLOG READY)
+    $syncHint = "N/A"
+    $syncNotes = "N/A"
+    if ($nextAction -ne "N/A" -and $nextReadyItem -ne "N/A") {
+        $batonToken = ($nextAction -split "\|")[0].Trim()
+        $readyToken = ($nextReadyItem -split "\|")[0].Trim()
+        if ([string]::IsNullOrWhiteSpace($batonToken) -or [string]::IsNullOrWhiteSpace($readyToken)) {
+            $syncHint = "N/A"
+            $syncNotes = "Tokens not comparable"
+        }
+        elseif ($batonToken.Equals($readyToken, [System.StringComparison]::OrdinalIgnoreCase)) {
+            $syncHint = "OK"
+            $syncNotes = "BATON and BACKLOG READY aligned"
+        }
+        else {
+            $syncHint = "WARN"
+            $syncNotes = ("BATON={0} vs READY={1}" -f $batonToken, $readyToken)
+        }
+    }
 
     Write-Host ""
     Write-Host "PROJECT STATUS" -ForegroundColor Green
@@ -744,10 +1342,20 @@ function Show-HIAProjectStatus {
     Write-Host ("CURRENT_OBJECTIVE: {0}" -f $currentObjective)
     Write-Host ("NEXT_ACTION: {0}" -f $nextAction)
     Write-Host ("NEXT_READY_ITEM: {0}" -f $nextReadyItem)
+    Write-Host ("NEXT_STEP_SNAPSHOT: {0}" -f $nextStepSnapshot)
+    Write-Host ("NEXT_STEP_REASON: {0}" -f $nextStepReason)
+    Write-Host ("NEXT_STEP_SOURCE: {0}" -f $nextStepSource)
     Write-Host ("LAST_SESSION_STATUS: {0}" -f $lastSessionStatus)
     Write-Host ("LAST_SESSION_ID: {0}" -f $lastSessionId)
     Write-Host ("LAST_SESSION_STARTED_UTC: {0}" -f $lastSessionStartedUtc)
     Write-Host ("LAST_SESSION_CLOSED_UTC: {0}" -f $lastSessionClosedUtc)
+    Write-Host ("LEDGER_DECISION: {0}" -f $ledgerDecision)
+    Write-Host ("LEDGER_ACTION: {0}" -f $ledgerAction)
+    Write-Host ("LEDGER_RESULT: {0}" -f $ledgerResult)
+    Write-Host ("SYNC_HINT: {0}" -f $syncHint)
+    Write-Host ("SYNC_HINT_NOTES: {0}" -f $syncNotes)
+    Write-Host ("PROJECT_CONFIG_STATUS: {0}" -f $configStatus)
+    Write-Host ("PROJECT_CONFIG_NOTES: {0}" -f (($configCheck.NOTES) -join ", "))
     Write-Host ""
     Write-Host "RELEVANT_PATHS:"
     Write-Host ("BATON: {0} [{1}]" -f $batonPath, $batonStatus)
@@ -1087,39 +1695,87 @@ function Get-HIAProjects {
     }
 
     if ($Mode -eq "status") {
-        Write-Host "MODO: STATUS (MB-2.4)"
-        Write-Host ""
-        $i = 1
-        foreach ($proj in $projects) {
-            $snapshot = $null
-            try {
-                $snapshot = Get-HIAProjectPortfolioSnapshot -ProjectRootPath $proj.FullName -ProjectId $proj.Name
-            }
-            catch {
-                $snapshot = [ordered]@{
-                    PROJECT_ID = $proj.Name
-                    PROJECT_STATE = "N/A"
-                    CURRENT_OBJECTIVE = "N/A"
-                    NEXT_ACTION = "N/A"
-                    LAST_SESSION_STATUS = "N/A"
-                    LAST_SESSION_CLOSED_UTC = "N/A"
-                }
-            }
-
-            Write-Host ("{0}. PROJECT_ID: {1}" -f $i, $snapshot.PROJECT_ID) -ForegroundColor Cyan
-            Write-Host ("   PROJECT_STATE: {0}" -f $snapshot.PROJECT_STATE)
-            Write-Host ("   CURRENT_OBJECTIVE: {0}" -f $snapshot.CURRENT_OBJECTIVE)
-            Write-Host ("   NEXT_ACTION: {0}" -f $snapshot.NEXT_ACTION)
-            Write-Host ("   LAST_SESSION_STATUS: {0}" -f $snapshot.LAST_SESSION_STATUS)
-            Write-Host ("   LAST_SESSION_CLOSED_UTC: {0}" -f $snapshot.LAST_SESSION_CLOSED_UTC)
-            Write-Host ""
-            $i++
+        function TrimPad {
+            param($text, [int]$len)
+            $t = [string]$text
+            if ($t.Length -gt $len) { return $t.Substring(0, $len) }
+            return $t.PadRight($len)
         }
 
-        $firstProjectId = [string]$projects[0].Name
-        Write-Host "NEXT COMMANDS:" -ForegroundColor Yellow
-        Write-Host ("- hia project status {0}" -f $firstProjectId)
-        Write-Host ("- hia project open {0}" -f $firstProjectId)
+        $cols = @{
+            PROJECT_ID = 18
+            NEXT = 24
+            SESSION = 10
+            EVIDENCE = 9
+            SAFETY = 8
+            LEDGER = 24
+        }
+
+        Write-Host ""
+        Write-Host ("PROJECTS SNAPSHOT (MB-2.26)") -ForegroundColor Cyan
+        $header = "{0} {1} {2} {3} {4} {5}" -f `
+            (TrimPad "PROJECT_ID" $cols.PROJECT_ID),
+            (TrimPad "NEXT" $cols.NEXT),
+            (TrimPad "SESSION" $cols.SESSION),
+            (TrimPad "EVIDENCE" $cols.EVIDENCE),
+            (TrimPad "SAFETY" $cols.SAFETY),
+            (TrimPad "LEDGER_DECISION" $cols.LEDGER)
+        Write-Host $header
+        Write-Host ("-" * ($cols.PROJECT_ID + $cols.NEXT + $cols.SESSION + $cols.EVIDENCE + $cols.SAFETY + $cols.LEDGER + 5))
+
+        foreach ($proj in $projects) {
+            try {
+                $root = $proj.FullName
+                $batonPath = Join-Path $root "BATON\04.0_PROJECT.BATON.txt"
+                $backlogPath = Join-Path $root "AGILE\PROJECT.BACKLOG.txt"
+                $sessionPath = Join-Path $root "ARTIFACTS\SESSION.ACTIVE.json"
+
+                $nextAction = Get-HIABatonValueByHeaders -BatonPath $batonPath -Headers @(
+                    "06.00_NEXT_ACTION","06.00_PROXIMA_ACCION","06.00_SIGUIENTE_ACCION",
+                    "05.00_NEXT_ACTION","05.00_PROXIMA_ACCION","05.00_SIGUIENTE_ACCION",
+                    "05.00_SIGUIENTE_MINIBATTLE","05.00_NEXT_MINIBATTLE"
+                )
+                if ($nextAction -eq "N/A") {
+                    $nextReady = Get-HIANextReadyBacklogItem -BacklogPath $backlogPath
+                    if ($nextReady -ne "N/A") { $nextAction = $nextReady }
+                }
+
+                $sessionStatus = "N/A"
+                if (Test-Path -LiteralPath $sessionPath) {
+                    try {
+                        $sess = Get-Content -LiteralPath $sessionPath -Raw | ConvertFrom-Json
+                        if (-not [string]::IsNullOrWhiteSpace([string]$sess.status)) {
+                            $sessionStatus = [string]$sess.status
+                        }
+                    } catch { $sessionStatus = "N/A" }
+                }
+
+                $evidence = Get-HIAProjectEvidenceContinuity -ProjectRootPath $root
+                $sessionSafety = Get-HIASessionSafety -ProjectRootPath $root -MaxActiveHours 12
+
+                $ledgerDecision = "N/A"
+                $ledgerPath = Join-Path $root "ARTIFACTS\DECISION_LEDGER.txt"
+                if (Test-Path -LiteralPath $ledgerPath -PathType Leaf) {
+                    try {
+                        $latestLedgerLine = [string](Get-Content -LiteralPath $ledgerPath -ErrorAction Stop | Select-Object -Last 1)
+                        if ($latestLedgerLine -match "DECISION=([^|]+)") { $ledgerDecision = ($Matches[1]).Trim() }
+                    } catch { $ledgerDecision = "N/A" }
+                }
+
+                $row = "{0} {1} {2} {3} {4} {5}" -f `
+                    (TrimPad $proj.Name $cols.PROJECT_ID),
+                    (TrimPad $nextAction $cols.NEXT),
+                    (TrimPad $sessionStatus $cols.SESSION),
+                    (TrimPad $evidence.STATE $cols.EVIDENCE),
+                    (TrimPad $sessionSafety.STATE $cols.SAFETY),
+                    (TrimPad $ledgerDecision $cols.LEDGER)
+                Write-Host $row
+            }
+            catch {
+                Write-Host (TrimPad $proj.Name $cols.PROJECT_ID) " error while reading project snapshot"
+            }
+        }
+
         Write-Host ""
         return
     }

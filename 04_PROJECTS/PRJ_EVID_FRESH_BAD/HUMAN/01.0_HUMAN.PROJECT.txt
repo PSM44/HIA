@@ -1,0 +1,21 @@
+===============================================================================
+FILE: 01.0_HUMAN.PROJECT.txt
+PROJECT: PRJ_EVID_FRESH_BAD
+TYPE: HUMAN PROJECT SPIRIT
+VERSION: v0.1-DRAFT
+DATE: 2026-03-29
+TZ: America/Santiago
+OWNER: HUMAN
+===============================================================================
+
+01.00_PROPOSITO
+Definir el espíritu y dirección humana del proyecto.
+
+02.00_VISION
+Proyecto inicializado bajo HIA.
+
+03.00_CRITERIOS_DE_TRABAJO
+03.01 Human-first.
+03.02 IA como amplificador.
+03.03 Contexto derivado desde RADAR.
+03.04 Incrementos demostrables.

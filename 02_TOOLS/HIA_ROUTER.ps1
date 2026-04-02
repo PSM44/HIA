@@ -92,6 +92,7 @@ function Invoke-HIATool {
     }
 
     if (-not $toolEntry) {
+        $global:HIA_EXIT_CODE = 2
         Write-Host "ERROR: Tool '$ToolName' not found in registry." -ForegroundColor Red
         return
     }
@@ -104,6 +105,7 @@ function Invoke-HIATool {
     }
 
     if (-not (Test-Path $scriptPath)) {
+        $global:HIA_EXIT_CODE = 1
         Write-Host "ERROR: Script not found: $script" -ForegroundColor Red
         return
     }
@@ -149,7 +151,13 @@ function Invoke-HIAAgent {
 
     $agentReg = Get-AgentRegistry -ProjectRoot $ProjectRoot
 
-    if (-not $agentReg -or -not $agentReg.agents.$AgentName) {
+    $agentExists = $false
+    if ($agentReg -and $agentReg.agents) {
+        $agentExists = $agentReg.agents.PSObject.Properties.Name -contains $AgentName
+    }
+
+    if (-not $agentExists) {
+        $global:HIA_EXIT_CODE = 3
         Write-Host "ERROR: Agent '$AgentName' not found in registry." -ForegroundColor Red
         return
     }
@@ -159,6 +167,7 @@ function Invoke-HIAAgent {
     $scriptPath = Join-Path $ProjectRoot "04_AGENTS\$script"
 
     if (-not (Test-Path $scriptPath)) {
+        $global:HIA_EXIT_CODE = 1
         Write-Host "ERROR: Agent script not found: $script" -ForegroundColor Red
         return
     }
@@ -225,6 +234,56 @@ function Invoke-HIAAgent {
     }
 }
 
+function Invoke-HIAPreflightCheck {
+    param([string]$ProjectRoot)
+
+    $pathsStatus = "OK"
+    $writeStatus = "OK"
+    $stackStatus = "N/A"
+    $notes = New-Object System.Collections.Generic.List[string]
+
+    $enginePath = Join-Path $ProjectRoot "02_TOOLS\HIA_PROJECT_ENGINE.ps1"
+    $projectsPath = Join-Path $ProjectRoot "04_PROJECTS"
+    $toolsPath = Join-Path $ProjectRoot "02_TOOLS"
+    if (-not (Test-Path -LiteralPath $enginePath -PathType Leaf)) { $pathsStatus = "FAIL"; $notes.Add("Missing project engine") }
+    if (-not (Test-Path -LiteralPath $projectsPath -PathType Container)) { $pathsStatus = "FAIL"; $notes.Add("Missing 04_PROJECTS") }
+    if (-not (Test-Path -LiteralPath $toolsPath -PathType Container)) { $pathsStatus = "FAIL"; $notes.Add("Missing 02_TOOLS") }
+
+    $writeTestDir = Join-Path $ProjectRoot "99_TEMP"
+    $writeTestFile = Join-Path $writeTestDir "preflight.tmp"
+    try {
+        if (-not (Test-Path -LiteralPath $writeTestDir)) { New-Item -ItemType Directory -Path $writeTestDir -Force | Out-Null }
+        "ok" | Set-Content -LiteralPath $writeTestFile -Encoding UTF8 -ErrorAction Stop
+        Remove-Item -LiteralPath $writeTestFile -ErrorAction SilentlyContinue
+    }
+    catch {
+        $writeStatus = "FAIL"
+        $notes.Add("Write test failed in 99_TEMP")
+    }
+
+    $stackHelper = Join-Path $ProjectRoot "02_TOOLS\\Maintenance\\HIA_TOL_0040_Check-AIStack.ps1"
+    if (Test-Path -LiteralPath $stackHelper -PathType Leaf) {
+        $stackStatus = "OK"
+    }
+    else {
+        $stackStatus = "N/A"
+        $notes.Add("AI stack helper not found; skipping stack check")
+    }
+
+    $preflightStatus = if ($pathsStatus -eq "OK" -and $writeStatus -eq "OK" -and $stackStatus -ne "FAIL") { "OK" } else { "FAIL" }
+    $nextAction = if ($preflightStatus -eq "OK") { "Proceed with hia projects status or project status" } else { "Fix FAIL items then rerun hia preflight" }
+
+    return [ordered]@{
+        STATUS = $preflightStatus
+        PATHS_STATUS = $pathsStatus
+        WRITE_STATUS = $writeStatus
+        STACK_STATUS = $stackStatus
+        NOTES = $notes
+        NEXT_ACTION = $nextAction
+        EXIT_CODE = if ($preflightStatus -eq "OK") { 0 } else { 1 }
+    }
+}
+
 function Invoke-HIARouter {
     param(
         [Parameter(Mandatory = $true)]
@@ -251,6 +310,7 @@ function Invoke-HIARouter {
                 Invoke-HIAAgent -ProjectRoot $projectRoot -AgentName $agentName -AgentArgs $agentArgs
             }
             else {
+                $global:HIA_EXIT_CODE = 2
                 Write-Host "ERROR: Specify agent name. Usage: hia agent <name>" -ForegroundColor Red
             }
         }
@@ -286,6 +346,7 @@ function Invoke-HIARouter {
                     if (-not (Get-Command Get-HIAProjects -ErrorAction SilentlyContinue)) {
                         $projectEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_PROJECT_ENGINE.ps1"
                         if (-not (Test-Path $projectEnginePath)) {
+                            $global:HIA_EXIT_CODE = 1
                             Write-Host "ERROR: Project engine not found: $projectEnginePath" -ForegroundColor Red
                             return
                         }
@@ -297,11 +358,88 @@ function Invoke-HIARouter {
                         return
                     }
 
+                    if (-not $Args -or $Args.Count -lt 1) {
+                        $global:HIA_EXIT_CODE = 2
+                        throw "Usage: hia projects OR hia projects status"
+                    }
+
                     $projectsAction = $Args[0].ToLowerInvariant()
+
+                    if ($Args.Count -gt 1) {
+                        $global:HIA_EXIT_CODE = 2
+                        throw "Usage: hia projects OR hia projects status"
+                    }
+
                     switch ($projectsAction) {
                         "status" { Get-HIAProjects -Mode status }
-                        default { throw "Usage: hia projects OR hia projects status" }
+                        default { $global:HIA_EXIT_CODE = 2; throw "Usage: hia projects OR hia projects status" }
                     }
+                }
+                "preflight" {
+                    if ($Args.Count -gt 0) { $global:HIA_EXIT_CODE = 2; throw "Usage: hia preflight" }
+
+                    $pre = Invoke-HIAPreflightCheck -ProjectRoot $projectRoot
+
+                    Write-Host ""
+                    Write-Host "HIA PREFLIGHT" -ForegroundColor Green
+                    Write-Host ("PREFLIGHT_STATUS: {0}" -f $pre.STATUS)
+                    Write-Host ("PATHS_STATUS: {0}" -f $pre.PATHS_STATUS)
+                    Write-Host ("WRITE_STATUS: {0}" -f $pre.WRITE_STATUS)
+                    Write-Host ("STACK_STATUS: {0}" -f $pre.STACK_STATUS)
+                    Write-Host ("PREFLIGHT_NOTES: {0}" -f ($pre.NOTES -join " | "))
+                    Write-Host ("NEXT_ACTION: {0}" -f $pre.NEXT_ACTION)
+                    Write-Host ""
+
+                    $global:HIA_EXIT_CODE = $pre.EXIT_CODE
+                    return
+                }
+                "deploy" {
+                    $deployUsage = "Usage: hia deploy gate"
+                    if (-not $Args -or $Args.Count -lt 1) { $global:HIA_EXIT_CODE = 2; throw $deployUsage }
+                    $deployAction = $Args[0].ToLowerInvariant()
+                    if ($Args.Count -gt 1) { $global:HIA_EXIT_CODE = 2; throw $deployUsage }
+                    if ($deployAction -ne "gate") { $global:HIA_EXIT_CODE = 2; throw $deployUsage }
+
+                    $pre = Invoke-HIAPreflightCheck -ProjectRoot $projectRoot
+                    $preStatus = $pre.STATUS
+                    $preExit = $pre.EXIT_CODE
+
+                    $smokeStatus = "SKIPPED"
+                    $smokeExit = 1
+                    $smokeNotes = ""
+
+                    if ($preExit -eq 0) {
+                        $smokePath = Join-Path $projectRoot "02_TOOLS\Invoke-HIASmoke.ps1"
+                        if (Test-Path -LiteralPath $smokePath -PathType Leaf) {
+                            & $smokePath
+                            $smokeExit = [int]$LASTEXITCODE
+                            $smokeStatus = if ($smokeExit -eq 0) { "OK" } else { "FAIL" }
+                        }
+                        else {
+                            $smokeStatus = "FAIL"
+                            $smokeNotes = "Invoke-HIASmoke.ps1 missing"
+                            $smokeExit = 1
+                        }
+                    }
+                    else {
+                        $smokeStatus = "SKIPPED"
+                        $smokeExit = 1
+                        $smokeNotes = "Preflight failed; smoke skipped"
+                    }
+
+                    $gateExit = if ($preExit -eq 0 -and $smokeExit -eq 0) { 0 } else { 1 }
+                    $gateStatus = if ($gateExit -eq 0) { "OK" } else { "FAIL" }
+
+                    Write-Host ""
+                    Write-Host "HIA DEPLOY GATE" -ForegroundColor Cyan
+                    Write-Host ("PREFLIGHT_STATUS: {0}" -f $preStatus)
+                    Write-Host ("SMOKE_STATUS: {0}" -f $smokeStatus)
+                    if ($smokeNotes) { Write-Host ("SMOKE_NOTES: {0}" -f $smokeNotes) }
+                    Write-Host ("GATE_STATUS: {0}" -f $gateStatus)
+                    Write-Host ""
+
+                    $global:HIA_EXIT_CODE = $gateExit
+                    return
                 }
                 "project" {
                     if (
@@ -316,6 +454,7 @@ function Invoke-HIARouter {
                     ) {
                         $projectEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_PROJECT_ENGINE.ps1"
                         if (-not (Test-Path $projectEnginePath)) {
+                            $global:HIA_EXIT_CODE = 1
                             throw "Project engine not found: $projectEnginePath"
                         }
                         . $projectEnginePath
@@ -325,6 +464,7 @@ function Invoke-HIARouter {
                     $projectSessionUsage = "Usage: hia project session start <PROJECT_ID> OR hia project session status <PROJECT_ID> OR hia project session close <PROJECT_ID>"
 
                     if (-not $Args -or $Args.Count -lt 1) {
+                        $global:HIA_EXIT_CODE = 2
                         throw $projectUsage
                     }
 
@@ -332,6 +472,7 @@ function Invoke-HIARouter {
 
                     if ($projectAction -eq "session") {
                         if (-not $Args -or $Args.Count -lt 3) {
+                            $global:HIA_EXIT_CODE = 2
                             throw $projectSessionUsage
                         }
 
@@ -342,14 +483,15 @@ function Invoke-HIARouter {
                             "start" { Start-HIAProjectSession -ProjectId $projectId }
                             "status" { Get-HIAProjectSessionStatus -ProjectId $projectId }
                             "close" { Close-HIAProjectSession -ProjectId $projectId }
-                            default { throw $projectSessionUsage }
+                            default { $global:HIA_EXIT_CODE = 2; throw $projectSessionUsage }
                         }
                         return
                     }
 
-                    if (-not $Args -or $Args.Count -lt 2) {
-                        throw $projectUsage
-                    }
+                        if (-not $Args -or $Args.Count -lt 2) {
+                            $global:HIA_EXIT_CODE = 2
+                            throw $projectUsage
+                        }
 
                     $projectId = $Args[1]
                     switch ($projectAction) {
@@ -358,10 +500,11 @@ function Invoke-HIARouter {
                         "continue" { Continue-HIAProject -ProjectId $projectId }
                         "status" { Show-HIAProjectStatus -ProjectId $projectId }
                         "review" { Review-HIAProject -ProjectId $projectId }
-                        default { throw $projectUsage }
+                        default { $global:HIA_EXIT_CODE = 2; throw $projectUsage }
                     }
                 }
                 default {
+                    $global:HIA_EXIT_CODE = 2
                     Write-Host "ERROR: Unknown command '$Command'. Use 'hia help' for available commands." -ForegroundColor Red
                 }
             }

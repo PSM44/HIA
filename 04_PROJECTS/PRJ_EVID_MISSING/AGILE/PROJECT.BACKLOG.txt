@@ -1,0 +1,3 @@
+ID | TYPE | PRIORITY | TITLE | VALUE | EFFORT | STATUS
+
+TASKSYNC_001 | feature | P0 | prepare sync hint fixture | ok | S | ready

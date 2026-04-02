@@ -1,0 +1,3 @@
+ID | TYPE | PRIORITY | TITLE | VALUE | EFFORT | STATUS
+
+TASKSYNC_OK1 | feature | P0 | backlog ready item | ok | S | ready

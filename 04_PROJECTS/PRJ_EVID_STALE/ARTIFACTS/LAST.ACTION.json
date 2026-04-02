@@ -1,0 +1,9 @@
+{
+  "project_id": "PRJ_EVID_STALE",
+  "source_task": "fixture-stale",
+  "output_path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_PROJECTS\\PRJ_EVID_STALE\\ARTIFACTS\\TASKS\\FIXTURE_STALE.txt",
+  "log_path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_PROJECTS\\PRJ_EVID_STALE\\ARTIFACTS\\LOGS\\FIXTURE_STALE.log",
+  "status": "created",
+  "captured_utc": "2026-03-20T00:00:00.0000000Z",
+  "session_id": "fixture-session-stale"
+}

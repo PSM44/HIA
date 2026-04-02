@@ -1,0 +1,9 @@
+{
+  "project_id": "PRJ_0002_TEST",
+  "source_task": "manual-mismatch",
+  "output_path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_PROJECTS\\PRJ_0002_TEST\\ARTIFACTS\\TASKS\\CONSISTENCY_OUT.txt",
+  "log_path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_PROJECTS\\PRJ_0002_TEST\\ARTIFACTS\\LOGS\\CONSISTENCY_LOG.log",
+  "status": "created",
+  "captured_utc": "2026-04-02T05:37:18.4285511Z",
+  "session_id": "consistency-session"
+}

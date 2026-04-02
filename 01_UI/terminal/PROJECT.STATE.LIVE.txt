@@ -2,7 +2,7 @@
 FILE: PROJECT.STATE.LIVE.txt
 SYSTEM: HIA - Human Intelligence Amplifier
 TYPE: Operational State (LIVE)
-GENERATED: 2026-03-30 19:29:08
+GENERATED: 2026-04-02 17:08:15
 ================================================================================
 
 FOCO_ACTUAL
@@ -36,13 +36,13 @@ MINIBATTLES_COMPLETADOS
 
 ESTADISTICAS
 ------------------------------------------------------------------------------
-TOOLS_REGISTRADOS: 12
+TOOLS_REGISTRADOS: 15
 AGENTS_REGISTRADOS: 2
 PLANS_TOTAL: 6
 PLANS_COMPLETADOS: 2
 PLANS_PENDIENTES: 3
-ULTIMO_RADAR: 2026-03-29 03:45 UTC
-ULTIMA_ACTIVIDAD: 2026-03-30 19:29:08
+ULTIMO_RADAR: 2026-03-30 18:47 UTC
+ULTIMA_ACTIVIDAD: 2026-04-02 20:08 UTC
 
 COMANDOS_DISPONIBLES
 ------------------------------------------------------------------------------
@@ -51,22 +51,23 @@ hia agent planner              - Agente de planificación
 hia ai                         - Enruta tareas a proveedores AI
 hia apply PLAN_0001            - Aprueba y ejecuta PLAN
 hia checkpoint                 - Git checkpoint con mensaje
+hia claude                     - Wrapper operativo para Claude Code (CLI)
 hia context                    - Construye paquete de contexto operativo
 hia help                       - Lista todos los comandos
+hia ollama                     - Wrapper operativo para Ollama (local)
 hia plan "task"                - Crea objeto PLAN
 hia radar                      - Genera índice del proyecto
 hia run PLAN_0001              - Execute approved PLAN
 hia session                    - Gestiona ciclo de vida de sesiones
 hia smoke                      - Smoke test del sistema
+hia stack                      - Chequea disponibilidad del AI stack
 hia state [show|sync|history]  - Gestiona estado del proyecto
 hia sync                       - Sincroniza artefactos
-hia task create-file <path>    - Crea archivo real dentro de PROJECT_ROOT
 hia validate                   - Ejecuta validadores
 
 PROXIMO_PASO
 ------------------------------------------------------------------------------
-- MB-2.1: llevar task execution a contexto de proyecto (PB_013 — P0)
-- MB-2.2: task simple orientada a proyecto (create-file en PROJECT_PATH) (PB_013 — P0)
-- MB-2.3: validacion smoke minima de task execution (PB_004 — P1)
+- MB-0.6: Session Lifecycle
+- MB-1.0: Console Web MVP
 
 ================================================================================

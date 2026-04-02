@@ -1,0 +1,9 @@
+{
+  "project_id": "PRJ_EVID_FRESH_BAD",
+  "source_task": "fixture-fresh-bad",
+  "output_path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_PROJECTS\\PRJ_EVID_FRESH_BAD\\ARTIFACTS\\TASKS\\FIXTURE_FRESH_BAD.txt",
+  "log_path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_PROJECTS\\PRJ_EVID_FRESH_BAD\\ARTIFACTS\\LOGS\\FIXTURE_FRESH_BAD.log",
+  "status": "created",
+  "captured_utc": "2026-04-02T06:13:38.7210544Z",
+  "session_id": "fixture-session-bad"
+}

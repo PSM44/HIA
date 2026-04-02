@@ -1,0 +1,9 @@
+{
+  "project_id": "PRJ_EVID_FRESH_OK",
+  "source_task": "fixture-fresh-ok",
+  "output_path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_PROJECTS\\PRJ_EVID_FRESH_OK\\ARTIFACTS\\TASKS\\FIXTURE_FRESH_OK.txt",
+  "log_path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_PROJECTS\\PRJ_EVID_FRESH_OK\\ARTIFACTS\\LOGS\\FIXTURE_FRESH_OK.log",
+  "status": "created",
+  "captured_utc": "2026-04-02T06:13:38.6868002Z",
+  "session_id": "fixture-session-fresh"
+}

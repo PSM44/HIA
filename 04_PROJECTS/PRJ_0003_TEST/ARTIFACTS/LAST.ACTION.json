@@ -1,0 +1,9 @@
+{
+  "project_id": "PRJ_0003_TEST",
+  "source_task": "manual-stale",
+  "output_path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_PROJECTS\\PRJ_0003_TEST\\ARTIFACTS\\TASKS\\STALE_TEST.txt",
+  "log_path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_PROJECTS\\PRJ_0003_TEST\\ARTIFACTS\\LOGS\\STALE_TEST.log",
+  "status": "created",
+  "captured_utc": "2026-03-19T21:00:00.0000000-03:00",
+  "session_id": "stale-session"
+}

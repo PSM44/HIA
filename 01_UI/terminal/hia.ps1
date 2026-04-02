@@ -132,21 +132,31 @@ if ($Command.ToLowerInvariant() -eq "agile") {
 # -----------------------------------------------------------------------------
 
 try {
+    Remove-Variable -Name HIA_EXIT_CODE -Scope Global -ErrorAction SilentlyContinue
     Remove-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue
     Invoke-HIARouter -Command $Command -Args $RouterArgs
 
     $routerExitCode = 0
     $lastExit = Get-Variable -Name LASTEXITCODE -Scope Global -ValueOnly -ErrorAction SilentlyContinue
-    if ($null -ne $lastExit) {
-        $routerExitCode = [int]$lastExit
-    }
-
+    if ($null -ne $lastExit) { $routerExitCode = [int]$lastExit }
+    $hintExit = Get-Variable -Name HIA_EXIT_CODE -Scope Global -ValueOnly -ErrorAction SilentlyContinue
+    if ($null -ne $hintExit) { $routerExitCode = [int]$hintExit }
+    $global:LASTEXITCODE = $routerExitCode
     exit $routerExitCode
 }
 catch {
+    $exitCode = 4
+    $msg = $_.Exception.Message
+    if ($msg -match 'Project not found') { $exitCode = 3 }
+    elseif ($msg -match 'already exists') { $exitCode = 1 }
+    else {
+        $hint = Get-Variable -Name HIA_EXIT_CODE -Scope Global -ValueOnly -ErrorAction SilentlyContinue
+        if ($null -ne $hint) { $exitCode = [int]$hint }
+    }
+
     Write-Host ""
     Write-Host "HIA CLI ERROR" -ForegroundColor Red
-    Write-Host ("MESSAGE: {0}" -f $_.Exception.Message) -ForegroundColor Red
+    Write-Host ("MESSAGE: {0}" -f $msg) -ForegroundColor Red
 
     if ($_.InvocationInfo) {
         Write-Host ("SCRIPT:  {0}" -f $_.InvocationInfo.ScriptName) -ForegroundColor DarkRed
@@ -155,7 +165,7 @@ catch {
     }
 
     Write-Host ""
-    exit 1
+    exit $exitCode
 }
 
 
