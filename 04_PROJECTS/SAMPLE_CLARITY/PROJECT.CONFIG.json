@@ -1,0 +1,9 @@
+{
+  "project_id": "SAMPLE_CLARITY",
+  "status": "active",
+  "context_source": "project_radar",
+  "has_human": true,
+  "has_baton": true,
+  "has_radar": true,
+  "has_agile": true
+}

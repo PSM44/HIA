@@ -1,0 +1,2 @@
+2026-04-03T02:04:37.7804616Z | TASK=create-file-project | RESULT=rejected | PROJECT_ID=PRJ_EVID_FRESH_BAD | RELATIVE=C:/tmp/out.txt | FILE=N/A | OPERATOR=aazcl | MSG=Absolute paths are not allowed.
+2026-04-03T02:09:09.5463083Z | TASK=create-file-project | RESULT=rejected | PROJECT_ID=PRJ_EVID_FRESH_BAD | RELATIVE=C:/tmp/out.txt | FILE=N/A | OPERATOR=aazcl | MSG=Absolute paths are not allowed.

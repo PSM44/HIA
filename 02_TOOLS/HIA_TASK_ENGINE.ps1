@@ -77,7 +77,9 @@ function Write-HIATaskEvidence {
         [string]$TaskName,
         [string]$RelativeFilePath,
         [string]$AbsoluteFilePath,
-        [string]$ProjectId
+        [string]$ProjectId,
+        [string]$Result = "created",
+        [string]$Message = ""
     )
 
     if (-not (Test-Path -LiteralPath $LogsDir)) {
@@ -86,13 +88,16 @@ function Write-HIATaskEvidence {
 
     $logPath = Join-Path $LogsDir "TASK.CREATE_FILE.log"
     $projectSegment = if ([string]::IsNullOrWhiteSpace($ProjectId)) { "" } else { (" | PROJECT_ID={0}" -f $ProjectId) }
-    $line = "{0} | TASK={1} | RESULT=created{2} | RELATIVE={3} | FILE={4} | OPERATOR={5}" -f `
+    $msgSegment = if ([string]::IsNullOrWhiteSpace($Message)) { "" } else { (" | MSG={0}" -f $Message) }
+    $line = "{0} | TASK={1} | RESULT={2}{3} | RELATIVE={4} | FILE={5} | OPERATOR={6}{7}" -f `
         (Get-Date).ToUniversalTime().ToString("o"), `
         $TaskName, `
+        $Result, `
         $projectSegment, `
         $RelativeFilePath, `
         $AbsoluteFilePath, `
-        $env:USERNAME
+        $env:USERNAME, `
+        $msgSegment
 
     Add-Content -Path $logPath -Value $line -Encoding UTF8
     return $logPath
@@ -199,7 +204,7 @@ function Invoke-HIATaskCreateFile {
 
     Set-Content -LiteralPath $targetPath -Value $initialContent -Encoding UTF8
     $logsDir = Join-Path $RepositoryRootPath "03_ARTIFACTS\LOGS"
-    $logPath = Write-HIATaskEvidence -LogsDir $logsDir -TaskName "create-file" -RelativeFilePath $PathArgument -AbsoluteFilePath $targetPath -ProjectId ""
+    $logPath = Write-HIATaskEvidence -LogsDir $logsDir -TaskName "create-file" -RelativeFilePath $PathArgument -AbsoluteFilePath $targetPath -ProjectId "" -Result "created"
 
     Write-Host ""
     Write-Host "HIA TASK EXECUTED" -ForegroundColor Green
@@ -219,31 +224,99 @@ function Invoke-HIATaskCreateFileProject {
         [string]$PathArgument
     )
 
+    function Resolve-HIAProjectSafeTaskPath {
+        param(
+            [string]$ProjectRoot,
+            [string]$RelativePath
+        )
+
+        if ([string]::IsNullOrWhiteSpace($RelativePath)) {
+            throw "Missing <relative_path>."
+        }
+
+        if ([System.IO.Path]::IsPathRooted($RelativePath)) {
+            throw "Absolute paths are not allowed."
+        }
+
+        if ($RelativePath -match "(^|[\\/])\.\.(?:[\\/$]|$)") {
+            throw "Traversal (.. or variants) is not allowed."
+        }
+
+        $trimmed = $RelativePath.Trim()
+        if ([string]::IsNullOrWhiteSpace($trimmed) -or $trimmed -eq "." -or $trimmed -eq "./" -or $trimmed -eq ".\\" ) {
+            throw "Invalid <relative_path> (empty/placeholder)."
+        }
+
+        $segments = $RelativePath -split '[\\/]'
+        $reserved = @("CON","PRN","AUX","NUL","COM1","COM2","COM3","COM4","COM5","COM6","COM7","COM8","COM9","LPT1","LPT2","LPT3","LPT4","LPT5","LPT6","LPT7","LPT8","LPT9")
+        foreach ($seg in $segments) {
+            if ([string]::IsNullOrWhiteSpace($seg)) { continue }
+            if ($seg -match "[\.\s]$") {
+                throw "Path segment ends with dot or space: '$seg'."
+            }
+            if ($seg.TrimEnd() -ne $seg) {
+                throw "Path segment ends with dot or space: '$seg'."
+            }
+            $lastDot = $seg.LastIndexOf(".")
+            $baseName = if ($lastDot -gt 0) { $seg.Substring(0, $lastDot) } else { $seg }
+            if ($baseName -match "[\.\s]$") {
+                throw "Basename ends with dot or space: '$seg'."
+            }
+            if ($reserved -contains $baseName.ToUpperInvariant()) {
+                throw ("Reserved device name not allowed: '{0}'." -f $seg)
+            }
+        }
+
+        # normalize target
+        $candidatePath = Join-Path $ProjectRoot $RelativePath
+        $targetPath = [System.IO.Path]::GetFullPath($candidatePath)
+
+        if (-not (Test-HIAPathInsideRoot -RootPath $ProjectRoot -CandidatePath $targetPath)) {
+            throw "Path is outside project root."
+        }
+
+        $relativeInside = $targetPath.Substring([System.IO.Path]::GetFullPath($ProjectRoot).Length).TrimStart('\','/')
+        $allowedPrefix = "ARTIFACTS{0}TASKS" -f [System.IO.Path]::DirectorySeparatorChar
+        $allowedAltPrefix = "ARTIFACTS/TASKS"
+
+        if (-not ($relativeInside.StartsWith($allowedPrefix, [System.StringComparison]::OrdinalIgnoreCase) `
+                -or $relativeInside.StartsWith($allowedAltPrefix, [System.StringComparison]::OrdinalIgnoreCase))) {
+            throw ("Path must reside under ARTIFACTS{0}TASKS inside the project." -f [System.IO.Path]::DirectorySeparatorChar)
+        }
+
+        $fileName = [System.IO.Path]::GetFileName($targetPath)
+        if ([string]::IsNullOrWhiteSpace($fileName)) {
+            throw "Invalid file path (missing file name)."
+        }
+
+        return $targetPath
+    }
+
     if ([string]::IsNullOrWhiteSpace($ProjectId)) {
         Write-Host "ERROR: Missing <project_id>." -ForegroundColor Red
         Write-Host "Usage: hia task create-file-project <project_id> <relative_path>" -ForegroundColor Yellow
+        $global:HIA_EXIT_CODE = 2
         return $false
     }
 
+    # entry-boundary hygiene on raw argument
     if ([string]::IsNullOrWhiteSpace($PathArgument)) {
         Write-Host "ERROR: Missing <relative_path>." -ForegroundColor Red
         Write-Host "Usage: hia task create-file-project <project_id> <relative_path>" -ForegroundColor Yellow
+        $global:HIA_EXIT_CODE = 2
         return $false
     }
-
-    if ([System.IO.Path]::IsPathRooted($PathArgument)) {
-        Write-Host "ERROR: Absolute paths are not allowed." -ForegroundColor Red
-        return $false
-    }
-
-    if ($PathArgument.EndsWith("\") -or $PathArgument.EndsWith("/")) {
-        Write-Host "ERROR: <relative_path> must include a file name." -ForegroundColor Red
+    $trimmedArg = $PathArgument.Trim()
+    if (-not $PathArgument.Equals($trimmedArg, [System.StringComparison]::Ordinal)) {
+        Write-Host "ERROR: <relative_path> has leading/trailing whitespace; provide a canonical path." -ForegroundColor Red
+        $global:HIA_EXIT_CODE = 2
         return $false
     }
 
     $projectEnginePath = Join-Path $RepositoryRootPath "02_TOOLS\HIA_PROJECT_ENGINE.ps1"
     if (-not (Test-Path -LiteralPath $projectEnginePath)) {
         Write-Host ("ERROR: Project engine not found: {0}" -f $projectEnginePath) -ForegroundColor Red
+        $global:HIA_EXIT_CODE = 1
         return $false
     }
 
@@ -260,26 +333,27 @@ function Invoke-HIATaskCreateFileProject {
     }
     catch {
         Write-Host ("ERROR: {0}" -f $_.Exception.Message) -ForegroundColor Red
+        if ($_.Exception.Message -match "not found") { $global:HIA_EXIT_CODE = 3 } else { $global:HIA_EXIT_CODE = 1 }
         return $false
     }
 
-    $candidatePath = Join-Path $projectRootPath $PathArgument
-    $targetPath = [System.IO.Path]::GetFullPath($candidatePath)
-
-    if (-not (Test-HIAPathInsideRoot -RootPath $projectRootPath -CandidatePath $targetPath)) {
-        Write-Host "ERROR: Path is outside project root." -ForegroundColor Red
-        return $false
+    $targetPath = $null
+    try {
+        $targetPath = Resolve-HIAProjectSafeTaskPath -ProjectRoot $projectRootPath -RelativePath $PathArgument
     }
-
-    $fileName = [System.IO.Path]::GetFileName($targetPath)
-    if ([string]::IsNullOrWhiteSpace($fileName)) {
-        Write-Host "ERROR: Invalid file path." -ForegroundColor Red
+    catch {
+        Write-Host ("ERROR: {0}" -f $_.Exception.Message) -ForegroundColor Red
+        # log rejection for visibility
+        $logsDirFail = Join-Path $projectRootPath "ARTIFACTS\LOGS"
+        Write-HIATaskEvidence -LogsDir $logsDirFail -TaskName "create-file-project" -RelativeFilePath $PathArgument -AbsoluteFilePath "N/A" -ProjectId $ProjectId -Result "rejected" -Message $_.Exception.Message | Out-Null
+        $global:HIA_EXIT_CODE = 1
         return $false
     }
 
     if (Test-Path -LiteralPath $targetPath) {
         Write-Host "ERROR: File already exists (no overwrite by default)." -ForegroundColor Red
         Write-Host ("FILE: {0}" -f $targetPath)
+        $global:HIA_EXIT_CODE = 1
         return $false
     }
 
@@ -301,7 +375,7 @@ function Invoke-HIATaskCreateFileProject {
     Set-Content -LiteralPath $targetPath -Value $initialContent -Encoding UTF8
 
     $logsDir = Join-Path $projectRootPath "ARTIFACTS\LOGS"
-    $logPath = Write-HIATaskEvidence -LogsDir $logsDir -TaskName "create-file-project" -RelativeFilePath $PathArgument -AbsoluteFilePath $targetPath -ProjectId $ProjectId
+    $logPath = Write-HIATaskEvidence -LogsDir $logsDir -TaskName "create-file-project" -RelativeFilePath $PathArgument -AbsoluteFilePath $targetPath -ProjectId $ProjectId -Result "created"
     $lastActionSnapshotPath = Write-HIAProjectLastActionSnapshot -ProjectRootPath $projectRootPath -ProjectId $ProjectId -SourceTask "create-file-project" -OutputPath $targetPath -LogPath $logPath
 
     Write-Host ""
@@ -315,6 +389,7 @@ function Invoke-HIATaskCreateFileProject {
     Write-Host ("LAST_ACTION_SNAPSHOT: {0}" -f $lastActionSnapshotPath)
     Write-Host ""
 
+    $global:HIA_EXIT_CODE = 0
     return $true
 }
 
@@ -338,8 +413,13 @@ switch ($normalizedTask) {
         Write-Host "Usage: hia task create-file <relative_path>" -ForegroundColor Yellow
         Write-Host "Usage: hia task create-file-project <project_id> <relative_path>" -ForegroundColor Yellow
         $ok = $false
+        $global:HIA_EXIT_CODE = 2
     }
 }
 
-if ($ok) { exit 0 }
-exit 1
+$hintExit = Get-Variable -Name HIA_EXIT_CODE -Scope Global -ValueOnly -ErrorAction SilentlyContinue
+if ($null -eq $hintExit) {
+    $global:HIA_EXIT_CODE = if ($ok) { 0 } else { 1 }
+}
+
+exit $global:HIA_EXIT_CODE

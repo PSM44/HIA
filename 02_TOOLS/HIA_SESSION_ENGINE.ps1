@@ -436,5 +436,6 @@ switch ($Command) {
     default { $commandResult = Show-HIASessionStatus }
 }
 
-if ($commandResult) { exit 0 }
-exit 1
+# Normalize exit code map: 0 success, 1 known failure
+$global:HIA_EXIT_CODE = if ($commandResult) { 0 } else { 1 }
+exit $global:HIA_EXIT_CODE

@@ -1,0 +1,9 @@
+{
+  "project_id": "PRJ_EVID_MISSING",
+  "source_task": "create-file-project",
+  "output_path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_PROJECTS\\PRJ_EVID_MISSING\\ARTIFACTS\\TASKS\\hardening_ok.txt",
+  "log_path": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_PROJECTS\\PRJ_EVID_MISSING\\ARTIFACTS\\LOGS\\TASK.CREATE_FILE.log",
+  "status": "created",
+  "captured_utc": "2026-04-03T02:36:57.1306281Z",
+  "session_id": "3a2aec5d-f8ac-414d-9fbd-0de76d712e19"
+}

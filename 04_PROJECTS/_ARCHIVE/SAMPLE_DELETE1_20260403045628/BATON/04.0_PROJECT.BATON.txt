@@ -1,0 +1,18 @@
+===============================================================================
+FILE: 04.0_PROJECT.BATON.txt
+PROJECT: SAMPLE_DELETE1
+TYPE: PROJECT BATON
+VERSION: v0.1-DRAFT
+DATE: 2026-03-29
+TZ: America/Santiago
+OWNER: HUMAN + SYSTEM
+===============================================================================
+
+01.00_PROPOSITO
+Mantener continuidad operativa del proyecto.
+
+02.00_ESTADO_ACTUAL
+Proyecto recién inicializado.
+
+03.00_OBJETIVO_ACTUAL
+Definir siguiente minibattle del proyecto.

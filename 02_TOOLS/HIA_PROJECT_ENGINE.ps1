@@ -256,6 +256,55 @@ function Get-HIAProjectLastActionLog {
     return $result
 }
 
+function Get-HIAProjectLastTaskOutcome {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectRootPath
+    )
+
+    $logPath = Join-Path $ProjectRootPath "ARTIFACTS\LOGS\TASK.CREATE_FILE.log"
+    if (-not (Test-Path -LiteralPath $logPath -PathType Leaf)) {
+        return [ordered]@{ FOUND=$false; SCOPE="TASK.CREATE_FILE"; RESULT="N/A"; REQUEST_PATH="N/A"; TARGET_PATH="N/A"; MESSAGE="N/A"; TIMESTAMP="N/A" }
+    }
+
+    try {
+        $lastLine = Get-Content -LiteralPath $logPath -Tail 1
+    }
+    catch {
+        return [ordered]@{ FOUND=$false; SCOPE="TASK.CREATE_FILE"; RESULT="N/A"; REQUEST_PATH="N/A"; TARGET_PATH="N/A"; MESSAGE="N/A"; TIMESTAMP="N/A" }
+    }
+
+    $result = [ordered]@{
+        FOUND     = $true
+        SCOPE     = "TASK.CREATE_FILE"
+        RESULT    = "N/A"
+        REQUEST_PATH  = "N/A"
+        TARGET_PATH   = "N/A"
+        MESSAGE   = "N/A"
+        TIMESTAMP = "N/A"
+    }
+
+    if ($lastLine -match "^\s*(?<ts>[^|]+)\s*\|") {
+        $result.TIMESTAMP = ($Matches['ts']).Trim()
+    }
+    $parts = $lastLine -split "\|"
+    foreach ($p in $parts) {
+        $kv = $p.Trim()
+        if ($kv -like "TASK=*") { $result.SCOPE = ($kv -replace "^TASK=","").Trim() }
+        elseif ($kv -like "RESULT=*") { $result.RESULT = ($kv -replace "^RESULT=","").Trim() }
+        elseif ($kv -like "RELATIVE=*") { $result.REQUEST_PATH = ($kv -replace "^RELATIVE=","").Trim() }
+        elseif ($kv -like "FILE=*") { $result.TARGET_PATH = ($kv -replace "^FILE=","").Trim() }
+        elseif ($kv -like "MSG=*") { $result.MESSAGE = ($kv -replace "^MSG=","").Trim() }
+    }
+
+    # avoid labeling absolutes as relative target
+    if ([System.IO.Path]::IsPathRooted($result.REQUEST_PATH)) {
+        # keep REQUEST_PATH as-is, but do not treat as relative target
+    }
+
+    return $result
+}
+
 function Get-HIAProjectEvidenceContinuity {
     param(
         [Parameter(Mandatory = $true)]
@@ -279,7 +328,9 @@ function Get-HIAProjectEvidenceContinuity {
     if ($lastActionSnapshot.STATUS -eq "FOUND" -and $lastActionSnapshot.DATA) {
         $sourceTask = if ([string]::IsNullOrWhiteSpace([string]$lastActionSnapshot.DATA.source_task)) { "N/A" } else { ([string]$lastActionSnapshot.DATA.source_task).Trim() }
         $capturedUtc = Convert-HIAUtcValueToString -Value $lastActionSnapshot.DATA.captured_utc -Default "N/A"
-        $sessionId = if ([string]::IsNullOrWhiteSpace([string]$lastActionSnapshot.DATA.session_id)) { "N/A" } else { [string]$lastActionSnapshot.DATA.session_id }
+        if ($lastActionSnapshot.DATA.PSObject.Properties.Name -contains "session_id") {
+            $sessionId = if ([string]::IsNullOrWhiteSpace([string]$lastActionSnapshot.DATA.session_id)) { "N/A" } else { [string]$lastActionSnapshot.DATA.session_id }
+        }
         $snapshotOutputPath = [string]$lastActionSnapshot.DATA.output_path
         $snapshotLogPath = [string]$lastActionSnapshot.DATA.log_path
     }
@@ -687,7 +738,9 @@ function New-HIAProject {
         (Join-Path $projectRoot "BATON"),
         (Join-Path $projectRoot "RADAR"),
         (Join-Path $projectRoot "AGILE"),
-        (Join-Path $projectRoot "ARTIFACTS")
+        (Join-Path $projectRoot "ARTIFACTS"),
+        (Join-Path $projectRoot "ARTIFACTS\LOGS"),
+        (Join-Path $projectRoot "ARTIFACTS\TASKS")
     )
 
     foreach ($folder in $folders) {
@@ -783,18 +836,114 @@ Definir siguiente minibattle del proyecto.
 "@
 
     $backlogContent = "ID | TYPE | PRIORITY | TITLE | VALUE | EFFORT | STATUS`r`n"
+    $sessionClosed = @{
+        project_id = $ProjectId
+        status = "closed"
+        session_id = "N/A"
+        started_utc = $null
+        closed_utc = $null
+    }
 
     Set-Content -Path (Join-Path $projectRoot "README.PROJECT.txt") -Value $readmeContent -Encoding UTF8
     Set-Content -Path (Join-Path $projectRoot "PROJECT.CONFIG.json") -Value $configContent -Encoding UTF8
     Set-Content -Path (Join-Path $projectRoot "HUMAN\01.0_HUMAN.PROJECT.txt") -Value $humanContent -Encoding UTF8
     Set-Content -Path (Join-Path $projectRoot "BATON\04.0_PROJECT.BATON.txt") -Value $batonContent -Encoding UTF8
     Set-Content -Path (Join-Path $projectRoot "AGILE\PROJECT.BACKLOG.txt") -Value $backlogContent -Encoding UTF8
+    ($sessionClosed | ConvertTo-Json -Depth 3) | Set-Content -LiteralPath (Join-Path $projectRoot "ARTIFACTS\SESSION.ACTIVE.json") -Encoding UTF8
 
     Write-Host ""
     Write-Host "PROJECT CREATED" -ForegroundColor Green
     Write-Host ("ID: {0}" -f $ProjectId)
     Write-Host ("PATH: {0}" -f $projectRoot)
     Write-Host ""
+    Write-Host "STARTER STRUCTURE:" -ForegroundColor Yellow
+    Write-Host ("- BATON: {0}" -f (Join-Path $projectRoot "BATON\04.0_PROJECT.BATON.txt"))
+    Write-Host ("- BACKLOG: {0}" -f (Join-Path $projectRoot "AGILE\PROJECT.BACKLOG.txt"))
+    Write-Host ("- SESSION_FILE: {0}" -f (Join-Path $projectRoot "ARTIFACTS\SESSION.ACTIVE.json"))
+    Write-Host ("- LOGS_DIR: {0}" -f (Join-Path $projectRoot "ARTIFACTS\LOGS"))
+    Write-Host ("- TASKS_DIR: {0}" -f (Join-Path $projectRoot "ARTIFACTS\TASKS"))
+    Write-Host ""
+    Write-Host "NEXT_COMMANDS:" -ForegroundColor Yellow
+    Write-Host ("- hia project status {0}" -f $ProjectId)
+    Write-Host ("- hia project review {0}" -f $ProjectId)
+    Write-Host ("- hia project session status {0}" -f $ProjectId)
+    Write-Host ""
+}
+
+function Remove-HIAProjectSafe {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectId,
+        [switch]$ForceConfirm,
+        [string]$ConfirmToken
+    )
+
+    if ([string]::IsNullOrWhiteSpace($ProjectId)) {
+        $global:HIA_EXIT_CODE = 2
+        throw "Usage: hia project delete <project_id> [--confirm]"
+    }
+
+    if (-not (Get-Command Resolve-HIAProjectRoot -ErrorAction SilentlyContinue)) {
+        $global:HIA_EXIT_CODE = 1
+        throw "Resolve-HIAProjectRoot is not available."
+    }
+
+    $projectRoot = $null
+    try {
+        $projectRoot = Resolve-HIAProjectRoot -ProjectId $ProjectId
+    }
+    catch {
+        $global:HIA_EXIT_CODE = 3
+        throw $_.Exception
+    }
+
+    $projectsRoot = Split-Path -Path $projectRoot -Parent
+    $archiveRoot = Join-Path $projectsRoot "_ARCHIVE"
+    if (-not (Test-Path -LiteralPath $archiveRoot -PathType Container)) {
+        New-Item -ItemType Directory -Path $archiveRoot -Force | Out-Null
+    }
+
+    $expected = ("DELETE {0}" -f $ProjectId)
+    $envConfirm = $env:HIA_CONFIRM_DELETE
+    $autoConfirm = $ForceConfirm -or (
+        -not [string]::IsNullOrWhiteSpace($envConfirm) -and
+        @("YES","Y","TRUE","CONFIRM") -contains $envConfirm.ToUpperInvariant()
+    )
+
+    $provided = $ConfirmToken
+    if (-not $autoConfirm) {
+        if ([string]::IsNullOrWhiteSpace($provided)) {
+            $provided = Read-Host -Prompt ("Type '{0}' to confirm (or anything else to cancel)" -f $expected)
+        }
+    }
+
+    if (-not $autoConfirm -and $provided -ne $expected) {
+        Write-Host "Project delete cancelled (confirmation mismatch)." -ForegroundColor Yellow
+        $global:HIA_EXIT_CODE = 1
+        return $false
+    }
+
+    $timestamp = (Get-Date).ToUniversalTime().ToString("yyyyMMddHHmmss")
+    $archiveTarget = Join-Path $archiveRoot ("{0}_{1}" -f $ProjectId, $timestamp)
+
+    try {
+        Move-Item -LiteralPath $projectRoot -Destination $archiveTarget -Force
+    }
+    catch {
+        $global:HIA_EXIT_CODE = 1
+        throw $_.Exception
+    }
+
+    Write-Host ""
+    Write-Host "PROJECT REMOVED (SAFE MOVE)" -ForegroundColor Yellow
+    Write-Host ("PROJECT_ID: {0}" -f $ProjectId)
+    Write-Host ("FROM: {0}" -f $projectRoot)
+    Write-Host ("TO:   {0}" -f $archiveTarget)
+    Write-Host "ACTION: archive move (no permanent delete)"
+    Write-Host ""
+
+    $global:HIA_EXIT_CODE = 0
+    return $true
 }
 
 function Open-HIAProject {
@@ -842,6 +991,7 @@ function Continue-HIAProject {
     }
 
     $projectRoot = Resolve-HIAProjectRoot -ProjectId $ProjectId
+    $lastTask = Get-HIAProjectLastTaskOutcome -ProjectRootPath $projectRoot
     $configCheck = Test-HIAProjectConfig -ProjectRootPath $projectRoot -ProjectId $ProjectId
 
     $snapshot = Get-HIAProjectPortfolioSnapshot -ProjectRootPath $projectRoot -ProjectId $ProjectId
@@ -850,6 +1000,20 @@ function Continue-HIAProject {
     $nextReadyItem = if ([string]::IsNullOrWhiteSpace([string]$snapshot.NEXT_READY_ITEM)) { "N/A" } else { [string]$snapshot.NEXT_READY_ITEM }
     $lastSessionStatus = if ([string]::IsNullOrWhiteSpace([string]$snapshot.LAST_SESSION_STATUS)) { "N/A" } else { [string]$snapshot.LAST_SESSION_STATUS }
     $lastSessionId = if ([string]::IsNullOrWhiteSpace([string]$snapshot.LAST_SESSION_ID)) { "N/A" } else { [string]$snapshot.LAST_SESSION_ID }
+    $sessionPath = Join-Path $projectRoot "ARTIFACTS\SESSION.ACTIVE.json"
+    $lastSessionStartedUtc = "N/A"
+    $lastSessionClosedUtc = "N/A"
+    if (Test-Path -LiteralPath $sessionPath) {
+        try {
+            $sess = Get-Content -LiteralPath $sessionPath -Raw | ConvertFrom-Json
+            $lastSessionStartedUtc = Convert-HIAUtcValueToString -Value $sess.started_utc -Default "N/A"
+            $lastSessionClosedUtc = Convert-HIAUtcValueToString -Value $sess.closed_utc -Default "N/A"
+        }
+        catch {
+            $lastSessionStartedUtc = "N/A"
+            $lastSessionClosedUtc = "N/A"
+        }
+    }
 
     $resumeRecommendation = "N/A"
     if ($nextAction -ne "N/A") {
@@ -905,6 +1069,10 @@ function Continue-HIAProject {
     $evidenceContinuity = Get-HIAProjectEvidenceContinuity -ProjectRootPath $projectRoot
 
     $operationalThread = "NO_EVIDENCE -> Use BATON/BACKLOG + session guidance."
+    if ($lastTask.RESULT -eq "rejected") {
+        $operationalThread = ("LAST_TASK_REJECTED -> {0}" -f $lastTask.MESSAGE)
+        $taskGuidance = "Last task was rejected. Review task log/evidence before continuing."
+    }
     if ($evidenceContinuity.STATE -eq "FRESH") {
         if ($evidenceContinuity.CONSISTENCY -eq "INCONSISTENT") {
             $operationalThread = ("EVIDENCE_FRESH_INCONSISTENT -> {0}" -f $evidenceContinuity.ANCHOR)
@@ -943,6 +1111,10 @@ function Continue-HIAProject {
     Write-Host ("TASK_GUIDANCE: {0}" -f $taskGuidance)
     Write-Host ("SUGGESTED_COMMAND: {0}" -f $suggestedCommand)
     Write-Host ("OPERATIONAL_THREAD: {0}" -f $operationalThread)
+    Write-Host ("LAST_SESSION_STATUS: {0}" -f $lastSessionStatus)
+    Write-Host ("LAST_SESSION_ID: {0}" -f $lastSessionId)
+    Write-Host ("LAST_SESSION_STARTED_UTC: {0}" -f $lastSessionStartedUtc)
+    Write-Host ("LAST_SESSION_CLOSED_UTC: {0}" -f $lastSessionClosedUtc)
     Write-Host ("EVIDENCE_STATE: {0}" -f $evidenceContinuity.STATE)
     Write-Host ("EVIDENCE_AGE_HOURS: {0}" -f $evidenceContinuity.AGE_HOURS)
     Write-Host ("EVIDENCE_CONSISTENCY: {0}" -f $evidenceContinuity.CONSISTENCY)
@@ -952,6 +1124,11 @@ function Continue-HIAProject {
     Write-Host ("EVIDENCE_SESSION_ID: {0}" -f $evidenceContinuity.SESSION_ID)
     Write-Host ("LATEST_OUTPUT_PATH: {0}" -f $evidenceContinuity.OUTPUT_PATH)
     Write-Host ("LATEST_LOG_PATH: {0}" -f $evidenceContinuity.LOG_PATH)
+    Write-Host ("LAST_TASK_SCOPE: {0}" -f $lastTask.SCOPE)
+    Write-Host ("LAST_TASK_RESULT: {0}" -f $lastTask.RESULT)
+    Write-Host ("LAST_TASK_REQUEST: {0}" -f $lastTask.REQUEST_PATH)
+    Write-Host ("LAST_TASK_TARGET: {0}" -f $lastTask.TARGET_PATH)
+    Write-Host ("LAST_TASK_MESSAGE: {0}" -f $lastTask.MESSAGE)
     $debugPointer = "No recent artifacts"
     if ($evidenceContinuity.OUTPUT_STATUS -eq "FOUND" -and $evidenceContinuity.LOG_STATUS -eq "FOUND") {
         $debugPointer = "Inspect log then output"
@@ -998,6 +1175,31 @@ function Review-HIAProject {
     $projectRoot = Resolve-HIAProjectRoot -ProjectId $ProjectId
     $configCheck = Test-HIAProjectConfig -ProjectRootPath $projectRoot -ProjectId $ProjectId
     $evidenceContinuity = Get-HIAProjectEvidenceContinuity -ProjectRootPath $projectRoot
+    $lastTask = Get-HIAProjectLastTaskOutcome -ProjectRootPath $projectRoot
+    $sessionPath = Join-Path $projectRoot "ARTIFACTS\SESSION.ACTIVE.json"
+    $lastSessionStatus = "N/A"
+    $lastSessionId = "N/A"
+    $lastSessionStartedUtc = "N/A"
+    $lastSessionClosedUtc = "N/A"
+    if (Test-Path -LiteralPath $sessionPath) {
+        try {
+            $sess = Get-Content -LiteralPath $sessionPath -Raw | ConvertFrom-Json
+            if (-not [string]::IsNullOrWhiteSpace([string]$sess.status)) {
+                $lastSessionStatus = [string]$sess.status
+            }
+            if (-not [string]::IsNullOrWhiteSpace([string]$sess.session_id)) {
+                $lastSessionId = [string]$sess.session_id
+            }
+            $lastSessionStartedUtc = Convert-HIAUtcValueToString -Value $sess.started_utc -Default "N/A"
+            $lastSessionClosedUtc = Convert-HIAUtcValueToString -Value $sess.closed_utc -Default "N/A"
+        }
+        catch {
+            $lastSessionStatus = "N/A"
+            $lastSessionId = "N/A"
+            $lastSessionStartedUtc = "N/A"
+            $lastSessionClosedUtc = "N/A"
+        }
+    }
 
     # BATON/BACKLOG for sync hint
     $batonPath = Join-Path $projectRoot "BATON\04.0_PROJECT.BATON.txt"
@@ -1010,6 +1212,9 @@ function Review-HIAProject {
     $nextReadyBacklog = Get-HIANextReadyBacklogItem -BacklogPath $backlogPath
 
     $reviewHandoff = $evidenceContinuity.HANDOFF
+    if ($lastTask.FOUND -and $lastTask.RESULT -eq "rejected") {
+        $reviewHandoff = ("Last task rejected: {0}. " -f $lastTask.MESSAGE) + $reviewHandoff
+    }
     $suggestedCommand = ("hia project status {0}" -f $ProjectId)
     if ($evidenceContinuity.STATE -eq "FRESH" -and $evidenceContinuity.CONSISTENCY -eq "CONSISTENT") {
         $suggestedCommand = ("hia project continue {0}" -f $ProjectId)
@@ -1033,6 +1238,10 @@ function Review-HIAProject {
     Write-Host ""
     Write-Host "PROJECT REVIEW" -ForegroundColor Green
     Write-Host ("PROJECT_ID: {0}" -f $ProjectId)
+    Write-Host ("LAST_SESSION_STATUS: {0}" -f $lastSessionStatus)
+    Write-Host ("LAST_SESSION_ID: {0}" -f $lastSessionId)
+    Write-Host ("LAST_SESSION_STARTED_UTC: {0}" -f $lastSessionStartedUtc)
+    Write-Host ("LAST_SESSION_CLOSED_UTC: {0}" -f $lastSessionClosedUtc)
     Write-Host ("EVIDENCE_STATE: {0}" -f $evidenceContinuity.STATE)
     Write-Host ("EVIDENCE_AGE_HOURS: {0}" -f $evidenceContinuity.AGE_HOURS)
     Write-Host ("EVIDENCE_CONSISTENCY: {0}" -f $evidenceContinuity.CONSISTENCY)
@@ -1042,6 +1251,11 @@ function Review-HIAProject {
     Write-Host ("EVIDENCE_SESSION_ID: {0}" -f $evidenceContinuity.SESSION_ID)
     Write-Host ("LATEST_OUTPUT_PATH: {0}" -f $evidenceContinuity.OUTPUT_PATH)
     Write-Host ("LATEST_LOG_PATH: {0}" -f $evidenceContinuity.LOG_PATH)
+    Write-Host ("LAST_TASK_SCOPE: {0}" -f $lastTask.SCOPE)
+    Write-Host ("LAST_TASK_RESULT: {0}" -f $lastTask.RESULT)
+    Write-Host ("LAST_TASK_REQUEST: {0}" -f $lastTask.REQUEST_PATH)
+    Write-Host ("LAST_TASK_TARGET: {0}" -f $lastTask.TARGET_PATH)
+    Write-Host ("LAST_TASK_MESSAGE: {0}" -f $lastTask.MESSAGE)
     $debugPointer = "No recent artifacts"
     if ($evidenceContinuity.OUTPUT_STATUS -eq "FOUND" -and $evidenceContinuity.LOG_STATUS -eq "FOUND") {
         $debugPointer = "Inspect log then output"
@@ -1112,6 +1326,7 @@ function Show-HIAProjectStatus {
     }
 
     $projectRoot = Resolve-HIAProjectRoot -ProjectId $ProjectId
+    $lastTask = Get-HIAProjectLastTaskOutcome -ProjectRootPath $projectRoot
 
     function Find-HIABatonValue {
         param(
@@ -1261,6 +1476,7 @@ function Show-HIAProjectStatus {
     $nextStepSnapshot = "No deterministic next step. Consider hia project review to refresh context."
     $nextStepReason = "No strong signal detected"
     $nextStepSource = "N/A"
+    $evidenceContinuity = $null
 
     if ($nextAction -ne "N/A") {
         $nextStepSnapshot = $nextAction
@@ -1349,6 +1565,11 @@ function Show-HIAProjectStatus {
     Write-Host ("LAST_SESSION_ID: {0}" -f $lastSessionId)
     Write-Host ("LAST_SESSION_STARTED_UTC: {0}" -f $lastSessionStartedUtc)
     Write-Host ("LAST_SESSION_CLOSED_UTC: {0}" -f $lastSessionClosedUtc)
+    Write-Host ("LAST_TASK_SCOPE: {0}" -f $lastTask.SCOPE)
+    Write-Host ("LAST_TASK_RESULT: {0}" -f $lastTask.RESULT)
+    Write-Host ("LAST_TASK_REQUEST: {0}" -f $lastTask.REQUEST_PATH)
+    Write-Host ("LAST_TASK_TARGET: {0}" -f $lastTask.TARGET_PATH)
+    Write-Host ("LAST_TASK_MESSAGE: {0}" -f $lastTask.MESSAGE)
     Write-Host ("LEDGER_DECISION: {0}" -f $ledgerDecision)
     Write-Host ("LEDGER_ACTION: {0}" -f $ledgerAction)
     Write-Host ("LEDGER_RESULT: {0}" -f $ledgerResult)
@@ -1356,6 +1577,25 @@ function Show-HIAProjectStatus {
     Write-Host ("SYNC_HINT_NOTES: {0}" -f $syncNotes)
     Write-Host ("PROJECT_CONFIG_STATUS: {0}" -f $configStatus)
     Write-Host ("PROJECT_CONFIG_NOTES: {0}" -f (($configCheck.NOTES) -join ", "))
+    Write-Host ""
+    Write-Host "NEXT_COMMANDS:" -ForegroundColor Yellow
+    $suggestedCommand = ("hia project review {0}" -f $ProjectId)
+    if ($evidenceContinuity -and $evidenceContinuity.STATE -eq "FRESH" -and $evidenceContinuity.CONSISTENCY -eq "CONSISTENT") {
+        $suggestedCommand = ("hia project continue {0}" -f $ProjectId)
+    }
+    elseif ($lastSessionStatus.ToLowerInvariant() -eq "active") {
+        $suggestedCommand = ("hia project session status {0}" -f $ProjectId)
+    }
+    $nextCommands = New-Object System.Collections.Generic.List[string]
+    $nextCommands.Add($suggestedCommand) | Out-Null
+    $nextCommands.Add(("hia project continue {0}" -f $ProjectId)) | Out-Null
+    $nextCommands.Add(("hia project review {0}" -f $ProjectId)) | Out-Null
+    $nextCommands.Add(("hia project status {0}" -f $ProjectId)) | Out-Null
+    $nextCommands.Add(("hia project session status {0}" -f $ProjectId)) | Out-Null
+    $nextCommands = $nextCommands | Select-Object -Unique
+    foreach ($cmd in $nextCommands) {
+        Write-Host ("- {0}" -f $cmd)
+    }
     Write-Host ""
     Write-Host "RELEVANT_PATHS:"
     Write-Host ("BATON: {0} [{1}]" -f $batonPath, $batonStatus)
@@ -1723,6 +1963,9 @@ function Get-HIAProjects {
         Write-Host $header
         Write-Host ("-" * ($cols.PROJECT_ID + $cols.NEXT + $cols.SESSION + $cols.EVIDENCE + $cols.SAFETY + $cols.LEDGER + 5))
 
+        $script:suggestedPortfolioCmd = $null
+        $projectIndex = New-Object System.Collections.Generic.List[object]
+        $idx = 1
         foreach ($proj in $projects) {
             try {
                 $root = $proj.FullName
@@ -1763,6 +2006,7 @@ function Get-HIAProjects {
                 }
 
                 $row = "{0} {1} {2} {3} {4} {5}" -f `
+                    (TrimPad ("[{0}]" -f $idx) 5),
                     (TrimPad $proj.Name $cols.PROJECT_ID),
                     (TrimPad $nextAction $cols.NEXT),
                     (TrimPad $sessionStatus $cols.SESSION),
@@ -1770,12 +2014,42 @@ function Get-HIAProjects {
                     (TrimPad $sessionSafety.STATE $cols.SAFETY),
                     (TrimPad $ledgerDecision $cols.LEDGER)
                 Write-Host $row
+                $projectIndex.Add([ordered]@{ IDX = $idx; PROJECT_ID = $proj.Name }) | Out-Null
+                $idx++
+
+                # capture a conservative suggested command for portfolio hint
+                if (-not $script:suggestedPortfolioCmd) {
+                    if ($sessionStatus -eq "active") {
+                        $script:suggestedPortfolioCmd = ("hia project review {0}" -f $proj.Name)
+                    }
+                    elseif ($evidence.STATE -eq "FRESH" -and $evidence.CONSISTENCY -eq "CONSISTENT") {
+                        $script:suggestedPortfolioCmd = ("hia project continue {0}" -f $proj.Name)
+                    }
+                    else {
+                        $script:suggestedPortfolioCmd = ("hia project status {0}" -f $proj.Name)
+                    }
+                }
             }
             catch {
                 Write-Host (TrimPad $proj.Name $cols.PROJECT_ID) " error while reading project snapshot"
             }
         }
 
+        Write-Host ""
+        Write-Host "INDEX MAP:" -ForegroundColor Yellow
+        foreach ($entry in $projectIndex) {
+            Write-Host ("  {0} -> {1}" -f $entry.IDX, $entry.PROJECT_ID)
+        }
+        Write-Host ""
+        Write-Host "NEXT_COMMANDS:" -ForegroundColor Yellow
+        $portfolioCmds = New-Object System.Collections.Generic.List[string]
+        if ($script:suggestedPortfolioCmd) { $portfolioCmds.Add($script:suggestedPortfolioCmd) | Out-Null }
+        $firstId = [string]$projects[0].Name
+        $portfolioCmds.Add(("hia project status {0}" -f $firstId)) | Out-Null
+        $portfolioCmds.Add(("hia project review {0}" -f $firstId)) | Out-Null
+        $portfolioCmds.Add(("hia project continue {0}" -f $firstId)) | Out-Null
+        $portfolioCmds = $portfolioCmds | Select-Object -Unique
+        foreach ($pc in $portfolioCmds) { Write-Host ("- {0}" -f $pc) }
         Write-Host ""
         return
     }

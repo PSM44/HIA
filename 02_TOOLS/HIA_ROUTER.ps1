@@ -75,6 +75,10 @@ function Show-HIAHelp {
     Write-Host "  hia <command> [args]"
     Write-Host "  hia agent <name> [args]"
     Write-Host ""
+    Write-Host "QUICKSTART:" -ForegroundColor Yellow
+    Write-Host "  hia project new SAMPLE_HELLO"
+    Write-Host "  hia project status SAMPLE_HELLO"
+    Write-Host ""
 }
 
 function Invoke-HIATool {
@@ -358,20 +362,32 @@ function Invoke-HIARouter {
                         return
                     }
 
-                    if (-not $Args -or $Args.Count -lt 1) {
-                        $global:HIA_EXIT_CODE = 2
-                        throw "Usage: hia projects OR hia projects status"
-                    }
-
                     $projectsAction = $Args[0].ToLowerInvariant()
-
-                    if ($Args.Count -gt 1) {
-                        $global:HIA_EXIT_CODE = 2
-                        throw "Usage: hia projects OR hia projects status"
-                    }
 
                     switch ($projectsAction) {
                         "status" { Get-HIAProjects -Mode status }
+                        "pick" {
+                            if ($Args.Count -lt 2) { $global:HIA_EXIT_CODE = 2; throw "Usage: hia projects pick <INDEX> [status|review|continue|sessionstatus]" }
+                            $pickIndex = [int]$Args[1]
+                            $pickAction = if ($Args.Count -ge 3) { $Args[2].ToLowerInvariant() } else { "status" }
+                            $validPickActions = @("status","review","continue","sessionstatus","session-status")
+                            if ($pickAction -notin $validPickActions) { $global:HIA_EXIT_CODE = 2; throw "Usage: hia projects pick <INDEX> [status|review|continue|sessionstatus]" }
+                            $projectsRoot = Join-Path $projectRoot "04_PROJECTS"
+                            $projList = @(Get-ChildItem -LiteralPath $projectsRoot -Directory -Force -ErrorAction Stop | Sort-Object Name)
+                            if ($projList.Count -lt $pickIndex -or $pickIndex -le 0) { $global:HIA_EXIT_CODE = 3; throw "Project index not found." }
+                            $projId = [string]$projList[$pickIndex-1].Name
+                            if (-not (Get-Command Show-HIAProjectStatus -ErrorAction SilentlyContinue)) {
+                                $projectEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_PROJECT_ENGINE.ps1"
+                                if (-not (Test-Path $projectEnginePath)) { $global:HIA_EXIT_CODE = 1; throw "Project engine not found: $projectEnginePath" }
+                                . $projectEnginePath
+                            }
+                            switch ($pickAction) {
+                                "status" { Show-HIAProjectStatus -ProjectId $projId }
+                                "review" { Review-HIAProject -ProjectId $projId }
+                                "continue" { Continue-HIAProject -ProjectId $projId }
+                                default { Get-HIAProjectSessionStatus -ProjectId $projId }
+                            }
+                        }
                         default { $global:HIA_EXIT_CODE = 2; throw "Usage: hia projects OR hia projects status" }
                     }
                 }
@@ -450,7 +466,8 @@ function Invoke-HIARouter {
                         -not (Get-Command Show-HIAProjectStatus -ErrorAction SilentlyContinue) -or
                         -not (Get-Command Start-HIAProjectSession -ErrorAction SilentlyContinue) -or
                         -not (Get-Command Get-HIAProjectSessionStatus -ErrorAction SilentlyContinue) -or
-                        -not (Get-Command Close-HIAProjectSession -ErrorAction SilentlyContinue)
+                        -not (Get-Command Close-HIAProjectSession -ErrorAction SilentlyContinue) -or
+                        -not (Get-Command Remove-HIAProjectSafe -ErrorAction SilentlyContinue)
                     ) {
                         $projectEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_PROJECT_ENGINE.ps1"
                         if (-not (Test-Path $projectEnginePath)) {
@@ -460,7 +477,7 @@ function Invoke-HIARouter {
                         . $projectEnginePath
                     }
 
-                    $projectUsage = "Usage: hia project new <PROJECT_ID> OR hia project open <PROJECT_ID> OR hia project continue <PROJECT_ID> OR hia project status <PROJECT_ID> OR hia project review <PROJECT_ID>"
+                    $projectUsage = "Usage: hia project new|open|continue|status|review|delete <PROJECT_ID>"
                     $projectSessionUsage = "Usage: hia project session start <PROJECT_ID> OR hia project session status <PROJECT_ID> OR hia project session close <PROJECT_ID>"
 
                     if (-not $Args -or $Args.Count -lt 1) {
@@ -500,6 +517,21 @@ function Invoke-HIARouter {
                         "continue" { Continue-HIAProject -ProjectId $projectId }
                         "status" { Show-HIAProjectStatus -ProjectId $projectId }
                         "review" { Review-HIAProject -ProjectId $projectId }
+                        "delete" {
+                            $forceConfirm = $false
+                            $confirmToken = $null
+                            if ($Args.Count -ge 3) {
+                                $flag = $Args[2]
+                                if ($flag -eq "--confirm" -or $flag -eq "-y") {
+                                    $forceConfirm = $true
+                                    if ($Args.Count -ge 4) { $confirmToken = $Args[3] }
+                                }
+                                else {
+                                    $confirmToken = $flag
+                                }
+                            }
+                            Remove-HIAProjectSafe -ProjectId $projectId -ForceConfirm:$forceConfirm -ConfirmToken $confirmToken
+                        }
                         default { $global:HIA_EXIT_CODE = 2; throw $projectUsage }
                     }
                 }
