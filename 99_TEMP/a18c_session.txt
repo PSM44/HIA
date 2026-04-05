@@ -1,0 +1,20 @@
+
+===================================
+ HIA — Human Intelligence Amplifier
+ CLI Interface
+===================================
+
+
+PROJECT SESSION STATUS
+PROJECT_ID: PRJ_EVID_FRESH_OK
+SESSION_STATUS: active
+SESSION_ID: fixture-session-fresh
+STARTED_UTC: 2026-04-02T05:25:34.1398412Z
+CLOSED_UTC: N/A
+SESSION_FILE: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_EVID_FRESH_OK\ARTIFACTS\SESSION.ACTIVE.json
+
+NEXT_COMMANDS:
+- hia project session start PRJ_EVID_FRESH_OK
+- hia project session close PRJ_EVID_FRESH_OK
+- hia project status PRJ_EVID_FRESH_OK
+

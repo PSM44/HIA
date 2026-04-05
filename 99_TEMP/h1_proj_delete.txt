@@ -1,0 +1,14 @@
+
+===================================
+ HIA — Human Intelligence Amplifier
+ CLI Interface
+===================================
+
+
+PROJECT REMOVED (SAFE MOVE)
+PROJECT_ID: PRJ_SMOKE_H1A
+FROM: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_SMOKE_H1A
+TO:   C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\_ARCHIVE\PRJ_SMOKE_H1A_20260405165754
+ACTION: archive move (no permanent delete)
+
+True

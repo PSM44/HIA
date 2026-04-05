@@ -1,0 +1,44 @@
+
+===================================
+ HIA — Human Intelligence Amplifier
+ CLI Interface
+===================================
+
+
+HIA CLI — Available Commands
+
+TOOLS:
+  radar           Genera índice del proyecto
+  run             Execute approved PLAN
+  validate        Ejecuta validadores
+  plan            Crea objeto PLAN
+  apply           Aprueba y ejecuta PLAN
+  sync            Sincroniza artefactos
+  checkpoint      Git checkpoint con mensaje
+  smoke           Smoke test del sistema
+  state           Gestiona estado del proyecto
+  session         Gestiona ciclo de vida de sesiones
+  context         Construye paquete de contexto operativo
+  ai              Enruta tareas a proveedores AI
+  stack           Chequea disponibilidad del AI stack
+  claude          Wrapper operativo para Claude Code (CLI)
+  ollama          Wrapper operativo para Ollama (local)
+
+AGENTS:
+  agent planner   Agente de planificación
+  agent executor  Agente de ejecución controlada
+
+TASKS:
+  task create-file <relative_path> Crea archivo dentro de PROJECT_ROOT
+  task create-file-project <project_id> <relative_path> Crea archivo dentro de 04_PROJECTS\\<project_id>
+  projects status Resumen operativo mínimo del portfolio por proyecto
+  project review <project_id> Revisión mínima de output/log recientes del proyecto
+
+USAGE:
+  hia <command> [args]
+  hia agent <name> [args]
+
+QUICKSTART:
+  hia project new SAMPLE_HELLO
+  hia project status SAMPLE_HELLO
+

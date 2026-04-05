@@ -1,0 +1,13 @@
+
+===================================
+ HIA — Human Intelligence Amplifier
+ CLI Interface
+===================================
+
+
+HIA CLI ERROR
+MESSAGE: Usage: hia ai plan <PROJECT_ID> <request> [--remember] [--preset readiness|next-step|risk-scan] OR hia ai memory <add|get> <PROJECT_ID> [note]
+SCRIPT:  C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\02_TOOLS\HIA_ROUTER.ps1
+LINE:    346
+COMMAND: if (($i + 1) -ge $Args.Count) { $global:HIA_EXIT_CODE = 2; throw $aiUsage }
+

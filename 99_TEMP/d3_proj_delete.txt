@@ -1,0 +1,14 @@
+
+===================================
+ HIA — Human Intelligence Amplifier
+ CLI Interface
+===================================
+
+
+PROJECT REMOVED (SAFE MOVE)
+PROJECT_ID: PRJ_DEPLOY_D3
+FROM: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_DEPLOY_D3
+TO:   C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\_ARCHIVE\PRJ_DEPLOY_D3_20260405170715
+ACTION: archive move (no permanent delete)
+
+True

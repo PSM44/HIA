@@ -1,0 +1,20 @@
+
+===================================
+ HIA — Human Intelligence Amplifier
+ CLI Interface
+===================================
+
+
+PROJECT SESSION STATUS
+PROJECT_ID: PRJ_DEPLOY_D3
+SESSION_STATUS: closed
+SESSION_ID: N/A
+STARTED_UTC: N/A
+CLOSED_UTC: N/A
+SESSION_FILE: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_DEPLOY_D3\ARTIFACTS\SESSION.ACTIVE.json
+
+NEXT_COMMANDS:
+- hia project session start PRJ_DEPLOY_D3
+- hia project session close PRJ_DEPLOY_D3
+- hia project status PRJ_DEPLOY_D3
+

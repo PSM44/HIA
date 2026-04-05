@@ -1,0 +1,68 @@
+
+===================================
+ HIA — Human Intelligence Amplifier
+ CLI Interface
+===================================
+
+HIA — Quick Menu
+1) projects status
+2) project status <PROJECT_ID>
+3) project review <PROJECT_ID>
+4) project continue <PROJECT_ID>
+5) project session status <PROJECT_ID>
+6) project new <PROJECT_ID>
+7) project review -> continue (same <PROJECT_ID>)
+8) projects pick <INDEX> -> project action
+9) portfolio assist (show indexed list -> pick -> action)
+10) project delete (safe confirm)
+11) ai plan (preset/free-text, optional remember)
+0) exit
+
+Running: hia projects status
+
+PROYECTOS DETECTADOS
+-------------------
+
+PROJECTS SNAPSHOT (MB-2.26)
+PROJECT_ID         NEXT                     SESSION    EVIDENCE  SAFETY   LEDGER_DECISION         
+--------------------------------------------------------------------------------------------------
+[1]   _ARCHIVE           N/A                      N/A        MISSING   N/A     
+[2]   PRJ_0001_HIA.PRODU PRJPB_003 | mostrar esta active     STALE     WARN    
+[3]   PRJ_0002_TEST      N/A                      N/A        STALE     N/A     
+[4]   PRJ_0003_TEST      N/A                      N/A        STALE     N/A     
+[5]   PRJ_CONFIG_FAIL    N/A                      N/A        MISSING   N/A     
+[6]   PRJ_EVID_FRESH_BAD TASKSYNC_WARN | baton sa N/A        STALE     N/A     
+[7]   PRJ_EVID_FRESH_OK  N/A                      active     STALE     WARN    
+[8]   PRJ_EVID_MISSING   TASKSYNC_001 | prepare s closed     FRESH     N/A     
+[9]   PRJ_EVID_STALE     N/A                      active     STALE     WARN    
+[10]  SAMPLE_CLARITY     N/A                      closed     MISSING   N/A     
+[11]  SAMPLE_HELLO       N/A                      N/A        MISSING   N/A     
+[12]  SAMPLE_MENU        N/A                      N/A        MISSING   N/A     
+[13]  SAMPLE_MR04        N/A                      closed     MISSING   N/A     
+[14]  SAMPLE_MR04B       N/A                      closed     MISSING   N/A     
+[15]  SAMPLE_TEMPLATE    N/A                      closed     MISSING   N/A     
+[16]  test6              N/A                      closed     MISSING   N/A     
+
+INDEX MAP:
+  1 -> _ARCHIVE
+  2 -> PRJ_0001_HIA.PRODUCT
+  3 -> PRJ_0002_TEST
+  4 -> PRJ_0003_TEST
+  5 -> PRJ_CONFIG_FAIL
+  6 -> PRJ_EVID_FRESH_BAD
+  7 -> PRJ_EVID_FRESH_OK
+  8 -> PRJ_EVID_MISSING
+  9 -> PRJ_EVID_STALE
+  10 -> SAMPLE_CLARITY
+  11 -> SAMPLE_HELLO
+  12 -> SAMPLE_MENU
+  13 -> SAMPLE_MR04
+  14 -> SAMPLE_MR04B
+  15 -> SAMPLE_TEMPLATE
+  16 -> test6
+
+NEXT_COMMANDS:
+- hia project status _ARCHIVE
+- hia project review _ARCHIVE
+- hia project continue _ARCHIVE
+

@@ -1,0 +1,13 @@
+
+===================================
+ HIA — Human Intelligence Amplifier
+ CLI Interface
+===================================
+
+
+HIA CLI ERROR
+MESSAGE: Project not found: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\UNKNOWN_PROJECT_X
+SCRIPT:  C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\02_TOOLS\HIA_PROJECT_ENGINE.ps1
+LINE:    970
+COMMAND: throw $_.Exception
+

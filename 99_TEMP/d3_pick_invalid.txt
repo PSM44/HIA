@@ -1,0 +1,13 @@
+
+===================================
+ HIA — Human Intelligence Amplifier
+ CLI Interface
+===================================
+
+
+HIA CLI ERROR
+MESSAGE: Project index not found.
+SCRIPT:  C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\02_TOOLS\HIA_ROUTER.ps1
+LINE:    440
+COMMAND: if ($projList.Count -lt $pickIndex -or $pickIndex -le 0) { $global:HIA_EXIT_CODE = 3; throw "Project index not found." }
+
