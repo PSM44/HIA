@@ -1,0 +1,19 @@
+2026-04-03T05:26:20.6495179Z | SOURCE=operator | NOTE=first project memory note
+2026-04-03T05:26:27.2793083Z | SOURCE=operator | NOTE=second project memory note
+2026-04-03T05:31:20.9401702Z | SOURCE=aazcl | NOTE=executor registry note
+2026-04-03T17:36:08.5177320Z | SOURCE=aazcl | NOTE=AI_PLAN: identify the most conservative next step | ANALYZE_ONLY: request='identify the most conservative next step' | guidance=Conservative review and session check before actions.
+2026-04-03T17:49:13.0958346Z | SOURCE=aazcl | NOTE=AI_PLAN | MODE=read-only | EXECUTOR=exec.analyze | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-03T22:23:31.0827171Z | SOURCE=aazcl | NOTE=AI_PLAN | MODE=read-only | EXECUTOR=exec.analyze | PRESET=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-03T23:16:51.1097826Z | SOURCE=aazcl | NOTE=AI_PLAN | MODE=read-only | EXECUTOR=exec.analyze | PRESET=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-03T23:22:05.9079719Z | SOURCE=aazcl | NOTE=AI_PLAN | MODE=read-only | EXECUTOR=exec.analyze | PRESET=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-03T23:23:34.2273392Z | SOURCE=aazcl | NOTE=AI_PLAN | MODE=read-only | EXECUTOR=exec.analyze | PRESET=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-03T23:43:27.5635350Z | SOURCE=aazcl | NOTE=AI_PLAN | MODE=read-only | EXECUTOR=exec.analyze | PRESET=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-03T23:51:16.4013213Z | SOURCE=aazcl | NOTE=AI_PLAN | MODE=read-only | EXECUTOR=exec.analyze | PRESET=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-04T01:20:01.1457001Z | SOURCE=aazcl | NOTE=AI_PLAN | DECISION_REF=D803d0f92 | MODE=read-only | EXECUTOR=exec.analyze | PRESET=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-04T01:33:47.6486750Z | SOURCE=aazcl | NOTE=AI_PLAN | DECISION_REF=DEC-04d401d9 | MODE=read-only | EXECUTOR=exec.analyze | PRESET=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-04T13:27:04.0694961Z | SOURCE=aazcl | NOTE=AI_PLAN | DECISION_REF=DEC-c71c67de | MODE=read-only | EXECUTOR=exec.analyze | PRESET=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-05T16:14:22.5211345Z | SOURCE=aazcl | NOTE=AI_PLAN | DECISION_REF=DEC-0f2cf35f | MODE=read-only | EXECUTOR=exec.analyze | PRESET=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-05T16:15:02.9077707Z | SOURCE=aazcl | NOTE=AI_PLAN | DECISION_REF=DEC-cd01380a | MODE=read-only | EXECUTOR=exec.analyze | PRESET=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-05T16:31:56.7405675Z | SOURCE=aazcl | NOTE=AI_PLAN | DECISION_REF=DEC-a06012a5 | MODE=read-only | EXECUTOR=exec.analyze | PRESET=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-05T16:32:20.2029769Z | SOURCE=aazcl | NOTE=AI_PLAN | DECISION_REF=DEC-b7be7961 | MODE=read-only | EXECUTOR=exec.analyze | PRESET=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-05T16:41:08.1020566Z | SOURCE=aazcl | NOTE=AI_PLAN | DECISION_REF=DEC-cc176f0e | MODE=read-only | EXECUTOR=exec.analyze | PRESET=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.

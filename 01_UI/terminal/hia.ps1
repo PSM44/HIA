@@ -174,7 +174,7 @@ if (-not $RouterArgs) {
 }
 
 # -----------------------------------------------------------------------------
-# MENU (MB-2.36)
+# MENU (LEGACY/INTERACTIVE SURFACE - bounded; keep logic here, do not expand)
 # -----------------------------------------------------------------------------
 function Invoke-HIAMenu {
     param([string]$ProjectRoot)
@@ -190,6 +190,7 @@ function Invoke-HIAMenu {
     Write-Host "8) projects pick <INDEX> -> project action"
     Write-Host "9) portfolio assist (show indexed list -> pick -> action)"
     Write-Host "10) project delete (safe confirm)"
+    Write-Host "11) ai plan (preset/free-text, optional remember)"
     Write-Host "0) exit" -ForegroundColor DarkGray
     Write-Host ""
 
@@ -289,6 +290,69 @@ function Invoke-HIAMenu {
             $null = Invoke-HIAMenuCommand -Cmd "project" -CmdArgs @("delete", $projId, "--confirm", $token)
             return
         }
+        "11" {
+            # AI menu legacy surface (internal/testing aids: HIA_MENU_FOLLOW, __free__ sentinel)
+            $projId = if (-not [string]::IsNullOrWhiteSpace($env:HIA_MENU_PROJECT)) { $env:HIA_MENU_PROJECT } else { Read-HIAMenuInput -Prompt "Project ID: " -Queue $queue }
+            if ([string]::IsNullOrWhiteSpace($projId)) { exit 2 }
+
+            $presetPrompt = "Preset (readiness/next-step/risk-scan) or leave blank for free-text: "
+            $presetInput = if (-not [string]::IsNullOrWhiteSpace($env:HIA_MENU_PRESET)) { $env:HIA_MENU_PRESET } else { Read-HIAMenuInput -Prompt $presetPrompt -Queue $queue }
+            if ($null -eq $presetInput) { $presetInput = "" }
+            if ($presetInput.Trim().ToLowerInvariant() -eq "__free__") { $presetInput = "" }
+            $presetNorm = $presetInput.Trim().ToLowerInvariant()
+            $allowedPresets = @("readiness","next-step","risk-scan")
+
+            $request = ""
+            $cmdArgs = @()
+            if (-not [string]::IsNullOrWhiteSpace($presetNorm)) {
+                if ($allowedPresets -notcontains $presetNorm) { exit 2 }
+                $cmdArgs = @("plan", $projId, "--preset", $presetNorm)
+            }
+            else {
+                $request = if (-not [string]::IsNullOrWhiteSpace($env:HIA_MENU_REQUEST)) { $env:HIA_MENU_REQUEST } else { Read-HIAMenuInput -Prompt "Free-text request: " -Queue $queue }
+                if ([string]::IsNullOrWhiteSpace($request)) { exit 2 }
+                $cmdArgs = @("plan", $projId, $request)
+            }
+
+            $rememberInput = if (-not [string]::IsNullOrWhiteSpace($env:HIA_MENU_REMEMBER)) { $env:HIA_MENU_REMEMBER } else { Read-HIAMenuInput -Prompt "Remember? (y/N): " -Queue $queue }
+            if ($rememberInput.Trim().ToLowerInvariant() -in @("y","yes")) {
+                $cmdArgs += "--remember"
+            }
+
+            $aiExit = Invoke-HIAMenuCommand -Cmd "ai" -CmdArgs $cmdArgs
+            if ($aiExit -is [array]) { $aiExit = $aiExit[-1] }
+            if ($null -ne $aiExit) {
+                $global:HIA_EXIT_CODE = [int]$aiExit
+                $global:LASTEXITCODE = [int]$aiExit
+            }
+            if ($aiExit -ne 0) { return }
+
+            # Suggested next command (deterministic mapping)
+            $suggested = "hia project review {0}" -f $projId
+            switch ($presetNorm) {
+                "readiness" { $suggested = "hia project review {0}" -f $projId }
+                "risk-scan" { $suggested = "hia project review {0}" -f $projId }
+                "next-step" { $suggested = "hia project continue {0}" -f $projId }
+                default { $suggested = "hia project review {0}" -f $projId }
+            }
+
+            Write-Host ("Suggested next: {0}" -f $suggested) -ForegroundColor DarkGray
+            $follow = if (-not [string]::IsNullOrWhiteSpace($env:HIA_MENU_FOLLOW)) { $env:HIA_MENU_FOLLOW } else { Read-HIAMenuInput -Prompt "Run suggested command now? (y/N): " -Queue $queue }
+            if ($follow.Trim().ToLowerInvariant() -notin @("y","yes")) { return }
+
+            $tokens = $suggested.Split(" ", [System.StringSplitOptions]::RemoveEmptyEntries)
+            if ($tokens.Count -lt 2) { return }
+            $runCmd = $tokens[1]
+            $runArgs = $tokens[2..($tokens.Count-1)]
+            Write-Host ("Running: {0}" -f $suggested) -ForegroundColor DarkGray
+            $followExit = Invoke-HIAMenuCommand -Cmd $runCmd -CmdArgs $runArgs
+            if ($followExit -is [array]) { $followExit = $followExit[-1] }
+            if ($null -ne $followExit) {
+                $global:HIA_EXIT_CODE = [int]$followExit
+                $global:LASTEXITCODE = [int]$followExit
+            }
+            return
+        }
         "0" { exit 0 }
         default { exit 2 }
     }
@@ -351,6 +415,7 @@ catch {
     if ($msg -match 'Project not found') { $exitCode = 3 }
     elseif ($msg -match 'already exists') { $exitCode = 1 }
     elseif ($msg -match 'positional parameter cannot be found') { $exitCode = 2 }
+    elseif ($msg -match '^Usage:') { $exitCode = 2 }
     else {
         $hint = Get-Variable -Name HIA_EXIT_CODE -Scope Global -ValueOnly -ErrorAction SilentlyContinue
         if ($null -ne $hint) { $exitCode = [int]$hint }

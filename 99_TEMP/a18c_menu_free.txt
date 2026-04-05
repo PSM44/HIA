@@ -1,0 +1,37 @@
+
+===================================
+ HIA — Human Intelligence Amplifier
+ CLI Interface
+===================================
+
+HIA — Quick Menu
+1) projects status
+2) project status <PROJECT_ID>
+3) project review <PROJECT_ID>
+4) project continue <PROJECT_ID>
+5) project session status <PROJECT_ID>
+6) project new <PROJECT_ID>
+7) project review -> continue (same <PROJECT_ID>)
+8) projects pick <INDEX> -> project action
+9) portfolio assist (show indexed list -> pick -> action)
+10) project delete (safe confirm)
+11) ai plan (preset/free-text, optional remember)
+0) exit
+
+Running: hia ai plan PRJ_EVID_FRESH_OK menu free text check
+
+HIA AI PLAN (READ-ONLY)
+PROJECT_ID: PRJ_EVID_FRESH_OK
+DECISION_REF: DEC-7291838c
+MODE: read-only
+EXECUTOR: exec.analyze
+PRESET: free-text
+REQUEST: menu free text check
+RESULT_SUMMARY: ANALYZE_ONLY: request='menu free text check' | guidance=Conservative review and session check before actions.
+AI_NEXT_HINT: Review plan, align with BATON/backlog, then proceed conservatively.
+AI_SUGGESTED_COMMAND: hia project review PRJ_EVID_FRESH_OK
+AI_PLAN_LOG: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_EVID_FRESH_OK\ARTIFACTS\ORCHESTRATION\DECISIONS.log
+MEMORY_APPENDED: NO
+MEMORY_PATH: N/A
+
+Suggested next: hia project review PRJ_EVID_FRESH_OK

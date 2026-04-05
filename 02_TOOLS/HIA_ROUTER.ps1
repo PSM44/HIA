@@ -318,19 +318,82 @@ function Invoke-HIARouter {
                 Write-Host "ERROR: Specify agent name. Usage: hia agent <name>" -ForegroundColor Red
             }
         }
-        default {
-            $toolReg = Get-ToolRegistry -ProjectRoot $projectRoot
-            $toolEntry = $null
-            if ($toolReg -and $toolReg.tools) {
-                $toolEntry = $toolReg.tools.PSObject.Properties[$normalizedCommand]
-            }
+        "ai" {
+            $aiUsage = "Usage: hia ai plan <PROJECT_ID> <request> [--remember] [--preset readiness|next-step|risk-scan] OR hia ai memory <add|get> <PROJECT_ID> [note]"
 
-            if ($toolEntry) {
-                Invoke-HIATool -ProjectRoot $projectRoot -ToolName $normalizedCommand -ToolArgs $Args
-                return
-            }
+            if (-not (Get-Command Invoke-HIAProjectAIPlan -ErrorAction SilentlyContinue)) {
+                $projectEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_PROJECT_ENGINE.ps1"
+                if (-not (Test-Path $projectEnginePath)) {
+                    $global:HIA_EXIT_CODE = 1
+                     throw "Project engine not found: $projectEnginePath"
+                 }
+                 . $projectEnginePath
+             }
 
-            switch ($normalizedCommand) {
+            if (-not $Args -or $Args.Count -lt 1) { $global:HIA_EXIT_CODE = 2; throw $aiUsage }
+            $aiAction = $Args[0].ToLowerInvariant()
+            switch ($aiAction) {
+                "plan" {
+                    if ($Args.Count -lt 3) { $global:HIA_EXIT_CODE = 2; throw $aiUsage }
+                    $projId = $Args[1]
+                    $remember = $false
+                    $preset = ""
+                    $requestParts = @()
+                    for ($i = 2; $i -lt $Args.Count; $i++) {
+                        $part = $Args[$i]
+                        if ($part -eq "--remember" -or $part -eq "-m") { $remember = $true; continue }
+                        if ($part -eq "--preset") {
+                            if (($i + 1) -ge $Args.Count) { $global:HIA_EXIT_CODE = 2; throw $aiUsage }
+                            $preset = $Args[$i + 1]
+                            $i++
+                            continue
+                        }
+                        $requestParts += $part
+                    }
+                    $request = ($requestParts -join " ").Trim()
+                    if ([string]::IsNullOrWhiteSpace($request) -and -not [string]::IsNullOrWhiteSpace($preset)) {
+                        $request = $preset
+                    }
+                    if ([string]::IsNullOrWhiteSpace($request)) { $global:HIA_EXIT_CODE = 2; throw $aiUsage }
+                    $planParams = @{ ProjectId = $projId; Request = $request; Preset = $preset; Remember = $remember }
+                    Invoke-HIAProjectAIPlan @planParams
+                    return
+                }
+                "memory" {
+                    if ($Args.Count -lt 3) { $global:HIA_EXIT_CODE = 2; throw "Usage: hia ai memory <add|get> <PROJECT_ID> [note]" }
+                    $memAction = $Args[1].ToLowerInvariant()
+                    $projId = $Args[2]
+                    switch ($memAction) {
+                        "add" {
+                            if ($Args.Count -lt 4) { $global:HIA_EXIT_CODE = 2; throw "Usage: hia ai memory add <PROJECT_ID> <note>" }
+                            $note = ($Args[3..($Args.Count - 1)] -join " ").Trim()
+                            if ([string]::IsNullOrWhiteSpace($note)) { $global:HIA_EXIT_CODE = 2; throw "Usage: hia ai memory add <PROJECT_ID> <note>" }
+                            Add-HIAProjectMemory -ProjectId $projId -Note $note
+                            return
+                        }
+                        "get" {
+                            Get-HIAProjectMemory -ProjectId $projId
+                            return
+                        }
+                        default { $global:HIA_EXIT_CODE = 2; throw "Usage: hia ai memory <add|get> <PROJECT_ID> [note]" }
+                    }
+                }
+                default { $global:HIA_EXIT_CODE = 2; throw $aiUsage }
+            }
+        }
+         default {
+             $toolReg = Get-ToolRegistry -ProjectRoot $projectRoot
+             $toolEntry = $null
+             if ($toolReg -and $toolReg.tools) {
+                 $toolEntry = $toolReg.tools.PSObject.Properties[$normalizedCommand]
+             }
+
+             if ($toolEntry) {
+                 Invoke-HIATool -ProjectRoot $projectRoot -ToolName $normalizedCommand -ToolArgs $Args
+                 return
+             }
+
+             switch ($normalizedCommand) {
                 "plan" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "plan" -ToolArgs $Args }
                 "apply" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "apply" -ToolArgs $Args }
                 "run" { Invoke-HIATool -ProjectRoot $projectRoot -ToolName "run" -ToolArgs $Args }

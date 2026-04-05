@@ -1,0 +1,13 @@
+{
+  "executors": [
+    {
+      "id": "exec.analyze",
+      "enabled": true,
+      "mode": "read-only",
+      "write_allowed": false,
+      "notes": "Default analyze-only executor; no project writes"
+    }
+  ]
+}
+
+

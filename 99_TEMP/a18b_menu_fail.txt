@@ -1,0 +1,24 @@
+
+===================================
+ HIA — Human Intelligence Amplifier
+ CLI Interface
+===================================
+
+HIA — Quick Menu
+1) projects status
+2) project status <PROJECT_ID>
+3) project review <PROJECT_ID>
+4) project continue <PROJECT_ID>
+5) project session status <PROJECT_ID>
+6) project new <PROJECT_ID>
+7) project review -> continue (same <PROJECT_ID>)
+8) projects pick <INDEX> -> project action
+9) portfolio assist (show indexed list -> pick -> action)
+10) project delete (safe confirm)
+11) ai plan (preset/free-text, optional remember)
+0) exit
+
+Running: hia ai plan UNKNOWN_PROJECT_X --preset readiness
+COMMAND FAILED (pedestrian-friendly):
+  CMD: hia ai plan UNKNOWN_PROJECT_X --preset readiness
+  MESSAGE: Project not found: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\UNKNOWN_PROJECT_X

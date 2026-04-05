@@ -946,6 +946,254 @@ function Remove-HIAProjectSafe {
     return $true
 }
 
+function Invoke-HIAProjectAIPlan {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectId,
+        [Parameter(Mandatory = $true)]
+        [string]$Request,
+        [string]$Preset = "",
+        [switch]$Remember
+    )
+
+    if ([string]::IsNullOrWhiteSpace($ProjectId) -or [string]::IsNullOrWhiteSpace($Request)) {
+        $global:HIA_EXIT_CODE = 2
+        throw "Usage: hia ai plan <PROJECT_ID> <request>"
+    }
+
+    $projectRoot = $null
+    try {
+        $projectRoot = Resolve-HIAProjectRoot -ProjectId $ProjectId
+    }
+    catch {
+        $global:HIA_EXIT_CODE = 3
+        throw $_.Exception
+    }
+
+    $orchestrationDir = Join-Path $projectRoot "ARTIFACTS\ORCHESTRATION"
+    if (-not (Test-Path -LiteralPath $orchestrationDir -PathType Container)) {
+        New-Item -ItemType Directory -Path $orchestrationDir -Force | Out-Null
+    }
+    $decisionsLog = Join-Path $orchestrationDir "DECISIONS.log"
+
+    # Minimal executor registry (allowlist)
+    $registryPath = Join-Path (Join-Path $PSScriptRoot "..\07_CONFIG") "EXECUTORS.json"
+    $executor = "exec.analyze"
+    $mode = "read-only"
+    $writeAllowed = $false
+    if (Test-Path -LiteralPath $registryPath -PathType Leaf) {
+        try {
+            $reg = Get-Content -LiteralPath $registryPath -Raw | ConvertFrom-Json
+            $entry = $reg.executors | Where-Object { $_.id -eq $executor }
+            if (-not $entry) {
+                $global:HIA_EXIT_CODE = 1
+                throw ("Executor '{0}' not found in registry." -f $executor)
+            }
+            if (-not $entry.enabled) {
+                $global:HIA_EXIT_CODE = 1
+                throw ("Executor '{0}' is disabled by registry." -f $executor)
+            }
+            if (-not [string]::IsNullOrWhiteSpace([string]$entry.mode)) { $mode = [string]$entry.mode }
+            if ($entry.PSObject.Properties.Name -contains "write_allowed") { $writeAllowed = [bool]$entry.write_allowed }
+            if ($writeAllowed) {
+                $global:HIA_EXIT_CODE = 1
+                throw ("Executor '{0}' is not permitted for read-only plan (write_allowed=true)." -f $executor)
+            }
+        }
+        catch {
+            throw $_.Exception
+        }
+    }
+    else {
+        $global:HIA_EXIT_CODE = 1
+        throw ("Executor registry not found: {0}" -f $registryPath)
+    }
+
+    $timestamp = (Get-Date).ToUniversalTime().ToString("o")
+    $decisionRef = ("DEC-" + [System.Guid]::NewGuid().ToString("N").Substring(0,8))
+
+    # Normalize request/preset
+    $presetNormalized = ""
+    $requestText = $Request.Trim()
+    switch ($Preset.ToLowerInvariant()) {
+        "" { } # free text path
+        "readiness" { $presetNormalized = "readiness"; $requestText = "Summarize conservative project readiness." }
+        "next-step" { $presetNormalized = "next-step"; $requestText = "Identify the most conservative next step given current evidence and sessions." }
+        "risk-scan" { $presetNormalized = "risk-scan"; $requestText = "Scan for obvious operational risks before next action." }
+        default {
+            $global:HIA_EXIT_CODE = 2
+            throw "Usage: hia ai plan <PROJECT_ID> <request> [--remember] [--preset <readiness|next-step|risk-scan>]"
+        }
+    }
+
+    # Deterministic placeholder analyze (no project writes)
+    $resultSummary = ("ANALYZE_ONLY: request='{0}' | guidance=Conservative review and session check before actions." -f ($requestText))
+    $resultSummary = ($resultSummary -replace '\s+', ' ').Trim()
+    $resultCap = 240
+    if ($resultSummary.Length -gt $resultCap) { $resultSummary = $resultSummary.Substring(0, $resultCap) + "…" }
+    $requestDisplay = if ([string]::IsNullOrWhiteSpace($presetNormalized)) { $requestText } else { $presetNormalized }
+    if ($requestDisplay.Length -gt 120) { $requestDisplay = $requestDisplay.Substring(0,120) }
+    $normalized = [ordered]@{
+        MODE = $mode
+        EXECUTOR = $executor
+        REQUEST = $requestText
+        RESULT_SUMMARY = $resultSummary
+        NEXT_HINT = "Review plan, align with BATON/backlog, then proceed conservatively."
+        PRESET = $(if ([string]::IsNullOrWhiteSpace($presetNormalized)) { "free-text" } else { $presetNormalized })
+        DECISION_REF = $decisionRef
+        AI_SUGGESTED_COMMAND = "hia project review {0}" -f $ProjectId
+    }
+    switch ($normalized.PRESET) {
+        "readiness" { $normalized.AI_SUGGESTED_COMMAND = "hia project review {0}" -f $ProjectId }
+        "next-step" { $normalized.AI_SUGGESTED_COMMAND = "hia project continue {0}" -f $ProjectId }
+        "risk-scan" { $normalized.AI_SUGGESTED_COMMAND = "hia project review {0}" -f $ProjectId }
+        default { $normalized.AI_SUGGESTED_COMMAND = "hia project review {0}" -f $ProjectId }
+    }
+    $logLine = "{0} | PROJECT={1} | DECISION_REF={2} | MODE={3} | EXEC={4} | PRESET={5} | REQUEST={6} | NEXT_HINT={7}" -f `
+        $timestamp, `
+        $ProjectId, `
+        $decisionRef, `
+        $normalized.MODE, `
+        $normalized.EXECUTOR, `
+        $normalized.PRESET, `
+        $requestDisplay, `
+        $normalized.NEXT_HINT
+    Add-Content -Path $decisionsLog -Value $logLine -Encoding UTF8
+
+    Write-Host ""
+    Write-Host "HIA AI PLAN (READ-ONLY)" -ForegroundColor Cyan
+    Write-Host ("PROJECT_ID: {0}" -f $ProjectId)
+    Write-Host ("DECISION_REF: {0}" -f $decisionRef)
+    Write-Host ("MODE: {0}" -f $normalized.MODE)
+    Write-Host ("EXECUTOR: {0}" -f $normalized.EXECUTOR)
+    Write-Host ("PRESET: {0}" -f $normalized.PRESET)
+    Write-Host ("REQUEST: {0}" -f $requestDisplay)
+    Write-Host ("RESULT_SUMMARY: {0}" -f $normalized.RESULT_SUMMARY)
+    Write-Host ("AI_NEXT_HINT: {0}" -f $normalized.NEXT_HINT)
+    Write-Host ("AI_SUGGESTED_COMMAND: {0}" -f $normalized.AI_SUGGESTED_COMMAND)
+    Write-Host ("AI_PLAN_LOG: {0}" -f $decisionsLog)
+    $memoryAppended = $false
+    $memoryPath = Join-Path $projectRoot "ARTIFACTS\MEMORY\PROJECT_MEMORY.log"
+    if ($Remember) {
+        try {
+            $noteBase = ("AI_PLAN | DECISION_REF={0} | MODE={1} | EXECUTOR={2} | PRESET={3} | NEXT_HINT={4}" -f $decisionRef, $normalized.MODE, $normalized.EXECUTOR, $normalized.PRESET, $normalized.NEXT_HINT)
+            $cap = 240
+            $noteBounded = if ($noteBase.Length -gt $cap) { $noteBase.Substring(0,$cap) } else { $noteBase }
+            Add-HIAProjectMemory -ProjectId $ProjectId -Note $noteBounded
+            $memoryAppended = $true
+        }
+        catch {
+            $global:HIA_EXIT_CODE = 1
+            throw $_.Exception
+        }
+    }
+    Write-Host ("MEMORY_APPENDED: {0}" -f ($(if ($memoryAppended) { "YES" } else { "NO" })))
+    Write-Host ("MEMORY_PATH: {0}" -f ($(if ($memoryAppended) { $memoryPath } else { "N/A" })))
+    Write-Host ""
+
+    $global:HIA_EXIT_CODE = 0
+    return $true
+}
+
+function Get-HIAProjectMemoryPath {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectRootPath
+    )
+
+    $memDir = Join-Path $ProjectRootPath "ARTIFACTS\MEMORY"
+    if (-not (Test-Path -LiteralPath $memDir -PathType Container)) {
+        New-Item -ItemType Directory -Path $memDir -Force | Out-Null
+    }
+    return Join-Path $memDir "PROJECT_MEMORY.log"
+}
+
+function Add-HIAProjectMemory {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectId,
+        [Parameter(Mandatory = $true)]
+        [string]$Note
+    )
+
+    if ([string]::IsNullOrWhiteSpace($ProjectId) -or [string]::IsNullOrWhiteSpace($Note)) {
+        $global:HIA_EXIT_CODE = 2
+        throw "Usage: hia ai memory add <PROJECT_ID> <note>"
+    }
+
+    $projectRoot = $null
+    try {
+        $projectRoot = Resolve-HIAProjectRoot -ProjectId $ProjectId
+    }
+    catch {
+        $global:HIA_EXIT_CODE = 3
+        throw $_.Exception
+    }
+
+    $memPath = Get-HIAProjectMemoryPath -ProjectRootPath $projectRoot
+    $timestamp = (Get-Date).ToUniversalTime().ToString("o")
+    $source = if (-not [string]::IsNullOrWhiteSpace($env:USERNAME)) { $env:USERNAME } else { "operator" }
+    $line = "{0} | SOURCE={1} | NOTE={2}" -f $timestamp, $source, ($Note.Trim())
+    Add-Content -LiteralPath $memPath -Value $line -Encoding UTF8
+
+    Write-Host ""
+    Write-Host "PROJECT MEMORY UPDATED (APPEND-ONLY)" -ForegroundColor Green
+    Write-Host ("PROJECT_ID: {0}" -f $ProjectId)
+    Write-Host ("NOTE_ADDED: {0}" -f $Note.Trim())
+    Write-Host ("MEMORY_PATH: {0}" -f $memPath)
+    Write-Host ""
+
+    $global:HIA_EXIT_CODE = 0
+    return $true
+}
+
+function Get-HIAProjectMemory {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectId
+    )
+
+    if ([string]::IsNullOrWhiteSpace($ProjectId)) {
+        $global:HIA_EXIT_CODE = 2
+        throw "Usage: hia ai memory get <PROJECT_ID>"
+    }
+
+    $projectRoot = $null
+    try {
+        $projectRoot = Resolve-HIAProjectRoot -ProjectId $ProjectId
+    }
+    catch {
+        $global:HIA_EXIT_CODE = 3
+        throw $_.Exception
+    }
+
+    $memPath = Get-HIAProjectMemoryPath -ProjectRootPath $projectRoot
+    $lines = @()
+    if (Test-Path -LiteralPath $memPath -PathType Leaf) {
+        $lines = Get-Content -LiteralPath $memPath -ErrorAction SilentlyContinue
+    }
+
+    Write-Host ""
+    Write-Host "PROJECT MEMORY (READ-ONLY)" -ForegroundColor Cyan
+    Write-Host ("PROJECT_ID: {0}" -f $ProjectId)
+    Write-Host ("MEMORY_PATH: {0}" -f $memPath)
+    $previewCount = 20
+    if ($lines.Count -eq 0) {
+        Write-Host "NO ENTRIES" -ForegroundColor Yellow
+    }
+    else {
+        $preview = $lines | Select-Object -Last $previewCount
+        foreach ($l in $preview) { Write-Host $l }
+        if ($lines.Count -gt $preview.Count) {
+            Write-Host ("... ({0} total entries; bounded view shows last {1})" -f $lines.Count, $previewCount) -ForegroundColor DarkGray
+        }
+    }
+    Write-Host ""
+
+    $global:HIA_EXIT_CODE = 0
+    return $true
+}
+
 function Open-HIAProject {
     param(
         [Parameter(Mandatory = $true)]
@@ -995,11 +1243,31 @@ function Continue-HIAProject {
     $configCheck = Test-HIAProjectConfig -ProjectRootPath $projectRoot -ProjectId $ProjectId
 
     $snapshot = Get-HIAProjectPortfolioSnapshot -ProjectRootPath $projectRoot -ProjectId $ProjectId
-    $currentObjective = if ([string]::IsNullOrWhiteSpace([string]$snapshot.CURRENT_OBJECTIVE)) { "N/A" } else { [string]$snapshot.CURRENT_OBJECTIVE }
-    $nextAction = if ([string]::IsNullOrWhiteSpace([string]$snapshot.NEXT_ACTION_BATON)) { "N/A" } else { [string]$snapshot.NEXT_ACTION_BATON }
-    $nextReadyItem = if ([string]::IsNullOrWhiteSpace([string]$snapshot.NEXT_READY_ITEM)) { "N/A" } else { [string]$snapshot.NEXT_READY_ITEM }
-    $lastSessionStatus = if ([string]::IsNullOrWhiteSpace([string]$snapshot.LAST_SESSION_STATUS)) { "N/A" } else { [string]$snapshot.LAST_SESSION_STATUS }
-    $lastSessionId = if ([string]::IsNullOrWhiteSpace([string]$snapshot.LAST_SESSION_ID)) { "N/A" } else { [string]$snapshot.LAST_SESSION_ID }
+
+    $currentObjective = "N/A"
+    if (-not [string]::IsNullOrWhiteSpace([string]$snapshot.CURRENT_OBJECTIVE)) {
+        $currentObjective = [string]$snapshot.CURRENT_OBJECTIVE
+    }
+
+    $nextAction = "N/A"
+    if (-not [string]::IsNullOrWhiteSpace([string]$snapshot.NEXT_ACTION_BATON)) {
+        $nextAction = [string]$snapshot.NEXT_ACTION_BATON
+    }
+
+    $nextReadyItem = "N/A"
+    if (-not [string]::IsNullOrWhiteSpace([string]$snapshot.NEXT_READY_ITEM)) {
+        $nextReadyItem = [string]$snapshot.NEXT_READY_ITEM
+    }
+
+    $lastSessionStatus = "N/A"
+    if (-not [string]::IsNullOrWhiteSpace([string]$snapshot.LAST_SESSION_STATUS)) {
+        $lastSessionStatus = [string]$snapshot.LAST_SESSION_STATUS
+    }
+
+    $lastSessionId = "N/A"
+    if (-not [string]::IsNullOrWhiteSpace([string]$snapshot.LAST_SESSION_ID)) {
+        $lastSessionId = [string]$snapshot.LAST_SESSION_ID
+    }
     $sessionPath = Join-Path $projectRoot "ARTIFACTS\SESSION.ACTIVE.json"
     $lastSessionStartedUtc = "N/A"
     $lastSessionClosedUtc = "N/A"
@@ -1145,6 +1413,51 @@ function Continue-HIAProject {
     Write-Host ("SESSION_SAFETY_AGE_HOURS: {0}" -f $sessionSafety.AGE_HOURS)
     Write-Host ("PROJECT_CONFIG_STATUS: {0}" -f $configCheck.STATUS)
     Write-Host ("PROJECT_CONFIG_NOTES: {0}" -f (($configCheck.NOTES) -join ", "))
+    $aiDecisionsPath = Join-Path $projectRoot "ARTIFACTS\ORCHESTRATION\DECISIONS.log"
+    $aiLast = $null
+    if (Test-Path -LiteralPath $aiDecisionsPath -PathType Leaf) {
+        try { $aiLast = Get-Content -LiteralPath $aiDecisionsPath -ErrorAction Stop | Select-Object -Last 1 } catch { $aiLast = $null }
+    }
+    $aiSummary = "N/A"
+    $aiGuidance = "N/A"
+    if ($aiLast) {
+        $reqMatch = ""
+        if ($aiLast -match "REQUEST=([^|]+)") { $reqMatch = ($Matches[1]).Trim() }
+        $hintMatch = ""
+        if ($aiLast -match "NEXT_HINT=([^|]+)") { $hintMatch = ($Matches[1]).Trim() }
+        $presetMatch = ""
+        if ($aiLast -match "PRESET=([^|]+)") { $presetMatch = ($Matches[1]).Trim() }
+        $cmdMatch = ""
+        if ($aiLast -match "AI_SUGGESTED_COMMAND=([^|]+)") { $cmdMatch = ($Matches[1]).Trim() }
+
+        $aiSummary = ""
+        if (-not [string]::IsNullOrWhiteSpace($presetMatch)) {
+        $aiSummary = "[preset=$presetMatch] "
+        }
+        if (-not [string]::IsNullOrWhiteSpace($reqMatch)) {
+            $aiSummary += $reqMatch
+        }
+        if (-not [string]::IsNullOrWhiteSpace($hintMatch)) {
+            if (-not [string]::IsNullOrWhiteSpace($reqMatch)) {
+                $aiSummary += " | "
+            }
+            $aiSummary += $hintMatch
+        }
+        if ([string]::IsNullOrWhiteSpace($aiSummary)) {
+            $aiSummary = $aiLast
+        }
+
+        $aiGuidance = "Review latest AI plan before acting."
+        if (-not [string]::IsNullOrWhiteSpace($hintMatch)) {
+            $aiGuidance = $hintMatch
+        }
+        if (-not [string]::IsNullOrWhiteSpace($cmdMatch)) {
+            $aiSummary += (" => {0}" -f $cmdMatch)
+        }
+    }
+    Write-Host ("AI_LAST_PLAN: {0}" -f $aiSummary)
+    Write-Host ("AI_PLAN_LOG: {0}" -f ($(if (Test-Path -LiteralPath $aiDecisionsPath) { $aiDecisionsPath } else { "N/A" })))
+    Write-Host ("AI_GUIDANCE: {0}" -f $aiGuidance)
     Write-Host ""
     Write-Host "NEXT_COMMANDS:" -ForegroundColor Yellow
     $nextCommands = New-Object System.Collections.Generic.List[string]
@@ -1297,6 +1610,47 @@ function Review-HIAProject {
     Write-Host ("SYNC_HINT_NOTES: {0}" -f $syncNotes)
     Write-Host ("REVIEW_HANDOFF: {0}" -f $reviewHandoff)
     Write-Host ("SUGGESTED_COMMAND: {0}" -f $suggestedCommand)
+    # AI hint (latest plan)
+    $aiDecisionsPath = Join-Path $projectRoot "ARTIFACTS\ORCHESTRATION\DECISIONS.log"
+    $aiLast = $null
+    if (Test-Path -LiteralPath $aiDecisionsPath -PathType Leaf) {
+        try { $aiLast = Get-Content -LiteralPath $aiDecisionsPath -ErrorAction Stop | Select-Object -Last 1 } catch { $aiLast = $null }
+    }
+    $aiSummary = "N/A"
+    $aiGuidance = "N/A"
+    if ($aiLast) {
+        $reqMatch = ""
+        if ($aiLast -match "REQUEST=([^|]+)") { $reqMatch = ($Matches[1]).Trim() }
+        $hintMatch = ""
+        if ($aiLast -match "NEXT_HINT=([^|]+)") { $hintMatch = ($Matches[1]).Trim() }
+        $presetMatch = ""
+        if ($aiLast -match "PRESET=([^|]+)") { $presetMatch = ($Matches[1]).Trim() }
+
+        $aiSummary = ""
+        if (-not [string]::IsNullOrWhiteSpace($presetMatch)) {
+            $aiSummary = "[preset=$presetMatch] "
+        }
+        if (-not [string]::IsNullOrWhiteSpace($reqMatch)) {
+            $aiSummary += $reqMatch
+        }
+        if (-not [string]::IsNullOrWhiteSpace($hintMatch)) {
+            if (-not [string]::IsNullOrWhiteSpace($reqMatch)) {
+                $aiSummary += " | "
+            }
+            $aiSummary += $hintMatch
+        }
+        if ([string]::IsNullOrWhiteSpace($aiSummary)) {
+            $aiSummary = $aiLast
+        }
+
+        $aiGuidance = "Review latest AI plan before acting."
+        if (-not [string]::IsNullOrWhiteSpace($hintMatch)) {
+            $aiGuidance = $hintMatch
+        }
+    }
+    Write-Host ("AI_LAST_PLAN: {0}" -f $aiSummary)
+    Write-Host ("AI_PLAN_LOG: {0}" -f ($(if (Test-Path -LiteralPath $aiDecisionsPath) { $aiDecisionsPath } else { "N/A" })))
+    Write-Host ("AI_GUIDANCE: {0}" -f $aiGuidance)
     Write-Host ""
     Write-Host "NEXT_COMMANDS:" -ForegroundColor Yellow
     $nextCommands = New-Object System.Collections.Generic.List[string]
@@ -1577,6 +1931,60 @@ function Show-HIAProjectStatus {
     Write-Host ("SYNC_HINT_NOTES: {0}" -f $syncNotes)
     Write-Host ("PROJECT_CONFIG_STATUS: {0}" -f $configStatus)
     Write-Host ("PROJECT_CONFIG_NOTES: {0}" -f (($configCheck.NOTES) -join ", "))
+    $memoryDir = Join-Path $projectRoot "ARTIFACTS\MEMORY"
+    $memoryPath = Join-Path $memoryDir "PROJECT_MEMORY.log"
+    $aiMemoryStatus = "MISSING"
+    if (Test-Path -LiteralPath $memoryPath -PathType Leaf) {
+        $lines = Get-Content -LiteralPath $memoryPath -ErrorAction SilentlyContinue
+        if ($lines -and $lines.Count -gt 0) {
+            $aiMemoryStatus = "PRESENT"
+        }
+        else {
+            $aiMemoryStatus = "EMPTY"
+        }
+    }
+    Write-Host ("AI_MEMORY_STATUS: {0}" -f $aiMemoryStatus)
+    Write-Host ("AI_MEMORY_PATH: {0}" -f ($(if (Test-Path -LiteralPath $memoryPath) { $memoryPath } else { "N/A" })))
+    $aiDecisionsPath = Join-Path $projectRoot "ARTIFACTS\ORCHESTRATION\DECISIONS.log"
+    $aiLast = $null
+    if (Test-Path -LiteralPath $aiDecisionsPath -PathType Leaf) {
+        try { $aiLast = Get-Content -LiteralPath $aiDecisionsPath -ErrorAction Stop | Select-Object -Last 1 } catch { $aiLast = $null }
+    }
+    $aiSummary = "N/A"
+    $aiGuidance = "N/A"
+    if ($aiLast) {
+        $reqMatch = ""
+        if ($aiLast -match "REQUEST=([^|]+)") { $reqMatch = ($Matches[1]).Trim() }
+        $hintMatch = ""
+        if ($aiLast -match "NEXT_HINT=([^|]+)") { $hintMatch = ($Matches[1]).Trim() }
+        $presetMatch = ""
+        if ($aiLast -match "PRESET=([^|]+)") { $presetMatch = ($Matches[1]).Trim() }
+
+        $aiSummary = ""
+        if (-not [string]::IsNullOrWhiteSpace($presetMatch)) {
+            $aiSummary = "[preset=$presetMatch] "
+        }
+        if (-not [string]::IsNullOrWhiteSpace($reqMatch)) {
+            $aiSummary += $reqMatch
+        }
+        if (-not [string]::IsNullOrWhiteSpace($hintMatch)) {
+            if (-not [string]::IsNullOrWhiteSpace($reqMatch)) {
+                $aiSummary += " | "
+            }
+            $aiSummary += $hintMatch
+        }
+        if ([string]::IsNullOrWhiteSpace($aiSummary)) {
+            $aiSummary = $aiLast
+        }
+
+        $aiGuidance = "Review latest AI plan before acting."
+        if (-not [string]::IsNullOrWhiteSpace($hintMatch)) {
+            $aiGuidance = $hintMatch
+        }
+    }
+    Write-Host ("AI_LAST_PLAN: {0}" -f $aiSummary)
+    Write-Host ("AI_PLAN_LOG: {0}" -f ($(if (Test-Path -LiteralPath $aiDecisionsPath) { $aiDecisionsPath } else { "N/A" })))
+    Write-Host ("AI_GUIDANCE: {0}" -f $aiGuidance)
     Write-Host ""
     Write-Host "NEXT_COMMANDS:" -ForegroundColor Yellow
     $suggestedCommand = ("hia project review {0}" -f $ProjectId)
@@ -1604,6 +2012,20 @@ function Show-HIAProjectStatus {
     Write-Host ("PROJECT_CONFIG: {0} [{1}]" -f $configPath, $configStatus)
     Write-Host ("README: {0} [{1}]" -f $readmePath, $readmeStatus)
     Write-Host ("ARTIFACTS_LOGS: {0} [{1}]" -f $logsPath, $logsStatus)
+    $aiDecisionsPath = Join-Path $projectRoot "ARTIFACTS\ORCHESTRATION\DECISIONS.log"
+    $aiLast = $null
+    if (Test-Path -LiteralPath $aiDecisionsPath -PathType Leaf) {
+        try { $aiLast = Get-Content -LiteralPath $aiDecisionsPath -ErrorAction Stop | Select-Object -Last 1 } catch { $aiLast = $null }
+    }
+    $aiSummary = $(if ($aiLast) { $aiLast } else { "N/A" })
+    if ($aiLast -and ($aiLast -match "AI_SUGGESTED_COMMAND=([^|]+)")) {
+        $cmd = ($Matches[1]).Trim()
+        if (-not [string]::IsNullOrWhiteSpace($cmd)) {
+            $aiSummary = ("{0} => {1}" -f $aiLast, $cmd)
+        }
+    }
+    Write-Host ("AI_LAST_PLAN: {0}" -f $aiSummary)
+    Write-Host ("AI_PLAN_LOG: {0}" -f ($(if (Test-Path -LiteralPath $aiDecisionsPath) { $aiDecisionsPath } else { "N/A" })))
     Write-Host ""
 }
 

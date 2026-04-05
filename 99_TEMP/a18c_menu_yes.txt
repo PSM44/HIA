@@ -1,0 +1,88 @@
+
+===================================
+ HIA — Human Intelligence Amplifier
+ CLI Interface
+===================================
+
+HIA — Quick Menu
+1) projects status
+2) project status <PROJECT_ID>
+3) project review <PROJECT_ID>
+4) project continue <PROJECT_ID>
+5) project session status <PROJECT_ID>
+6) project new <PROJECT_ID>
+7) project review -> continue (same <PROJECT_ID>)
+8) projects pick <INDEX> -> project action
+9) portfolio assist (show indexed list -> pick -> action)
+10) project delete (safe confirm)
+11) ai plan (preset/free-text, optional remember)
+0) exit
+
+Running: hia ai plan PRJ_EVID_FRESH_OK --preset next-step --remember
+
+HIA AI PLAN (READ-ONLY)
+PROJECT_ID: PRJ_EVID_FRESH_OK
+DECISION_REF: DEC-cc176f0e
+MODE: read-only
+EXECUTOR: exec.analyze
+PRESET: next-step
+REQUEST: next-step
+RESULT_SUMMARY: ANALYZE_ONLY: request='Identify the most conservative next step given current evidence and sessions.' | guidance=Conservative review and session check before actions.
+AI_NEXT_HINT: Review plan, align with BATON/backlog, then proceed conservatively.
+AI_SUGGESTED_COMMAND: hia project continue PRJ_EVID_FRESH_OK
+AI_PLAN_LOG: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_EVID_FRESH_OK\ARTIFACTS\ORCHESTRATION\DECISIONS.log
+
+PROJECT MEMORY UPDATED (APPEND-ONLY)
+PROJECT_ID: PRJ_EVID_FRESH_OK
+NOTE_ADDED: AI_PLAN | DECISION_REF=DEC-cc176f0e | MODE=read-only | EXECUTOR=exec.analyze | PRESET=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+MEMORY_PATH: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_EVID_FRESH_OK\ARTIFACTS\MEMORY\PROJECT_MEMORY.log
+
+MEMORY_APPENDED: YES
+MEMORY_PATH: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_EVID_FRESH_OK\ARTIFACTS\MEMORY\PROJECT_MEMORY.log
+
+Suggested next: hia project continue PRJ_EVID_FRESH_OK
+Running: hia project continue PRJ_EVID_FRESH_OK
+Running: hia project continue PRJ_EVID_FRESH_OK
+
+PROJECT CONTINUE
+PROJECT_ID: PRJ_EVID_FRESH_OK
+CURRENT_OBJECTIVE: N/A
+NEXT_ACTION: N/A
+NEXT_READY_ITEM: N/A
+RESUME_RECOMMENDATION: N/A
+TASK_GUIDANCE: Session warning: Active session age 83.3h > 12h threshold. Evidence STALE. Refresh context (status/radar/session) before executing tasks.
+SUGGESTED_COMMAND: hia project status PRJ_EVID_FRESH_OK
+OPERATIONAL_THREAD: EVIDENCE_STALE -> Refresh context before tasks.
+LAST_SESSION_STATUS: active
+LAST_SESSION_ID: fixture-session-fresh
+LAST_SESSION_STARTED_UTC: 2026-04-02T05:25:34.1398412Z
+LAST_SESSION_CLOSED_UTC: N/A
+EVIDENCE_STATE: STALE
+EVIDENCE_AGE_HOURS: 82.5
+EVIDENCE_CONSISTENCY: CONSISTENT
+EVIDENCE_CONSISTENCY_NOTES: 
+EVIDENCE_ANCHOR: source=fixture-fresh-ok | captured_utc=2026-04-02T06:13:38.6868002Z | output=C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_EVID_FRESH_OK\ARTIFACTS\TASKS\FIXTURE_FRESH_OK.txt | log=C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_EVID_FRESH_OK\ARTIFACTS\LOGS\FIXTURE_FRESH_OK.log
+EVIDENCE_CAPTURED_UTC: 2026-04-02T06:13:38.6868002Z
+EVIDENCE_SESSION_ID: fixture-session-fresh
+LATEST_OUTPUT_PATH: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_EVID_FRESH_OK\ARTIFACTS\TASKS\FIXTURE_FRESH_OK.txt
+LATEST_LOG_PATH: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_EVID_FRESH_OK\ARTIFACTS\LOGS\FIXTURE_FRESH_OK.log
+LAST_TASK_SCOPE: TASK.CREATE_FILE
+LAST_TASK_RESULT: N/A
+LAST_TASK_REQUEST: N/A
+LAST_TASK_TARGET: N/A
+LAST_TASK_MESSAGE: N/A
+DEBUG_POINTER: Inspect log then output
+SESSION_SAFETY: WARN
+SESSION_SAFETY_NOTES: Active session age 83.3h > 12h threshold
+SESSION_SAFETY_AGE_HOURS: 83.3
+PROJECT_CONFIG_STATUS: OK
+PROJECT_CONFIG_NOTES: 
+AI_LAST_PLAN: [preset=next-step] next-step | Review plan, align with BATON/backlog, then proceed conservatively.
+AI_PLAN_LOG: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_EVID_FRESH_OK\ARTIFACTS\ORCHESTRATION\DECISIONS.log
+AI_GUIDANCE: Review plan, align with BATON/backlog, then proceed conservatively.
+
+NEXT_COMMANDS:
+- hia project status PRJ_EVID_FRESH_OK
+- hia project open PRJ_EVID_FRESH_OK
+- hia project session status PRJ_EVID_FRESH_OK
+
