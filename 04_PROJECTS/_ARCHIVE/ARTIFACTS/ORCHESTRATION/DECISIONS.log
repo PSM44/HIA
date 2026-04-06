@@ -1,0 +1,4 @@
+2026-04-05T20:24:22.6467386Z | PROJECT=_ARCHIVE | DECISION_REF=DEC-82a053aa | MODE=read-only | EXEC=exec.analyze | PRESET=risk-scan | REQUEST=risk-scan | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-05T20:26:03.7943757Z | PROJECT=_ARCHIVE | DECISION_REF=DEC-592a6afe | MODE=read-only | EXEC=exec.analyze | PRESET=next-step | REQUEST=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-05T21:19:08.5533402Z | PROJECT=_ARCHIVE | DECISION_REF=DEC-11e952a2 | MODE=read-only | EXEC=exec.analyze | PRESET=next-step | REQUEST=next-step | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.
+2026-04-05T21:19:16.6283058Z | PROJECT=_ARCHIVE | DECISION_REF=DEC-2b23f0e2 | MODE=read-only | EXEC=exec.analyze | PRESET=risk-scan | REQUEST=risk-scan | NEXT_HINT=Review plan, align with BATON/backlog, then proceed conservatively.

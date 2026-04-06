@@ -1,770 +1,406 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HIA - Human Intelligence Amplifier</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-primary: #0b1110;
-            --bg-secondary: #121b19;
-            --bg-tertiary: #1a2623;
-            --bg-card: rgba(18, 27, 25, 0.85);
-            --accent: #22c1a7;
-            --accent-glow: rgba(34, 193, 167, 0.35);
-            --accent-secondary: #f59e0b;
-            --success: #22c55e;
-            --warning: #f59e0b;
-            --error: #ef4444;
-            --text-primary: #f8fafc;
-            --text-secondary: #9fb3ad;
-            --text-muted: #6b7b76;
-            --border: rgba(255, 255, 255, 0.08);
-            --gradient-1: linear-gradient(135deg, #22c1a7 0%, #f59e0b 100%);
-            --gradient-2: linear-gradient(135deg, #0b1110 0%, #121b19 100%);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .bg-animation {
-            position: fixed;
-            inset: 0;
-            z-index: -2;
-            overflow: hidden;
-        }
-
-        .bg-animation::before {
-            content: '';
-            position: absolute;
-            inset: -50%;
-            background: radial-gradient(circle at 20% 30%, var(--accent-glow) 0%, transparent 45%),
-                        radial-gradient(circle at 80% 70%, rgba(245, 158, 11, 0.2) 0%, transparent 50%);
-            animation: bgMove 22s ease-in-out infinite;
-        }
-
-        @keyframes bgMove {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(2%, 1%) rotate(1deg); }
-            50% { transform: translate(0, 3%) rotate(0deg); }
-            75% { transform: translate(-2%, 1%) rotate(-1deg); }
-        }
-
-        .grid-bg {
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(34, 193, 167, 0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(34, 193, 167, 0.04) 1px, transparent 1px);
-            background-size: 60px 60px;
-            z-index: -1;
-        }
-
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 30px 40px;
-        }
-
-        .hero {
-            text-align: center;
-            padding: 60px 0 30px;
-            animation: fadeInDown 1s ease-out;
-        }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero-badge {
-            display: inline-block;
-            padding: 8px 20px;
-            background: var(--gradient-1);
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 18px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); }
-            50% { box-shadow: 0 0 20px 10px transparent; }
-        }
-
-        .hero h1 {
-            font-size: 56px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero p {
-            font-size: 18px;
-            color: var(--text-secondary);
-            max-width: 720px;
-            margin: 0 auto 28px;
-            line-height: 1.6;
-        }
-
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 60px;
-            margin-top: 30px;
-        }
-
-        .hero-stat { text-align: center; animation: fadeInUp 1s ease-out; animation-fill-mode: both; }
-        .hero-stat:nth-child(1) { animation-delay: 0.2s; }
-        .hero-stat:nth-child(2) { animation-delay: 0.4s; }
-        .hero-stat:nth-child(3) { animation-delay: 0.6s; }
-        .hero-stat:nth-child(4) { animation-delay: 0.8s; }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero-stat-value {
-            font-size: 48px;
-            font-weight: 700;
-            color: var(--text-primary);
-            line-height: 1;
-        }
-
-        .hero-stat-value .unit {
-            font-size: 22px;
-            color: var(--accent);
-        }
-
-        .hero-stat-label {
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-top: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .status-bar {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 40px;
-            padding: 18px 32px;
-            background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            margin-bottom: 35px;
-            animation: fadeIn 1s ease-out 0.4s both;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .status-item { display: flex; align-items: center; gap: 12px; }
-
-        .status-dot {
-            width: 12px; height: 12px; border-radius: 50%;
-            background: var(--success); box-shadow: 0 0 10px var(--success);
-            animation: statusPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes statusPulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.8; }
-        }
-
-        .status-dot.warning { background: var(--warning); box-shadow: 0 0 10px var(--warning); }
-        .status-dot.error { background: var(--error); box-shadow: 0 0 10px var(--error); }
-
-        .status-text { font-size: 14px; color: var(--text-secondary); }
-        .status-text strong { color: var(--text-primary); }
-
-        .main-grid { display: grid; grid-template-columns: 1fr 420px; gap: 30px; }
-
-        .card {
-            background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 28px;
-            animation: fadeInUp 0.8s ease-out both;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
-        .card-title { font-size: 18px; font-weight: 600; color: var(--text-primary); }
-        .card-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
-        .card-badge { padding: 6px 14px; background: var(--bg-tertiary); border-radius: 20px; font-size: 12px; color: var(--accent); font-weight: 500; }
-
-        .terminal {
-            background: #0a0f0e;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        .terminal-header {
-            display: flex; align-items: center; gap: 8px; padding: 12px 16px;
-            background: rgba(0, 0, 0, 0.3); border-bottom: 1px solid var(--border);
-        }
-
-        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
-        .terminal-dot.red { background: #ff5f56; }
-        .terminal-dot.yellow { background: #ffbd2e; }
-        .terminal-dot.green { background: #27ca40; }
-        .terminal-title { margin-left: 10px; font-size: 13px; color: var(--text-muted); }
-
-        .terminal-body {
-            padding: 20px; height: 300px; overflow-y: auto;
-            font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6;
-        }
-
-        .terminal-line { margin-bottom: 4px; opacity: 0; animation: typeIn 0.3s ease-out forwards; }
-
-        @keyframes typeIn {
-            from { opacity: 0; transform: translateX(-10px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .terminal-line .prompt { color: var(--accent); }
-        .terminal-line .command { color: var(--text-primary); }
-        .terminal-line .success { color: var(--success); }
-        .terminal-line .info { color: var(--text-secondary); }
-        .terminal-line .highlight { color: var(--accent-secondary); }
-
-        .capabilities { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-
-        .capability {
-            display: flex; align-items: center; gap: 15px; padding: 18px;
-            background: var(--bg-tertiary); border-radius: 12px; cursor: pointer;
-            transition: all 0.3s ease; border: 1px solid transparent;
-        }
-
-        .capability:hover { background: var(--accent); transform: scale(1.02); }
-        .capability-icon {
-            width: 50px; height: 50px; background: var(--gradient-1); border-radius: 12px;
-            display: flex; align-items: center; justify-content: center; font-size: 22px;
-        }
-
-        .capability-info h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-        .capability-info p { font-size: 12px; color: var(--text-secondary); }
-        .capability:hover .capability-info p { color: rgba(255,255,255,0.8); }
-
-        .activity-feed { max-height: 400px; overflow-y: auto; }
-
-        .activity-item {
-            display: flex; gap: 15px; padding: 15px 0; border-bottom: 1px solid var(--border);
-            animation: slideIn 0.5s ease-out both;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .activity-item:last-child { border-bottom: none; }
-        .activity-icon {
-            width: 40px; height: 40px; background: var(--bg-tertiary); border-radius: 10px;
-            display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
-        }
-
-        .activity-icon.success { background: rgba(16, 185, 129, 0.2); }
-        .activity-icon.warning { background: rgba(245, 158, 11, 0.2); }
-        .activity-icon.info { background: rgba(34, 193, 167, 0.2); }
-
-        .activity-content { flex: 1; }
-        .activity-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
-        .activity-meta { font-size: 12px; color: var(--text-muted); }
-
-        .demo-controls {
-            position: fixed; bottom: 30px; right: 30px; display: flex; gap: 15px; z-index: 100;
-        }
-
-        .demo-btn {
-            padding: 14px 26px; border: none; border-radius: 12px; font-size: 14px; font-weight: 600;
-            cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 10px;
-        }
-
-        .demo-btn-primary {
-            background: var(--gradient-1); color: white; box-shadow: 0 10px 30px var(--accent-glow);
-        }
-
-        .demo-btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px var(--accent-glow); }
-
-        .demo-btn-secondary {
-            background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-        }
-
-        .demo-btn-secondary:hover { background: var(--bg-tertiary); }
-
-        .tooltip {
-            position: fixed; background: var(--bg-secondary); border: 1px solid var(--accent); border-radius: 12px;
-            padding: 18px; max-width: 300px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 1000;
-            animation: tooltipIn 0.3s ease-out; display: none;
-        }
-
-        .tooltip.active { display: block; }
-
-        @keyframes tooltipIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .tooltip-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; color: var(--accent); }
-        .tooltip-text { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
-        .tooltip-close { position: absolute; top: 8px; right: 10px; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; }
-
-        .session-active-banner {
-            background: linear-gradient(90deg, var(--success), #15803d);
-            color: white; text-align: center; padding: 10px; font-size: 14px; font-weight: 500;
-            position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: none;
-        }
-
-        .session-active-banner.visible { display: block; animation: slideDown 0.5s ease-out; }
-
-        @keyframes slideDown {
-            from { transform: translateY(-100%); }
-            to { transform: translateY(0); }
-        }
-
-        @media (max-width: 1200px) {
-            .main-grid { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 40px; }
-            .hero-stats { flex-wrap: wrap; gap: 30px; }
-        }
-
-        @media (max-width: 768px) {
-            .container { padding: 20px; }
-            .capabilities { grid-template-columns: 1fr; }
-            .status-bar { flex-wrap: wrap; gap: 20px; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HIA Web Console</title>
+  <style>
+    :root {
+      --bg: #0f1418;
+      --panel: #111a1e;
+      --card: #162026;
+      --border: #23323b;
+      --text: #e8f0f2;
+      --muted: #8ca0a8;
+      --accent: #22c1a7;
+      --warn: #f59e0b;
+      --error: #ef4444;
+      --soon: #6b7280;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: "Inter", system-ui, sans-serif; background: var(--bg); color: var(--text); }
+    header { padding:14px 18px; border-bottom:1px solid var(--border); background: var(--panel); display:flex; align-items:center; gap:12px; position:sticky; top:0; z-index:5; }
+    .brand { font-weight:800; letter-spacing:0.4px; }
+    .nav { display:flex; gap:8px; }
+    .nav button { background: transparent; color: var(--text); border:1px solid var(--border); border-radius:8px; padding:8px 12px; cursor:pointer; }
+    .nav .accent { background: var(--accent); color:#0b1110; border:none; }
+    #statusLine { margin-left:auto; font-size:12px; color: var(--muted); }
+    .layout { display:grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 56px); }
+    aside { background: var(--panel); border-right:1px solid var(--border); padding:14px; display:flex; flex-direction:column; gap:10px; }
+    .main { padding:16px; }
+    .card { background: var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.18); }
+    .section-title { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+    .label { color: var(--muted); font-size:12px; }
+    .value { font-size:14px; font-weight:700; }
+    .badge { padding:2px 8px; border-radius:6px; font-size:11px; border:1px solid var(--border); color:var(--muted); text-transform:uppercase; letter-spacing:0.4px; }
+    .badge.live { color: var(--accent); border-color: var(--accent); }
+    .badge.partial { color: var(--warn); border-color: var(--warn); border-style:dashed; }
+    .badge.soon { color: var(--soon); border-color: var(--soon); border-style:dashed; opacity:0.8; }
+    .menu-group { margin-top:4px; }
+    .menu-item { padding:8px 10px; border-radius:8px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; }
+    .menu-item:hover { background: rgba(34,193,167,0.08); }
+    .menu-item.active { background: rgba(34,193,167,0.14); border:1px solid var(--accent); }
+    .pill { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; margin-right:6px; border:1px solid var(--border); color:var(--muted); }
+    .pill.ok { color:var(--accent); border-color:var(--accent); }
+    .pill.warn { color:var(--warn); border-color:var(--warn); }
+    .pill.err { color:var(--error); border-color:var(--error); }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap:8px; }
+    .empty { padding:12px; color: var(--muted); border:1px dashed var(--border); border-radius:8px; text-align:center; }
+    .hidden { display:none; }
+    .toast { position:fixed; bottom:16px; right:16px; background: var(--panel); border:1px solid var(--border); padding:10px 14px; border-radius:10px; box-shadow:0 8px 20px rgba(0,0,0,0.35); }
+  </style>
 </head>
 <body>
-    <div class="bg-animation"></div>
-    <div class="grid-bg"></div>
-
-    <div class="session-active-banner" id="sessionBanner">
-        <span id="sessionBannerText">Session Active</span>
+  <header>
+    <div class="brand">HIA Web Console</div>
+    <div class="nav">
+      <button id="navPortfolio" class="accent" onclick="setView('portfolio')">Portfolio</button>
+      <button id="navProject" onclick="setView('project')">Active Project</button>
+      <button id="navRoadmap" class="secondary" onclick="setView('roadmap')">Roadmap</button>
+      <button id="navHealth" class="secondary" onclick="setView('health');healthCheck()">Health</button>
     </div>
+    <div class="label" id="statusLine">Loading…</div>
+  </header>
 
-    <div class="container">
-        <section class="hero">
-            <div class="hero-badge">Intelligent Automation Platform</div>
-            <h1>HIA</h1>
-            <p>Human Intelligence Amplifier - Orchestrating AI agents to deliver reliable outcomes with human control.</p>
+  <div class="layout">
+    <aside>
+      <div class="label">GLOBAL NAVIGATION</div>
+      <div class="menu-group" id="menuList"></div>
 
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <div class="hero-stat-value" id="statTools">9</div>
-                    <div class="hero-stat-label">Automated Tools</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-value" id="statAgents">2</div>
-                    <div class="hero-stat-label">AI Agents</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-value"><span id="statTasks">47</span><span class="unit">%</span></div>
-                    <div class="hero-stat-label">Time Saved</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-value" id="statPlans">3</div>
-                    <div class="hero-stat-label">Plans Executed</div>
-                </div>
-            </div>
-        </section>
-
-        <div class="status-bar">
-            <div class="status-item">
-                <div class="status-dot" id="statusSystem"></div>
-                <span class="status-text"><strong>System</strong> Operational</span>
-            </div>
-            <div class="status-item">
-                <div class="status-dot" id="statusAgents"></div>
-                <span class="status-text"><strong>Agents</strong> Ready</span>
-            </div>
-            <div class="status-item">
-                <div class="status-dot" id="statusSession"></div>
-                <span class="status-text" id="statusSessionText"><strong>Session</strong> Inactive</span>
-            </div>
-            <div class="status-item">
-                <div class="status-dot"></div>
-                <span class="status-text"><strong>Last Sync</strong> <span id="lastSync">Just now</span></span>
-            </div>
+      <div class="card" style="margin-top:auto;">
+        <div class="label">Legend</div>
+        <div style="display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;">
+          <span class="badge live">Live</span>
+          <span class="badge partial">Partial</span>
+          <span class="badge soon">Coming Soon</span>
         </div>
+      </div>
+    </aside>
 
-        <div class="main-grid">
-            <div>
-                <div class="card" style="animation-delay: 0.2s;">
-                    <div class="card-header">
-                        <div>
-                            <div class="card-title">Live Command Center</div>
-                            <div class="card-subtitle">Real-time system operations</div>
-                        </div>
-                        <div class="card-badge" id="terminalStatus">Ready</div>
-                    </div>
+    <main class="main">
+      <div id="view-portfolio" class="view card">
+        <div class="section-title"><h2>Portfolio</h2><span class="badge live">Live</span></div>
+        <div class="label">Projects overview (real data)</div>
+        <div class="list" id="portfolioList" style="margin-top:10px; max-height:60vh; overflow:auto;"></div>
+      </div>
 
-                    <div class="terminal">
-                        <div class="terminal-header">
-                            <div class="terminal-dot red"></div>
-                            <div class="terminal-dot yellow"></div>
-                            <div class="terminal-dot green"></div>
-                            <span class="terminal-title">hia-console</span>
-                        </div>
-                        <div class="terminal-body" id="terminalBody"></div>
-                    </div>
-                </div>
-
-                <div class="card" style="margin-top: 30px; animation-delay: 0.4s;">
-                    <div class="card-header">
-                        <div>
-                            <div class="card-title">Platform Capabilities</div>
-                            <div class="card-subtitle">Click to execute</div>
-                        </div>
-                    </div>
-
-                    <div class="capabilities">
-                        <div class="capability" onclick="runDemo('smoke')">
-                            <div class="capability-icon">&#9889;</div>
-                            <div class="capability-info">
-                                <h4>System Health Check</h4>
-                                <p>Validate all components</p>
-                            </div>
-                        </div>
-                        <div class="capability" onclick="runDemo('state')">
-                            <div class="capability-icon">&#128202;</div>
-                            <div class="capability-info">
-                                <h4>Project Status</h4>
-                                <p>Executive summary view</p>
-                            </div>
-                        </div>
-                        <div class="capability" onclick="runDemo('plan')">
-                            <div class="capability-icon">&#128196;</div>
-                            <div class="capability-info">
-                                <h4>Plan Creation</h4>
-                                <p>AI-assisted planning</p>
-                            </div>
-                        </div>
-                        <div class="capability" onclick="runDemo('agent')">
-                            <div class="capability-icon">&#129302;</div>
-                            <div class="capability-info">
-                                <h4>AI Agent</h4>
-                                <p>Guided execution</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <div class="card" style="animation-delay: 0.3s;">
-                    <div class="card-header">
-                        <div>
-                            <div class="card-title">Recent Activity</div>
-                            <div class="card-subtitle">System operations log</div>
-                        </div>
-                    </div>
-
-                    <div class="activity-feed" id="activityFeed"></div>
-                </div>
-
-                <div class="card" style="margin-top: 30px; animation-delay: 0.5s;">
-                    <div class="card-header">
-                        <div>
-                            <div class="card-title">Business Impact</div>
-                            <div class="card-subtitle">Automation metrics</div>
-                        </div>
-                    </div>
-
-                    <div style="display: grid; gap: 20px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="color: var(--text-secondary);">Tasks Automated</span>
-                            <span style="font-size: 24px; font-weight: 600; color: var(--success);">127</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="color: var(--text-secondary);">Hours Saved (Monthly)</span>
-                            <span style="font-size: 24px; font-weight: 600; color: var(--accent);">48h</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="color: var(--text-secondary);">Error Rate Reduction</span>
-                            <span style="font-size: 24px; font-weight: 600; color: var(--accent-secondary);">89%</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="color: var(--text-secondary);">Team Efficiency</span>
-                            <span style="font-size: 24px; font-weight: 600; color: var(--warning);">+34%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div id="view-project" class="view card hidden">
+        <div class="section-title"><h2 id="projectTitle">Active Project</h2><span class="badge live">Live</span></div>
+        <div class="label" id="projectSubtitle">Select a project to view details.</div>
+        <div class="card" style="margin-top:10px;">
+          <div class="label">What matters now</div>
+          <div id="nextStep" class="value" style="margin-top:4px;">Select a project to load guidance.</div>
         </div>
-    </div>
+        <div id="projectSummary" class="grid" style="margin-top:10px;"></div>
+        <div class="card" style="margin-top:10px;">
+          <div class="section-title"><div><h3 style="margin:0;font-size:15px;">Latest Task Activity</h3><div class="label">Pedestrian view</div></div><span class="badge live" id="taskState">N/A</span></div>
+          <div class="value" id="taskSummary" style="margin-top:6px;">No task history yet.</div>
+          <div class="label" id="taskDetail" style="margin-top:6px;"></div>
+          <div class="label" id="taskEvidence" style="margin-top:6px;"></div>
+          <div class="label" id="taskNext" style="margin-top:6px;"></div>
+          <details style="margin-top:8px;"><summary>Technical (raw)</summary><pre id="taskRaw"></pre></details>
+        </div>
+        <div style="margin-top:10px; display:grid; grid-template-columns: minmax(240px, 320px) 1fr; gap:10px;">
+          <div class="card">
+            <div class="label">AI Plan (presets, read-only)</div>
+            <form id="aiForm" style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+              <select id="preset">
+                <option value="readiness">readiness</option>
+                <option value="next-step">next-step</option>
+                <option value="risk-scan">risk-scan</option>
+              </select>
+              <label class="label"><input type="checkbox" id="remember"> remember</label>
+              <button type="submit">Run preset</button>
+            </form>
+            <div class="label" style="margin-top:8px;">Latest AI hint</div>
+            <div id="aiHint" class="value">—</div>
+          </div>
+          <div class="card">
+            <div class="label">AI result</div>
+            <div id="aiResult" class="value" style="margin-top:6px;">—</div>
+            <div class="label" style="margin-top:6px;">Suggested command</div>
+            <div id="aiDecision" class="value" style="margin-top:4px;">—</div>
+            <div class="label" style="margin-top:4px;">Remember: <span id="aiRemember">N/A</span></div>
+            <div class="label" style="margin-top:4px;">Decision ref: <span id="aiRef">N/A</span></div>
+            <details style="margin-top:8px;"><summary>Technical details (raw)</summary><pre id="aiRaw"></pre></details>
+          </div>
+        </div>
+        <div class="card" style="margin-top:10px;">
+          <div class="section-title"><div><h3 style="margin:0;font-size:15px;">Safe delete</h3><div class="label">Archive/remove project with explicit confirmation.</div></div><span class="badge live">Live</span></div>
+          <div class="label">Type DELETE &lt;PROJECT_ID&gt; to confirm delete:</div>
+          <input id="deleteConfirm" style="margin-top:6px; padding:8px; width:200px; border-radius:6px; border:1px solid var(--border); background:#0d1518; color:var(--text);" placeholder="DELETE &lt;PROJECT_ID&gt;" />
+          <button class="secondary" style="margin-top:8px;" onclick="deleteProject()">Delete project</button>
+          <div class="label" id="deleteStatus" style="margin-top:6px;"></div>
+        </div>
+        <details style="margin-top:10px;"><summary>Project raw status</summary><pre id="projectRaw"></pre></details>
+      </div>
 
-    <div class="demo-controls">
-        <button class="demo-btn demo-btn-secondary" onclick="toggleSession()">
-            <span id="sessionBtnIcon">&#9654;</span>
-            <span id="sessionBtnText">Start Session</span>
-        </button>
-        <button class="demo-btn demo-btn-primary" onclick="startAutoDemo()">
-            <span>&#9733;</span>
-            <span>Auto Demo</span>
-        </button>
-    </div>
+      <div id="view-roadmap" class="view card hidden">
+        <div class="section-title"><h2>Roadmap / Release</h2><span class="badge soon">Coming Soon</span></div>
+        <div class="empty">Coming soon — approved surface, backend wiring in progress.</div>
+      </div>
 
-    <div class="tooltip" id="tooltip">
-        <button class="tooltip-close" onclick="hideTooltip()">&times;</button>
-        <div class="tooltip-title" id="tooltipTitle"></div>
-        <div class="tooltip-text" id="tooltipText"></div>
-    </div>
+      <div id="view-health" class="view card hidden">
+        <div class="section-title"><h2>Health / Diagnostics</h2><span class="badge partial">Partial</span></div>
+        <div class="label">Uses current health endpoint for project count; deeper diagnostics coming soon.</div>
+        <div class="value" id="healthStatus" style="margin-top:8px;">Pending…</div>
+      </div>
 
-    <script>
-        const API_BASE = '';
-        let sessionActive = false;
-        let autoDemo = false;
-        let terminalLines = [];
+      <div id="view-ai" class="view card hidden">
+        <div class="section-title"><h2>AI Stack / Cost Control</h2><span class="badge soon">Coming Soon</span></div>
+        <div class="empty">Coming soon — approved area, not yet wired.</div>
+      </div>
+      <div id="view-vault" class="view card hidden">
+        <div class="section-title"><h2>Vault</h2><span class="badge soon">Coming Soon</span></div>
+        <div class="empty">Coming soon — approved area, not yet wired.</div>
+      </div>
+      <div id="view-knowledge" class="view card hidden">
+        <div class="section-title"><h2>Knowledge</h2><span class="badge soon">Coming Soon</span></div>
+        <div class="empty">Coming soon — approved area, not yet wired.</div>
+      </div>
+      <div id="view-messages" class="view card hidden">
+        <div class="section-title"><h2>Messages / Coordination</h2><span class="badge soon">Coming Soon</span></div>
+        <div class="empty">Coming soon — approved area, not yet wired.</div>
+      </div>
+      <div id="view-team" class="view card hidden">
+        <div class="section-title"><h2>Team & Access</h2><span class="badge soon">Coming Soon</span></div>
+        <div class="empty">Coming soon — approved area, not yet wired.</div>
+      </div>
+      <div id="view-settings" class="view card hidden">
+        <div class="section-title"><h2>Settings</h2><span class="badge partial">Partial</span></div>
+        <div class="empty">Coming soon — settings scaffolding only; health/diagnostics live in Health view.</div>
+      </div>
+    </main>
+  </div>
 
-        function addTerminalLine(content, type = 'info') {
-            const terminal = document.getElementById('terminalBody');
-            const line = document.createElement('div');
-            line.className = 'terminal-line';
-            line.style.animationDelay = `${terminalLines.length * 0.05}s`;
+  <div id="toast" class="toast hidden"></div>
 
-            if (type === 'command') {
-                line.innerHTML = `<span class="prompt">HIA &gt;</span> <span class="command">${content}</span>`;
-            } else if (type === 'success') {
-                line.innerHTML = `<span class="success">[OK]</span> ${content}`;
-            } else if (type === 'highlight') {
-                line.innerHTML = `<span class="highlight">${content}</span>`;
-            } else {
-                line.innerHTML = `<span class="info">${content}</span>`;
-            }
+  <script>
+    const menuItems = [
+      { id:'portfolio', label:'Portfolio', state:'LIVE', view:'view-portfolio' },
+      { id:'project', label:'Active Project', state:'LIVE', view:'view-project' },
+      { id:'ai', label:'AI Stack / Cost Control', state:'COMING', view:'view-ai' },
+      { id:'vault', label:'Vault', state:'COMING', view:'view-vault' },
+      { id:'knowledge', label:'Knowledge', state:'COMING', view:'view-knowledge' },
+      { id:'messages', label:'Messages / Coordination', state:'COMING', view:'view-messages' },
+      { id:'team', label:'Team & Access', state:'COMING', view:'view-team' },
+      { id:'settings', label:'Settings', state:'PARTIAL', view:'view-settings' }
+    ];
 
-            terminal.appendChild(line);
-            terminal.scrollTop = terminal.scrollHeight;
-            terminalLines.push(line);
+    let currentView = 'portfolio';
+    let currentProject = null;
 
-            while (terminalLines.length > 50) {
-                const old = terminalLines.shift();
-                old.remove();
-            }
-        }
+    function badgeClass(state){
+      if(state==='LIVE') return 'live';
+      if(state==='PARTIAL') return 'partial';
+      return 'soon';
+    }
+    function badgeLabel(state){
+      if(state==='COMING') return 'Coming Soon';
+      return state.charAt(0)+state.slice(1).toLowerCase();
+    }
 
-        function clearTerminal() {
-            const terminal = document.getElementById('terminalBody');
-            terminal.innerHTML = '';
-            terminalLines = [];
-        }
+    function renderMenu(){
+      const list = document.getElementById('menuList');
+      list.innerHTML='';
+      menuItems.forEach(item => {
+        const div=document.createElement('div');
+        div.className='menu-item'+(currentView===item.id?' active':'');
+        div.onclick = ()=> setView(item.id);
+        div.innerHTML = <span></span><span class="badge "></span>;
+        list.appendChild(div);
+      });
+    }
 
-        function addActivity(title, meta, type = 'info') {
-            const feed = document.getElementById('activityFeed');
-            const icons = { success: '&#10003;', warning: '&#9888;', info: '&#8505;' };
+    function showToast(text){
+      const t=document.getElementById('toast');
+      t.textContent=text; t.classList.remove('hidden');
+      setTimeout(()=>t.classList.add('hidden'),2500);
+    }
 
-            const item = document.createElement('div');
-            item.className = 'activity-item';
-            item.style.animationDelay = '0s';
-            item.innerHTML = `
-                <div class="activity-icon ${type}">${icons[type]}</div>
-                <div class="activity-content">
-                    <div class="activity-title">${title}</div>
-                    <div class="activity-meta">${meta}</div>
-                </div>
-            `;
+    function setStatus(text){ document.getElementById('statusLine').textContent = text; }
 
-            feed.insertBefore(item, feed.firstChild);
-            while (feed.children.length > 10) {
-                feed.removeChild(feed.lastChild);
-            }
-        }
+    function setView(view){
+      const map = {
+        portfolio:'view-portfolio', project:'view-project', roadmap:'view-roadmap', health:'view-health',
+        ai:'view-ai', vault:'view-vault', knowledge:'view-knowledge', messages:'view-messages', team:'view-team', settings:'view-settings'
+      };
+      const item = menuItems.find(m=>m.id===view);
+      if(item && item.state==='COMING') { showToast('Coming soon — this HIA area is approved and being wired.'); }
+      document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));
+      const targetId = map[view] || 'view-portfolio';
+      const target = document.getElementById(targetId);
+      if(target) target.classList.remove('hidden');
+      currentView = view;
+      renderMenu();
+    }
 
-        async function fetchStatus() {
-            try {
-                const res = await fetch(`${API_BASE}/api/status`);
-                const data = await res.json();
+    async function healthCheck(){
+      try{
+        const res=await fetch('/api/health/full');
+        const data=await res.json();
+        const msg = data.success? Health OK (projects ) : Health fail (exit );
+        setStatus(msg);
+        const hp=document.getElementById('healthStatus'); if(hp){ hp.textContent = msg; }
+      }catch(e){ setStatus('Health check failed'); const hp=document.getElementById('healthStatus'); if(hp){ hp.textContent='Health check failed'; } }
+    }
 
-                document.getElementById('statTools').textContent = data.tools_count;
-                document.getElementById('statAgents').textContent = data.agents_count;
-                document.getElementById('statPlans').textContent = data.plans_total;
+    function highlightSelection(pid){
+      document.querySelectorAll('.project').forEach(div=>{
+        if(div.dataset.pid === pid){ div.classList.add('active'); }
+        else { div.classList.remove('active'); }
+      });
+    }
 
-                sessionActive = data.session_active;
-                updateSessionUI();
-            } catch (e) {
-                console.error('Status fetch failed:', e);
-            }
-        }
+    async function fetchPortfolio(){
+      let data=null;
+      try{
+        const res = await fetch('/api/portfolio');
+        data = await res.json();
+      }catch(e){
+        setStatus('Portfolio load failed');
+        document.getElementById('portfolioList').innerHTML = '<div class="empty">Cannot load portfolio. Check backend.</div>';
+        return;
+      }
+      const list = document.getElementById('portfolioList');
+      list.innerHTML='';
+      const projects = data.parsed?.projects || [];
+      if(!projects.length){ list.innerHTML = '<div class="empty">No projects detected.</div>'; }
+      projects.forEach(p => {
+        const div = document.createElement('div');
+        div.dataset.pid = p.project_id;
+        div.className = 'project' + (p.project_id === currentProject ? ' active' : '');
+        div.innerHTML = <div class="value"></div>
+          <div class="label">Index </div>
+          <div style="margin-top:6px;"><span class="pill">Session </span><span class="pill">Evidence </span><span class="pill ">Safety </span></div>;
+        div.onclick = () => loadProject(p.project_id);
+        list.appendChild(div);
+      });
+      setStatus(Projects loaded ());
+      if (!currentProject && projects.length) {
+        loadProject(projects[0].project_id);
+      }
+    }
 
-        async function runCommand(command, args = []) {
-            document.getElementById('terminalStatus').textContent = 'Running...';
-            addTerminalLine(`${command} ${args.join(' ')}`, 'command');
+    function emptyProjectView(message='Select a project to view details.'){
+      document.getElementById('projectTitle').textContent = 'Active Project';
+      document.getElementById('projectSubtitle').textContent = message;
+      document.getElementById('projectSummary').innerHTML = '';
+      document.getElementById('nextStep').textContent = 'Select a project to load guidance.';
+      document.getElementById('aiHint').textContent = '—';
+      document.getElementById('aiResult').textContent = '—';
+      document.getElementById('aiDecision').textContent = '—';
+      document.getElementById('aiRaw').textContent = '';
+      document.getElementById('aiRef').textContent = 'N/A';
+      document.getElementById('aiRemember').textContent = 'N/A';
+      document.getElementById('projectRaw').textContent = '';
+      document.getElementById('taskSummary').textContent = 'No task history yet.';
+      document.getElementById('taskDetail').textContent = '';
+      document.getElementById('taskEvidence').textContent = '';
+      document.getElementById('taskNext').textContent = '';
+      document.getElementById('taskRaw').textContent = '';
+      document.getElementById('taskState').textContent = 'N/A';
+      document.getElementById('deleteConfirm').placeholder = 'DELETE <PROJECT_ID>';
+      document.getElementById('deleteStatus').textContent = '';
+    }
 
-            try {
-                const res = await fetch(`${API_BASE}/api/command`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ command, args })
-                });
+    function renderTask(parsed){
+      const state = parsed?.last_task_result || 'N/A';
+      document.getElementById('taskState').textContent = state;
+      const summaryParts = [];
+      if(parsed?.last_task_scope) summaryParts.push(parsed.last_task_scope);
+      if(parsed?.last_task_request) summaryParts.push(parsed.last_task_request);
+      document.getElementById('taskSummary').textContent = summaryParts.join(' — ') || 'No task history yet.';
+      document.getElementById('taskDetail').textContent = parsed?.last_task_message ? Reason:  : '';
+      document.getElementById('taskEvidence').textContent = parsed?.last_task_evidence ? Evidence:  : '';
+      document.getElementById('taskNext').textContent = parsed?.last_task_continuity_hint ? Next:  : '';
+      document.getElementById('taskRaw').textContent = parsed?.raw || '';
+    }
 
-                const data = await res.json();
+    async function loadProject(projectId){
+      currentProject = projectId;
+      setView('project');
+      highlightSelection(projectId);
+      let data=null;
+      try{
+        const res = await fetch(/api/project/);
+        data = await res.json();
+      }catch(e){
+        setStatus('Project load failed');
+        emptyProjectView('Unable to load project.');
+        return;
+      }
+      const parsed = data.parsed || {};
+      document.getElementById('projectTitle').textContent = projectId;
+      document.getElementById('projectSubtitle').textContent = 'Snapshot and AI guidance';
+      document.getElementById('deleteConfirm').placeholder = DELETE ;
+      document.getElementById('deleteStatus').textContent = '';
+      const facts = document.getElementById('projectSummary');
+      facts.innerHTML='';
+      const keys = [
+        ['next_action','Next action'],
+        ['last_session_status','Session'],
+        ['evidence_state','Evidence'],
+        ['session_safety','Safety'],
+        ['ai_last_plan','AI last plan'],
+        ['ai_memory_status','AI memory']
+      ];
+      keys.forEach(([k,label]) => {
+        const card=document.createElement('div'); card.className='card'; card.style.padding='10px';
+        card.innerHTML=<div class="label"></div><div class="value"></div>;
+        facts.appendChild(card);
+      });
+      document.getElementById('aiHint').textContent = parsed['ai_guidance'] || 'N/A';
+      document.getElementById('nextStep').textContent = parsed['ai_guidance'] || parsed['next_action'] || 'No next step available.';
+      document.getElementById('projectRaw').textContent = data.raw || '';
+      renderTask(parsed);
+    }
 
-                const lines = data.output.split('\n').filter(l => l.trim());
-                for (const line of lines.slice(0, 15)) {
-                    if (line.includes('[OK]')) {
-                        addTerminalLine(line.replace('[OK]', '').trim(), 'success');
-                    } else if (line.includes('===')) {
-                        addTerminalLine(line, 'highlight');
-                    } else {
-                        addTerminalLine(line, 'info');
-                    }
-                }
+    async function runAI(event){
+      event.preventDefault();
+      if(!currentProject) { alert('Select a project first'); return; }
+      const preset = document.getElementById('preset').value;
+      const remember = document.getElementById('remember').checked;
+      const res = await fetch('/api/ai/plan', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ project_id: currentProject, preset, remember })
+      });
+      const data = await res.json();
+      const p = data.parsed || {};
+      document.getElementById('aiResult').textContent = p.result_summary || '—';
+      document.getElementById('aiDecision').textContent = p.ai_suggested_command ? ${p.ai_suggested_command} : 'N/A';
+      document.getElementById('aiRef').textContent = p.decision_ref || 'N/A';
+      document.getElementById('aiRemember').textContent = p.memory_appended || 'N/A';
+      document.getElementById('aiRaw').textContent = data.raw || '';
+      loadProject(currentProject);
+    }
 
-                document.getElementById('terminalStatus').textContent = data.success ? 'Complete' : 'Error';
-                addActivity(`Command: ${command}`, data.success ? 'Executed successfully' : 'Failed', data.success ? 'success' : 'warning');
+    async function deleteProject(){
+      if(!currentProject){ alert('Select a project first'); return; }
+      const expected = DELETE ;
+      let confirmVal = document.getElementById('deleteConfirm').value.trim();
+      if(confirmVal.toUpperCase() === 'YES') { confirmVal = expected; }
+      if(confirmVal !== expected){ alert(Type "" to confirm delete); return; }
+      const res = await fetch(/api/project//delete, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ confirm: confirmVal })
+      });
+      const data = await res.json();
+      let msg = data.success ? 'Deleted / archived.' : Delete failed (exit );
+      if(!data.success && data.error){ msg += : ; }
+      document.getElementById('deleteStatus').textContent = msg;
+      if(data.success){
+        document.getElementById('deleteConfirm').value='';
+        fetchPortfolio();
+        setView('portfolio');
+      }
+    }
 
-                setTimeout(() => {
-                    document.getElementById('terminalStatus').textContent = 'Ready';
-                }, 2000);
-
-                fetchStatus();
-                return data.success;
-
-            } catch (e) {
-                addTerminalLine(`Error: ${e.message}`, 'info');
-                document.getElementById('terminalStatus').textContent = 'Error';
-                return false;
-            }
-        }
-
-        function runDemo(type) {
-            switch (type) {
-                case 'smoke':
-                    runCommand('smoke');
-                    break;
-                case 'state':
-                    runCommand('state');
-                    break;
-                case 'plan':
-                    runCommand('plan', ['Optimize reporting process']);
-                    break;
-                case 'agent':
-                    runCommand('agent', ['planner', '-Request', 'Summarize project status']);
-                    break;
-            }
-        }
-
-        async function toggleSession() {
-            if (sessionActive) {
-                await fetch(`${API_BASE}/api/session`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'close', message: 'Demo session completed' })
-                });
-                addActivity('Session Closed', 'Demo completed', 'success');
-            } else {
-                await fetch(`${API_BASE}/api/session`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'start' })
-                });
-                addActivity('Session Started', 'New work session', 'info');
-            }
-
-            sessionActive = !sessionActive;
-            updateSessionUI();
-            fetchStatus();
-        }
-
-        function updateSessionUI() {
-            const banner = document.getElementById('sessionBanner');
-            const btnIcon = document.getElementById('sessionBtnIcon');
-            const btnText = document.getElementById('sessionBtnText');
-            const statusDot = document.getElementById('statusSession');
-            const statusText = document.getElementById('statusSessionText');
-
-            if (sessionActive) {
-                banner.classList.add('visible');
-                btnIcon.innerHTML = '&#9632;';
-                btnText.textContent = 'End Session';
-                statusDot.classList.remove('warning');
-                statusText.innerHTML = '<strong>Session</strong> Active';
-            } else {
-                banner.classList.remove('visible');
-                btnIcon.innerHTML = '&#9654;';
-                btnText.textContent = 'Start Session';
-                statusDot.classList.add('warning');
-                statusText.innerHTML = '<strong>Session</strong> Inactive';
-            }
-        }
-
-        async function startAutoDemo() {
-            if (autoDemo) return;
-            autoDemo = true;
-
-            clearTerminal();
-            addTerminalLine('Starting automated demo...', 'highlight');
-            addActivity('Auto Demo', 'Started', 'info');
-
-            await sleep(1000);
-            addTerminalLine('Step 1: Verifying system health...', 'info');
-            await runCommand('smoke');
-            await sleep(2000);
-
-            addTerminalLine('Step 2: Checking project status...', 'info');
-            await runCommand('state');
-            await sleep(2000);
-
-            addTerminalLine('Step 3: Creating an execution plan...', 'info');
-            await runCommand('plan', ['Automate weekly reporting']);
-            await sleep(2000);
-
-            addTerminalLine('Step 4: Invoking AI agent...', 'info');
-            await runCommand('agent', ['planner', '-Request', 'Analyze automation opportunities']);
-            await sleep(1000);
-
-            addTerminalLine('', 'info');
-            addTerminalLine('Demo complete. HIA is ready for scaled rollout.', 'highlight');
-            addActivity('Auto Demo', 'Completed successfully', 'success');
-
-            autoDemo = false;
-        }
-
-        function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
-        function showTooltip(title, text, x, y) {
-            const tooltip = document.getElementById('tooltip');
-            document.getElementById('tooltipTitle').textContent = title;
-            document.getElementById('tooltipText').textContent = text;
-            tooltip.style.left = `${x}px`;
-            tooltip.style.top = `${y}px`;
-            tooltip.classList.add('active');
-        }
-
-        function hideTooltip() { document.getElementById('tooltip').classList.remove('active'); }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchStatus();
-            addTerminalLine('HIA Console initialized', 'highlight');
-            addTerminalLine('System ready. Click a capability or run Auto Demo.', 'info');
-            addActivity('System Online', 'All components operational', 'success');
-            addActivity('Agents Ready', '2 AI agents available', 'info');
-            setInterval(fetchStatus, 10000);
-            setInterval(() => { document.getElementById('lastSync').textContent = 'Just now'; }, 30000);
-        });
-    </script>
+    document.getElementById('aiForm').addEventListener('submit', runAI);
+    renderMenu();
+    setView('portfolio');
+    fetchPortfolio();
+    healthCheck();
+  </script>
 </body>
 </html>

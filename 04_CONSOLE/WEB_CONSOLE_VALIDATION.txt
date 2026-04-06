@@ -1,0 +1,30 @@
+WEB CONSOLE DEMO VALIDATION (D1 slice)
+DATE_UTC: 2026-04-05
+
+PREREQS
+- Python 3.9+ with pip
+- From repo root, run once: `py -m pip install -q -r 04_CONSOLE/backend/requirements.txt`
+- RADAR/ARTIFACTS writable; CLI commands already smoke-verified
+
+START
+- From repo root: `pwsh 04_CONSOLE/start-console.ps1`
+- Open http://localhost:8000
+
+WHAT TO DEMO
+1) Portfolio page loads; cards show session/evidence/safety badges.
+2) Click a project: detail cards show Next action / Session / Evidence / Safety / AI last plan.
+3) AI panel: choose preset (readiness or next-step), optional remember, run. See result summary, decision ref, suggested command. Technical raw is under collapsible.
+4) Suggested next step card updates; AI hint visible.
+5) Missing data: if a field is absent, cards show N/A; portfolio load failure shows a banner.
+
+BACKEND HEALTH
+- API health: GET http://localhost:8000/api/health/full (returns success/exit_code/projects_detected).
+
+CLI SOURCE OF TRUTH
+- Backend delegates to CLI; no web-only logic. If CLI fails, API returns success:false and exit_code from CLI.
+
+EXIT CODES (CLI)
+- 0 success; 1 known failure; 2 usage; 3 not found; 4 internal.
+
+IF SOMETHING FAILS
+- Check Python/uvicorn install, repo root working dir, writable artifacts, executor registry (07_CONFIG/EXECUTORS.json).
