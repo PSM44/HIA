@@ -252,7 +252,7 @@ function Get-HIAStatusSummary {
 function Invoke-HIARunAll {
     param([Parameter(Mandatory = $true)][string]$ProjectRoot)
 
-    Write-Host "run-all sequence: preflight -> sync-check -> sync -> validate -> radar -> git-status"
+    Write-Host "run-all sequence: preflight -> sync-check -> validate -> radar -> git-status"
 
     $preflightCode = Invoke-HIAPreflight -ProjectRoot $ProjectRoot
     if ($preflightCode -ne 0) {
@@ -262,7 +262,6 @@ function Invoke-HIARunAll {
 
     $steps = @(
         @{ Name = "sync-check"; Invoke = { Invoke-HIASyncCheck -ProjectRoot $ProjectRoot } },
-        @{ Name = "sync"; Invoke = { Invoke-HIASync -ProjectRoot $ProjectRoot } },
         @{ Name = "validate"; Invoke = { Invoke-HIAValidate -ProjectRoot $ProjectRoot } },
         @{ Name = "radar"; Invoke = { Invoke-HIARadar -ProjectRoot $ProjectRoot } },
         @{ Name = "git-status"; Invoke = { Invoke-HIAGitStatus -ProjectRoot $ProjectRoot } }
