@@ -312,30 +312,69 @@ if __name__ == "__main__":
 
 def parse_portfolio(output: str) -> Dict[str, Any]:
     projects = []
+    # Fixed-width columns written by Get-HIAProjects (status mode)
+    field_widths = [18, 24, 10, 9, 8, 24]  # PROJECT_ID, NEXT, SESSION, EVIDENCE, SAFETY, LEDGER
+
+    # Build index map from the "INDEX MAP:" section to recover full project IDs (they may be truncated in the table).
+    index_map: Dict[int, str] = {}
     for line in output.splitlines():
-        line = line.strip()
-        if not line.startswith('[') or '->' in line:
-            continue
-        parts = line.split()
-        if len(parts) < 2:
+        if "->" not in line:
             continue
         try:
-            idx = int(parts[0].strip('[]'))
-        except ValueError:
+            left, right = line.split("->", 1)
+            idx_text = left.replace("[", "").replace("]", "").strip()
+            idx = int(idx_text)
+            proj_id = right.strip()
+            if proj_id:
+                index_map[idx] = proj_id
+        except Exception:
             continue
-        proj_id = parts[1]
-        session = parts[3] if len(parts) > 3 else 'N/A'
-        evidence = parts[4] if len(parts) > 4 else 'N/A'
-        safety = parts[5] if len(parts) > 5 else 'N/A'
-        projects.append({
-            'index': idx,
-            'project_id': proj_id,
-            'session': session,
-            'evidence': evidence,
-            'safety': safety
-        })
-    return {'projects': projects, 'raw': output}
 
+    for line in output.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("["):
+            continue
+        if "->" in line:
+            # already handled for index_map
+            continue
+        try:
+            idx_end = line.index("]")
+            idx_text = line[1:idx_end].strip()
+            idx = int(idx_text)
+        except Exception:
+            continue
+        row = line[idx_end + 1 :].rstrip("\n")
+        total_width = sum(field_widths) + (len(field_widths) - 1)  # one space between columns
+        row = row.ljust(total_width)
+        pos = 0
+        cols = []
+        for w in field_widths:
+            segment = row[pos : pos + w]
+            cols.append(segment.strip())
+            pos += w
+            # skip single inter-column space if present
+            if pos < len(row) and row[pos : pos + 1] == " ":
+                pos += 1
+        if len(cols) < 6:
+            continue
+        proj_id, next_field, session, evidence, safety, ledger = cols[:6]
+        # prefer full id from index map when available
+        if idx in index_map:
+            proj_id = index_map[idx]
+        if proj_id.upper() in ("_ARCHIVE", "_ARCHIVE_BIN"):
+            continue
+        projects.append(
+            {
+                "index": idx,
+                "project_id": proj_id,
+                "session": session or "N/A",
+                "evidence": evidence or "N/A",
+                "safety": safety or "N/A",
+                "next": next_field,
+                "ledger": ledger or "N/A",
+            }
+        )
+    return {"projects": projects, "raw": output}
 
 def parse_project_status(output: str) -> Dict[str, Any]:
     data: Dict[str, Any] = {'raw': output}
@@ -434,11 +473,38 @@ async def health_full():
 
 
 
+class CreateIterationRequest(BaseModel):
+    project_id: str
+
+
+@app.post("/api/project/new")
+async def api_project_new(body: CreateIterationRequest):
+    """Create a new iteration instance (backed by CLI project new)."""
+    if not body.project_id or not body.project_id.strip():
+        raise HTTPException(status_code=400, detail="project_id required")
+    res = run_hia_command("project", ["new", body.project_id.strip()])
+    return build_response(res, {"project_id": body.project_id.strip()})
+
 @app.post("/api/project/{project_id}/delete")
 async def api_project_delete(project_id: str, body: DeleteRequest):
     args = ["delete", project_id, "--confirm", body.confirm]
     res = run_hia_command("project", args)
     return build_response(res)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
