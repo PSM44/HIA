@@ -1,0 +1,64 @@
+HIA_AGL_0001_ROADMAP.ACTIVE
+Purpose
+- Persist the approved HIA release roadmap in canonical form.
+- Use standard external agile terminology only (Release, Milestone, Epic, Feature, Story, Task, Spike, Bug).
+- CLI remains operational engine; web console is primary management/demo surface.
+- HIA is pedestrian-first; login/access control is excluded from the first 3 releases.
+
+Terminology Rule
+- Standard agile terms are mandatory going forward.
+- Prior internal terms (e.g., “MiniBattle”) are non-canonical and may only be referenced as historical notes, not as planning labels.
+
+Release Sequence (Approved)
+- Release 0.1 — HIA Console Foundation
+  Goal: Deliver a serious, navigable, demonstrable web console where HIA is perceived as a real product.
+  Milestones:
+    * Shell & Navigation (Epic: Product Shell)
+    * Portfolio & Active Project basics (Epic: Portfolio & Project Core)
+    * Visual honesty / WIP labeling (Epic: Visual Honesty & WIP States)
+  Major exclusions: login/access control, invented metrics, AI stack depth, roadmap/backlog metrics.
+
+- Release 0.2 — Project Operations & Continuity
+  Goal: Move from visible to operable product; expose latest work, continuity, evidence hints, and next steps without requiring CLI.
+  Milestones:
+    * Latest Activity surfaced (Epic: Latest Activity)
+    * Session continuity visible (Epic: Session Continuity)
+    * Review/Continue usable without CLI (Epic: Review / Continue Usability)
+  Major exclusions: login, fabricated KPIs, AI-stack depth, portfolio metrics beyond available data.
+
+- Release 0.3 — AI Stack Visibility & Guided Operation
+  Goal: Make AI layer visible/understandable for pedestrian/management users, with basic guided AI operation and no fake data.
+  Milestones:
+    * AI Stack / Cost Control visible (Epic: AI Stack UX)
+    * Guided AI interaction (Epic: Guided AI Interaction)
+    * Demo readiness for management (Epic: Demo Readiness for Management)
+  Major exclusions: login, broad billing integrations, autonomous routing redesign, invented costs.
+
+Dependency Notes
+- Web console depends on existing CLI/PowerShell tools as source of truth.
+- AI Stack discovery depends on real capability detection (Ollama/local tools) and explicit config; until wired, show NOT_YET_WIRED.
+- Cost control depends on config/artifact inputs; no fabricated spend.
+
+Transversal Communication & Learning Principle
+- HIA communication must report progress and also teach users progressively and practically.
+- Standard external terminology (Release, Milestone, Epic, Feature, User Story, Task, Spike, Bug, Definition of Done, Handoff Summary / Current State) is mandatory; internal jargon is non-canonical.
+- Communication should reinforce concentration, focus, prioritization, and anti-distraction; avoid dispersing attention with speculative topics.
+
+Recommended Demo Logic (management)
+- Release 0.1: open console → navigate sidebar → show Portfolio shell and Active Project basics → show safe delete confirmation → show WIP labels on incomplete areas.
+- Release 0.2: load a project → show latest activity/continuity/evidence hints → show recommended next action → demonstrate blocked/rejected visibility.
+- Release 0.3: open AI Stack / Cost Control → show real/partial discovery, budget fields (config-driven), routing/fallback visibility, guided AI interaction (basic) with WIP where not wired.
+
+Major Exclusions (all releases until revisited)
+- Login/access control
+- Invented metrics, fake costs, fake health
+- Autonomous multi-agent orchestration
+- Broad external billing integrations
+
+Current ACTIVE release
+- (None active; next release to be defined)
+
+Completed release
+- Release 0.1 — HIA Console Foundation (functionally validated for management demo)
+- Release 0.2 — Project Operations & Continuity (functionally validated for management demo)
+- Release 0.3 — AI Stack Visibility & Guided Operation (functionally validated for management demo)

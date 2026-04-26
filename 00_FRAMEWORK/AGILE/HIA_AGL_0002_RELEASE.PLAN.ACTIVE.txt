@@ -1,0 +1,19 @@
+HIA_AGL_0002_RELEASE.PLAN.ACTIVE
+ACTIVE RELEASE: (None) — Next release to be defined
+
+Completed Release Notes
+- Release 0.1 — HIA Console Foundation: functionally validated for management demo (navigation, portfolio, active project, create, safe delete, basic status, honest WIP, no fake data).
+- Release 0.2 — Project Operations & Continuity: functionally validated (latest activity, blocked/rejected visibility, continuity/evidence hints, recommended next action, review/continue cues, calm empty states, no fake data, no login).
+- Release 0.3 — AI Stack Visibility & Guided Operation: functionally validated (AI Stack visible/understandable, real signals from status endpoint, minimal guided AI plan interaction, demo guidance note, NOT_YET_WIRED honesty, no fake costs/metrics, no login).
+
+Next Release
+- To be defined. No new active release yet.
+
+Terminology Transition Note
+- Standard agile terms (Release, Epic, Feature, Story, Task, Spike, Bug) are mandatory.
+- Internal labels (e.g., MiniBattle) are non-canonical and may only appear as historical references.
+
+Execution Communication Rule (Release 0.2)
+- Continue to report progress while teaching users with standard external terminology.
+- Reinforce concentration, focus, prioritization, and anti-distraction in status and handoff notes.
+- Redirect terminology confusion toward the correct planning level (Release, Epic, Feature, User Story, Task, Spike, Bug, Definition of Done, Handoff Summary / Current State).
