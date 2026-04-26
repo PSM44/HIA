@@ -53,16 +53,23 @@ export default function Project() {
 
   const whatMattersNow = useMemo(() => {
     if (!parsed) return "Select a project to load guidance.";
-    return parsed.ai_guidance || parsed.next_action || "No guidance available.";
+    return firstMeaningful(
+      parsed.ai_guidance,
+      parsed.next_action,
+      "No current recommendation",
+    );
   }, [parsed]);
 
   const continuityItems = useMemo(() => {
     if (!parsed) return [] as { label: string; value?: string }[];
     return [
-      { label: "Last session", value: parsed.last_session_status },
-      { label: "Evidence state", value: parsed.evidence_state },
-      { label: "Evidence age (hrs)", value: parsed.evidence_age_hours },
-      { label: "Continuity hint", value: parsed.last_task_continuity_hint || parsed.session_safety_notes },
+      { label: "Last session", value: mapSessionStatus(parsed.last_session_status) },
+      { label: "Evidence state", value: mapEvidenceStatus(parsed.evidence_state) },
+      { label: "Evidence age (hrs)", value: mapEvidenceAge(parsed.evidence_age_hours) },
+      {
+        label: "Continuity hint",
+        value: firstMeaningful(parsed.last_task_continuity_hint, parsed.session_safety_notes),
+      },
     ].filter((i) => i.value);
   }, [parsed]);
   const latestTask = Boolean(parsed?.last_task_result || parsed?.last_task_scope);
@@ -124,16 +131,16 @@ export default function Project() {
       {projectId && parsed && (
         <div className="space-y-4">
           <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-            <SummaryCard label="Next action" value={parsed.next_action} />
-            <SummaryCard label="Session status" value={parsed.last_session_status} />
-            <SummaryCard label="Evidence state" value={parsed.evidence_state} />
-            <SummaryCard label="Evidence age (hrs)" value={parsed.evidence_age_hours} />
+            <SummaryCard label="Next action" value={whatMattersNow} />
+            <SummaryCard label="Session status" value={mapSessionStatus(parsed.last_session_status)} />
+            <SummaryCard label="Evidence state" value={mapEvidenceStatus(parsed.evidence_state)} />
+            <SummaryCard label="Evidence age (hrs)" value={mapEvidenceAge(parsed.evidence_age_hours)} />
             <SummaryCard
               label="Safety"
-              value={parsed.session_safety}
+              value={mapSafety(parsed.session_safety)}
               note={parsed.session_safety_notes}
             />
-            <SummaryCard label="AI memory status" value={parsed.ai_memory_status} />
+            <SummaryCard label="AI memory status" value={mapAiMemoryStatus(parsed.ai_memory_status)} />
           </div>
 
           <div className="space-y-1 rounded-lg border border-border bg-card/70 p-3">
@@ -173,16 +180,17 @@ export default function Project() {
             {!latestTask && <div className="text-sm text-muted">No task history yet.</div>}
             {latestTask && (
               <div className="space-y-1 text-sm text-text">
-                <Field label="Result" value={parsed.last_task_result} />
-                <Field label="Scope" value={parsed.last_task_scope} />
-                <Field label="Request" value={parsed.last_task_request} />
-                <Field label="Target" value={parsed.last_task_target} />
-                <Field label="Message" value={parsed.last_task_message} />
-                <Field label="Evidence" value={parsed.last_task_evidence} />
-                <Field label="Continuity hint" value={parsed.last_task_continuity_hint} />
-              </div>
-            )}
-          </div>
+              <Field label="Result" value={parsed.last_task_result} />
+              <Field label="Scope" value={parsed.last_task_scope} />
+              <Field label="Request" value={parsed.last_task_request} />
+              <Field label="Target" value={parsed.last_task_target} />
+              <Field label="Message" value={parsed.last_task_message} />
+              <Field label="Evidence" value={parsed.last_task_evidence} />
+              <Field label="Continuity hint" value={parsed.last_task_continuity_hint} />
+              <Field label="Recommended next" value={whatMattersNow} />
+            </div>
+          )}
+        </div>
 
           <div className="space-y-2 rounded-lg border border-border bg-card/70 p-3">
             <div className="flex items-center gap-2">
@@ -191,8 +199,8 @@ export default function Project() {
             </div>
             <div className="space-y-1 text-sm text-text">
               <Field label="Last AI plan" value={parsed.ai_last_plan} />
-              <Field label="AI guidance" value={parsed.ai_guidance} />
-              <Field label="AI memory status" value={parsed.ai_memory_status} />
+              <Field label="AI guidance" value={firstMeaningful(parsed.ai_guidance, "No current recommendation")} />
+              <Field label="AI memory status" value={mapAiMemoryStatus(parsed.ai_memory_status)} />
               <Field label="AI plan log" value={parsed.ai_plan_log} mono />
             </div>
           </div>
@@ -205,12 +213,12 @@ export default function Project() {
             </div>
           </div>
 
-          <div className="space-y-2 rounded-lg border border-error/50 bg-error/10 p-3">
+          <div className="space-y-2 rounded-lg border border-rose-900/70 bg-rose-950/30 p-3">
             <div className="flex items-center gap-2">
-              <div className="text-sm font-semibold text-red-200">Safe delete / archive</div>
-              <StateBadge state="LIVE" />
+              <div className="text-sm font-semibold text-rose-300">Danger zone: delete / archive</div>
+              <StateBadge state="PARTIAL" />
             </div>
-            <div className="text-xs text-red-200">
+            <div className="text-xs text-rose-200">
               Type DELETE {projectId} to confirm. This uses the real delete endpoint.
             </div>
             <div className="flex items-center gap-2">
@@ -218,7 +226,7 @@ export default function Project() {
                 placeholder={`DELETE ${projectId}`}
                 value={deleteToken}
                 onChange={(e) => setDeleteToken(e.target.value)}
-                className="bg-panel border border-border rounded px-2 py-2 text-sm text-text w-64"
+                className="bg-panel border border-rose-700/70 rounded px-2 py-2 text-sm text-text w-64"
               />
               <Button
                 variant="destructive"
@@ -254,7 +262,7 @@ function SummaryCard({
   return (
     <div className="rounded-lg border border-border bg-card/70 p-3">
       <div className="text-xs text-muted">{label}</div>
-      <div className="min-h-[1.5rem] text-sm text-text">{value || "—"}</div>
+      <div className="min-h-[1.5rem] text-sm text-text">{mapGenericValue(value)}</div>
       {note && <div className="text-xs text-muted">{note}</div>}
     </div>
   );
@@ -272,8 +280,74 @@ function Field({
   return (
     <div className="flex gap-2 text-sm">
       <div className="min-w-[140px] text-muted">{label}</div>
-      <div className={`text-text ${mono ? "font-mono" : ""}`}>{value || "—"}</div>
+      <div className={`text-text ${mono ? "font-mono" : ""}`}>{mapGenericValue(value)}</div>
     </div>
   );
+}
+
+function firstMeaningful(...values: Array<string | undefined>): string {
+  for (const value of values) {
+    const normalized = normalizeValue(value);
+    if (normalized !== null) return normalized;
+  }
+  return "Unknown";
+}
+
+function normalizeValue(value?: string): string | null {
+  const raw = (value ?? "").trim();
+  if (!raw) return null;
+  const compact = raw.replace(/\s+/g, " ").trim();
+  const upper = compact.toUpperCase();
+  if (upper === "N/A" || upper === "—" || upper === "-" || upper === "NONE" || upper === "NULL" || upper === "UNKNOWN") {
+    return null;
+  }
+  return compact;
+}
+
+function mapGenericValue(value?: string): string {
+  return normalizeValue(value) ?? "Unknown";
+}
+
+function mapSessionStatus(value?: string): string {
+  const normalized = normalizeValue(value);
+  if (!normalized) return "Unknown";
+  const upper = normalized.toUpperCase();
+  if (upper === "ACTIVE") return "Active";
+  if (upper === "CLOSED") return "Closed";
+  if (upper === "MISSING") return "Missing";
+  return normalized;
+}
+
+function mapEvidenceStatus(value?: string): string {
+  const normalized = normalizeValue(value);
+  if (!normalized) return "No evidence available";
+  const upper = normalized.toUpperCase();
+  if (upper === "FRESH") return "Fresh";
+  if (upper === "STALE") return "Stale";
+  if (upper === "MISSING") return "No evidence available";
+  return normalized;
+}
+
+function mapEvidenceAge(value?: string): string {
+  const normalized = normalizeValue(value);
+  return normalized ?? "No evidence available";
+}
+
+function mapSafety(value?: string): string {
+  const normalized = normalizeValue(value);
+  if (!normalized) return "Unknown";
+  const upper = normalized.toUpperCase();
+  if (upper === "OK") return "OK";
+  if (upper === "WARN") return "Warn";
+  if (upper === "N/A") return "Not configured";
+  return normalized;
+}
+
+function mapAiMemoryStatus(value?: string): string {
+  const normalized = normalizeValue(value);
+  if (!normalized) return "Not configured";
+  const upper = normalized.toUpperCase();
+  if (upper === "MISSING") return "Not configured";
+  return normalized;
 }
 
