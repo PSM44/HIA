@@ -1,0 +1,198 @@
+==========
+00.00_METADATA
+==========
+
+ID_UNICO..........: HIA.WHOAMI.ACTIVE.0001
+NOMBRE_SUGERIDO...: 04.00_WHOAMI.ACTIVE.txt
+VERSION...........: v2026.04.26-SESSION-CLOSE
+FECHA.............: 2026-04-26
+HORA..............: 17:50 aprox. America/Santiago
+CIUDAD............: Santiago, Chile
+PROYECTO..........: HIA — Human Intelligence Amplifier
+PROJECT_ROOT......: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
+AUTOR_HUMANO......: Pablo
+AUTOR_IA..........: GPT-5.5 Thinking
+TIPO..............: WhoAmI / Human Operational Snapshot
+
+==========
+01.00_QUE_ES_ESTE_PROYECTO
+==========
+
+HIA — Human Intelligence Amplifier es un sistema operativo de ejecución humano-IA para gobernar proyectos con foco, trazabilidad, continuidad y validación.
+
+No es solo una app.
+No es solo un chat.
+No es solo una consola.
+
+En su estado actual, HIA combina:
+- CLI PowerShell como motor operativo.
+- FastAPI backend como API local.
+- React/Vite frontend como consola web.
+- RADAR como observación del filesystem.
+- BATON como continuidad operativa.
+- HUMAN como documentación profunda.
+- Git/GitHub como trazabilidad y rollback.
+
+==========
+02.00_ESTADO_ACTUAL
+==========
+
+Estado general:
+- HIA Console v2 ya funciona como demo local.
+- Backend local funciona en:
+  http://127.0.0.1:8000
+- Frontend local funciona en:
+  http://localhost:5173
+- Portfolio carga y muestra PRJ_0001_HIA.PRODUCT.
+- Active Project carga y es legible.
+- Execution Engine run-all funciona y no muta por defecto.
+
+Estado de madurez:
+- Local demo candidate.
+- No es deploy cloud.
+- No es release final todavía.
+- Está cerca de tag local demo release.
+
+==========
+03.00_QUE_SE_LOGRO_EN_LA_SESION
+==========
+
+Se logró:
+
+1. Estabilizar el execution engine.
+2. Dejar run-all como comando seguro/non-mutating.
+3. Limpiar política de repo para 04_PROJECTS como runtime/live data.
+4. Integrar frontend al monorepo HIA.
+5. Validar backend FastAPI local.
+6. Validar frontend Vite local.
+7. Corregir Portfolio UI corrupto por parseo fixed-width.
+8. Crear JSON CLI para projects status.
+9. Corregir UTF-8 CLI/API.
+10. Normalizar /api/portfolio a success/data/meta.
+11. Limpiar UX de Active Project.
+12. Avanzar MB.HIA.API.0004 para normalizar /api/project/{project_id}.
+
+==========
+04.00_QUE_FALTA
+==========
+
+Falta inmediato:
+
+1. Validar localmente MB.HIA.API.0004.
+2. Ejecutar npm run build.
+3. Ejecutar run-all.
+4. Revisar navegador:
+   - /portfolio
+   - /project?id=PRJ_0001_HIA.PRODUCT
+5. Commit + push de MB.HIA.API.0004.
+
+Falta después:
+
+1. Normalizar endpoints restantes:
+   - /api/ai/plan
+   - /api/health/full
+2. Crear checklist de demo local.
+3. Crear tag de primera versión local demo.
+4. Mejorar narrativa para gerencia.
+5. Decidir wording final de “Create iteration instance”.
+6. Seguir reduciendo jerga interna hacia terminología estándar:
+   - Release
+   - Epic
+   - Feature
+   - Task
+   - Definition of Done
+   - Handoff Summary / Current State
+
+==========
+05.00_SIGUIENTE_ACCION
+==========
+
+Siguiente acción exacta:
+
+Validar MB.HIA.API.0004 — Normalize /api/project/{project_id} contract.
+
+Ubicación:
+C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
+
+Comandos:
+Invoke-RestMethod "http://127.0.0.1:8000/api/project/PRJ_0001_HIA.PRODUCT" | ConvertTo-Json -Depth 10
+Invoke-RestMethod "http://127.0.0.1:8000/api/portfolio" | ConvertTo-Json -Depth 10
+powershell -ExecutionPolicy Bypass -File ".\02_TOOLS\Invoke-HIA.ps1" -Action run-all
+
+Ubicación:
+C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_CONSOLE\frontend
+
+Comando:
+npm run build
+
+Si todo está OK:
+
+Ubicación:
+C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
+
+Comandos:
+git add -- 04_CONSOLE/backend/main.py
+git add -- 04_CONSOLE/frontend/src/lib/api/client.ts
+git add -- 04_CONSOLE/frontend/src/lib/types/common.ts
+git add -- 04_CONSOLE/frontend/src/routes/project.tsx
+git commit -m "20260426_FIX_HIA_project_api_contract"
+git push
+
+==========
+06.00_COMO_RETOMAR_TRABAJO
+==========
+
+1. Abrir este WhoAmI.
+2. Abrir BATON:
+   HUMAN.README\04.0_HUMAN.BATON.txt
+3. Confirmar git status:
+   git status --short
+4. Confirmar backend/frontend activos.
+5. Ejecutar validaciones de MB.HIA.API.0004.
+6. No abrir nuevas features antes de commitear o descartar MB.HIA.API.0004.
+
+==========
+07.00_ALERTAS
+==========
+
+ALERTA-001:
+No iniciar cloud deploy todavía.
+Primero cerrar local demo release.
+
+ALERTA-002:
+No abrir otro rediseño UI antes de cerrar contratos API.
+Primero API consistency, después UX polish.
+
+ALERTA-003:
+No tocar HUMAN.USER ni HUMAN.MASTER por esta sesión.
+No hubo cambio doctrinal suficiente.
+
+ALERTA-004:
+No confundir “funciona local” con “release cerrado”.
+Falta tag + checklist + validación limpia.
+
+==========
+08.00_ESTADO_HUMANO_OPERACIONAL
+==========
+
+Pablo está operando HIA con metodología humano-ejecutor:
+- Pablo crea/elimina archivos cuando corresponde.
+- Codex aplica cambios de código.
+- ChatGPT gobierna dirección, cierre, handoff y control de continuidad.
+- Se exige ubicación exacta antes de comandos.
+- Se exige no inventar estado.
+- Se exige separar DONE / READY FOR VALIDATION / BLOCKED.
+
+Modo recomendado para próxima sesión:
+- No brainstorming.
+- No rediseño.
+- Validar, commitear y cerrar MB.HIA.API.0004.
+- Luego preparar demo/tag.
+
+==========
+09.00_CHANGELOG
+==========
+
+2026-04-26
+- Creación/actualización de WhoAmI para cierre de sesión HIA Console v2 local demo candidate.
+- Se registra estado operacional, pendientes inmediatos y siguiente acción exacta.

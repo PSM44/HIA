@@ -1,306 +1,475 @@
 ==========
-00.00_METADATOS_DEL_DOCUMENTO
+00.00_METADATA
 ==========
 
-ID_UNICO..........: HUMAN.BATON.0001
+ID_UNICO..........: HIA.BATON.ACTIVE.0001
 NOMBRE_SUGERIDO...: 04.0_HUMAN.BATON.txt
-VERSION...........: v1.2-DRAFT
-FECHA.............: 2026-02-28
-HORA..............: HH:MM (America/Santiago)
-CIUDAD............: <CIUDAD>, <PAIS>
-UBICACION_SISTEMA.: <TL_BOOTSTRAP_ROOT>\HUMAN.README\
-AUTOR_HUMANO......: PABLO (ADMIN)
-AUTOR_IA..........: GPT-5.2 Thinking
-
-TITULO............: HUMAN Root — BATON (Continuidad y Hand-off)
-SUBTITULO_MEDIO...: Qué es BATON, qué contiene, cuándo se actualiza, cómo se usa al migrar chats/IA.
-SUBTITULO_BAJO....: Peatón primero: “si cierro hoy, mañana puedo seguir sin perder nada”.
-
-ALCANCE...........:
-- Definir BATON como “estado operativo” para continuidad y handoff.
-- Definir estructura mínima de BATON y reglas de actualización.
-- Definir relación BATON ↔ RADAR ↔ Git ↔ Logs.
-- Definir criterios de cierre de sesión y migración de chat (performance/drift).
-- Definir disciplina de decisiones (CANON vs DRAFT) y registro de supuestos.
-- Definir “Handoff Package” por nivel de contexto (ContextLevel).
-
-NO_CUBRE..........:
-- Contenido conceptual de HUMAN del sistema/proyecto (BATON no reemplaza filosofía).
-- Implementación de mecanismos de exportación o empaquetado (BATON define qué debe quedar, no cómo se implementa).
-
-DEPENDENCIAS......:
-- HUMAN.RADAR (foto/delta + exclusiones)
-- Git (rollback y evidencia)
-- CIS (contratos ejecutados)
-- LOGS (evidencia relevante; sin duplicación innecesaria)
+VERSION...........: v2026.04.26-SESSION-CLOSE
+FECHA.............: 2026-04-26
+HORA..............: 17:50 aprox. America/Santiago
+CIUDAD............: Santiago, Chile
+PROYECTO..........: HIA — Human Intelligence Amplifier
+PROJECT_ROOT......: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
+AUTOR_HUMANO......: Pablo
+AUTOR_IA..........: GPT-5.5 Thinking
+TIPO..............: BATON / Current State / Handoff Summary
 
 ==========
-00.10_INDICE_GENERAL_WBS
+01.00_CURRENT_OBJECTIVE
 ==========
 
-00.00 Metadatos
-00.10 Índice
-00.20 Propósito y mental model
+Cerrar la sesión dejando HIA Console v2 en estado de continuidad operativa clara.
 
-01.00 Qué es BATON (y qué NO es)
+Objetivo inmediato:
+- Validar y cerrar MB.HIA.API.0004 — Normalize /api/project/{project_id} contract.
+- Dejar listo el sistema para continuar con normalización de APIs restantes y preparación de demo local release/tag.
 
-02.00 Estructura mínima de BATON (plantilla)
-02.10 Current Objective
-02.20 State Summary
-02.30 Scope & Exclusions
-02.40 Decisions
-02.50 Changes Applied
-02.60 Validation Evidence
-02.65 Cost Tracking
-02.70 Risks & Assumptions
-02.80 Next Actions
-02.90 Handoff Package
-
-03.00 Cuándo actualizar BATON
-
-04.00 BATON y control de cambio
-
-05.00 Migración de chat / IA en blanco
-
-06.00 DoD de sesión (Definition of Done)
-
-07.00 Checklist operativo
-
-08.00 CHANGELOG
+Estado de producto:
+- HIA Console v2 ya existe como demo local funcional.
+- No es deploy cloud.
+- Es candidato a primera versión local demostrable.
 
 ==========
-00.20_PROPOSITO_Y_MENTAL_MODEL
+02.00_STATE_SUMMARY
 ==========
 
-00.21_MENTAL_MODEL_SIMPLE
-- BATON es el “estado operativo” del proyecto:
-  si hoy cierras, mañana puedes continuar en otro chat o con otra IA sin perder control.
+02.10_HECHO
 
-00.22_POR_QUE_EXISTE
-- Los chats se degradan (performance, drift, confusión).
-- La continuidad no puede depender de memoria o de “historial del chat”.
-- BATON es el puente: handoff determinista.
+Repositorio / Git:
+- Repo HIA en branch:
+  feat/20260405-console-v2-phase1-phase2
+- Frontend fue integrado al monorepo.
+- 04_PROJECTS quedó definido como runtime/live data y salió del versionado amplio.
+- Repo quedó limpio después de varios commits de higiene.
 
-00.23_REGLA_DE_ORO
-- Si BATON está malo o incompleto:
-  mañana repites trabajo, o peor: aplicas cambios con contexto falso.
+Execution Engine:
+- 02_TOOLS\Invoke-HIA.ps1 existe.
+- Action run-all estable.
+- run-all ya es non-mutating por defecto.
+- Secuencia actual:
+  preflight -> sync-check -> validate -> radar -> git-status
+- Validación run-all reportó OK en host local.
 
-==========
-01.00_QUE_ES_BATON_(Y_QUE_NO_ES)
-==========
+Console local:
+- Backend FastAPI corre en:
+  http://127.0.0.1:8000
+- Frontend Vite corre en:
+  http://localhost:5173
+- Frontend build OK.
+- Portfolio visible en navegador.
+- Active Project visible en navegador.
 
-01.10_BATON_NO_ES_HUMAN
-- HUMAN = filosofía, principios, intención, y definiciones canónicas conceptuales.
-- BATON = estado operativo: qué está ocurriendo y qué falta.
+Portfolio API:
+- CLI soporta:
+  .\01_UI\terminal\hia.ps1 projects status --json
+- JSON sale limpio, sin banner en modo --json.
+- UTF-8 corregido: “básico” ya no se corrompe.
+- /api/portfolio fue normalizado a contrato:
+  success / data / meta / error
+- Portfolio UI consume data.projects.
+- Test1/Test2 quedan filtrados en la API de portfolio.
+- Portfolio ya muestra solo PRJ_0001_HIA.PRODUCT.
 
-01.20_BATON_ES_CONTINUIDAD
-- BATON debe permitir:
-  - retomar trabajo sin re-explicar todo,
-  - identificar decisiones y pendientes,
-  - evitar repetir errores,
-  - ubicar evidencias (logs, commits, RADAR outputs).
+Active Project UX:
+- Se limpió presentación de valores crudos.
+- N/A / MISSING / vacíos se muestran con etiquetas más humanas.
+- Raw status queda colapsado.
+- Delete area queda secundaria.
+- Commit realizado:
+  dbbb536 20260426_FIX_HIA_active_project_ux_cleanup
 
-01.30_BATON_NO_ES
-- BATON no es backlog.
-- BATON no es vault.
-- BATON no es changelog completo.
-- BATON no es historia total.
-- BATON no reemplaza skills.
-- BATON no reemplaza filosofía.
+API Project:
+- Codex implementó MB.HIA.API.0004.
+- /api/project/{project_id} fue propuesto/implementado para normalizar contrato a:
+  success / data / meta / error
+- Frontend Active Project fue adaptado para consumir data.
+- Pendiente: validación local final + commit + push de MB.HIA.API.0004.
 
-==========
-02.00_ESTRUCTURA_MINIMA_DE_BATON_(PLANTILLA)
-==========
+02.20_EN_PROGRESO
 
-02.10_CURRENT_OBJECTIVE
-- Qué objetivo se está atacando ahora.
-- Debe ser concreto, medible y acotado.
+MB.HIA.API.0004 — Normalize /api/project/{project_id} contract.
 
-02.20_STATE_SUMMARY
-- Hecho:
-  - hitos completados
-- En progreso:
-  - piezas activas
-- Bloqueos:
-  - qué impide avanzar (datos faltantes, dependencias, decisiones)
+Archivos tocados por Codex:
+- 04_CONSOLE/backend/main.py
+- 04_CONSOLE/frontend/src/lib/api/client.ts
+- 04_CONSOLE/frontend/src/lib/types/common.ts
+- 04_CONSOLE/frontend/src/routes/project.tsx
 
-02.30_SCOPE_AND_EXCLUSIONS (P0)
-- Scope (qué se puede tocar):
-  - PROJECT_ROOT por defecto
-  - allowlist/denylist si aplica
-- Exclusiones RADAR (P0):
-  - RADAR_LITE y RADAR_CORE NO deben revisar:
-    - <PROJECT_ROOT>\Raw\
-    - <PROJECT_ROOT>\03_ARTIFACTS\ (incluye LOGS, RADAR\old, DeadHistory)
-  - Implementación práctica recomendada:
-    - excluir \Raw\ y \03_ARTIFACTS\ completo para CORE/LITE
+Estado:
+- READY FOR HUMAN VALIDATION.
+- No confirmado aún por terminal del usuario con build/run-all final.
+- No confirmado commit/push.
 
-02.40_DECISIONS
-Por cada decisión:
-- ID (WBS/único)
-- Qué se decidió (texto corto)
-- Por qué (razón)
-- Estado:
-  - DRAFT (aún discutible)
-  - CANON (cerrado oficialmente)
-- Evidencia:
-  - link a archivo, commit, o sección
+02.30_BLOQUEOS
 
-02.50_CHANGES_APPLIED
-- Lista de cambios aplicados en filesystem:
-  - operación (CREATE/EDIT/MOVE/RENAME/DELETE)
-  - paths
-  - commit id (si aplica)
-  - quarantine path (si aplica)
+No hay bloqueo técnico mayor.
 
-02.60_VALIDATION_EVIDENCE
-- OK/FAIL + evidencia:
-  - logs
-  - outputs esperados
-  - comandos ejecutados
-- Sin evidencia no hay “OK”.
-
-02.65_COST_TRACKING (P0)
-- Objetivo: que “control de costos” sea real (no PowerPoint).
-- Siempre registrar:
-  - provider/model (si aplica)
-  - tipo de consumo: FIXED (suscripción) vs VARIABLE (API)
-  - costo_estimado_usd (si corresponde)
-  - costo_real_usd (si existe evidencia)
-  - acumulado_periodo_usd (semana/mes)
-- Alertas (MVP):
-  - cada USD 30: registrar “ALERTA_30” + acumulado
-    - ejemplo: “ALERTA_30: se cargaron 30 USD; acumulado=61 USD”
-- Hard-stop (si aplica en este proyecto):
-  - si acumulado_periodo_usd + costo_estimado_tarea > budget_periodo:
-    - NO ejecutar APPLY
-    - permitir PLAN_ONLY / dry-run
-    - registrar decisión humana si se overridea (quién/cuándo/por qué)
-- Backlog permitido:
-  - si no se implementa logging automático hoy, igual se registra manual en BATON.
-
-02.70_RISKS_AND_ASSUMPTIONS
-- Riesgos abiertos (top 5–10)
-- Supuestos activos (lo que se asumió por falta de datos)
-- Plan para validar supuestos (cómo se obtiene dato duro)
-
-02.80_NEXT_ACTIONS
-- Lista WBS:
-  - prioridad (P0/P1/P2)
-  - owner (humano/IA planner/IA executor)
-  - prerequisitos
-  - definición de terminado de cada acción
-
-02.90_HANDOFF_PACKAGE (por ContextLevel)
-- Al migrar chat/IA:
-  - Siempre:
-    - BATON actualizado
-    - Último commit id (si existe)
-    - RADAR_INDEX + RADAR_LITE recientes (si existen)
-  - Solo si la tarea lo exige (no por defecto):
-    - RADAR_CORE por APP_SCOPE o módulo
-  - Evitar:
-    - pegar Raw / logs / artifacts completos
-    - re-inyectar FULL sin razón (ruido y costo)
+Riesgos abiertos:
+- Quedan endpoints con contrato antiguo:
+  /api/ai/plan
+  /api/health/full
+  posiblemente delete/create si se decide estandarizar todo.
+- HIA Console aún es local demo, no release/tag final.
+- La UI todavía es funcional pero no está pulida para gerencia.
+- “Create iteration instance” puede ser correcto técnicamente, pero puede sonar raro para usuario no técnico.
 
 ==========
-03.00_CUANDO_ACTUALIZAR_BATON
+03.00_DECISIONS
 ==========
 
-03.10_AL_CIERRE_DE_CADA_SESION (OBLIGATORIO)
-- mínimo:
-  objective + decisions + changes + validation + next actions + scope/exclusions
+DEC-20260426-001
+Estado: CANON
+Decisión:
+- 04_PROJECTS es runtime/live data y no debe versionarse ampliamente.
+Razón:
+- Evita ensuciar Git con proyectos vivos, fixtures, archivos de sesión y artefactos runtime.
+Evidencia:
+- Commit 1b4e66a 20260426_CHORE_HIA_repo_runtime_data_policy
 
-03.20_ANTES_Y_DESPUES_DE_APPLY_SIGNIFICATIVO
-- Antes:
-  - registrar intención y scope
-- Después:
-  - registrar resultados y evidencia
+DEC-20260426-002
+Estado: CANON
+Decisión:
+- Frontend se integra al monorepo HIA; no queda como subrepo/submodule.
+Razón:
+- Simplifica deploy local, commits y trazabilidad.
+Evidencia:
+- Commit dfe3e78 20260426_FIX_convert_frontend_from_submodule_to_monorepo
 
-03.30_ANTES_DE_MIGRAR_CHAT
-- Si migras sin baton, pierdes continuidad (y repites trabajo).
+DEC-20260426-003
+Estado: CANON
+Decisión:
+- run-all debe ser non-mutating por defecto.
+Razón:
+- Un comando de sanity no puede modificar HUMAN/SYNC sin autorización.
+Evidencia:
+- Commit f326754 20260426_FIX_HIA_run_all_non_mutating
 
-==========
-04.00_BATON_Y_CONTROL_DE_CAMBIO
-==========
+DEC-20260426-004
+Estado: CANON
+Decisión:
+- La API Portfolio debe consumir JSON CLI, no texto fixed-width.
+Razón:
+- El parseo fixed-width corrompía columnas y truncaba project_id.
+Evidencia:
+- Commit 7e253cc 20260426_FIX_HIA_utf8_json_cli_api
+- Commit 9fd9a0c 20260426_FIX_HIA_portfolio_api_contract
 
-04.10_BATON_CON_GIT
-- Git provee rollback.
-- BATON apunta a commits como evidencia.
+DEC-20260426-005
+Estado: DRAFT
+Decisión:
+- Normalizar todos los endpoints de API a success/data/meta/error.
+Razón:
+- Evita leakage de output/parsed/command hacia frontend.
+Evidencia:
+- /api/portfolio ya está normalizado.
+- /api/project está en validación MB.HIA.API.0004.
+Pendiente:
+- /api/ai/plan y /api/health/full.
 
-04.20_BATON_CON_RADAR
-- RADAR_INDEX da mapa del repo.
-- RADAR_LITE da delta de cambios.
-- RADAR_CORE alimenta IA para comprensión del sistema (si se requiere y por scope).
-
-04.30_BATON_CON_CIS
-- BATON debe referenciar contratos CIS ejecutados:
-  - qué se ejecutó,
-  - qué se validó,
-  - dónde está la evidencia.
-
-==========
-05.00_MIGRACION_DE_CHAT_IA_EN_BLANCO
-==========
-
-05.10_SENALES_DE_DRIFT
-- repetir contexto varias veces
-- outputs inconsistentes
-- confusión de paths o reglas
-- “olvidos” operativos dentro de la sesión
-- costo/tiempo sube sin progreso
-
-05.20_PROCEDIMIENTO_DE_MIGRACION
-Paso 1: Actualizar BATON (estado completo)
-Paso 2: Ejecutar RADAR_INDEX + RADAR_LITE (foto + delta)
-Paso 3: Si es necesario, RADAR_CORE por APP_SCOPE o módulo
-Paso 4: Crear snapshot/export (si se requiere)
-Paso 5: Abrir nuevo chat y “inyectar” solo:
-        - BATON
-        - RADAR_INDEX (+ LITE)
-        - CORE solo si la tarea lo exige
-
-05.30_QUE_EVITAR
-- no pegar “todo el repo” sin necesidad
-- no re-inyectar FULL como default
-- no duplicar logs y basura (mantener relevancia)
-- no incluir Raw / artifacts en CORE/LITE (P0)
-
-==========
-06.00_DOD_DE_SESION_(DEFINITION_OF_DONE)
-==========
-
-Sesión “DONE” si:
-- BATON actualizado (02.00 completo)
-- Evidencia mínima:
-  - VALIDATE OK o FAIL explícito con logs
-- Next actions claras (WBS + prioridad + owner)
-- Si hubo APPLY:
-  - commit id registrado
-  - RADAR_LITE pre/post registrado (si aplica)
+DEC-20260426-006
+Estado: DRAFT
+Decisión:
+- Primera salida debe ser Local Demo Release, no deploy cloud.
+Razón:
+- El valor actual está en demo local funcional, trazable y demostrable; cloud deploy sería distracción prematura.
+Nombre sugerido:
+- v20260426-hia-console-v01-local-demo
+Pendiente:
+- Checklist demo + tag.
 
 ==========
-07.00_CHECKLIST_OPERATIVO
+04.00_CHANGES_APPLIED
 ==========
 
-[ ] Al cierre de sesión actualicé BATON
-[ ] Registré scope + exclusiones (P0)
-[ ] Registré decisiones y su estado (DRAFT/CANON)
-[ ] Registré cambios aplicados con paths y evidencia
-[ ] Registré validación OK/FAIL con logs
-[ ] Dejé next actions con WBS y prioridad
-[ ] Si migré chat, adjunté RADAR_INDEX + RADAR_LITE (+ CORE si aplica)
+04.10_COMMITS_REALIZADOS_EN_SESION
+
+f20c7ad
+- 20260426_FEAT_HIA_execution_engine_stabilization
+- Estabilización del execution engine.
+
+1b4e66a
+- 20260426_CHORE_HIA_repo_runtime_data_policy
+- Política de 04_PROJECTS como runtime/live data.
+
+4c0deb2
+- 20260426_DOC_HIA_release_roadmap_and_plan_active
+- Roadmap/release plan active documentados.
+
+83e1cd7
+- 20260426_FEAT_HIA_console_create_iteration_and_frontend_routes
+- Backend create iteration + frontend routes, antes de resolver subrepo.
+
+dfe3e78
+- 20260426_FIX_convert_frontend_from_submodule_to_monorepo
+- Conversión frontend subrepo -> monorepo.
+
+f326754
+- 20260426_FIX_HIA_run_all_non_mutating
+- run-all sin mutación por defecto.
+
+7e253cc
+- 20260426_FIX_HIA_utf8_json_cli_api
+- JSON CLI/API UTF-8 y sin banner en modo JSON.
+
+9fd9a0c
+- 20260426_FIX_HIA_portfolio_api_contract
+- /api/portfolio limpio success/data/meta.
+
+dbbb536
+- 20260426_FIX_HIA_active_project_ux_cleanup
+- UX Active Project cleanup.
+
+04.20_CAMBIOS_NO_COMMITTEADOS / PENDIENTES
+
+MB.HIA.API.0004:
+- 04_CONSOLE/backend/main.py
+- 04_CONSOLE/frontend/src/lib/api/client.ts
+- 04_CONSOLE/frontend/src/lib/types/common.ts
+- 04_CONSOLE/frontend/src/routes/project.tsx
+
+Estado:
+- Pendiente validación local por Pablo.
+- Pendiente commit.
+- Pendiente push.
 
 ==========
-08.00_CHANGELOG
+05.00_VALIDATION_EVIDENCE
 ==========
 
-2026-03-30, v1.2-DRAFT
-- Limpieza de residuos office.
-- Reensamble estructural y orden lógico de secciones.
-- Alineación explícita con continuidad operativa.
-2026-02-28, v1.1-DRAFT
-- Agrega sección Scope & Exclusions (P0) para evitar contaminar RADAR_CORE/LITE con Raw/Artifacts.
-- Agrega DoD de sesión y handoff package por ContextLevel.
-2026-02-27, v1.0-DRAFT
-- Creación inicial de HUMAN Root BATON.
+05.10_VALIDACIONES_OK_REPORTADAS
+
+Execution Engine:
+Comando:
+powershell -ExecutionPolicy Bypass -File ".\02_TOOLS\Invoke-HIA.ps1" -Action run-all
+
+Resultado observado:
+- preflight OK
+- sync-check OK
+- validate OK
+- radar OK
+- git-status OK
+- RESULT: OK
+- EXIT_CODE: 0
+
+Frontend:
+Ubicación:
+C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_CONSOLE\frontend
+
+Comando:
+npm run build
+
+Resultado observado:
+- tsc -b && vite build OK
+- Vite build OK
+- dist generado correctamente.
+
+Backend:
+Ubicación:
+C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_CONSOLE\backend
+
+Comando:
+python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000
+
+Resultado observado:
+- Uvicorn running on http://127.0.0.1:8000
+- Application startup complete.
+- /api/status 200 OK
+- /api/portfolio 200 OK
+- /api/project/PRJ_0001_HIA.PRODUCT 200 OK
+
+Portfolio API:
+Comando:
+Invoke-RestMethod "http://127.0.0.1:8000/api/portfolio" | ConvertTo-Json -Depth 10
+
+Resultado:
+- success: true
+- data.projects contiene PRJ_0001_HIA.PRODUCT
+- count: 1
+- UTF-8 preservado.
+
+05.20_VALIDACIONES_PENDIENTES
+
+Validar MB.HIA.API.0004 después de cambios de Codex:
+
+Comandos:
+cd "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA"
+
+Invoke-RestMethod "http://127.0.0.1:8000/api/project/PRJ_0001_HIA.PRODUCT" | ConvertTo-Json -Depth 10
+
+Invoke-RestMethod "http://127.0.0.1:8000/api/portfolio" | ConvertTo-Json -Depth 10
+
+powershell -ExecutionPolicy Bypass -File ".\02_TOOLS\Invoke-HIA.ps1" -Action run-all
+
+cd "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_CONSOLE\frontend"
+
+npm run build
+
+Browser:
+http://localhost:5173/project?id=PRJ_0001_HIA.PRODUCT
+http://localhost:5173/portfolio
+
+==========
+06.00_RISKS_AND_ASSUMPTIONS
+==========
+
+06.10_RIESGOS
+
+RISK-001
+Riesgo:
+- Normalizar /api/project puede romper consumidores si alguno esperaba output/parsed/command.
+Mitigación:
+- Frontend project.tsx ya fue adaptado según Codex.
+- Validar browser y API antes de commit.
+
+RISK-002
+Riesgo:
+- Quedan contratos API inconsistentes.
+Mitigación:
+- Ejecutar siguiente MB para /api/ai/plan y /api/health/full.
+
+RISK-003
+Riesgo:
+- Demo local aún no está empaquetada como release.
+Mitigación:
+- Crear checklist de demo y tag versionado.
+
+RISK-004
+Riesgo:
+- UI todavía puede parecer técnica para gerencia.
+Mitigación:
+- Después de API cleanup, ejecutar Demo Readiness / UX copy pass.
+
+RISK-005
+Riesgo:
+- Terminología “MiniBattle” sigue mezclada con terminología Agile estándar.
+Mitigación:
+- En comunicación externa usar Task / Feature / Epic según corresponda.
+- Mantener MB como ID interno histórico mientras se migra.
+
+06.20_SUPUESTOS
+
+ASSUMP-001
+- Backend y frontend siguen corriendo localmente durante validación.
+
+ASSUMP-002
+- Los cambios de MB.HIA.API.0004 están en working tree y no fueron aún commiteados.
+
+ASSUMP-003
+- La primera versión a publicar será local demo release, no cloud deploy.
+
+==========
+07.00_NEXT_ACTIONS
+==========
+
+P0 — NA-20260426-001 — Validar MB.HIA.API.0004
+Owner: Pablo
+Ubicación:
+C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
+
+Comandos:
+Invoke-RestMethod "http://127.0.0.1:8000/api/project/PRJ_0001_HIA.PRODUCT" | ConvertTo-Json -Depth 10
+Invoke-RestMethod "http://127.0.0.1:8000/api/portfolio" | ConvertTo-Json -Depth 10
+powershell -ExecutionPolicy Bypass -File ".\02_TOOLS\Invoke-HIA.ps1" -Action run-all
+
+Ubicación:
+C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_CONSOLE\frontend
+
+Comando:
+npm run build
+
+Definition of Done:
+- /api/project devuelve success/data/meta.
+- /api/portfolio sigue OK.
+- run-all OK.
+- npm run build OK.
+- Browser project/portfolio OK.
+
+P0 — NA-20260426-002 — Commit MB.HIA.API.0004 si validación OK
+Owner: Pablo
+Ubicación:
+C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
+
+Comandos:
+git add -- 04_CONSOLE/backend/main.py
+git add -- 04_CONSOLE/frontend/src/lib/api/client.ts
+git add -- 04_CONSOLE/frontend/src/lib/types/common.ts
+git add -- 04_CONSOLE/frontend/src/routes/project.tsx
+git commit -m "20260426_FIX_HIA_project_api_contract"
+git push
+
+Definition of Done:
+- commit creado.
+- push OK.
+- git status --short limpio.
+
+P1 — NA-20260426-003 — Normalizar endpoints restantes
+Owner: Pablo + Codex
+MB sugerida:
+MB.HIA.API.0005 — Normalize remaining API contracts
+
+Scope:
+- /api/ai/plan
+- /api/health/full
+- create/delete si aplica
+
+Definition of Done:
+- Contrato success/data/meta/error consistente.
+- Frontend adaptado.
+- npm run build OK.
+- run-all OK.
+
+P1 — NA-20260426-004 — Preparar Local Demo Release
+Owner: Pablo + IA
+MB sugerida:
+MB.HIA.DEMO.0001 — Local demo checklist and release tag
+
+Definition of Done:
+- Checklist de demo creado.
+- Comandos de arranque documentados.
+- Estado LIVE/PARTIAL/COMING SOON claro.
+- Tag sugerido creado:
+  v20260426-hia-console-v01-local-demo
+
+==========
+08.00_HANDOFF_PACKAGE
+==========
+
+Para continuar en otra IA/chat usar:
+
+Obligatorio:
+- HUMAN.README\04.0_HUMAN.BATON.txt
+- HUMAN.README\04.00_WHOAMI.ACTIVE.txt
+- 03_ARTIFACTS\RADAR\Radar.Index.ACTIVE.txt
+- 03_ARTIFACTS\RADAR\Radar.Lite.ACTIVE.txt
+
+Opcional:
+- 03_ARTIFACTS\RADAR\Radar.Core.ACTIVE.txt solo si la IA debe editar código o revisar módulos.
+
+No adjuntar por defecto:
+- Raw\
+- 03_ARTIFACTS completo
+- logs completos
+- node_modules
+- dist
+- RADAR_FULL
+
+==========
+09.00_SESSION_CLOSE_STATUS
+==========
+
+SESSION_STATE......: CLOSING
+RESULTADO..........: CONTINUIDAD PREPARADA
+HUMAN_UPDATE.......: NO
+WHOAMI_UPDATE......: SI
+BATON_UPDATE.......: SI
+RADAR_STATUS.......: Ejecutado durante sesión; volver a ejecutar después de guardar BATON/WHOAMI.
+NEXT_ACTION........: Validar y commitear MB.HIA.API.0004.
+
+==========
+10.00_CHANGELOG
+==========
+
+2026-04-26
+- Cierre de sesión HIA Console v2 local demo candidate.
+- Registro de commits de estabilización, repo hygiene, frontend monorepo, UTF-8 JSON, portfolio contract y Active Project UX cleanup.
+- Registro de MB.HIA.API.0004 como siguiente acción inmediata pendiente.
