@@ -81,6 +81,8 @@ def run_hia_command(command: str, args: list = None) -> dict:
             cmd,
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=120,
             cwd=str(PROJECT_ROOT)
         )
@@ -311,6 +313,41 @@ if __name__ == "__main__":
 # -----------------------------------------------------------------------------
 
 def parse_portfolio(output: str) -> Dict[str, Any]:
+    stripped = output.strip()
+    json_candidate = stripped
+    if not (json_candidate.startswith("{") and '"projects"' in json_candidate):
+        start = stripped.find("{")
+        end = stripped.rfind("}")
+        if start != -1 and end != -1 and end > start:
+            json_candidate = stripped[start : end + 1].strip()
+
+    if json_candidate.startswith("{") and '"projects"' in json_candidate:
+        try:
+            parsed_json = json.loads(json_candidate)
+            projects = parsed_json.get("projects", [])
+            if isinstance(projects, list):
+                clean_projects = []
+                for item in projects:
+                    if not isinstance(item, dict):
+                        continue
+                    project_id = str(item.get("project_id", "")).strip()
+                    if project_id.upper() in ("_ARCHIVE", "_ARCHIVE_BIN", "TEST1", "TEST2"):
+                        continue
+                    clean_projects.append(
+                        {
+                            "index": item.get("index"),
+                            "project_id": project_id,
+                            "next": item.get("next", "N/A"),
+                            "session": item.get("session", "unknown"),
+                            "evidence": item.get("evidence", "unknown"),
+                            "safety": item.get("safety", "unknown"),
+                            "ledger": item.get("ledger", "N/A"),
+                        }
+                    )
+                return {"projects": clean_projects, "count": len(clean_projects), "raw": output}
+        except Exception:
+            pass
+
     projects = []
     # Fixed-width columns written by Get-HIAProjects (status mode)
     field_widths = [18, 24, 10, 9, 8, 24]  # PROJECT_ID, NEXT, SESSION, EVIDENCE, SAFETY, LEDGER
@@ -374,7 +411,7 @@ def parse_portfolio(output: str) -> Dict[str, Any]:
                 "ledger": ledger or "N/A",
             }
         )
-    return {"projects": projects, "raw": output}
+    return {"projects": projects, "count": len(projects), "raw": output}
 
 def parse_project_status(output: str) -> Dict[str, Any]:
     data: Dict[str, Any] = {'raw': output}
@@ -421,7 +458,7 @@ def parse_ai_plan(output: str) -> Dict[str, Any]:
 
 @app.get("/api/portfolio")
 async def api_portfolio():
-    res = run_hia_command("projects", ["status"])
+    res = run_hia_command("projects", ["status", "--json"])
     return build_response(res, parse_portfolio(res.get("output", "")))
 
 

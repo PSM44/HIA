@@ -2338,7 +2338,8 @@ function Get-HIAProjectPortfolioSnapshot {
 function Get-HIAProjects {
     param(
         [ValidateSet("list", "status")]
-        [string]$Mode = "list"
+        [string]$Mode = "list",
+        [switch]$AsJson
     )
 
     $projectsRoot = Join-Path $PSScriptRoot "..\04_PROJECTS"
@@ -2355,17 +2356,55 @@ function Get-HIAProjects {
             $_.Name -notin @('_ARCHIVE', '_ARCHIVE_BIN')
         } | Sort-Object Name)
 
-    Write-Host ""
-    Write-Host "PROYECTOS DETECTADOS" -ForegroundColor Cyan
-    Write-Host "-------------------"
+    if (-not $AsJson.IsPresent) {
+        Write-Host ""
+        Write-Host "PROYECTOS DETECTADOS" -ForegroundColor Cyan
+        Write-Host "-------------------"
+    }
 
     if ($projects.Count -eq 0) {
+        if ($AsJson.IsPresent) {
+            @{ projects = @(); count = 0 } | ConvertTo-Json -Depth 6
+            return
+        }
         Write-Host "No projects found."
         Write-Host ""
         return
     }
 
     if ($Mode -eq "status") {
+        function Convert-HIASessionStatusValue {
+            param([string]$Value)
+            $v = ([string]$Value).Trim().ToLowerInvariant()
+            if ([string]::IsNullOrWhiteSpace($v) -or $v -eq "n/a") { return "unknown" }
+            if ($v -eq "active") { return "active" }
+            if ($v -eq "closed") { return "closed" }
+            return "unknown"
+        }
+
+        function Convert-HIAEvidenceStatusValue {
+            param([string]$Value)
+            $v = ([string]$Value).Trim().ToUpperInvariant()
+            if ([string]::IsNullOrWhiteSpace($v) -or $v -eq "N/A") { return "unknown" }
+            switch ($v) {
+                "FRESH" { return "fresh" }
+                "STALE" { return "stale" }
+                "MISSING" { return "missing" }
+                default { return "unknown" }
+            }
+        }
+
+        function Convert-HIASafetyStatusValue {
+            param([string]$Value)
+            $v = ([string]$Value).Trim().ToUpperInvariant()
+            if ([string]::IsNullOrWhiteSpace($v) -or $v -eq "N/A") { return "na" }
+            switch ($v) {
+                "OK" { return "ok" }
+                "WARN" { return "warn" }
+                default { return "unknown" }
+            }
+        }
+
         function TrimPad {
             param($text, [int]$len)
             $t = [string]$text
@@ -2382,20 +2421,23 @@ function Get-HIAProjects {
             LEDGER = 24
         }
 
-        Write-Host ""
-        Write-Host ("PROJECTS SNAPSHOT (MB-2.26)") -ForegroundColor Cyan
-        $header = "{0} {1} {2} {3} {4} {5}" -f `
-            (TrimPad "PROJECT_ID" $cols.PROJECT_ID),
-            (TrimPad "NEXT" $cols.NEXT),
-            (TrimPad "SESSION" $cols.SESSION),
-            (TrimPad "EVIDENCE" $cols.EVIDENCE),
-            (TrimPad "SAFETY" $cols.SAFETY),
-            (TrimPad "LEDGER_DECISION" $cols.LEDGER)
-        Write-Host $header
-        Write-Host ("-" * ($cols.PROJECT_ID + $cols.NEXT + $cols.SESSION + $cols.EVIDENCE + $cols.SAFETY + $cols.LEDGER + 5))
+        if (-not $AsJson.IsPresent) {
+            Write-Host ""
+            Write-Host ("PROJECTS SNAPSHOT (MB-2.26)") -ForegroundColor Cyan
+            $header = "{0} {1} {2} {3} {4} {5}" -f `
+                (TrimPad "PROJECT_ID" $cols.PROJECT_ID),
+                (TrimPad "NEXT" $cols.NEXT),
+                (TrimPad "SESSION" $cols.SESSION),
+                (TrimPad "EVIDENCE" $cols.EVIDENCE),
+                (TrimPad "SAFETY" $cols.SAFETY),
+                (TrimPad "LEDGER_DECISION" $cols.LEDGER)
+            Write-Host $header
+            Write-Host ("-" * ($cols.PROJECT_ID + $cols.NEXT + $cols.SESSION + $cols.EVIDENCE + $cols.SAFETY + $cols.LEDGER + 5))
+        }
 
         $script:suggestedPortfolioCmd = $null
         $projectIndex = New-Object System.Collections.Generic.List[object]
+        $jsonRows = New-Object System.Collections.Generic.List[object]
         $idx = 1
         foreach ($proj in $projects) {
             try {
@@ -2436,16 +2478,28 @@ function Get-HIAProjects {
                     } catch { $ledgerDecision = "N/A" }
                 }
 
-                $row = "{0} {1} {2} {3} {4} {5}" -f `
-                    (TrimPad ("[{0}]" -f $idx) 5),
-                    (TrimPad $proj.Name $cols.PROJECT_ID),
-                    (TrimPad $nextAction $cols.NEXT),
-                    (TrimPad $sessionStatus $cols.SESSION),
-                    (TrimPad $evidence.STATE $cols.EVIDENCE),
-                    (TrimPad $sessionSafety.STATE $cols.SAFETY),
-                    (TrimPad $ledgerDecision $cols.LEDGER)
-                Write-Host $row
+                if (-not $AsJson.IsPresent) {
+                    $row = "{0} {1} {2} {3} {4} {5} {6}" -f `
+                        (TrimPad ("[{0}]" -f $idx) 5),
+                        (TrimPad $proj.Name $cols.PROJECT_ID),
+                        (TrimPad $nextAction $cols.NEXT),
+                        (TrimPad $sessionStatus $cols.SESSION),
+                        (TrimPad $evidence.STATE $cols.EVIDENCE),
+                        (TrimPad $sessionSafety.STATE $cols.SAFETY),
+                        (TrimPad $ledgerDecision $cols.LEDGER)
+                    Write-Host $row
+                }
+
                 $projectIndex.Add([ordered]@{ IDX = $idx; PROJECT_ID = $proj.Name }) | Out-Null
+                $jsonRows.Add([ordered]@{
+                    index = $idx
+                    project_id = [string]$proj.Name
+                    next = [string]$nextAction
+                    session = Convert-HIASessionStatusValue -Value $sessionStatus
+                    evidence = Convert-HIAEvidenceStatusValue -Value $evidence.STATE
+                    safety = Convert-HIASafetyStatusValue -Value $sessionSafety.STATE
+                    ledger = [string]$ledgerDecision
+                }) | Out-Null
                 $idx++
 
                 # capture a conservative suggested command for portfolio hint
@@ -2462,8 +2516,19 @@ function Get-HIAProjects {
                 }
             }
             catch {
-                Write-Host (TrimPad $proj.Name $cols.PROJECT_ID) " error while reading project snapshot"
+                if (-not $AsJson.IsPresent) {
+                    Write-Host (TrimPad $proj.Name $cols.PROJECT_ID) " error while reading project snapshot"
+                }
             }
+        }
+
+        if ($AsJson.IsPresent) {
+            $jsonProjects = $jsonRows.ToArray()
+            @{
+                projects = $jsonProjects
+                count = $jsonRows.Count
+            } | ConvertTo-Json -Depth 8
+            return
         }
 
         Write-Host ""

@@ -31,6 +31,19 @@ if ($Command -eq "hia" -and $RouterArgs.Count -gt 0) {
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
+$isJsonMode = $false
+if (-not [string]::IsNullOrWhiteSpace($Command)) {
+    if ($RouterArgs -contains "--json") {
+        $isJsonMode = $true
+    }
+}
+
+if ($isJsonMode) {
+    $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
+    [Console]::OutputEncoding = $utf8NoBom
+    $OutputEncoding = $utf8NoBom
+}
+
 # -----------------------------------------------------------------------------
 # LIGHTWEIGHT MENU INPUT (for MB-2.36)
 # -----------------------------------------------------------------------------
@@ -103,12 +116,14 @@ function Invoke-HIAMenuCommand {
 # HEADER
 # -----------------------------------------------------------------------------
 
-Write-Host ""
-Write-Host "===================================" -ForegroundColor Cyan
-Write-Host " HIA — Human Intelligence Amplifier"
-Write-Host " CLI Interface"
-Write-Host "===================================" -ForegroundColor Cyan
-Write-Host ""
+if (-not $isJsonMode) {
+    Write-Host ""
+    Write-Host "===================================" -ForegroundColor Cyan
+    Write-Host " HIA — Human Intelligence Amplifier"
+    Write-Host " CLI Interface"
+    Write-Host "===================================" -ForegroundColor Cyan
+    Write-Host ""
+}
 
 # -----------------------------------------------------------------------------
 # RESOLVE PROJECT ROOT

@@ -428,7 +428,25 @@ function Invoke-HIARouter {
                     $projectsAction = $Args[0].ToLowerInvariant()
 
                     switch ($projectsAction) {
-                        "status" { Get-HIAProjects -Mode status }
+                        "status" {
+                            $asJson = $false
+                            if ($Args.Count -ge 2) {
+                                foreach ($arg in $Args[1..($Args.Count - 1)]) {
+                                    if ($arg -eq "--json") {
+                                        $asJson = $true
+                                        continue
+                                    }
+                                    $global:HIA_EXIT_CODE = 2
+                                    throw "Usage: hia projects status [--json]"
+                                }
+                            }
+                            if ($asJson) {
+                                Get-HIAProjects -Mode status -AsJson
+                            }
+                            else {
+                                Get-HIAProjects -Mode status
+                            }
+                        }
                         "pick" {
                             if ($Args.Count -lt 2) { $global:HIA_EXIT_CODE = 2; throw "Usage: hia projects pick <INDEX> [status|review|continue|sessionstatus]" }
                             $pickIndex = [int]$Args[1]
