@@ -16,3 +16,20 @@ Raw/**
 
 # Claude Code session cache
 .claude/
+
+# --- HIA policy: 04_PROJECTS is runtime/live data (do not broadly version) ---
+04_PROJECTS/**
+
+# Keep folder anchor/doc only
+!04_PROJECTS/
+!04_PROJECTS/README.PROJECTS.txt
+
+# Optional allowlist for explicitly approved canonical templates/specs
+# (uncomment/add only when explicitly approved)
+#!04_PROJECTS/_CANON/**
+#!04_PROJECTS/_TEMPLATES/**
+#!04_PROJECTS/SAMPLE_TEMPLATE_SPEC.txt
+
+# Python cache
+__pycache__/
+*.pyc
