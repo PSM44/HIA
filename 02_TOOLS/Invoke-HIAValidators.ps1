@@ -38,8 +38,7 @@ NOTAS:
 
 [CmdletBinding()]
 param(
-  [Parameter(Mandatory = $true)]
-  [ValidateNotNullOrEmpty()]
+  [Parameter(Mandatory = $false)]
   [string] $ProjectRoot,
 
   [Parameter(Mandatory = $false)]
@@ -76,7 +75,43 @@ function Write-RunLog([string]$LogPath, [string[]]$Lines) {
   $Lines | Set-Content -LiteralPath $LogPath -Encoding UTF8
 }
 
+function Get-HIAProjectStructureSets([string]$ProjectsRoot) {
+  $allDirs = @(Get-ChildItem -LiteralPath $ProjectsRoot -Directory -Force -ErrorAction SilentlyContinue)
+  $active = New-Object System.Collections.Generic.List[System.IO.DirectoryInfo]
+  $ignored = New-Object System.Collections.Generic.List[hashtable]
+  $fixtureProjectIds = @("Test1","Test2")
+
+  foreach ($dir in $allDirs) {
+    if ($dir.Name.StartsWith("_")) {
+      $ignored.Add(@{
+        Name = $dir.Name
+        Reason = "system_container_prefix_underscore"
+      }) | Out-Null
+      continue
+    }
+
+    if ($fixtureProjectIds -contains $dir.Name) {
+      $ignored.Add(@{
+        Name = $dir.Name
+        Reason = "fixture_explicit_allowlist"
+      }) | Out-Null
+      continue
+    }
+    $active.Add($dir) | Out-Null
+  }
+
+  return @{
+    Active = @($active)
+    Ignored = @($ignored)
+  }
+}
+
 # -------- Normalize inputs --------
+if ([string]::IsNullOrWhiteSpace($ProjectRoot)) {
+  $toolsRoot = Split-Path -Path $PSCommandPath -Parent
+  $ProjectRoot = [System.IO.Path]::GetFullPath((Join-Path $toolsRoot ".."))
+}
+
 $ProjectRoot = ($ProjectRoot -as [string]).Trim().Trim('"').Trim("'") -replace "[`r`n]",""
 
 if ($ProjectRoot -match '<PROJECT_ROOT>' -or $ProjectRoot -match '^\s*<.*>\s*$') {
@@ -126,7 +161,13 @@ $log.Add(("[{0}][INFO] STRUCTURE_GATE: 04_PROJECTS no existe (skip)" -f (Get-Dat
     $log.Add(("[{0}][WARN] STRUCTURE_GATE: 04_PROJECTS no existe (skip)" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")))
     $warnCount++
   } else {
-    $projDirs = Get-ChildItem -LiteralPath $projectsRoot -Directory -Force -ErrorAction SilentlyContinue
+    $projectSets = Get-HIAProjectStructureSets -ProjectsRoot $projectsRoot
+    foreach ($ignoredDir in $projectSets.Ignored) {
+      Log ("STRUCTURE_GATE_IGNORED: project={0} reason={1}" -f $ignoredDir.Name, $ignoredDir.Reason) "INFO"
+      $log.Add(("[{0}][INFO] STRUCTURE_GATE_IGNORED: project={1} reason={2}" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss"), $ignoredDir.Name, $ignoredDir.Reason))
+    }
+
+    $projDirs = $projectSets.Active
     if (-not $projDirs -or $projDirs.Count -eq 0) {
 Log "STRUCTURE_GATE: sin proyectos en 04_PROJECTS (skip)" "INFO"
 $log.Add(("[{0}][INFO] STRUCTURE_GATE: sin proyectos en 04_PROJECTS (skip)" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")))
@@ -196,7 +237,13 @@ $log.Add(("[{0}][INFO] STRUCTURE_GATE: 04_PROJECTS no existe (skip)" -f (Get-Dat
     $log.Add(("[{0}][WARN] STRUCTURE_GATE: 04_PROJECTS no existe (skip)" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")))
     $warnCount++
   } else {
-    $projDirs = Get-ChildItem -LiteralPath $projectsRoot -Directory -Force -ErrorAction SilentlyContinue
+    $projectSets = Get-HIAProjectStructureSets -ProjectsRoot $projectsRoot
+    foreach ($ignoredDir in $projectSets.Ignored) {
+      Log ("STRUCTURE_GATE_IGNORED: project={0} reason={1}" -f $ignoredDir.Name, $ignoredDir.Reason) "INFO"
+      $log.Add(("[{0}][INFO] STRUCTURE_GATE_IGNORED: project={1} reason={2}" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss"), $ignoredDir.Name, $ignoredDir.Reason))
+    }
+
+    $projDirs = $projectSets.Active
     if (-not $projDirs -or $projDirs.Count -eq 0) {
 Log "STRUCTURE_GATE: sin proyectos en 04_PROJECTS (skip)" "INFO"
 $log.Add(("[{0}][INFO] STRUCTURE_GATE: sin proyectos en 04_PROJECTS (skip)" -f (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")))

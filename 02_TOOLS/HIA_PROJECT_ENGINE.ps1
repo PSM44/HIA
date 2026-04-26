@@ -899,6 +899,13 @@ function Remove-HIAProjectSafe {
 
     $projectsRoot = Split-Path -Path $projectRoot -Parent
     $archiveRoot = Join-Path $projectsRoot "_ARCHIVE"
+    $archiveRootResolved = [System.IO.Path]::GetFullPath($archiveRoot)
+    $projectRootResolved = [System.IO.Path]::GetFullPath($projectRoot)
+    # Avoid archiving a project into itself (e.g., deleting the _ARCHIVE folder)
+    if ($archiveRootResolved.TrimEnd('\') -ieq $projectRootResolved.TrimEnd('\') -or
+        $archiveRootResolved.TrimEnd('\').StartsWith($projectRootResolved.TrimEnd('\'), [System.StringComparison]::OrdinalIgnoreCase)) {
+        $archiveRoot = Join-Path $projectsRoot "_ARCHIVE_BIN"
+    }
     if (-not (Test-Path -LiteralPath $archiveRoot -PathType Container)) {
         New-Item -ItemType Directory -Path $archiveRoot -Force | Out-Null
     }
@@ -2344,7 +2351,9 @@ function Get-HIAProjects {
     }
 
     $projectsRoot = (Resolve-Path -LiteralPath $projectsRoot).Path
-    $projects = @(Get-ChildItem -LiteralPath $projectsRoot -Directory -Force -ErrorAction Stop | Sort-Object Name)
+    $projects = @(Get-ChildItem -LiteralPath $projectsRoot -Directory -Force -ErrorAction Stop | Where-Object {
+            $_.Name -notin @('_ARCHIVE', '_ARCHIVE_BIN')
+        } | Sort-Object Name)
 
     Write-Host ""
     Write-Host "PROYECTOS DETECTADOS" -ForegroundColor Cyan

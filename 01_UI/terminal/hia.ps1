@@ -377,6 +377,26 @@ if ($Command.ToLowerInvariant() -eq "menu") {
     exit $routerExitCode
 }
 
+if ($Command.ToLowerInvariant() -eq "exec") {
+    $execEnginePath = Join-Path $projectRoot "02_TOOLS\Invoke-HIA.ps1"
+    if (-not (Test-Path -LiteralPath $execEnginePath -PathType Leaf)) {
+        throw "Execution engine not found."
+    }
+
+    $execAction = "status"
+    if ($RouterArgs.Count -gt 0 -and -not [string]::IsNullOrWhiteSpace($RouterArgs[0])) {
+        $execAction = $RouterArgs[0]
+    }
+
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $execEnginePath -Action $execAction
+    $execExitCode = 0
+    $lastExec = Get-Variable -Name LASTEXITCODE -ValueOnly -ErrorAction SilentlyContinue
+    if ($null -ne $lastExec) {
+        $execExitCode = [int]$lastExec
+    }
+    exit $execExitCode
+}
+
 if ($Command.ToLowerInvariant() -eq "agile") {
     $agileEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_AGILE_ENGINE.ps1"
     if (-not (Test-Path $agileEnginePath)) {
@@ -434,5 +454,6 @@ catch {
     Write-Host ""
     exit $exitCode
 }
+
 
 

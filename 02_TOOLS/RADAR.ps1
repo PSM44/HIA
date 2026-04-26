@@ -309,6 +309,52 @@ function Get-StableNumericIdFromRelPath {
     }
 }
 
+function Test-HIAEnumerationOptionsAvailable {
+    return $null -ne ([System.Type]::GetType("System.IO.EnumerationOptions"))
+}
+
+function Get-HIAEnumerateDirectoriesCompat {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectRoot
+    )
+
+    if (Test-HIAEnumerationOptionsAvailable) {
+        $options = New-Object System.IO.EnumerationOptions
+        $options.RecurseSubdirectories = $true
+        $options.IgnoreInaccessible = $true
+        $options.ReturnSpecialDirectories = $false
+        $options.AttributesToSkip = [System.IO.FileAttributes]::ReparsePoint
+        return @([System.IO.Directory]::EnumerateDirectories($ProjectRoot, "*", $options))
+    }
+
+    $dirs = Get-ChildItem -LiteralPath $ProjectRoot -Directory -Recurse -Force -ErrorAction SilentlyContinue |
+        Where-Object { -not (($_.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) } |
+        Select-Object -ExpandProperty FullName
+    return @($dirs)
+}
+
+function Get-HIAEnumerateFilesCompat {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectRoot
+    )
+
+    if (Test-HIAEnumerationOptionsAvailable) {
+        $options = New-Object System.IO.EnumerationOptions
+        $options.RecurseSubdirectories = $true
+        $options.IgnoreInaccessible = $true
+        $options.ReturnSpecialDirectories = $false
+        $options.AttributesToSkip = [System.IO.FileAttributes]::ReparsePoint
+        return @([System.IO.Directory]::EnumerateFiles($ProjectRoot, "*", $options))
+    }
+
+    $files = Get-ChildItem -LiteralPath $ProjectRoot -File -Recurse -Force -ErrorAction SilentlyContinue |
+        Where-Object { -not (($_.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) } |
+        Select-Object -ExpandProperty FullName
+    return @($files)
+}
+
 function Get-RegistryEntryListDeterministic {
     param(
         [Parameter(Mandatory = $true)]
@@ -317,15 +363,9 @@ function Get-RegistryEntryListDeterministic {
         [string[]]$ExcludedContains
     )
 
-    $options = New-Object System.IO.EnumerationOptions
-    $options.RecurseSubdirectories = $true
-    $options.IgnoreInaccessible = $true
-    $options.ReturnSpecialDirectories = $false
-    $options.AttributesToSkip = [System.IO.FileAttributes]::ReparsePoint
-
     $rows = New-Object System.Collections.Generic.List[object]
 
-    foreach ($full in [System.IO.Directory]::EnumerateDirectories($ProjectRoot, "*", $options)) {
+    foreach ($full in (Get-HIAEnumerateDirectoriesCompat -ProjectRoot $ProjectRoot)) {
         $dirCheckPath = if ($full.EndsWith('\')) { $full } else { $full + '\' }
         if (Test-ExcludedPath -FullPath $dirCheckPath -ExcludedContains $ExcludedContains) {
             continue
@@ -346,7 +386,7 @@ function Get-RegistryEntryListDeterministic {
         }) | Out-Null
     }
 
-    foreach ($full in [System.IO.Directory]::EnumerateFiles($ProjectRoot, "*", $options)) {
+    foreach ($full in (Get-HIAEnumerateFilesCompat -ProjectRoot $ProjectRoot)) {
         if (Test-ExcludedPath -FullPath $full -ExcludedContains $ExcludedContains) {
             continue
         }
@@ -425,15 +465,9 @@ function Get-FileEntryListDeterministic {
         [string]$HashMode
     )
 
-    $options = New-Object System.IO.EnumerationOptions
-    $options.RecurseSubdirectories = $true
-    $options.IgnoreInaccessible = $true
-    $options.ReturnSpecialDirectories = $false
-    $options.AttributesToSkip = [System.IO.FileAttributes]::ReparsePoint
-
     $records = New-Object System.Collections.Generic.List[object]
 
-    foreach ($full in [System.IO.Directory]::EnumerateFiles($ProjectRoot, "*", $options)) {
+    foreach ($full in (Get-HIAEnumerateFilesCompat -ProjectRoot $ProjectRoot)) {
         if (Test-ExcludedPath -FullPath $full -ExcludedContains $ExcludedContains) {
             continue
         }
@@ -704,7 +738,7 @@ $Records = Get-FileEntryListDeterministic `
 # ========================================================================
 
 $IndexLines = New-Object System.Collections.Generic.List[string]
-$IndexLines.Add("RADAR_INDEX — HIA") | Out-Null
+$IndexLines.Add("RADAR_INDEX - HIA") | Out-Null
 $IndexLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
 $IndexLines.Add("ROOT: " + $RootPath) | Out-Null
 $IndexLines.Add("HASH_MODE: " + $HashMode) | Out-Null
@@ -730,7 +764,7 @@ $RegistryRecords = Get-RegistryEntryListDeterministic `
     -ExcludedContains $ExcludedContains
 
 $RegistryLines = New-Object System.Collections.Generic.List[string]
-$RegistryLines.Add("RADAR_REGISTRY — HIA") | Out-Null
+$RegistryLines.Add("RADAR_REGISTRY - HIA") | Out-Null
 $RegistryLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
 $RegistryLines.Add("ROOT: " + $RootPath) | Out-Null
 $RegistryLines.Add("SOURCE: RADAR.ps1") | Out-Null
@@ -748,7 +782,7 @@ $RegistryContent = $RegistryLines -join "`r`n"
 # 07.00_CORE
 # ========================================================================
 $CoreLines = New-Object System.Collections.Generic.List[string]
-$CoreLines.Add("RADAR_CORE — HIA") | Out-Null
+$CoreLines.Add("RADAR_CORE - HIA") | Out-Null
 $CoreLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
 $CoreLines.Add("ROOT: " + $RootPath) | Out-Null
 $CoreLines.Add("POLICY: HUMAN.README + 01_UI + 02_TOOLS + BATON/BACKLOG/SKILLS if present") | Out-Null
@@ -811,7 +845,7 @@ if ($BaselineIndexPath) {
 }
 
 $LiteLines = New-Object System.Collections.Generic.List[string]
-$LiteLines.Add("RADAR_LITE — HIA") | Out-Null
+$LiteLines.Add("RADAR_LITE - HIA") | Out-Null
 $LiteLines.Add("STAMP_UTC: " + (Get-Date).ToUniversalTime().ToString("o")) | Out-Null
 $LiteLines.Add("ROOT: " + $RootPath) | Out-Null
 $LiteLines.Add("BASELINE_INDEX: " + $(if ($BaselineIndexPath) { $BaselineIndexPath } else { "[NONE]" })) | Out-Null
