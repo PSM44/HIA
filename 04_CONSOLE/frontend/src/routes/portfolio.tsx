@@ -6,14 +6,7 @@ import { StateBadge } from "../components/state-badge";
 import { toast } from "../components/toast";
 import { api } from "../lib/api/client";
 import { qk } from "../lib/api/query-keys";
-import type { PortfolioProject } from "../lib/types/common";
-
-type PortfolioResponse = {
-  parsed?: {
-    projects: PortfolioProject[];
-  };
-  raw?: string;
-};
+import type { PortfolioApiResponse, PortfolioProject } from "../lib/types/common";
 
 type CreateIterationResponse = {
   message?: string;
@@ -25,7 +18,7 @@ export default function Portfolio() {
   const queryClient = useQueryClient();
   const [newId, setNewId] = useState("");
 
-  const portfolioQuery = useQuery<PortfolioResponse>({
+  const portfolioQuery = useQuery<PortfolioApiResponse>({
     queryKey: qk.portfolio,
     queryFn: api.portfolio,
   });
@@ -42,7 +35,7 @@ export default function Portfolio() {
     },
   });
 
-  const projects: PortfolioProject[] = portfolioQuery.data?.parsed?.projects ?? [];
+  const projects: PortfolioProject[] = portfolioQuery.data?.data?.projects ?? [];
 
   const safetyCounts = useMemo(() => {
     const counts: Record<string, number> = {};

@@ -1,9 +1,25 @@
 export type PortfolioProject = {
   index: number;
   project_id: string;
+  next?: string;
   session: string;
   evidence: string;
   safety: string;
+  ledger?: string;
+};
+
+export type PortfolioApiResponse = {
+  success: boolean;
+  data: {
+    projects: PortfolioProject[];
+    count: number;
+  };
+  error?: string;
+  meta?: {
+    source?: string;
+    command?: string;
+    exit_code?: number;
+  };
 };
 
 export type ProjectStatus = {

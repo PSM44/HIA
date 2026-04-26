@@ -1,4 +1,4 @@
-import { ProjectStatus, PortfolioProject, StatusSummary } from "../types/common";
+import { PortfolioApiResponse, ProjectStatus, StatusSummary } from "../types/common";
 
 export const API_BASE = "/api";
 
@@ -9,7 +9,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const api = {
-  portfolio: () => request<{ parsed?: { projects: PortfolioProject[] }; raw?: string }>("/portfolio"),
+  portfolio: () => request<PortfolioApiResponse>("/portfolio"),
   project: (id: string) => request<ProjectStatus & { raw?: string }>(`/project/${id}`),
   projectCreate: (project_id: string) =>
     request<any>("/project/new", {

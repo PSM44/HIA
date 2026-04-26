@@ -459,7 +459,31 @@ def parse_ai_plan(output: str) -> Dict[str, Any]:
 @app.get("/api/portfolio")
 async def api_portfolio():
     res = run_hia_command("projects", ["status", "--json"])
-    return build_response(res, parse_portfolio(res.get("output", "")))
+    parsed = parse_portfolio(res.get("output", ""))
+    if res.get("success", False):
+        return {
+            "success": True,
+            "data": {
+                "projects": parsed.get("projects", []),
+                "count": parsed.get("count", 0),
+            },
+            "meta": {
+                "source": "cli-json",
+                "command": "projects status --json",
+            },
+        }
+    return {
+        "success": False,
+        "data": {
+            "projects": [],
+            "count": 0,
+        },
+        "error": res.get("error", "") or "CLI command failed",
+        "meta": {
+            "source": "cli-json",
+            "exit_code": res.get("exit_code", -1),
+        },
+    }
 
 
 @app.get("/api/project/{project_id}")
