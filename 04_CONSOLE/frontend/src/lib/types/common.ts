@@ -46,6 +46,17 @@ export type ProjectStatus = {
   raw?: string;
 };
 
+export type ProjectApiResponse = {
+  success: boolean;
+  data: ProjectStatus | null;
+  error?: string;
+  meta?: {
+    source?: string;
+    command?: string;
+    exit_code?: number;
+  };
+};
+
 export type StatusSummary = {
   tools_count?: number;
   agents_count?: number;

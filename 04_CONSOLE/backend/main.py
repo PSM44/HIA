@@ -489,7 +489,28 @@ async def api_portfolio():
 @app.get("/api/project/{project_id}")
 async def api_project(project_id: str):
     res = run_hia_command("project", ["status", project_id])
-    return build_response(res, parse_project_status(res.get("output", "")))
+    parsed = parse_project_status(res.get("output", ""))
+    command_text = f"project status {project_id}"
+    if res.get("success", False):
+        return {
+            "success": True,
+            "data": parsed,
+            "meta": {
+                "source": "cli-text",
+                "command": command_text,
+                "exit_code": res.get("exit_code", 0),
+            },
+        }
+    return {
+        "success": False,
+        "data": None,
+        "error": res.get("error", "") or "CLI command failed",
+        "meta": {
+            "source": "cli-text",
+            "command": command_text,
+            "exit_code": res.get("exit_code", -1),
+        },
+    }
 
 
 class AIPlanRequest(BaseModel):

@@ -6,12 +6,7 @@ import { StateBadge } from "../components/state-badge";
 import { toast } from "../components/toast";
 import { api } from "../lib/api/client";
 import { qk } from "../lib/api/query-keys";
-import { ProjectStatus } from "../lib/types/common";
-
-type ProjectQueryResponse = {
-  parsed?: ProjectStatus;
-  raw?: string;
-};
+import { ProjectApiResponse, ProjectStatus } from "../lib/types/common";
 
 export default function Project() {
   const [params, setParams] = useSearchParams();
@@ -27,7 +22,7 @@ export default function Project() {
     error,
     refetch,
     isFetching,
-  } = useQuery<ProjectQueryResponse>({
+  } = useQuery<ProjectApiResponse>({
     queryKey: qk.project(projectId || ""),
     queryFn: () => api.project(projectId),
     enabled: !!projectId,
@@ -48,8 +43,9 @@ export default function Project() {
     },
   });
 
-  const parsed: ProjectStatus | undefined = data?.parsed;
-  const rawStatus = data?.raw ?? parsed?.raw ?? "(no raw)";
+  const parsed: ProjectStatus | undefined = data?.data ?? undefined;
+  const rawStatus = parsed?.raw ?? "(no raw)";
+  const apiFailureMessage = data && !data.success ? (data.error || "Project status unavailable.") : null;
 
   const whatMattersNow = useMemo(() => {
     if (!parsed) return "Select a project to load guidance.";
@@ -126,6 +122,9 @@ export default function Project() {
       {projectId && isLoading && <p className="text-sm text-muted">Loading project…</p>}
       {projectId && isError && (
         <p className="text-sm text-error">Error loading project: {(error as Error).message}</p>
+      )}
+      {projectId && !isError && apiFailureMessage && (
+        <p className="text-sm text-error">Error loading project: {apiFailureMessage}</p>
       )}
 
       {projectId && parsed && (
