@@ -44,6 +44,16 @@ PLANS_PENDIENTES: 3
 ULTIMO_RADAR: 2026-03-30 18:47 UTC
 ULTIMA_ACTIVIDAD: 2026-04-02 20:08 UTC
 
+AI_CLI_HARDENING
+------------------------------------------------------------------------------
+ESTADO: DONE (2026-05-12)
+- MB.HIA.AI.CLI.0001: ai show-policy/route wiring + exit handling in wrapper.
+- MB.HIA.AI.CLI.0002: HIA_AI_ROUTER.ps1 standalone exit code normalization.
+- MB.HIA.AI.CLI.0003: hia help now exposes real AI subcommands.
+- MB.HIA.SMOKE.AI.0001: smoke aligned to AI route CLI syntax.
+- MB.HIA.SMOKE.STATE.0001: smoke preserves/restores PROJECT.STATE.LIVE snapshot.
+- VALIDACION: smoke=0, validate=0, radar=0 (HEALTHY).
+
 COMANDOS_DISPONIBLES
 ------------------------------------------------------------------------------
 hia agent executor             - Agente de ejecución controlada

@@ -8,6 +8,11 @@ Completed Release Notes
 
 Next Release
 - To be defined. No new active release yet.
+- Immediate baseline after release closure:
+  - AI CLI hardening consolidated and validated (show-policy/route/dispatch/prompt path stable).
+  - Smoke AI Router aligned to current CLI command grammar.
+  - Smoke preserves PROJECT.STATE.LIVE and does not introduce additional state drift.
+  - Operational validation baseline: smoke=0, validate=0, radar=0 (HEALTHY).
 
 Terminology Transition Note
 - Standard agile terms (Release, Epic, Feature, Story, Task, Spike, Bug) are mandatory.

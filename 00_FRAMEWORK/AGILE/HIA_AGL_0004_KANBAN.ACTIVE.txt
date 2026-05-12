@@ -17,3 +17,10 @@ PB_004 | validar task execution con smoke o test mínimo | READY | P1 | minibatt
 PB_005 | menú CLI seleccionable básico | DONE | P1 | feature
 PB_006 | integrar agile warnings al flujo operativo | READY | P1 | feature
 
+RELEASE_HARDENING_LOG
+-------------------------------------------------------------------------------
+MB.HIA.AI.CLI.0001 | AI CLI route/show-policy wiring + wrapper exit handling | DONE | P0 | minibattle
+MB.HIA.AI.CLI.0002 | HIA_AI_ROUTER standalone exit code normalization          | DONE | P0 | minibattle
+MB.HIA.AI.CLI.0003 | Help discoverability for AI subcommands                   | DONE | P1 | minibattle
+MB.HIA.SMOKE.AI.0001 | Smoke aligned with ai route CLI syntax                  | DONE | P0 | minibattle
+MB.HIA.SMOKE.STATE.0001 | Smoke preserves PROJECT.STATE.LIVE snapshot           | DONE | P0 | minibattle
