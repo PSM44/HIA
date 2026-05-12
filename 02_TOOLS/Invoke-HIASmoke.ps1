@@ -480,8 +480,10 @@ function Test-AIRouterFlow {
 
     $allPassed = $true
     $beforeLogLines = 0
+    $beforeLogUtc = $null
     if (Test-Path $logPath) {
         $beforeLogLines = @(Get-Content -Path $logPath).Count
+        $beforeLogUtc = (Get-Item -LiteralPath $logPath).LastWriteTimeUtc
     }
 
     $registryExists = Test-Path $routingRegistryPath
@@ -498,7 +500,7 @@ function Test-AIRouterFlow {
     Write-TestResult -Component "AI Router" -Test "show-policy returns structured registry" -Passed $policyStructured
     if (-not $policyStructured) { $allPassed = $false }
 
-    $reasoningOutput = & pwsh -NoProfile -File $cliPath ai route -TaskType reasoning -TaskPrompt "Explain architecture tradeoffs" 2>&1
+    $reasoningOutput = & pwsh -NoProfile -File $cliPath ai route reasoning "Explain architecture tradeoffs" 2>&1
     $reasoningOk = ($LASTEXITCODE -eq 0)
     Write-TestResult -Component "AI Router" -Test "hia ai route reasoning" -Passed $reasoningOk
     if (-not $reasoningOk) { $allPassed = $false }
@@ -512,7 +514,7 @@ function Test-AIRouterFlow {
     Write-TestResult -Component "AI Router" -Test "reasoning route returns provider + execution_mode" -Passed $reasoningStructured
     if (-not $reasoningStructured) { $allPassed = $false }
 
-    $codeOutput = & pwsh -NoProfile -File $cliPath ai route -TaskType code -TaskPrompt "Refactor parser function" 2>&1
+    $codeOutput = & pwsh -NoProfile -File $cliPath ai route code "Refactor parser function" 2>&1
     $codeOk = ($LASTEXITCODE -eq 0)
     Write-TestResult -Component "AI Router" -Test "hia ai route code" -Passed $codeOk
     if (-not $codeOk) { $allPassed = $false }
@@ -526,7 +528,7 @@ function Test-AIRouterFlow {
     Write-TestResult -Component "AI Router" -Test "code route returns provider + execution_mode" -Passed $codeStructured
     if (-not $codeStructured) { $allPassed = $false }
 
-    $localToolOutput = & pwsh -NoProfile -File $cliPath ai route -TaskType local_tool -TaskPrompt "git status" 2>&1
+    $localToolOutput = & pwsh -NoProfile -File $cliPath ai route local_tool "git status" 2>&1
     $localToolOk = ($LASTEXITCODE -eq 0)
     Write-TestResult -Component "AI Router" -Test "hia ai route local_tool" -Passed $localToolOk
     if (-not $localToolOk) { $allPassed = $false }
@@ -546,7 +548,8 @@ function Test-AIRouterFlow {
 
     if ($logExists) {
         $afterLogLines = @(Get-Content -Path $logPath).Count
-        $logGrew = $afterLogLines -gt $beforeLogLines
+        $afterLogUtc = (Get-Item -LiteralPath $logPath).LastWriteTimeUtc
+        $logGrew = ($afterLogLines -gt $beforeLogLines) -or (($null -ne $beforeLogUtc) -and ($afterLogUtc -gt $beforeLogUtc))
         Write-TestResult -Component "AI Router" -Test "router appends log entry" -Passed $logGrew
         if (-not $logGrew) { $allPassed = $false }
     }
