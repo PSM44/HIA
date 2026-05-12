@@ -380,85 +380,97 @@ function Show-HIARoutingPolicy {
     $registry | ConvertTo-Json -Depth 12
 }
 
-switch ($Command) {
-    "show-policy" {
-        Show-HIARoutingPolicy
-        break
+try {
+    switch ($Command) {
+        "show-policy" {
+            Show-HIARoutingPolicy
+            exit 0
+        }
+        "dispatch" {
+            $dispatchPath = Join-Path (Get-HIAProjectRoot) "02_TOOLS\\HIA_AI_DISPATCH_ENGINE.ps1"
+            if (-not (Test-Path -LiteralPath $dispatchPath)) {
+                throw "AI dispatch engine not found: $dispatchPath"
+            }
+            . $dispatchPath
+
+            if ([string]::IsNullOrWhiteSpace($TaskType)) {
+                throw "TaskType required. Usage: hia ai dispatch -TaskType <tasktype> [-TaskPrompt <risk>]"
+            }
+
+            $risk = ""
+            if (-not [string]::IsNullOrWhiteSpace($TaskPrompt)) { $risk = $TaskPrompt }
+            $result = Invoke-HIAAiDispatch -TaskType $TaskType -Risk $risk
+            $result | ConvertTo-Json -Depth 10
+            exit 0
+        }
+        "prompt" {
+            $promptEnginePath = Join-Path (Get-HIAProjectRoot) "02_TOOLS\\HIA_AI_PROMPT_ENGINE.ps1"
+            if (-not (Test-Path -LiteralPath $promptEnginePath)) {
+                throw "AI prompt engine not found: $promptEnginePath"
+            }
+            . $promptEnginePath
+
+            if (-not $RemainingArgs -or $RemainingArgs.Count -lt 2) {
+                throw "Usage: hia ai prompt <tool> <tasktype> [risk] [--json]"
+            }
+
+            $tool = $RemainingArgs[0]
+            $tt = $RemainingArgs[1]
+            $risk = ""
+            if ($RemainingArgs.Count -ge 3 -and -not ($RemainingArgs[2] -match '^--json$')) {
+                $risk = $RemainingArgs[2]
+            }
+
+            $wantJson = ($RemainingArgs -contains "--json")
+            $res = Invoke-HIAAiPrompt -Tool $tool -TaskType $tt -Risk $risk -Json:([bool]$wantJson)
+            $res | ConvertTo-Json -Depth 10
+            exit 0
+        }
+        "route" {
+            if ([string]::IsNullOrWhiteSpace($TaskPrompt)) {
+                throw "TaskPrompt is required for route command."
+            }
+
+            $result = Invoke-HIARouter -TaskType $TaskType -TaskPrompt $TaskPrompt
+
+            Write-Host ""
+            Write-Host "HIA AI ROUTER DECISION" -ForegroundColor Cyan
+            Write-Host "TASK_TYPE: $($result.task_type)"
+            Write-Host "SELECTED_PROVIDER: $($result.selected_provider)"
+            Write-Host "SELECTED_TARGET: $($result.selected_target)"
+            Write-Host "EXECUTION_MODE: $($result.execution_mode)"
+            Write-Host "FALLBACK_TARGET: $($result.fallback_target)"
+            Write-Host "LATENCY_MS: $($result.latency_ms)"
+            Write-Host "TOKENS_USED: $($result.tokens_used)"
+            Write-Host "RATIONALE: $($result.rationale)"
+            Write-Host "RESPONSE:"
+            Write-Host $result.response
+            Write-Host ""
+
+            $result | ConvertTo-Json -Depth 10
+            exit 0
+        }
+        default {
+            $dispatchPath = Join-Path (Get-HIAProjectRoot) "02_TOOLS\\HIA_AI_DISPATCH_ENGINE.ps1"
+            if (-not (Test-Path -LiteralPath $dispatchPath)) {
+                throw "AI dispatch engine not found: $dispatchPath"
+            }
+            . $dispatchPath
+            $result = Invoke-HIAAiDispatch -TaskType $Command
+            $result | ConvertTo-Json -Depth 10
+            exit 0
+        }
     }
-    "dispatch" {
-        $dispatchPath = Join-Path (Get-HIAProjectRoot) "02_TOOLS\\HIA_AI_DISPATCH_ENGINE.ps1"
-        if (-not (Test-Path -LiteralPath $dispatchPath)) {
-            throw "AI dispatch engine not found: $dispatchPath"
-        }
-        . $dispatchPath
-
-        if ([string]::IsNullOrWhiteSpace($TaskType)) {
-            throw "TaskType required. Usage: hia ai dispatch -TaskType <tasktype> [-TaskPrompt <risk>]"
-        }
-
-        # For MVP: allow passing Risk through TaskPrompt to avoid adding new params.
-        $risk = ""
-        if (-not [string]::IsNullOrWhiteSpace($TaskPrompt)) { $risk = $TaskPrompt }
-        $result = Invoke-HIAAiDispatch -TaskType $TaskType -Risk $risk
-        $result | ConvertTo-Json -Depth 10
-        break
+}
+catch {
+    $msg = $_.Exception.Message
+    if ($msg -match '^Usage:' -or
+        $msg -match 'TaskPrompt is required' -or
+        $msg -match 'TaskType required') {
+        exit 2
     }
-    "prompt" {
-        $promptEnginePath = Join-Path (Get-HIAProjectRoot) "02_TOOLS\\HIA_AI_PROMPT_ENGINE.ps1"
-        if (-not (Test-Path -LiteralPath $promptEnginePath)) {
-            throw "AI prompt engine not found: $promptEnginePath"
-        }
-        . $promptEnginePath
-
-        if (-not $RemainingArgs -or $RemainingArgs.Count -lt 2) {
-            throw "Usage: hia ai prompt <tool> <tasktype> [risk] [--json]"
-        }
-
-        $tool = $RemainingArgs[0]
-        $tt = $RemainingArgs[1]
-        $risk = ""
-        if ($RemainingArgs.Count -ge 3 -and -not ($RemainingArgs[2] -match '^--json$')) {
-            $risk = $RemainingArgs[2]
-        }
-
-        $wantJson = ($RemainingArgs -contains "--json")
-        $res = Invoke-HIAAiPrompt -Tool $tool -TaskType $tt -Risk $risk -Json:([bool]$wantJson)
-        $res | ConvertTo-Json -Depth 10
-        break
+    if ($msg -match 'not found') {
+        exit 3
     }
-    "route" {
-        if ([string]::IsNullOrWhiteSpace($TaskPrompt)) {
-            throw "TaskPrompt is required for route command."
-        }
-
-        $result = Invoke-HIARouter -TaskType $TaskType -TaskPrompt $TaskPrompt
-
-        Write-Host ""
-        Write-Host "HIA AI ROUTER DECISION" -ForegroundColor Cyan
-        Write-Host "TASK_TYPE: $($result.task_type)"
-        Write-Host "SELECTED_PROVIDER: $($result.selected_provider)"
-        Write-Host "SELECTED_TARGET: $($result.selected_target)"
-        Write-Host "EXECUTION_MODE: $($result.execution_mode)"
-        Write-Host "FALLBACK_TARGET: $($result.fallback_target)"
-        Write-Host "LATENCY_MS: $($result.latency_ms)"
-        Write-Host "TOKENS_USED: $($result.tokens_used)"
-        Write-Host "RATIONALE: $($result.rationale)"
-        Write-Host "RESPONSE:"
-        Write-Host $result.response
-        Write-Host ""
-
-        $result | ConvertTo-Json -Depth 10
-        break
-    }
-    default {
-        # Shorthand: `hia ai <tasktype>` => dispatch
-        $dispatchPath = Join-Path (Get-HIAProjectRoot) "02_TOOLS\\HIA_AI_DISPATCH_ENGINE.ps1"
-        if (-not (Test-Path -LiteralPath $dispatchPath)) {
-            throw "AI dispatch engine not found: $dispatchPath"
-        }
-        . $dispatchPath
-        $result = Invoke-HIAAiDispatch -TaskType $Command
-        $result | ConvertTo-Json -Depth 10
-        break
-    }
+    exit 4
 }
