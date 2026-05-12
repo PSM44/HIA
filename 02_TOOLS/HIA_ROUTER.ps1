@@ -32,6 +32,18 @@ function Get-AgentRegistry {
     return $null
 }
 
+function Get-HIALastExitCodeOrDefault {
+    param(
+        [int]$Default = 0
+    )
+
+    $last = Get-Variable -Name LASTEXITCODE -Scope Global -ValueOnly -ErrorAction SilentlyContinue
+    if ($null -eq $last) {
+        return $Default
+    }
+    return [int]$last
+}
+
 function Show-HIAHelp {
     param(
         [string]$ProjectRoot
@@ -319,69 +331,252 @@ function Invoke-HIARouter {
             }
         }
         "ai" {
-            $aiUsage = "Usage: hia ai plan <PROJECT_ID> <request> [--remember] [--preset readiness|next-step|risk-scan] OR hia ai memory <add|get> <PROJECT_ID> [note]"
+            $aiUsage = "Usage: hia ai plan <PROJECT_ID> <request> [--remember] [--preset readiness|next-step|risk-scan] OR hia ai memory <add|get> <PROJECT_ID> [note] OR hia ai show-policy OR hia ai route <reasoning|code|local_tool|TASK_TYPE> [prompt] OR hia ai dispatch <TASK_TYPE> [risk] OR hia ai prompt <tool> <tasktype> [risk] [--json]"
 
-            if (-not (Get-Command Invoke-HIAProjectAIPlan -ErrorAction SilentlyContinue)) {
-                $projectEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_PROJECT_ENGINE.ps1"
-                if (-not (Test-Path $projectEnginePath)) {
-                    $global:HIA_EXIT_CODE = 1
-                     throw "Project engine not found: $projectEnginePath"
-                 }
-                 . $projectEnginePath
-             }
+            if (-not $Args -or $Args.Count -lt 1) {
+                $global:HIA_EXIT_CODE = 2
+                throw $aiUsage
+            }
 
-            if (-not $Args -or $Args.Count -lt 1) { $global:HIA_EXIT_CODE = 2; throw $aiUsage }
             $aiAction = $Args[0].ToLowerInvariant()
+
             switch ($aiAction) {
                 "plan" {
-                    if ($Args.Count -lt 3) { $global:HIA_EXIT_CODE = 2; throw $aiUsage }
+                    if (-not (Get-Command Invoke-HIAProjectAIPlan -ErrorAction SilentlyContinue)) {
+                        $projectEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_PROJECT_ENGINE.ps1"
+                        if (-not (Test-Path -LiteralPath $projectEnginePath)) {
+                            $global:HIA_EXIT_CODE = 1
+                            throw "Project engine not found: $projectEnginePath"
+                        }
+                        . $projectEnginePath
+                    }
+
+                    if ($Args.Count -lt 3) {
+                        $global:HIA_EXIT_CODE = 2
+                        throw $aiUsage
+                    }
+
                     $projId = $Args[1]
                     $remember = $false
                     $preset = ""
                     $requestParts = @()
+
                     for ($i = 2; $i -lt $Args.Count; $i++) {
                         $part = $Args[$i]
-                        if ($part -eq "--remember" -or $part -eq "-m") { $remember = $true; continue }
+
+                        if ($part -eq "--remember" -or $part -eq "-m") {
+                            $remember = $true
+                            continue
+                        }
+
                         if ($part -eq "--preset") {
-                            if (($i + 1) -ge $Args.Count) { $global:HIA_EXIT_CODE = 2; throw $aiUsage }
+                            if (($i + 1) -ge $Args.Count) {
+                                $global:HIA_EXIT_CODE = 2
+                                throw $aiUsage
+                            }
+
                             $preset = $Args[$i + 1]
                             $i++
                             continue
                         }
+
                         $requestParts += $part
                     }
+
                     $request = ($requestParts -join " ").Trim()
+
                     if ([string]::IsNullOrWhiteSpace($request) -and -not [string]::IsNullOrWhiteSpace($preset)) {
                         $request = $preset
                     }
-                    if ([string]::IsNullOrWhiteSpace($request)) { $global:HIA_EXIT_CODE = 2; throw $aiUsage }
-                    $planParams = @{ ProjectId = $projId; Request = $request; Preset = $preset; Remember = $remember }
+
+                    if ([string]::IsNullOrWhiteSpace($request)) {
+                        $global:HIA_EXIT_CODE = 2
+                        throw $aiUsage
+                    }
+
+                    $planParams = @{
+                        ProjectId = $projId
+                        Request   = $request
+                        Preset    = $preset
+                        Remember  = $remember
+                    }
+
                     Invoke-HIAProjectAIPlan @planParams
                     return
                 }
+
                 "memory" {
-                    if ($Args.Count -lt 3) { $global:HIA_EXIT_CODE = 2; throw "Usage: hia ai memory <add|get> <PROJECT_ID> [note]" }
+                    if (-not (Get-Command Add-HIAProjectMemory -ErrorAction SilentlyContinue)) {
+                        $projectEnginePath = Join-Path $projectRoot "02_TOOLS\HIA_PROJECT_ENGINE.ps1"
+                        if (-not (Test-Path -LiteralPath $projectEnginePath)) {
+                            $global:HIA_EXIT_CODE = 1
+                            throw "Project engine not found: $projectEnginePath"
+                        }
+                        . $projectEnginePath
+                    }
+
+                    if ($Args.Count -lt 3) {
+                        $global:HIA_EXIT_CODE = 2
+                        throw "Usage: hia ai memory <add|get> <PROJECT_ID> [note]"
+                    }
+
                     $memAction = $Args[1].ToLowerInvariant()
                     $projId = $Args[2]
+
                     switch ($memAction) {
                         "add" {
-                            if ($Args.Count -lt 4) { $global:HIA_EXIT_CODE = 2; throw "Usage: hia ai memory add <PROJECT_ID> <note>" }
+                            if ($Args.Count -lt 4) {
+                                $global:HIA_EXIT_CODE = 2
+                                throw "Usage: hia ai memory add <PROJECT_ID> <note>"
+                            }
+
                             $note = ($Args[3..($Args.Count - 1)] -join " ").Trim()
-                            if ([string]::IsNullOrWhiteSpace($note)) { $global:HIA_EXIT_CODE = 2; throw "Usage: hia ai memory add <PROJECT_ID> <note>" }
+
+                            if ([string]::IsNullOrWhiteSpace($note)) {
+                                $global:HIA_EXIT_CODE = 2
+                                throw "Usage: hia ai memory add <PROJECT_ID> <note>"
+                            }
+
                             Add-HIAProjectMemory -ProjectId $projId -Note $note
                             return
                         }
+
                         "get" {
                             Get-HIAProjectMemory -ProjectId $projId
                             return
                         }
-                        default { $global:HIA_EXIT_CODE = 2; throw "Usage: hia ai memory <add|get> <PROJECT_ID> [note]" }
+
+                        default {
+                            $global:HIA_EXIT_CODE = 2
+                            throw "Usage: hia ai memory <add|get> <PROJECT_ID> [note]"
+                        }
                     }
                 }
-                default { $global:HIA_EXIT_CODE = 2; throw $aiUsage }
+
+                "show-policy" {
+                    $aiRouterPath = Join-Path $projectRoot "02_TOOLS\HIA_AI_ROUTER.ps1"
+                    if (-not (Test-Path -LiteralPath $aiRouterPath)) {
+                        $global:HIA_EXIT_CODE = 1
+                        throw "AI router engine not found: $aiRouterPath"
+                    }
+
+                    & $aiRouterPath show-policy
+                    $aiExitCode = Get-HIALastExitCodeOrDefault -Default 0
+                    if ($aiExitCode -ne 0) {
+                        $global:HIA_EXIT_CODE = $aiExitCode
+                    }
+                    return
+                }
+
+                "route" {
+                    $aiRouterPath = Join-Path $projectRoot "02_TOOLS\HIA_AI_ROUTER.ps1"
+                    if (-not (Test-Path -LiteralPath $aiRouterPath)) {
+                        $global:HIA_EXIT_CODE = 1
+                        throw "AI router engine not found: $aiRouterPath"
+                    }
+
+                    if ($Args.Count -lt 2) {
+                        $global:HIA_EXIT_CODE = 2
+                        throw "Usage: hia ai route <reasoning|code|local_tool|TASK_TYPE> [prompt]"
+                    }
+
+                    $routeKind = $Args[1].ToLowerInvariant()
+                    $routePrompt = ""
+                    if ($Args.Count -ge 3) {
+                        $routePrompt = ($Args[2..($Args.Count - 1)] -join " ").Trim()
+                    }
+
+                    switch ($routeKind) {
+                        "reasoning" {
+                            if ([string]::IsNullOrWhiteSpace($routePrompt)) {
+                                $routePrompt = "general reasoning request"
+                            }
+                            & $aiRouterPath route -TaskPrompt $routePrompt
+                        }
+
+                        "code" {
+                            if ([string]::IsNullOrWhiteSpace($routePrompt)) {
+                                $routePrompt = "code change request"
+                            }
+                            & $aiRouterPath route -TaskType CODE_CHANGE -TaskPrompt $routePrompt
+                        }
+
+                        "local_tool" {
+                            if ([string]::IsNullOrWhiteSpace($routePrompt)) {
+                                $routePrompt = "git status"
+                            }
+                            & $aiRouterPath route -TaskType QUICK_LOCAL -TaskPrompt $routePrompt
+                        }
+
+                        default {
+                            if ([string]::IsNullOrWhiteSpace($routePrompt)) {
+                                $routePrompt = "route request for task type $routeKind"
+                            }
+                            & $aiRouterPath route -TaskType $routeKind -TaskPrompt $routePrompt
+                        }
+                    }
+
+                    $aiExitCode = Get-HIALastExitCodeOrDefault -Default 0
+                    if ($aiExitCode -ne 0) {
+                        $global:HIA_EXIT_CODE = $aiExitCode
+                    }
+                    return
+                }
+
+                "dispatch" {
+                    $aiRouterPath = Join-Path $projectRoot "02_TOOLS\HIA_AI_ROUTER.ps1"
+                    if (-not (Test-Path -LiteralPath $aiRouterPath)) {
+                        $global:HIA_EXIT_CODE = 1
+                        throw "AI router engine not found: $aiRouterPath"
+                    }
+
+                    if ($Args.Count -lt 2) {
+                        $global:HIA_EXIT_CODE = 2
+                        throw "Usage: hia ai dispatch <TASK_TYPE> [risk]"
+                    }
+
+                    $taskType = $Args[1]
+                    $risk = ""
+                    if ($Args.Count -ge 3) {
+                        $risk = ($Args[2..($Args.Count - 1)] -join " ").Trim()
+                    }
+
+                    & $aiRouterPath dispatch -TaskType $taskType -TaskPrompt $risk
+                    $aiExitCode = Get-HIALastExitCodeOrDefault -Default 0
+                    if ($aiExitCode -ne 0) {
+                        $global:HIA_EXIT_CODE = $aiExitCode
+                    }
+                    return
+                }
+
+                "prompt" {
+                    $aiRouterPath = Join-Path $projectRoot "02_TOOLS\HIA_AI_ROUTER.ps1"
+                    if (-not (Test-Path -LiteralPath $aiRouterPath)) {
+                        $global:HIA_EXIT_CODE = 1
+                        throw "AI router engine not found: $aiRouterPath"
+                    }
+
+                    if ($Args.Count -lt 3) {
+                        $global:HIA_EXIT_CODE = 2
+                        throw "Usage: hia ai prompt <tool> <tasktype> [risk] [--json]"
+                    }
+
+                    $promptArgs = @("prompt") + $Args[1..($Args.Count - 1)]
+                    & $aiRouterPath @promptArgs
+                    $aiExitCode = Get-HIALastExitCodeOrDefault -Default 0
+                    if ($aiExitCode -ne 0) {
+                        $global:HIA_EXIT_CODE = $aiExitCode
+                    }
+                    return
+                }
+
+                default {
+                    $global:HIA_EXIT_CODE = 2
+                    throw $aiUsage
+                }
             }
         }
-         default {
+        default {
              $toolReg = Get-ToolRegistry -ProjectRoot $projectRoot
              $toolEntry = $null
              if ($toolReg -and $toolReg.tools) {
@@ -624,3 +819,4 @@ function Invoke-HIARouter {
         }
     }
 }
+

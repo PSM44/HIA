@@ -105,8 +105,9 @@ function Invoke-HIAMenuCommand {
 
     $codeOut = 0
     $hintOut = Get-Variable -Name HIA_EXIT_CODE -Scope Global -ValueOnly -ErrorAction SilentlyContinue
+    $lastOut = Get-Variable -Name LASTEXITCODE -Scope Global -ValueOnly -ErrorAction SilentlyContinue
     if ($null -ne $hintOut) { $codeOut = [int]$hintOut }
-    elseif ($null -ne $LASTEXITCODE) { $codeOut = [int]$LASTEXITCODE }
+    elseif ($null -ne $lastOut) { $codeOut = [int]$lastOut }
     $global:HIA_EXIT_CODE = $codeOut
     $global:LASTEXITCODE = $codeOut
     return $codeOut
