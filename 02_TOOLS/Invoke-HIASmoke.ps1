@@ -47,6 +47,36 @@ function Write-TestResult {
     Write-Host $line -ForegroundColor $color
 }
 
+function Restore-HIASmokeStateSnapshot {
+    param(
+        [hashtable]$Snapshot
+    )
+
+    if ($null -eq $Snapshot) { return }
+
+    $path = [string]$Snapshot.Path
+    if ([string]::IsNullOrWhiteSpace($path)) { return }
+
+    if (-not $Snapshot.ExistsBefore) {
+        if (Test-Path -LiteralPath $path -PathType Leaf) {
+            Remove-Item -LiteralPath $path -Force -ErrorAction SilentlyContinue
+        }
+        return
+    }
+
+    $parentDir = Split-Path -Parent $path
+    if (-not [string]::IsNullOrWhiteSpace($parentDir) -and -not (Test-Path -LiteralPath $parentDir -PathType Container)) {
+        New-Item -ItemType Directory -Path $parentDir -Force | Out-Null
+    }
+
+    if ($null -ne $Snapshot.Bytes) {
+        [System.IO.File]::WriteAllBytes($path, [byte[]]$Snapshot.Bytes)
+        return
+    }
+
+    Set-Content -LiteralPath $path -Value ([string]$Snapshot.Content) -Encoding UTF8
+}
+
 # -----------------------------------------------------------------------------
 # TEST FUNCTIONS
 # -----------------------------------------------------------------------------
@@ -570,6 +600,18 @@ Write-Host ""
 Write-Host "PROJECT_ROOT: $ProjectRoot"
 Write-Host ""
 
+$stateLivePath = Join-Path $ProjectRoot "01_UI\terminal\PROJECT.STATE.LIVE.txt"
+$stateSnapshot = @{
+    Path = $stateLivePath
+    ExistsBefore = (Test-Path -LiteralPath $stateLivePath -PathType Leaf)
+    Content = ""
+    Bytes = $null
+}
+if ($stateSnapshot.ExistsBefore) {
+    $stateSnapshot.Content = Get-Content -LiteralPath $stateLivePath -Raw -ErrorAction SilentlyContinue
+    $stateSnapshot.Bytes = [System.IO.File]::ReadAllBytes($stateLivePath)
+}
+
 $precheckResults = @()
 $executionResults = @()
 
@@ -591,6 +633,8 @@ if ($canExecute) {
 else {
     Write-TestResult -Component "Precheck" -Test "execution smoke enabled" -Passed $false -Message "CLI/router unavailable"
 }
+
+Restore-HIASmokeStateSnapshot -Snapshot $stateSnapshot
 
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan
