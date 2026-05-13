@@ -444,16 +444,43 @@ function Get-HIAProjectEvidenceContinuity {
 
     # Consistency checks only if evidence exists and not a hard mismatch
     if ($hasEvidence -and $state -in @("FRESH", "STALE")) {
-        # Session consistency (only if session file exists and active)
+        # Session consistency:
+        # A fresh evidence anchor from a previous closed session is a valid handoff into a new active session.
+        # Only flag a mismatch when evidence was captured after the current active session started
+        # and still points to another session id.
         $sessionPath = Join-Path $ProjectRootPath "ARTIFACTS\SESSION.ACTIVE.json"
         if (Test-Path -LiteralPath $sessionPath) {
             try {
                 $sessionObj = Get-Content -LiteralPath $sessionPath -Raw | ConvertFrom-Json
                 $sessionStatus = [string]$sessionObj.status
                 $activeSessionId = [string]$sessionObj.session_id
-                if ($sourceTask -ne "N/A" -and -not [string]::IsNullOrWhiteSpace($sessionId) -and -not [string]::IsNullOrWhiteSpace($activeSessionId)) {
-                    if ($sessionStatus.ToLowerInvariant() -eq "active" -and -not $sessionId.Equals($activeSessionId, [System.StringComparison]::OrdinalIgnoreCase)) {
-                        $consistencyIssues.Add("snapshot_session_differs_from_active_session")
+                $activeSessionStartedUtc = $null
+                try {
+                    if ($null -ne $sessionObj.started_utc -and -not [string]::IsNullOrWhiteSpace([string]$sessionObj.started_utc)) {
+                        $activeSessionStartedUtc = [datetime]::Parse([string]$sessionObj.started_utc).ToUniversalTime()
+                    }
+                }
+                catch {
+                    $activeSessionStartedUtc = $null
+                }
+
+                if (
+                    $sourceTask -ne "N/A" -and
+                    -not [string]::IsNullOrWhiteSpace($sessionId) -and
+                    -not [string]::IsNullOrWhiteSpace($activeSessionId)
+                ) {
+                    if (
+                        $sessionStatus.ToLowerInvariant() -eq "active" -and
+                        -not $sessionId.Equals($activeSessionId, [System.StringComparison]::OrdinalIgnoreCase)
+                    ) {
+                        $evidenceCapturedBeforeActiveSession = $false
+                        if ($null -ne $evidenceTimestamp -and $null -ne $activeSessionStartedUtc) {
+                            $evidenceCapturedBeforeActiveSession = ($evidenceTimestamp -le $activeSessionStartedUtc)
+                        }
+
+                        if (-not $evidenceCapturedBeforeActiveSession) {
+                            $consistencyIssues.Add("snapshot_session_differs_from_active_session")
+                        }
                     }
                 }
             }
@@ -2564,3 +2591,4 @@ function Get-HIAProjects {
     Write-Host ("- hia project open {0}" -f $firstProjectId)
     Write-Host ""
 }
+
