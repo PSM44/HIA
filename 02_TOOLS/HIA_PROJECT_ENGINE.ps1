@@ -1372,7 +1372,7 @@ function Continue-HIAProject {
 
     $operationalThread = "NO_EVIDENCE -> Use BATON/BACKLOG + session guidance."
     if ($lastTask.RESULT -eq "rejected") {
-        $operationalThread = ("LAST_TASK_REJECTED -> {0}" -f $lastTask.MESSAGE)
+        $operationalThread = ("LEGACY_LAST_TASK_REJECTED -> {0}" -f $lastTask.MESSAGE)
         $taskGuidance = "Last task was rejected. Review task log/evidence before continuing."
     }
     if ($evidenceContinuity.STATE -eq "FRESH") {
@@ -1426,11 +1426,11 @@ function Continue-HIAProject {
     Write-Host ("EVIDENCE_SESSION_ID: {0}" -f $evidenceContinuity.SESSION_ID)
     Write-Host ("LATEST_OUTPUT_PATH: {0}" -f $evidenceContinuity.OUTPUT_PATH)
     Write-Host ("LATEST_LOG_PATH: {0}" -f $evidenceContinuity.LOG_PATH)
-    Write-Host ("LAST_TASK_SCOPE: {0}" -f $lastTask.SCOPE)
-    Write-Host ("LAST_TASK_RESULT: {0}" -f $lastTask.RESULT)
-    Write-Host ("LAST_TASK_REQUEST: {0}" -f $lastTask.REQUEST_PATH)
-    Write-Host ("LAST_TASK_TARGET: {0}" -f $lastTask.TARGET_PATH)
-    Write-Host ("LAST_TASK_MESSAGE: {0}" -f $lastTask.MESSAGE)
+    Write-Host ("LEGACY_LAST_TASK_SCOPE: {0}" -f $lastTask.SCOPE)
+    Write-Host ("LEGACY_LAST_TASK_RESULT: {0}" -f $lastTask.RESULT)
+    Write-Host ("LEGACY_LAST_TASK_REQUEST: {0}" -f $lastTask.REQUEST_PATH)
+    Write-Host ("LEGACY_LAST_TASK_TARGET: {0}" -f $lastTask.TARGET_PATH)
+    Write-Host ("LEGACY_LAST_TASK_MESSAGE: {0}" -f $lastTask.MESSAGE)
     $debugPointer = "No recent artifacts"
     if ($evidenceContinuity.OUTPUT_STATUS -eq "FOUND" -and $evidenceContinuity.LOG_STATUS -eq "FOUND") {
         $debugPointer = "Inspect log then output"
@@ -1598,11 +1598,11 @@ function Review-HIAProject {
     Write-Host ("EVIDENCE_SESSION_ID: {0}" -f $evidenceContinuity.SESSION_ID)
     Write-Host ("LATEST_OUTPUT_PATH: {0}" -f $evidenceContinuity.OUTPUT_PATH)
     Write-Host ("LATEST_LOG_PATH: {0}" -f $evidenceContinuity.LOG_PATH)
-    Write-Host ("LAST_TASK_SCOPE: {0}" -f $lastTask.SCOPE)
-    Write-Host ("LAST_TASK_RESULT: {0}" -f $lastTask.RESULT)
-    Write-Host ("LAST_TASK_REQUEST: {0}" -f $lastTask.REQUEST_PATH)
-    Write-Host ("LAST_TASK_TARGET: {0}" -f $lastTask.TARGET_PATH)
-    Write-Host ("LAST_TASK_MESSAGE: {0}" -f $lastTask.MESSAGE)
+    Write-Host ("LEGACY_LAST_TASK_SCOPE: {0}" -f $lastTask.SCOPE)
+    Write-Host ("LEGACY_LAST_TASK_RESULT: {0}" -f $lastTask.RESULT)
+    Write-Host ("LEGACY_LAST_TASK_REQUEST: {0}" -f $lastTask.REQUEST_PATH)
+    Write-Host ("LEGACY_LAST_TASK_TARGET: {0}" -f $lastTask.TARGET_PATH)
+    Write-Host ("LEGACY_LAST_TASK_MESSAGE: {0}" -f $lastTask.MESSAGE)
     $debugPointer = "No recent artifacts"
     if ($evidenceContinuity.OUTPUT_STATUS -eq "FOUND" -and $evidenceContinuity.LOG_STATUS -eq "FOUND") {
         $debugPointer = "Inspect log then output"
@@ -1979,11 +1979,11 @@ function Show-HIAProjectStatus {
     Write-Host ("LAST_SESSION_ID: {0}" -f $lastSessionId)
     Write-Host ("LAST_SESSION_STARTED_UTC: {0}" -f $lastSessionStartedUtc)
     Write-Host ("LAST_SESSION_CLOSED_UTC: {0}" -f $lastSessionClosedUtc)
-    Write-Host ("LAST_TASK_SCOPE: {0}" -f $lastTask.SCOPE)
-    Write-Host ("LAST_TASK_RESULT: {0}" -f $lastTask.RESULT)
-    Write-Host ("LAST_TASK_REQUEST: {0}" -f $lastTask.REQUEST_PATH)
-    Write-Host ("LAST_TASK_TARGET: {0}" -f $lastTask.TARGET_PATH)
-    Write-Host ("LAST_TASK_MESSAGE: {0}" -f $lastTask.MESSAGE)
+    Write-Host ("LEGACY_LAST_TASK_SCOPE: {0}" -f $lastTask.SCOPE)
+    Write-Host ("LEGACY_LAST_TASK_RESULT: {0}" -f $lastTask.RESULT)
+    Write-Host ("LEGACY_LAST_TASK_REQUEST: {0}" -f $lastTask.REQUEST_PATH)
+    Write-Host ("LEGACY_LAST_TASK_TARGET: {0}" -f $lastTask.TARGET_PATH)
+    Write-Host ("LEGACY_LAST_TASK_MESSAGE: {0}" -f $lastTask.MESSAGE)
     Write-Host ("LEDGER_DECISION: {0}" -f $ledgerDecision)
     Write-Host ("LEDGER_ACTION: {0}" -f $ledgerAction)
     Write-Host ("LEDGER_RESULT: {0}" -f $ledgerResult)
@@ -2647,3 +2647,4 @@ function Get-HIAProjects {
     Write-Host ("- hia project open {0}" -f $firstProjectId)
     Write-Host ""
 }
+
