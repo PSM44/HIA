@@ -1339,7 +1339,8 @@ function Continue-HIAProject {
         $taskGuidance = "No actionable task found; review BATON and backlog."
     }
 
-    $hasContext = ($currentObjective -ne "N/A" -or $nextAction -ne "N/A" -or $nextReadyItem -ne "N/A")
+    $hasProjectContext = ($currentObjective -ne "N/A" -or $nextAction -ne "N/A" -or $nextReadyItem -ne "N/A")
+    $hasActionableTask = ($nextAction -ne "N/A" -or $nextReadyItem -ne "N/A")
     $safeTaskPath = "ARTIFACTS\\TASKS\\NEXT_ACTION.txt"
     if ($lastSessionId -ne "N/A") {
         $safeTaskPath = ("ARTIFACTS\\TASKS\\SESSION.{0}.NEXT_ACTION.txt" -f $lastSessionId)
@@ -1358,13 +1359,13 @@ function Continue-HIAProject {
     if ($lastSessionStatus -ne "active") {
         $suggestedCommand = ("hia project session start {0}" -f $ProjectId)
     }
-    elseif ($hasContext -and -not $expectedOutputExists) {
+    elseif ($hasActionableTask -and -not $expectedOutputExists) {
         $suggestedCommand = ("hia task create-file-project {0} {1}" -f $ProjectId, $safeTaskPath)
     }
-    elseif ($hasContext -and $expectedOutputExists) {
+    elseif ($hasActionableTask -and $expectedOutputExists) {
         $suggestedCommand = ("hia project status {0}" -f $ProjectId)
     }
-    elseif (-not $hasContext) {
+    elseif (-not $hasProjectContext) {
         $suggestedCommand = ("hia project status {0}" -f $ProjectId)
     }
 
@@ -1387,8 +1388,12 @@ function Continue-HIAProject {
                 $taskGuidance = "Review evidence anchor then start session before executing next task."
                 $suggestedCommand = ("hia project review {0}" -f $ProjectId)
             }
-            elseif ($taskGuidance -eq "N/A" -or $taskGuidance -like "No actionable*") {
+            elseif ($hasActionableTask -and ($taskGuidance -eq "N/A" -or $taskGuidance -like "No actionable*")) {
                 $taskGuidance = "Anchor on last evidence before executing BATON/backlog task."
+            }
+            elseif (-not $hasActionableTask -and ($taskGuidance -eq "N/A" -or $taskGuidance -like "No actionable*")) {
+                $taskGuidance = "NEXT_ACTION is not actionable. Review BATON/backlog before creating any task artifact."
+                $suggestedCommand = ("hia project status {0}" -f $ProjectId)
             }
         }
     }
@@ -2647,4 +2652,5 @@ function Get-HIAProjects {
     Write-Host ("- hia project open {0}" -f $firstProjectId)
     Write-Host ""
 }
+
 
