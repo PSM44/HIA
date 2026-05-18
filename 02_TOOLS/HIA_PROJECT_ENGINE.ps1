@@ -179,11 +179,20 @@ function Get-HIAProjectLastActionOutput {
         $snapshotOutputPath = [string]$lastActionSnapshot.DATA.output_path
         if (-not [string]::IsNullOrWhiteSpace($snapshotOutputPath)) {
             $snapshotOutputFullPath = [System.IO.Path]::GetFullPath($snapshotOutputPath)
-            if (
-                $snapshotOutputFullPath.StartsWith($tasksRootPrefix, [System.StringComparison]::OrdinalIgnoreCase) -and
-                (Test-Path -LiteralPath $snapshotOutputFullPath -PathType Leaf)
-            ) {
+            if (-not $snapshotOutputFullPath.StartsWith($tasksRootPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+                $result.STATUS = "MISSING_DECLARED"
+                $result.PATH = $snapshotOutputFullPath
+                $result.PREVIEW = "Declared LAST.ACTION output_path is outside ARTIFACTS\TASKS."
+                return $result
+            }
+            if (Test-Path -LiteralPath $snapshotOutputFullPath -PathType Leaf) {
                 $selectedFile = Get-Item -LiteralPath $snapshotOutputFullPath -ErrorAction SilentlyContinue
+            }
+            else {
+                $result.STATUS = "MISSING_DECLARED"
+                $result.PATH = $snapshotOutputFullPath
+                $result.PREVIEW = "Declared LAST.ACTION output_path does not exist."
+                return $result
             }
         }
     }
@@ -236,11 +245,20 @@ function Get-HIAProjectLastActionLog {
             $snapshotLogPath = [string]$lastActionSnapshot.DATA.log_path
             if (-not [string]::IsNullOrWhiteSpace($snapshotLogPath)) {
                 $snapshotLogFullPath = [System.IO.Path]::GetFullPath($snapshotLogPath)
-                if (
-                    $snapshotLogFullPath.StartsWith($logsRootPrefix, [System.StringComparison]::OrdinalIgnoreCase) -and
-                    (Test-Path -LiteralPath $snapshotLogFullPath -PathType Leaf)
-                ) {
+                if (-not $snapshotLogFullPath.StartsWith($logsRootPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+                    $result.STATUS = "MISSING_DECLARED"
+                    $result.PATH = $snapshotLogFullPath
+                    $result.PREVIEW = "Declared LAST.ACTION log_path is outside ARTIFACTS\LOGS."
+                    return $result
+                }
+                if (Test-Path -LiteralPath $snapshotLogFullPath -PathType Leaf) {
                     $taskLogPath = $snapshotLogFullPath
+                }
+                else {
+                    $result.STATUS = "MISSING_DECLARED"
+                    $result.PATH = $snapshotLogFullPath
+                    $result.PREVIEW = "Declared LAST.ACTION log_path does not exist."
+                    return $result
                 }
             }
         }
@@ -2652,4 +2670,5 @@ function Get-HIAProjects {
     Write-Host ("- hia project open {0}" -f $firstProjectId)
     Write-Host ""
 }
+
 
