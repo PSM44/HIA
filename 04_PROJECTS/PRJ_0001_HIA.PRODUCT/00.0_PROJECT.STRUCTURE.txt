@@ -1,0 +1,37 @@
+===============================================================================
+FILE: 00.0_PROJECT.STRUCTURE.txt
+PROJECT: PRJ_0001_HIA.PRODUCT
+TYPE: PROJECT STRUCTURE SPEC
+VERSION: v0.1-DRAFT
+DATE: 2026-04-26
+TZ: America/Santiago
+OWNER: HUMAN + SYSTEM
+===============================================================================
+
+01.00_PURPOSE
+
+Define the minimum required folder/file structure for validator gate compliance.
+
+02.00_REQUIRED_DIRECTORIES
+
+02.01 HUMAN
+02.02 BATON
+02.03 RADAR
+02.04 AGILE
+02.05 ARTIFACTS
+02.06 ARTIFACTS\LOGS
+02.07 ARTIFACTS\TASKS
+
+03.00_REQUIRED_FILES
+
+03.01 README.PROJECT.txt
+03.02 PROJECT.CONFIG.json
+03.03 HUMAN\01.0_HUMAN.PROJECT.txt
+03.04 BATON\04.0_PROJECT.BATON.txt
+03.05 AGILE\PROJECT.BACKLOG.txt
+03.06 ARTIFACTS\SESSION.ACTIVE.json
+03.07 00.0_PROJECT.STRUCTURE.txt
+
+04.00_STATUS
+
+ACTIVE

@@ -1,0 +1,106 @@
+===============================================================================
+FILE: 04.0_PROJECT.BATON.txt
+PROJECT: PRJ_0001_HIA.PRODUCT
+TYPE: PROJECT BATON
+VERSION: v0.2-DRAFT
+DATE: 2026-03-29
+TZ: America/Santiago
+OWNER: HUMAN + SYSTEM
+===============================================================================
+
+01.00_PROPOSITO
+Mantener continuidad operativa del proyecto entre sesiones e IAs.
+
+02.00_ESTADO_ACTUAL
+Proyecto inicializado y ya navegable desde HIA.
+
+03.00_LOGROS_RECIENTES
+03.01 hia projects operativo.
+03.02 hia project new <PROJECT_ID> operativo.
+03.03 hia project open <PROJECT_ID> operativo.
+03.04 hia project continue <PROJECT_ID> operativo.
+
+04.00_OBJETIVO_ACTUAL
+Implementar estado básico del proyecto desde HIA.
+
+05.00_SIGUIENTE_MINIBATTLE
+PRJPB_003 | mostrar estado básico del proyecto | done
+
+06.00_BLOQUEO_ACTUAL
+No hay bloqueo crítico.
+
+07.00_NOTAS
+07.01 Cada proyecto debe mantener HUMAN, BATON y RADAR propios.
+07.02 El backlog del proyecto debe mantenerse alineado con la realidad operativa.
+PRJPB_004 | fix evidence handoff session consistency | done
+PRJPB_005 | avanzar BATON/BACKLOG desde PRJPB_003/004 a siguiente ready real | done
+PRJPB_006 | alinear LAST_TASK con LAST.ACTION.json o marcar como LEGACY_LAST_TASK | ready
+
+===============================================================================
+SESSION_CLOSE_20260518_HIA_PRJPB_006_CONTINUITY_FIXES
+===============================================================================
+00.00_SESSION_CLOSE_METADATA
+- Fecha local: 2026-05-18 13:17:27
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- Rama: feat/20260405-console-v2-phase1-phase2
+- HEAD: 94b2faa
+- Estado Git previo al cierre: clean
+- Sesión activa al cierre: 53763216-ca22-4794-be8b-ab4dcb11febf
+- Evidencia vigente: PRJPB_006I
+- Evidence state: FRESH
+- Session safety: OK
+
+01.00_QUE_SE_HIZO
+01.10_Continuidad operacional
+- Se degradó LAST_TASK_* a LEGACY_LAST_TASK_* para evitar que evidencia legacy pareciera estado moderno.
+- Se separó CURRENT_OBJECTIVE de tarea accionable.
+- Se evitó que CURRENT_OBJECTIVE dispare create-file-project cuando NEXT_ACTION y NEXT_READY_ITEM son N/A.
+- Se corrigió higiene EOF en HIA_PROJECT_ENGINE.ps1.
+- Se cerró sesión stale y se abrió sesión nueva.
+- Se reconstruyó evidence anchor con archivos físicos reales usando transcript.
+- Se endureció el evidence resolver para evitar fallback silencioso a artefactos legacy.
+- Se corrigió EOF posterior al hardening del resolver.
+
+01.20_Commits relevantes
+- 671a4de 20260514.1535_FIX_normalize_last_task_as_legacy
+- 22f2312 20260518_FIX_split_context_from_actionable_task
+- d0a520e 20260518_FIX_clean_project_engine_eof
+- 086153a 20260518_FIX_harden_evidence_resolver_fallback
+- 94b2faa 20260518_FIX_clean_project_engine_eof_after_resolver_hardening
+
+02.00_ESTADO_ACTUAL
+- project review: OK
+- project continue: OK
+- radar: OK
+- git status: clean
+- EVIDENCE_STATE: FRESH
+- EVIDENCE_CONSISTENCY: CONSISTENT
+- EVIDENCE_ANCHOR: source=PRJPB_006I
+- NEXT_ACTION: N/A
+- NEXT_READY_ITEM: N/A
+- TASK_GUIDANCE: NEXT_ACTION is not actionable. Review BATON/backlog before creating any task artifact.
+
+03.00_DEUDA_TECNICA
+03.10_PRJPB_006L
+- Mejorar harness de tests para comandos PowerShell que imprimen con Write-Host.
+- Problema: captura con 2>&1 no captura de forma confiable la salida visible.
+- Workaround probado: Start-Transcript.
+- Recomendación: mantener como deuda técnica no crítica.
+
+03.20_POLITICA_DE_EVIDENCIA
+- Definir si LAST.ACTION.json y ARTIFACTS/TASKS/LOGS son runtime ignorado o evidencia versionable.
+- Hoy el flujo queda operativo con git clean, pero la política documental debe quedar explícita.
+
+04.00_SIGUIENTE_ACCION_RECOMENDADA
+- Revisar BATON/BACKLOG para declarar una NEXT_ACTION real o confirmar que el siguiente paso es seleccionar un ítem READY del backlog.
+- No crear NEXT_ACTION.txt si NEXT_ACTION y NEXT_READY_ITEM son N/A.
+- Si se continúa desarrollo, abrir próxima MiniBattle desde backlog, no desde create-file-project artificial.
+
+05.00_HANDOFF_OPERATIVO
+- Para reanudar:
+  1) cd "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA"
+  2) .\01_UI\terminal\hia.ps1 project session status PRJ_0001_HIA.PRODUCT
+  3) .\01_UI\terminal\hia.ps1 project review PRJ_0001_HIA.PRODUCT
+  4) .\01_UI\terminal\hia.ps1 project continue PRJ_0001_HIA.PRODUCT
+- Si la sesión está cerrada, iniciar una nueva:
+  .\01_UI\terminal\hia.ps1 project session start PRJ_0001_HIA.PRODUCT

@@ -1,0 +1,10 @@
+{
+  "project_id": "PRJ_0001_HIA.PRODUCT",
+  "project_name": "HIA Product",
+  "status": "active",
+  "context_source": "project_radar",
+  "has_human": true,
+  "has_baton": true,
+  "has_radar": true,
+  "has_agile": true
+}

@@ -1,0 +1,42 @@
+ID | TYPE | PRIORITY | TITLE | VALUE | EFFORT | STATUS
+PRJPB_001 | minibattle | P0 | abrir proyecto específico desde HIA | habilita navegación real por proyecto | S | done
+PRJPB_002 | minibattle | P0 | continuar desarrollo del proyecto desde HIA | habilita recomendación operativa desde backlog | S | done
+PRJPB_003 | minibattle | P0 | mostrar estado básico del proyecto | permite continuidad operativa visible | S | done
+PRJPB_004 | minibattle | P1 | leer baton del proyecto en comando de estado | habilita continuidad por proyecto | S | backlog
+PRJPB_005 | feature | P1 | integrar radar del proyecto | habilita contexto por proyecto | M | backlog
+PRJPB_006 | feature | P1 | crear sesión persistente por proyecto | habilita continuidad real por proyecto | M | backlog
+
+
+===============================================================================
+SESSION_CLOSE_20260518_HIA_PRJPB_006_CONTINUITY_FIXES
+===============================================================================
+00.00_BACKLOG_ROLLOVER
+- Fecha local: 2026-05-18 13:17:27
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- HEAD: 94b2faa
+
+01.00_DONE
+- PRJPB_006B: DONE — LAST_TASK degradado a LEGACY_LAST_TASK.
+- PRJPB_006E: DONE — CURRENT_OBJECTIVE separado de tarea accionable.
+- PRJPB_006F: DONE — EOF hygiene + reset de sesión stale.
+- PRJPB_006I: DONE — evidence anchor reconstruido con archivos físicos reales y transcript.
+- PRJPB_006J: DONE — evidence resolver endurecido contra fallback silencioso.
+- PRJPB_006K: DONE — EOF hygiene posterior a resolver hardening.
+
+02.00_OPEN_TECHNICAL_DEBT
+- PRJPB_006L: OPEN — mejorar harness de captura para Write-Host / Information Stream.
+  - Severidad: P2
+  - Urgencia: baja
+  - Riesgo: falsos negativos en tests automatizados.
+  - Mitigación temporal: usar Start-Transcript para validaciones de CLI.
+
+03.00_NEXT_READY_CANDIDATES
+- PRJPB_BACKLOG_RECONCILE_001: revisar backlog y definir siguiente ítem READY real.
+- PRJPB_BATON_NEXT_ACTION_001: si corresponde, escribir NEXT_ACTION explícita en BATON.
+- PRJPB_EVIDENCE_POLICY_001: definir política de versionado/ignore para LAST.ACTION.json y artefactos runtime.
+- PRJPB_TEST_HARNESS_001: estandarizar captura de CLI con transcript.
+
+04.00_NOTES
+- No existe NEXT_ACTION accionable al cierre.
+- El sistema ya no debe sugerir create-file-project cuando NEXT_ACTION y NEXT_READY_ITEM son N/A.
+- Cualquier próximo desarrollo debe nacer desde backlog/BATON, no desde artefacto artificial.
