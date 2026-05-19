@@ -273,3 +273,26 @@ PRJPB_008C_BASIC_MANAGEMENT_UI
 03.00_WARNINGS
 - RADAR sigue stale respecto a esta sesión.
 - Dashboard v0.1 es estático; dashboard v0.2 debe leer outputs reales.
+
+==========
+PRJPB_008D_A_UX_UI_EVALUATION_REGISTRY
+==========
+
+00.00_DONE_CONFIRMED
+- PRJPB_008D-A: DONE — sistema mínimo de registro UX/UI creado.
+- Registry path: 04_PROJECTS\PRJ_0001_HIA.PRODUCT\UX_EVAL.
+- Files:
+  - README.UX_EVAL.txt
+  - UX_UI.EVALUATION.LOG.txt
+  - UX_UI.EVALUATION.CHECKLIST.txt
+  - UX_UI.ISSUES.BACKLOG.txt
+  - UX_UI.DECISIONS.LOG.txt
+- Runner: 02_TOOLS\Run-PRJPB-008D-A.ps1.
+
+01.00_SCOPE_CONFIRMED
+- Evaluación UX/UI se registra en archivos versionables.
+- Evidencia pesada futura debe ir a ARTIFACTS\UX_EVAL.
+- Se mantiene PRJPB_008D como NEXT_ACTION principal.
+
+02.00_NEXT_ACTION
+- PRJPB_008D: READY — validar dashboard UI v0.1 y preparar refresh RADAR/demo baseline.

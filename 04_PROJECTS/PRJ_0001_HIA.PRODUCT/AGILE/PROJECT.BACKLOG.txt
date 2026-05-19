@@ -194,3 +194,24 @@ PRJPB_008C_BASIC_MANAGEMENT_UI
 - PRJPB_UI_DATA_BINDING_001: conectar dashboard a outputs reales de CLI/BATON/RADAR.
 - PRJPB_RADAR_REFRESH_001: regenerar/validar RADAR active antes de demo formal.
 - PRJPB_SUGGESTED_COMMAND_SEMANTIC_001: evitar suggested command create-file-project para tareas semánticas.
+
+==========
+PRJPB_008D_A_UX_UI_EVALUATION_REGISTRY
+==========
+
+00.00_DONE
+- PRJPB_008D-A: DONE — sistema mínimo de registro UX/UI creado y versionado.
+- UX_EVAL files created:
+  - README.UX_EVAL.txt
+  - UX_UI.EVALUATION.LOG.txt
+  - UX_UI.EVALUATION.CHECKLIST.txt
+  - UX_UI.ISSUES.BACKLOG.txt
+  - UX_UI.DECISIONS.LOG.txt
+
+01.00_READY_NOW
+- PRJPB_008D: READY — validar dashboard UI v0.1 y preparar refresh RADAR/demo baseline.
+
+02.00_TECHNICAL_DEBT
+- UX_ISSUE_0001: dashboard v0.1 estático; requiere data binding en v0.2.
+- UX_ISSUE_0002: RADAR stale antes de demo formal.
+- UX_ISSUE_0004: definir protocolo de screenshots UX/UI.
