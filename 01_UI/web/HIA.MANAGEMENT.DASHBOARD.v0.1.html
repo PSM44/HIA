@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HIA — Management Dashboard v0.1</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --line: #374151;
+      --ok: #22c55e;
+      --next: #38bdf8;
+      --future: #a78bfa;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Segoe UI, Arial, sans-serif;
+      background: radial-gradient(circle at top left, #1e293b 0%, var(--bg) 45%, #020617 100%);
+      color: var(--text);
+    }
+
+    .shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.6fr .9fr;
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, .92);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.25);
+    }
+
+    h1, h2, h3 { margin: 0; }
+
+    h1 {
+      font-size: 34px;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+    }
+
+    .subtitle {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .meta {
+      display: grid;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding-bottom: 8px;
+    }
+
+    .meta-row span:first-child { color: var(--muted); }
+    .meta-row span:last-child { text-align: right; }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin: 18px 0;
+    }
+
+    .metric {
+      background: rgba(31, 41, 55, .88);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .metric .value {
+      margin-top: 8px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .pill.ok { color: var(--ok); background: rgba(34,197,94,.10); }
+    .pill.next { color: var(--next); background: rgba(56,189,248,.10); }
+    .pill.future { color: var(--future); background: rgba(167,139,250,.10); }
+    .pill.warn { color: var(--warn); background: rgba(245,158,11,.10); }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    button {
+      cursor: pointer;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(31,41,55,.9);
+      color: var(--text);
+      padding: 10px 14px;
+      font-weight: 700;
+    }
+
+    button.active, button:hover {
+      background: #334155;
+      border-color: #64748b;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .lane {
+      min-height: 360px;
+    }
+
+    .lane h2 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .item {
+      border: 1px solid var(--line);
+      background: rgba(15, 23, 42, .66);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .item h3 {
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+
+    .item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .item .tag-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .tag {
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 11px;
+      background: rgba(255,255,255,.08);
+      color: var(--muted);
+    }
+
+    .section {
+      margin-top: 18px;
+    }
+
+    .commands {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      background: #020617;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      overflow: auto;
+      color: #d1d5db;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 980px) {
+      .hero, .columns, .commands, .status-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="card">
+        <div class="pill next">HIA PRODUCT · UX/UI v0.1</div>
+        <h1 style="margin-top:14px;">Dashboard funcional mínimo para presentar HIA</h1>
+        <p class="subtitle">
+          Vista ejecutiva local para mostrar qué está listo, qué viene próximamente y qué queda a futuro.
+          Esta UI no promete automatización total: muestra el estado real del producto y las brechas abiertas.
+        </p>
+      </div>
+
+      <div class="card meta">
+        <div class="meta-row"><span>Project ID</span><span>PRJ_0001_HIA.PRODUCT</span></div>
+        <div class="meta-row"><span>Branch</span><span>feat/20260405-console-v2-phase1-phase2</span></div>
+        <div class="meta-row"><span>Commit base</span><span>8a4bfd1</span></div>
+        <div class="meta-row"><span>Generado</span><span>2026-05-19 19:38:08</span></div>
+        <div class="meta-row"><span>Modo</span><span>Local static HTML</span></div>
+      </div>
+    </section>
+
+    <section class="status-grid">
+      <div class="metric">
+        <div class="label">Estado repo</div>
+        <div class="value"><span class="pill ok">Git limpio</span></div>
+      </div>
+      <div class="metric">
+        <div class="label">Sesión</div>
+        <div class="value"><span class="pill ok">Activa</span></div>
+      </div>
+      <div class="metric">
+        <div class="label">Continuidad</div>
+        <div class="value"><span class="pill next">BATON/BACKLOG</span></div>
+      </div>
+      <div class="metric">
+        <div class="label">Radar</div>
+        <div class="value"><span class="pill warn">Stale</span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Filtro de roadmap</h2>
+      <div class="tabs">
+        <button class="active" data-filter="all">Todo</button>
+        <button data-filter="ready">Listo</button>
+        <button data-filter="next">Próximamente</button>
+        <button data-filter="future">Futuro</button>
+      </div>
+
+      <div class="columns">
+        <div class="lane" data-lane="ready">
+          <h2>Listo <span class="pill ok">operativo</span></h2>
+
+          <article class="item" data-status="ready">
+            <h3>CLI de proyecto</h3>
+            <p>Comandos disponibles para consultar estado, continuidad, sesión y rutas relevantes del proyecto.</p>
+            <div class="tag-row"><span class="tag">project status</span><span class="tag">project continue</span></div>
+          </article>
+
+          <article class="item" data-status="ready">
+            <h3>Sesión activa</h3>
+            <p>El sistema distingue sesión activa/cerrada y expone SESSION.ACTIVE.json como control operativo.</p>
+            <div class="tag-row"><span class="tag">SESSION_STATUS</span><span class="tag">continuidad</span></div>
+          </article>
+
+          <article class="item" data-status="ready">
+            <h3>BATON + BACKLOG</h3>
+            <p>La continuidad ahora mueve NEXT_ACTION desde PRJPB_008B a PRJPB_008C sin depender de memoria de chat.</p>
+            <div class="tag-row"><span class="tag">NEXT_ACTION</span><span class="tag">READY/DONE</span></div>
+          </article>
+
+          <article class="item" data-status="ready">
+            <h3>Smoke demo evidence</h3>
+            <p>PRJPB_008B capturó evidencia runtime mediante transcript y reporte local.</p>
+            <div class="tag-row"><span class="tag">transcript</span><span class="tag">evidence</span></div>
+          </article>
+        </div>
+
+        <div class="lane" data-lane="next">
+          <h2>Próximamente <span class="pill next">siguiente sprint</span></h2>
+
+          <article class="item" data-status="next">
+            <h3>Dashboard v0.2 con datos reales</h3>
+            <p>Conectar la UI a outputs actuales generados por CLI/RADAR/BATON, en vez de usar contenido estático.</p>
+            <div class="tag-row"><span class="tag">UX/UI</span><span class="tag">data binding</span></div>
+          </article>
+
+          <article class="item" data-status="next">
+            <h3>RADAR refresh</h3>
+            <p>Regenerar o validar RADAR ACTIVE antes de usar la demo como baseline formal.</p>
+            <div class="tag-row"><span class="tag">RADAR</span><span class="tag">baseline</span></div>
+          </article>
+
+          <article class="item" data-status="next">
+            <h3>Suggested command semántico</h3>
+            <p>Reemplazar create-file-project como sugerencia genérica cuando la MiniBattle requiere evidencia real.</p>
+            <div class="tag-row"><span class="tag">engine</span><span class="tag">routing</span></div>
+          </article>
+
+          <article class="item" data-status="next">
+            <h3>Paquete demo formal</h3>
+            <p>Definir qué pantallas se muestran, qué comandos se ejecutan y qué brechas se transparentan.</p>
+            <div class="tag-row"><span class="tag">demo</span><span class="tag">management</span></div>
+          </article>
+        </div>
+
+        <div class="lane" data-lane="future">
+          <h2>Futuro <span class="pill future">producto</span></h2>
+
+          <article class="item" data-status="future">
+            <h3>UI web conectada</h3>
+            <p>Pasar de HTML estático a web app con lectura estructurada de estado, tareas, evidencia y RADAR.</p>
+            <div class="tag-row"><span class="tag">web app</span><span class="tag">API</span></div>
+          </article>
+
+          <article class="item" data-status="future">
+            <h3>Orquestación multi-modelo</h3>
+            <p>Codex Desktop, Claude Code Desktop y Ollama integrados por routing policy, costo y capacidad local.</p>
+            <div class="tag-row"><span class="tag">AI stack</span><span class="tag">routing</span></div>
+          </article>
+
+          <article class="item" data-status="future">
+            <h3>Persistencia estructurada</h3>
+            <p>Base de datos para registrar proyecto, tareas, evidencia, decisiones y estados de forma consultable.</p>
+            <div class="tag-row"><span class="tag">DB</span><span class="tag">audit</span></div>
+          </article>
+
+          <article class="item" data-status="future">
+            <h3>Management console</h3>
+            <p>Vista ejecutiva con KPIs operacionales, blockers, riesgos, backlog y evolución por sesión.</p>
+            <div class="tag-row"><span class="tag">console</span><span class="tag">KPIs</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="card section">
+      <h2>Comandos demo mínimos</h2>
+      <p class="subtitle">Para una demo funcional, mostrar solo lo necesario. No marear con internals.</p>
+
+      <div class="commands">
+        <pre>git status --short
+
+.\01_UI\terminal\hia.ps1 project status PRJ_0001_HIA.PRODUCT
+
+.\01_UI\terminal\hia.ps1 project continue PRJ_0001_HIA.PRODUCT</pre>
+
+        <pre>.\01_UI\terminal\hia.ps1 project session status PRJ_0001_HIA.PRODUCT
+
+Get-Content ".\04_PROJECTS\PRJ_0001_HIA.PRODUCT\BATON\04.0_PROJECT.BATON.txt" -TotalCount 40
+
+Get-Content ".\04_PROJECTS\PRJ_0001_HIA.PRODUCT\AGILE\PROJECT.BACKLOG.txt" -TotalCount 40</pre>
+      </div>
+    </section>
+
+    <section class="card section">
+      <h2>Brechas que NO se deben ocultar</h2>
+      <div class="columns">
+        <article class="item" data-status="next">
+          <h3>RADAR no está fresco</h3>
+          <p>La UI puede mostrarse, pero RADAR debe regenerarse antes de una demo formal o release controlado.</p>
+        </article>
+        <article class="item" data-status="next">
+          <h3>UI aún no lee estado en vivo</h3>
+          <p>Este dashboard v0.1 es estático y versionado. La v0.2 debe conectarse a outputs reales.</p>
+        </article>
+        <article class="item" data-status="next">
+          <h3>Suggested command sigue siendo genérico</h3>
+          <p>El engine todavía sugiere create-file-project para tareas que requieren evidencia semántica.</p>
+        </article>
+      </div>
+    </section>
+
+    <div class="footer">
+      HIA Management Dashboard v0.1 · Static local UX/UI · Generated by PRJPB_008C
+    </div>
+  </main>
+
+  <script>
+    const buttons = document.querySelectorAll('button[data-filter]');
+    const items = document.querySelectorAll('.item[data-status]');
+
+    function setFilter(filter) {
+      buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.filter === filter));
+      items.forEach(item => {
+        const visible = filter === 'all' || item.dataset.status === filter;
+        item.classList.toggle('hidden', !visible);
+      });
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => setFilter(btn.dataset.filter));
+    });
+  </script>
+</body>
+</html>

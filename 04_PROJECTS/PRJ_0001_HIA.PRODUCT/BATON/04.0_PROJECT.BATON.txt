@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_008C | preparar demo gerencial v0.1 con script ejecutivo y brechas explícitas | ready
+PRJPB_008D | validar dashboard UI v0.1 y preparar refresh RADAR/demo baseline | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -171,7 +171,7 @@ SESSION_CLOSE_20260518_HIA_PRJPB_007C_TO_007H
 
 02.00_ESTADO_ACTUAL
 - Git: clean antes del cierre documental.
-- NEXT_ACTION: PRJPB_008C | preparar demo gerencial v0.1 con script ejecutivo y brechas explícitas | ready
+- NEXT_ACTION: PRJPB_008D | validar dashboard UI v0.1 y preparar refresh RADAR/demo baseline | ready
 - Runtime artifacts: ignorados por Git.
 - Continuidad mínima: versionada en Git.
 - project continue: funcional.
@@ -251,3 +251,25 @@ PRJPB_008B_SMOKE_DEMO_EVIDENCE
 02.00_WARNINGS
 - RADAR sigue stale respecto a esta sesión; regenerar/validar antes de demo formal.
 - No usar create-file-project como sustituto de evidencia semántica.
+
+==========
+PRJPB_008C_BASIC_MANAGEMENT_UI
+==========
+
+00.00_DONE_CONFIRMED
+- PRJPB_008C: DONE — UX/UI básica funcional creada para presentar estado HIA.
+- Dashboard versionado: 01_UI\web\HIA.MANAGEMENT.DASHBOARD.v0.1.html.
+- Runner versionado: 02_TOOLS\Run-PRJPB-008C.ps1.
+
+01.00_SCOPE_CONFIRMED
+- Enfoque actual: presentación visual y funcionalidad básica.
+- No se desarrolla narrativa hablada/escrita todavía.
+- No se incorpora stack React/Vite/Next todavía.
+- No se conecta a datos vivos todavía.
+
+02.00_NEXT_ACTION
+- PRJPB_008D: READY — validar dashboard UI v0.1 y preparar refresh RADAR/demo baseline.
+
+03.00_WARNINGS
+- RADAR sigue stale respecto a esta sesión.
+- Dashboard v0.1 es estático; dashboard v0.2 debe leer outputs reales.

@@ -172,8 +172,25 @@ PRJPB_008B_SMOKE_DEMO_EVIDENCE
 - Version marker creado: 02_TOOLS\Run-PRJPB-008B.ps1.
 
 01.00_READY_NOW
-- PRJPB_008C: READY — preparar demo gerencial v0.1 con script ejecutivo y brechas explícitas.
+- PRJPB_008C: DONE — dashboard UX/UI básico v0.1 creado y versionado.
 
 02.00_TECHNICAL_DEBT
 - PRJPB_RADAR_REFRESH_001: regenerar/validar RADAR active antes de demo formal.
 - PRJPB_SUGGESTED_COMMAND_SEMANTIC_001: evitar suggested command create-file-project cuando la MiniBattle requiere evidencia semántica.
+
+==========
+PRJPB_008C_BASIC_MANAGEMENT_UI
+==========
+
+00.00_DONE
+- PRJPB_008C: DONE — dashboard UX/UI básico v0.1 creado y versionado.
+- UI: 01_UI\web\HIA.MANAGEMENT.DASHBOARD.v0.1.html.
+- Runner: 02_TOOLS\Run-PRJPB-008C.ps1.
+
+01.00_READY_NOW
+- PRJPB_008D: READY — validar dashboard UI v0.1 y preparar refresh RADAR/demo baseline.
+
+02.00_TECHNICAL_DEBT
+- PRJPB_UI_DATA_BINDING_001: conectar dashboard a outputs reales de CLI/BATON/RADAR.
+- PRJPB_RADAR_REFRESH_001: regenerar/validar RADAR active antes de demo formal.
+- PRJPB_SUGGESTED_COMMAND_SEMANTIC_001: evitar suggested command create-file-project para tareas semánticas.
