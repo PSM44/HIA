@@ -1,0 +1,77 @@
+==========
+00.00_METADATA
+==========
+
+ID_UNICO..........: UX_UI.EVALUATION.LOG
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+CREATED_LOCAL.....: 2026-05-19 19:42:42
+CREATED_UTC.......: 2026-05-19T23:42:42.3390624Z
+GIT_BRANCH........: feat/20260405-console-v2-phase1-phase2
+GIT_HEAD_BASE.....: 35e5967
+EVALUATED_UI......: 01_UI\web\HIA.MANAGEMENT.DASHBOARD.v0.1.html
+EVALUATION_MODE...: functional UX/UI registry bootstrap
+
+==========
+01.00_EVALUATION_SESSION_0001
+==========
+
+01.10_CONTEXT
+
+Se crea registro formal de evaluación UX/UI después de PRJPB_008C.
+
+PRJPB_008C entregó:
+- dashboard HTML estático v0.1,
+- runner local para abrir UI,
+- BATON/BACKLOG actualizados,
+- NEXT_ACTION PRJPB_008D.
+
+01.20_SCOPE
+
+Se evaluará:
+- claridad visual,
+- utilidad funcional,
+- estado real versus promesa,
+- navegación/filtros,
+- presentación de listo/próximo/futuro,
+- brechas visibles,
+- facilidad de demo.
+
+No se evaluará todavía:
+- performance web avanzada,
+- accesibilidad completa WCAG,
+- backend,
+- autenticación,
+- data binding real,
+- despliegue cloud,
+- integración API.
+
+01.30_INITIAL_FINDINGS
+
+FINDING_001:
+- Tipo: gap funcional.
+- Severidad: P1.
+- Hallazgo: dashboard v0.1 es estático; no lee datos vivos de CLI/BATON/RADAR.
+- Impacto: puede servir como mock funcional, pero no como consola operacional real.
+- Recomendación: PRJPB_UI_DATA_BINDING_001.
+
+FINDING_002:
+- Tipo: gap de evidencia.
+- Severidad: P1.
+- Hallazgo: no existe aún protocolo de captura de screenshots/comentarios UX/UI.
+- Impacto: feedback visual puede perderse o quedar informal.
+- Recomendación: usar UX_UI.ISSUES.BACKLOG.txt y ARTIFACTS\UX_EVAL para evidencia pesada.
+
+FINDING_003:
+- Tipo: riesgo de presentación.
+- Severidad: P2.
+- Hallazgo: UI muestra valor visual, pero puede sobreprometer si no se marca explícitamente que es HTML estático.
+- Impacto: expectativa gerencial incorrecta.
+- Recomendación: mantener badges/status visibles y brechas explícitas.
+
+==========
+02.00_NEXT_EVALUATION_TARGET
+==========
+
+NEXT_EVAL_ID......: UXEVAL_0002
+TARGET............: revisar dashboard abierto en navegador y registrar feedback funcional real.
+OUTPUT_EXPECTED...: issues priorizados + decisión sobre v0.2.

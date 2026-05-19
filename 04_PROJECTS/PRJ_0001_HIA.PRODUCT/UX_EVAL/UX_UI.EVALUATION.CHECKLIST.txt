@@ -1,0 +1,66 @@
+==========
+00.00_METADATA
+==========
+
+ID_UNICO..........: UX_UI.EVALUATION.CHECKLIST
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+CREATED_LOCAL.....: 2026-05-19 19:42:42
+CREATED_UTC.......: 2026-05-19T23:42:42.3390624Z
+PURPOSE...........: Checklist mínimo para validar UX/UI funcional de HIA Management Dashboard.
+
+==========
+01.00_CHECKLIST_V0.1
+==========
+
+Formato:
+- PASS = cumple.
+- WARN = cumple parcialmente o tiene riesgo.
+- FAIL = no cumple.
+- N/A = no aplica todavía.
+
+01.10_VISUAL_STRUCTURE
+
+[ ] El dashboard abre localmente sin error.
+[ ] La pantalla inicial se entiende sin explicar arquitectura interna.
+[ ] La jerarquía visual distingue título, estado, roadmap y brechas.
+[ ] El layout es usable en pantalla notebook.
+[ ] El layout responde aceptablemente en ancho reducido.
+
+01.20_FUNCTIONALITY
+
+[ ] Filtro Todo/Listo/Próximamente/Futuro funciona.
+[ ] Las tarjetas se ocultan/muestran correctamente.
+[ ] Los comandos demo mínimos son copiables.
+[ ] La UI no requiere servidor local.
+[ ] La UI no requiere internet.
+
+01.30_CONTENT_ACCURACY
+
+[ ] "Listo" contiene solo capacidades realmente disponibles.
+[ ] "Próximamente" contiene trabajo accionable de corto plazo.
+[ ] "Futuro" no se presenta como ya disponible.
+[ ] RADAR stale aparece como brecha explícita.
+[ ] Dashboard estático aparece como limitación explícita.
+
+01.40_MANAGEMENT_USEFULNESS
+
+[ ] Permite explicar el estado de HIA en menos de 2 minutos.
+[ ] Permite mostrar avance sin abrir 10 archivos.
+[ ] Permite distinguir producto actual vs roadmap.
+[ ] Reduce dependencia de terminal para primera impresión.
+[ ] No sobrepromete automatización completa.
+
+01.50_TECHNICAL_GOVERNANCE
+
+[ ] UI está versionada en Git.
+[ ] Runner está versionado en Git.
+[ ] Evaluación UX/UI está versionada en Git.
+[ ] Evidencia pesada queda separada en ARTIFACTS\UX_EVAL.
+[ ] Próxima acción queda en BATON/BACKLOG.
+
+==========
+02.00_CURRENT_STATUS
+==========
+
+STATUS............: DRAFT
+NEXT_STEP.........: ejecutar evaluación manual contra dashboard abierto.

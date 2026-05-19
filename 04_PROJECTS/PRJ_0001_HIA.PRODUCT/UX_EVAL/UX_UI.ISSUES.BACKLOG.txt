@@ -1,0 +1,50 @@
+==========
+00.00_METADATA
+==========
+
+ID_UNICO..........: UX_UI.ISSUES.BACKLOG
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+CREATED_LOCAL.....: 2026-05-19 19:42:42
+CREATED_UTC.......: 2026-05-19T23:42:42.3390624Z
+PURPOSE...........: Backlog de issues y mejoras UX/UI del dashboard HIA.
+
+==========
+01.00_OPEN_ISSUES
+==========
+
+UX_ISSUE_0001 | P1 | dashboard estático sin data binding real | OPEN
+Impacto:
+- La UI sirve como mock funcional, pero no como consola viva.
+Recomendación:
+- Conectar v0.2 a outputs reales o generar JSON/STATE consumible.
+
+UX_ISSUE_0002 | P1 | RADAR stale visible en demo | OPEN
+Impacto:
+- No se puede afirmar que el dashboard representa baseline actual completo.
+Recomendación:
+- Ejecutar refresh/validación RADAR antes de demo formal.
+
+UX_ISSUE_0003 | P2 | suggested command genérico puede inducir placeholder artifacts | OPEN
+Impacto:
+- Puede producir evidencia pobre para MiniBattles semánticas.
+Recomendación:
+- Mejorar router/suggested command según tipo de tarea.
+
+UX_ISSUE_0004 | P2 | no existe captura estándar de screenshots UX/UI | OPEN
+Impacto:
+- Feedback visual puede quedar informal.
+Recomendación:
+- Guardar screenshots en ARTIFACTS\UX_EVAL con referencia desde log versionado.
+
+UX_ISSUE_0005 | P3 | falta estado visual de madurez por componente | OPEN
+Impacto:
+- Gerencia puede no distinguir MVP, beta, planned.
+Recomendación:
+- Agregar badges de maturity: MVP / beta / planned / blocked.
+
+==========
+02.00_NEXT_CANDIDATES
+==========
+
+- UX_ISSUE_0001 debe resolverse en dashboard v0.2, no en v0.1.
+- UX_ISSUE_0002 puede resolverse con PRJPB_008D si el foco incluye RADAR refresh.

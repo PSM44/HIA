@@ -296,3 +296,15 @@ PRJPB_008D_A_UX_UI_EVALUATION_REGISTRY
 
 02.00_NEXT_ACTION
 - PRJPB_008D: READY — validar dashboard UI v0.1 y preparar refresh RADAR/demo baseline.
+
+==========
+PRJPB_008D_B_VERSION_UX_EVAL_ALLOWLIST
+==========
+
+00.00_DONE_CONFIRMED
+- PRJPB_008D-B: DONE — allowlist UX_EVAL habilitada en .gitignore para versionar documentación UX/UI.
+- Scope versionado: UX_EVAL/*.txt únicamente.
+- Runtime ARTIFACTS\UX_EVAL se mantiene fuera de Git.
+
+01.00_NEXT_ACTION
+- PRJPB_008D: READY — validar dashboard UI v0.1 y preparar refresh RADAR/demo baseline.

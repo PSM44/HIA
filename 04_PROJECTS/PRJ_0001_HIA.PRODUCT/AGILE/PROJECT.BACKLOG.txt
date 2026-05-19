@@ -215,3 +215,14 @@ PRJPB_008D_A_UX_UI_EVALUATION_REGISTRY
 - UX_ISSUE_0001: dashboard v0.1 estático; requiere data binding en v0.2.
 - UX_ISSUE_0002: RADAR stale antes de demo formal.
 - UX_ISSUE_0004: definir protocolo de screenshots UX/UI.
+
+==========
+PRJPB_008D_B_VERSION_UX_EVAL_ALLOWLIST
+==========
+
+00.00_DONE
+- PRJPB_008D-B: DONE — UX_EVAL versionable vía allowlist mínima de .gitignore.
+- Files in scope: README.UX_EVAL.txt, UX_UI.EVALUATION.LOG.txt, UX_UI.EVALUATION.CHECKLIST.txt, UX_UI.ISSUES.BACKLOG.txt, UX_UI.DECISIONS.LOG.txt.
+
+01.00_READY_NOW
+- PRJPB_008D: READY — validar dashboard UI v0.1 y preparar refresh RADAR/demo baseline.

@@ -1,0 +1,45 @@
+==========
+00.00_METADATA
+==========
+
+ID_UNICO..........: UX_UI.DECISIONS.LOG
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+CREATED_LOCAL.....: 2026-05-19 19:42:42
+CREATED_UTC.......: 2026-05-19T23:42:42.3390624Z
+PURPOSE...........: Registro de decisiones UX/UI de HIA Management Dashboard.
+
+==========
+01.00_DECISIONS
+==========
+
+UX_DEC_0001 | 2026-05-19 19:42:42 | ACCEPTED
+Decisión:
+- Crear registro UX/UI versionable en 04_PROJECTS\PRJ_0001_HIA.PRODUCT\UX_EVAL.
+Motivo:
+- La evaluación UX/UI no debe quedar dispersa entre chat, terminal y artifacts ignorados.
+Impacto:
+- Feedback, criterios, issues y decisiones quedan gobernados por Git.
+
+UX_DEC_0002 | 2026-05-19 19:42:42 | ACCEPTED
+Decisión:
+- Mantener evidencia pesada en ARTIFACTS\UX_EVAL.
+Motivo:
+- Screenshots, videos y logs largos no deben inflar el repo.
+Impacto:
+- Se mantiene separación entre evidencia runtime y documentación versionable.
+
+UX_DEC_0003 | 2026-05-19 19:42:42 | ACCEPTED
+Decisión:
+- Dashboard v0.1 se evalúa como UI estática funcional, no como consola conectada.
+Motivo:
+- Evita sobrepromesa técnica.
+Impacto:
+- Data binding queda explícitamente en backlog v0.2.
+
+UX_DEC_0004 | 2026-05-19 19:42:42 | ACCEPTED
+Decisión:
+- No crear narrativa hablada/escrita todavía.
+Motivo:
+- El foco actual es presentación y funcionalidad.
+Impacto:
+- PRJPB_008D debe validar UI y baseline técnico, no preparar discurso.
