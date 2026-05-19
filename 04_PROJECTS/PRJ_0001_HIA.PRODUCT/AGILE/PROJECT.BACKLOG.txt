@@ -104,3 +104,43 @@ MB-HIA-PRJPB-007H_PREP_ROLLOVER
 - NEXT_ACTION debe apuntar a trabajo no ejecutado.
 - Runtime artifacts quedan ignorados.
 - BATON/BACKLOG siguen siendo la fuente versionada de continuidad.
+
+===============================================================================
+SESSION_CLOSE_20260518_HIA_PRJPB_007C_TO_007H_BACKLOG
+===============================================================================
+00.00_DONE_THIS_SESSION
+- PRJPB_007C: DONE — versionar continuidad mínima del proyecto.
+- PRJPB_007D: DONE — reconciliar BATON/BACKLOG y declarar NEXT_ACTION.
+- PRJPB_007E: DONE — reemplazar artifact path por naming semántico.
+- PRJPB_007F: DONE — crear PRJPB_007D.NEXT_ACTION.txt.
+- PRJPB_007G: DONE — rollover y crear PRJPB_007G.NEXT_ACTION.txt.
+- PRJPB_007H-PREP: DONE — mover NEXT_ACTION a harness CLI.
+- PRJPB_007H-ACT: DONE — crear PRJPB_007H.NEXT_ACTION.txt.
+- PRJPB_007H-IMPL: DONE — agregar HIA_CLI_CAPTURE.ps1.
+
+01.00_READY_NOW
+- PRJPB_008A: READY — consolidar paquete funcional mínimo para demo gerencial HIA.
+
+02.00_BACKLOG_NEXT
+- PRJPB_008B: BACKLOG — enriquecer contenido semántico de NEXT_ACTION artifacts.
+- PRJPB_008C: BACKLOG — documentar política de evidencia runtime/versionable.
+- PRJPB_008D: BACKLOG — integrar HIA_CLI_CAPTURE.ps1 en smoke/readiness estándar.
+- PRJPB_008E: BACKLOG — auditar higiene estática de engines tras parches sucesivos.
+- PRJPB_008F: BACKLOG — evaluar AI_MEMORY_STATUS MISSING.
+
+03.00_TECHNICAL_DEBT
+- PRJPB_TEST_HARNESS_001: MITIGATED/OPEN — helper transcript-backed existe; falta adopción sistemática.
+- PRJPB_NEXT_ACTION_ARTIFACT_CONTENT_001: OPEN — artifacts NEXT_ACTION son genéricos.
+- PRJPB_EVIDENCE_POLICY_001: OPEN — política de LAST.ACTION.json/runtime no formalizada.
+- PRJPB_CODE_HYGIENE_001: OPEN — posible higiene estática pendiente.
+- PRJPB_DELIVERY_PACK_001: OPEN — paquete demo gerencial pendiente.
+
+04.00_DELIVERY_PATH_TO_MANAGEMENT
+- PRJPB_008A debe producir HIA Functional Management Demo Pack v0.1.
+- Criterio de aceptación:
+  1) demo CLI reproducible.
+  2) project status/continue/session status funcionales.
+  3) evidencia fresca y consistente.
+  4) Git clean.
+  5) BATON/BACKLOG versionados.
+  6) roadmap y deuda técnica visibles.

@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_007H | resolver harness de captura CLI Write-Host / transcript | ready
+PRJPB_008A | consolidar paquete funcional mínimo para demo gerencial HIA | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -146,3 +146,67 @@ SESSION_UPDATE_20260518_HIA_PRJPB_007H_PREP
 
 02.00_NEXT
 - PRJPB_007H: READY — resolver harness de captura CLI Write-Host / transcript.
+
+===============================================================================
+SESSION_CLOSE_20260518_HIA_PRJPB_007C_TO_007H
+===============================================================================
+00.00_CLOSE_METADATA
+- Fecha local: 2026-05-18 20:43:51
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- Rama: feat/20260405-console-v2-phase1-phase2
+- HEAD antes del cierre documental: 8ee9b38
+- Sesión activa al preparar cierre: e4f690fe-7f44-45f0-bc04-a9525f82ef6a
+- Artifact runtime vigente: ARTIFACTS\\TASKS\\PRJPB_007H.NEXT_ACTION.txt
+- Helper nuevo: 02_TOOLS\\HIA_CLI_CAPTURE.ps1
+
+01.00_QUE_SE_HIZO
+- PRJPB_007C: DONE — continuidad mínima versionada y runtime ARTIFACTS preservado como ignorado.
+- PRJPB_007D: DONE — BATON/BACKLOG declaran NEXT_ACTION real.
+- PRJPB_007E: DONE — SUGGESTED_COMMAND usa artifact semántico por MiniBattle.
+- PRJPB_007F: DONE — artifact PRJPB_007D.NEXT_ACTION.txt creado.
+- PRJPB_007G: DONE — rollover post-artifact y artifact PRJPB_007G creado.
+- PRJPB_007H-PREP: DONE — NEXT_ACTION movido a harness CLI.
+- PRJPB_007H-ACT: DONE — artifact PRJPB_007H.NEXT_ACTION.txt creado.
+- PRJPB_007H-IMPL: DONE — helper transcript-backed HIA_CLI_CAPTURE.ps1 creado, validado, commiteado y pusheado.
+
+02.00_ESTADO_ACTUAL
+- Git: clean antes del cierre documental.
+- NEXT_ACTION: PRJPB_008A | consolidar paquete funcional mínimo para demo gerencial HIA | ready
+- Runtime artifacts: ignorados por Git.
+- Continuidad mínima: versionada en Git.
+- project continue: funcional.
+- session status: activa antes del cierre final.
+
+03.00_DEUDA_TECNICA
+- PRJPB_TEST_HARNESS_001: MITIGATED/OPEN — helper creado; falta integrarlo en smoke/readiness estándar.
+- PRJPB_NEXT_ACTION_ARTIFACT_CONTENT_001: OPEN — artifacts NEXT_ACTION tienen metadata genérica; falta contenido semántico rico.
+- PRJPB_EVIDENCE_POLICY_001: OPEN — documentar política formal de LAST.ACTION.json y runtime artifacts.
+- PRJPB_CODE_HYGIENE_001: OPEN — auditar higiene estática en engines tras parches sucesivos.
+- PRJPB_DELIVERY_PACK_001: OPEN — preparar paquete funcional mínimo para gerencia.
+
+04.00_BACKLOG_ROLLOVER
+- PRJPB_008A: READY — consolidar paquete funcional mínimo para demo gerencial HIA.
+- PRJPB_008B: BACKLOG — enriquecer contenido semántico de NEXT_ACTION artifacts.
+- PRJPB_008C: BACKLOG — documentar política de evidencia runtime/versionable.
+- PRJPB_008D: BACKLOG — integrar HIA_CLI_CAPTURE.ps1 en smoke/readiness.
+- PRJPB_008E: BACKLOG — auditoría de higiene estática de engines.
+- PRJPB_008F: BACKLOG — evaluar AI_MEMORY_STATUS MISSING.
+
+05.00_PATH_A_ENTREGABLE_GERENCIAL
+- HIA Functional Management Demo Pack v0.1:
+  1) project status reproducible.
+  2) project continue con NEXT_ACTION.
+  3) session status/start/close.
+  4) evidencia fresca.
+  5) Git clean + continuidad versionada.
+  6) narrativa ejecutiva problema/solución/control/riesgos.
+  7) roadmap de hardening.
+
+06.00_HANDOFF_OPERATIVO
+- Para reanudar:
+  1) cd "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA"
+  2) .\01_UI\terminal\hia.ps1 project session status PRJ_0001_HIA.PRODUCT
+  3) .\01_UI\terminal\hia.ps1 project review PRJ_0001_HIA.PRODUCT
+  4) .\01_UI\terminal\hia.ps1 project continue PRJ_0001_HIA.PRODUCT
+- Si la sesión está cerrada:
+  .\01_UI\terminal\hia.ps1 project session start PRJ_0001_HIA.PRODUCT
