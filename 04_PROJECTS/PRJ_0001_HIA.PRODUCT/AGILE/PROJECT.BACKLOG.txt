@@ -83,3 +83,24 @@ MB-HIA-PRJPB-007G_ROLLOVER
 - La continuidad mínima vive en Git.
 - Los artifacts runtime siguen ignorados por defecto.
 - El naming de NEXT_ACTION artifact debe ser semántico por MiniBattle, no por session id.
+
+===============================================================================
+MB-HIA-PRJPB-007H_PREP_ROLLOVER
+===============================================================================
+00.00_DONE
+- PRJPB_007G: DONE — rollover de continuidad posterior a artifact semántico.
+- PRJPB_007G-ACT: DONE — artifact runtime PRJPB_007G.NEXT_ACTION.txt creado y permanece ignorado.
+
+01.00_READY_NOW
+- PRJPB_007H: READY — resolver harness de captura CLI Write-Host / transcript.
+
+02.00_ACCEPTANCE_TARGET
+- Diagnosticar estrategia estándar de captura CLI.
+- Evitar falsos negativos cuando hia.ps1 imprime con Write-Host.
+- Preferir Start-Transcript o wrapper compatible antes que Out-String simple.
+- Mantener project continue y status sin regresión.
+
+03.00_POLICY
+- NEXT_ACTION debe apuntar a trabajo no ejecutado.
+- Runtime artifacts quedan ignorados.
+- BATON/BACKLOG siguen siendo la fuente versionada de continuidad.

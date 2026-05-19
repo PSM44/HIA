@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_007G | consolidar rollover de continuidad y declarar siguiente incremento técnico | ready
+PRJPB_007H | resolver harness de captura CLI Write-Host / transcript | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -129,3 +129,20 @@ SESSION_UPDATE_20260518_HIA_PRJPB_007G_ROLLOVER
 03.00_NEXT
 - PRJPB_007G: READY — consolidar rollover de continuidad y declarar siguiente incremento técnico.
 - PRJPB_007H: BACKLOG — resolver harness de captura CLI Write-Host / transcript.
+
+===============================================================================
+SESSION_UPDATE_20260518_HIA_PRJPB_007H_PREP
+===============================================================================
+00.00_CONTEXT
+- Fecha local: 2026-05-18 20:35:29
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- HEAD antes de rollover: 37b6b35
+- Motivo: PRJPB_007G ya fue ejecutado y no debe permanecer como NEXT_ACTION.
+
+01.00_DONE_CONFIRMED
+- PRJPB_007G: DONE — BATON/BACKLOG rollover ejecutado y versionado.
+- PRJPB_007G-ACT: DONE — artifact runtime PRJPB_007G.NEXT_ACTION.txt creado.
+- project continue: OK — ya reconoce artifact 007G y sugiere project status.
+
+02.00_NEXT
+- PRJPB_007H: READY — resolver harness de captura CLI Write-Host / transcript.
