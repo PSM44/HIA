@@ -24,8 +24,15 @@ Proyecto inicializado y ya navegable desde HIA.
 Implementar estado básico del proyecto desde HIA.
 
 05.00_SIGUIENTE_MINIBATTLE
-PRJPB_003 | mostrar estado básico del proyecto | done
+PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
+06.00_NEXT_ACTION
+PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 
+06.10_NEXT_ACTION_CONTEXT
+- Razón: project continue sigue en NEXT_ACTION=N/A porque BATON no declaraba acción bajo header reconocido por HIA_PROJECT_ENGINE.ps1.
+- Decisión: usar header 06.00_NEXT_ACTION para que el engine lo lea como NEXT_ACTION_BATON.
+- Estado de PRJPB_007C: DONE — continuidad mínima versionada en Git con commit 149810c.
+- Restricción: no crear artefacto de tarea artificial si NEXT_ACTION/NEXT_READY_ITEM son N/A.
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
 

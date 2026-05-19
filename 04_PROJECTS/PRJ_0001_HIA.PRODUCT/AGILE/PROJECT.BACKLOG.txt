@@ -40,3 +40,24 @@ SESSION_CLOSE_20260518_HIA_PRJPB_006_CONTINUITY_FIXES
 - No existe NEXT_ACTION accionable al cierre.
 - El sistema ya no debe sugerir create-file-project cuando NEXT_ACTION y NEXT_READY_ITEM son N/A.
 - Cualquier próximo desarrollo debe nacer desde backlog/BATON, no desde artefacto artificial.
+
+===============================================================================
+MB-HIA-PRJPB-007D_BACKLOG_RECONCILIATION
+===============================================================================
+00.00_CONTEXT
+- Fecha local: 2026-05-18 20:15:05
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- Base commit continuidad: 149810c
+- Motivo: project continue seguía sin NEXT_ACTION/NEXT_READY_ITEM accionable.
+
+01.00_DONE_REFERENCES
+- PRJPB_007C: DONE — versionar continuidad mínima del proyecto y mantener runtime ignorado.
+
+02.00_READY_NOW
+- PRJPB_007D: READY — reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa.
+- PRJPB_007E: BACKLOG — validar que project continue consuma NEXT_ACTION_BATON y orientar siguiente task sin artefacto artificial.
+
+03.00_POLICY
+- No crear NEXT_ACTION.txt mientras BATON/BACKLOG puedan declarar acción real.
+- No versionar ARTIFACTS runtime por defecto.
+- Mantener continuidad mínima versionada en Git.
