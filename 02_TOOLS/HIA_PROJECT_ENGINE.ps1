@@ -1359,10 +1359,27 @@ function Continue-HIAProject {
 
     $hasProjectContext = ($currentObjective -ne "N/A" -or $nextAction -ne "N/A" -or $nextReadyItem -ne "N/A")
     $hasActionableTask = ($nextAction -ne "N/A" -or $nextReadyItem -ne "N/A")
-    $safeTaskPath = "ARTIFACTS\\TASKS\\NEXT_ACTION.txt"
-    if ($lastSessionId -ne "N/A") {
-        $safeTaskPath = ("ARTIFACTS\\TASKS\\SESSION.{0}.NEXT_ACTION.txt" -f $lastSessionId)
+    $taskArtifactStem = "NEXT_ACTION"
+    $taskArtifactSource = $nextAction
+    if (($taskArtifactSource -eq "N/A" -or [string]::IsNullOrWhiteSpace([string]$taskArtifactSource)) -and $nextReadyItem -ne "N/A") {
+        $taskArtifactSource = $nextReadyItem
     }
+
+    if (-not [string]::IsNullOrWhiteSpace([string]$taskArtifactSource) -and $taskArtifactSource -match '\b(PRJPB_[A-Za-z0-9_]+)\b') {
+        $taskArtifactStem = $Matches[1].ToUpperInvariant()
+    }
+    elseif (-not [string]::IsNullOrWhiteSpace([string]$taskArtifactSource) -and $taskArtifactSource -ne "N/A") {
+        $taskArtifactStem = ([string]$taskArtifactSource).Trim()
+        $taskArtifactStem = ($taskArtifactStem -replace '[^A-Za-z0-9_.-]+', '_').Trim('_')
+        if ($taskArtifactStem.Length -gt 80) {
+            $taskArtifactStem = $taskArtifactStem.Substring(0, 80).Trim('_')
+        }
+        if ([string]::IsNullOrWhiteSpace($taskArtifactStem)) {
+            $taskArtifactStem = "NEXT_ACTION"
+        }
+    }
+
+    $safeTaskPath = ("ARTIFACTS\\TASKS\\{0}.NEXT_ACTION.txt" -f $taskArtifactStem)
     $expectedOutputExists = $false
     try {
         $safeTaskPathNormalized = $safeTaskPath.Replace("\\", "\")
