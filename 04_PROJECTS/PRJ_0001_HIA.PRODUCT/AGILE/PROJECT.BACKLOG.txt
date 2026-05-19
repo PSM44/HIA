@@ -122,7 +122,7 @@ SESSION_CLOSE_20260518_HIA_PRJPB_007C_TO_007H_BACKLOG
 - PRJPB_008A: DONE — paquete funcional mínimo para demo gerencial HIA creado y versionado.
 
 02.00_BACKLOG_NEXT
-- PRJPB_008B: READY — ejecutar smoke demo end-to-end y capturar evidencia para demo gerencial.
+- PRJPB_008B: DONE — smoke demo end-to-end ejecutado y evidencia capturada.
 - PRJPB_008C: BACKLOG — documentar política de evidencia runtime/versionable.
 - PRJPB_008D: BACKLOG — integrar HIA_CLI_CAPTURE.ps1 en smoke/readiness estándar.
 - PRJPB_008E: BACKLOG — auditar higiene estática de engines tras parches sucesivos.
@@ -157,8 +157,23 @@ PRJPB_008A_R_CONTINUITY_RECONCILIATION
   - ARTIFACTS\LOGS\PRJPB_008A.FUNCTIONAL_DEMO_PACKAGE.log
 
 01.00_READY_NOW
-- PRJPB_008B: READY — ejecutar smoke demo end-to-end y capturar evidencia para demo gerencial.
+- PRJPB_008B: DONE — smoke demo end-to-end ejecutado y evidencia capturada.
 
 02.00_ROLLOVER_REASON
 - PRJPB_008A ya fue ejecutado y no debe permanecer como NEXT_ACTION.
 - El CLI project continue debe apuntar a trabajo no ejecutado.
+
+==========
+PRJPB_008B_SMOKE_DEMO_EVIDENCE
+==========
+
+00.00_DONE
+- PRJPB_008B: DONE — smoke demo end-to-end ejecutado y evidencia runtime capturada.
+- Version marker creado: 02_TOOLS\Run-PRJPB-008B.ps1.
+
+01.00_READY_NOW
+- PRJPB_008C: READY — preparar demo gerencial v0.1 con script ejecutivo y brechas explícitas.
+
+02.00_TECHNICAL_DEBT
+- PRJPB_RADAR_REFRESH_001: regenerar/validar RADAR active antes de demo formal.
+- PRJPB_SUGGESTED_COMMAND_SEMANTIC_001: evitar suggested command create-file-project cuando la MiniBattle requiere evidencia semántica.

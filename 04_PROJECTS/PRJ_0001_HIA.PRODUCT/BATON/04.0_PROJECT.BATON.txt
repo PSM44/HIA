@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_008B | ejecutar smoke demo end-to-end y capturar evidencia para demo gerencial | ready
+PRJPB_008C | preparar demo gerencial v0.1 con script ejecutivo y brechas explícitas | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -171,7 +171,7 @@ SESSION_CLOSE_20260518_HIA_PRJPB_007C_TO_007H
 
 02.00_ESTADO_ACTUAL
 - Git: clean antes del cierre documental.
-- NEXT_ACTION: PRJPB_008B | ejecutar smoke demo end-to-end y capturar evidencia para demo gerencial | ready
+- NEXT_ACTION: PRJPB_008C | preparar demo gerencial v0.1 con script ejecutivo y brechas explícitas | ready
 - Runtime artifacts: ignorados por Git.
 - Continuidad mínima: versionada en Git.
 - project continue: funcional.
@@ -234,3 +234,20 @@ PRJPB_008A_R_CONTINUITY_RECONCILIATION
 03.00_NOTES
 - project continue seguía apuntando a PRJPB_008A porque BATON/BACKLOG no habían sido reconciliados.
 - No se modifica engine/router porque el resolver está obedeciendo BATON correctamente.
+
+==========
+PRJPB_008B_SMOKE_DEMO_EVIDENCE
+==========
+
+00.00_DONE_CONFIRMED
+- PRJPB_008B: DONE — smoke demo end-to-end ejecutado.
+- Evidence report runtime: ARTIFACTS\TASKS\PRJPB_008B.SMOKE_DEMO_EVIDENCE.txt.
+- Transcript runtime: ARTIFACTS\LOGS\PRJPB_008B.SMOKE_DEMO_TRANSCRIPT.log.
+- Version marker: 02_TOOLS\Run-PRJPB-008B.ps1.
+
+01.00_NEXT_ACTION
+- PRJPB_008C: READY — preparar demo gerencial v0.1 con script ejecutivo y brechas explícitas.
+
+02.00_WARNINGS
+- RADAR sigue stale respecto a esta sesión; regenerar/validar antes de demo formal.
+- No usar create-file-project como sustituto de evidencia semántica.
