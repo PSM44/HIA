@@ -26,13 +26,8 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
+PRJPB_007G | consolidar rollover de continuidad y declarar siguiente incremento técnico | ready
 
-06.10_NEXT_ACTION_CONTEXT
-- Razón: project continue sigue en NEXT_ACTION=N/A porque BATON no declaraba acción bajo header reconocido por HIA_PROJECT_ENGINE.ps1.
-- Decisión: usar header 06.00_NEXT_ACTION para que el engine lo lea como NEXT_ACTION_BATON.
-- Estado de PRJPB_007C: DONE — continuidad mínima versionada en Git con commit 149810c.
-- Restricción: no crear artefacto de tarea artificial si NEXT_ACTION/NEXT_READY_ITEM son N/A.
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
 
@@ -111,3 +106,26 @@ SESSION_CLOSE_20260518_HIA_PRJPB_006_CONTINUITY_FIXES
   4) .\01_UI\terminal\hia.ps1 project continue PRJ_0001_HIA.PRODUCT
 - Si la sesión está cerrada, iniciar una nueva:
   .\01_UI\terminal\hia.ps1 project session start PRJ_0001_HIA.PRODUCT
+
+===============================================================================
+SESSION_UPDATE_20260518_HIA_PRJPB_007G_ROLLOVER
+===============================================================================
+00.00_CONTEXT
+- Fecha local: 2026-05-18 20:29:30
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- HEAD antes de rollover: f675997
+- Artifact runtime creado: ARTIFACTS\\TASKS\\PRJPB_007D.NEXT_ACTION.txt
+
+01.00_DONE_CONFIRMED
+- PRJPB_007C: DONE — allowlist mínima de continuidad versionable.
+- PRJPB_007D: DONE — BATON/BACKLOG ahora exponen NEXT_ACTION real.
+- PRJPB_007E: DONE — suggested command usa naming semántico por MiniBattle.
+- PRJPB_007F: DONE — artifact semántico creado y reconocido por project continue.
+
+02.00_OPEN_TECHNICAL_DEBT
+- PRJPB_TEST_HARNESS_001: OPEN — estandarizar captura CLI con Start-Transcript o stream compatible para Write-Host.
+- PRJPB_NEXT_ACTION_ARTIFACT_CONTENT_001: OPEN — artifact PRJPB_007D.NEXT_ACTION.txt hoy contiene metadata genérica de create-file-project; falta contenido semántico rico de ejecución.
+
+03.00_NEXT
+- PRJPB_007G: READY — consolidar rollover de continuidad y declarar siguiente incremento técnico.
+- PRJPB_007H: BACKLOG — resolver harness de captura CLI Write-Host / transcript.

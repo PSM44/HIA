@@ -61,3 +61,25 @@ MB-HIA-PRJPB-007D_BACKLOG_RECONCILIATION
 - No crear NEXT_ACTION.txt mientras BATON/BACKLOG puedan declarar acción real.
 - No versionar ARTIFACTS runtime por defecto.
 - Mantener continuidad mínima versionada en Git.
+
+===============================================================================
+MB-HIA-PRJPB-007G_ROLLOVER
+===============================================================================
+00.00_DONE
+- PRJPB_007C: DONE — versionar continuidad mínima del proyecto.
+- PRJPB_007D: DONE — reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa.
+- PRJPB_007E: DONE — reemplazar artifact path de sesión por path semántico PRJPB_007D.NEXT_ACTION.txt.
+- PRJPB_007F: DONE — crear artifact semántico runtime y confirmar que project continue deja de sugerir create-file-project.
+
+01.00_READY_NOW
+- PRJPB_007G: READY — consolidar rollover de continuidad y declarar siguiente incremento técnico.
+
+02.00_BACKLOG_NEXT
+- PRJPB_007H: BACKLOG — resolver harness de captura CLI Write-Host / transcript.
+- PRJPB_NEXT_ACTION_ARTIFACT_CONTENT_001: BACKLOG — enriquecer contenido del artifact NEXT_ACTION más allá de metadata genérica.
+- PRJPB_EVIDENCE_POLICY_001: BACKLOG — documentar si LAST.ACTION.json y artifacts runtime quedan siempre ignorados o si existe subset versionable futuro.
+
+03.00_POLICY
+- La continuidad mínima vive en Git.
+- Los artifacts runtime siguen ignorados por defecto.
+- El naming de NEXT_ACTION artifact debe ser semántico por MiniBattle, no por session id.
