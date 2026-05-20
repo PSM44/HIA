@@ -308,3 +308,26 @@ PRJPB_008D_B_VERSION_UX_EVAL_ALLOWLIST
 
 01.00_NEXT_ACTION
 - PRJPB_008D: READY — validar dashboard UI v0.1 y preparar refresh RADAR/demo baseline.
+
+==========
+PRJPB_008D_1_DASHBOARD_UI_FUNCTIONAL_EVAL
+==========
+
+00.00_DONE_CONFIRMED
+- PRJPB_008D-1: DONE — dashboard UI v0.1 validado funcionalmente a nivel estático/código.
+- Evaluation ID: UXEVAL_0002.
+- Result: PASS_WITH_WARNINGS.
+- Registry updated:
+  - UX_UI.EVALUATION.LOG.txt
+  - UX_UI.EVALUATION.CHECKLIST.txt
+  - UX_UI.ISSUES.BACKLOG.txt
+  - UX_UI.DECISIONS.LOG.txt
+- Runner: 02_TOOLS\Run-PRJPB-008D-1.ps1.
+
+01.00_WARNINGS
+- Falta validación visual humana en navegador.
+- RADAR sigue stale para baseline formal.
+- Dashboard v0.1 no lee estado vivo.
+
+02.00_NEXT_ACTION
+- PRJPB_008D-2: READY — refresh/validación RADAR para demo baseline.

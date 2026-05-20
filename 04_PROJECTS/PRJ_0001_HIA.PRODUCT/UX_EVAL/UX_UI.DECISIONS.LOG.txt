@@ -43,3 +43,19 @@ Motivo:
 - El foco actual es presentación y funcionalidad.
 Impacto:
 - PRJPB_008D debe validar UI y baseline técnico, no preparar discurso.
+
+UX_DEC_0005 | 2026-05-19 20:08:35 | ACCEPTED
+Decision:
+- Dashboard v0.1 is accepted as PASS_WITH_WARNINGS for basic functional UX/UI.
+Reason:
+- Static validation confirms required sections, filters, gaps, commands and governance framing.
+Impact:
+- HIA can now use the dashboard as visual anchor, but not as connected management console.
+
+UX_DEC_0006 | 2026-05-19 20:08:35 | ACCEPTED
+Decision:
+- Do not promote dashboard v0.1 as formal demo baseline until RADAR is refreshed/validated.
+Reason:
+- RADAR active files are stale relative to the current session.
+Impact:
+- PRJPB_008D-2 remains necessary before formal baseline.

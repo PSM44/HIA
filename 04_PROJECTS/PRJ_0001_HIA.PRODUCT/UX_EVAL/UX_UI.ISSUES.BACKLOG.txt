@@ -48,3 +48,25 @@ Recomendación:
 
 - UX_ISSUE_0001 debe resolverse en dashboard v0.2, no en v0.1.
 - UX_ISSUE_0002 puede resolverse con PRJPB_008D si el foco incluye RADAR refresh.
+
+==========
+03.00_ISSUES_FROM_UXEVAL_0002
+==========
+
+UX_ISSUE_0006 | P2 | falta validación visual humana en navegador | OPEN
+Impacto:
+- La validación actual confirma estructura/código, pero no experiencia visual real.
+Recomendación:
+- Abrir dashboard y capturar feedback visual puntual antes de demo formal.
+
+UX_ISSUE_0007 | P2 | dashboard no muestra timestamp de última evaluación UX/UI | OPEN
+Impacto:
+- La UI no comunica freshness de evaluación UX/UI.
+Recomendación:
+- Agregar bloque "Última evaluación UX/UI" en v0.2.
+
+UX_ISSUE_0008 | P3 | comandos demo aparecen como texto pero no tienen botón copiar | OPEN
+Impacto:
+- Para demo o uso operativo, copiar comandos desde pre puede ser suficiente, pero no óptimo.
+Recomendación:
+- Agregar botones copy-to-clipboard en v0.2.

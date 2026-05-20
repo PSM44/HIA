@@ -75,3 +75,44 @@ FINDING_003:
 NEXT_EVAL_ID......: UXEVAL_0002
 TARGET............: revisar dashboard abierto en navegador y registrar feedback funcional real.
 OUTPUT_EXPECTED...: issues priorizados + decisión sobre v0.2.
+
+==========
+02.00_EVALUATION_SESSION_0002
+==========
+
+02.10_METADATA
+- Evaluation ID: UXEVAL_0002
+- Created local: 2026-05-19 20:08:35
+- Created UTC: 2026-05-20T00:08:35.3244240Z
+- Git branch: feat/20260405-console-v2-phase1-phase2
+- Git head base: bfa9a6d
+- UI evaluated: 01_UI\web\HIA.MANAGEMENT.DASHBOARD.v0.1.html
+- Evaluation type: static functional UX/UI validation
+
+02.20_RESULT_SUMMARY
+- OVERALL_STATUS: PASS_WITH_WARNINGS
+- Dashboard exists and is non-empty.
+- Runner exists.
+- Ready / Próximamente / Futuro lanes exist.
+- Brechas section exists.
+- Demo commands section exists.
+- Filter controls and JavaScript handler exist.
+- Static limitation is explicit.
+- RADAR stale is explicit.
+
+02.30_PASS_FINDINGS
+- UX_PASS_0001: Dashboard is usable as a local static management presentation surface.
+- UX_PASS_0002: Roadmap lanes support basic executive segmentation: listo / próximo / futuro.
+- UX_PASS_0003: The UI exposes material gaps instead of hiding them.
+- UX_PASS_0004: Filtering behavior is present at code level.
+
+02.40_WARNINGS
+- UX_WARN_0001: Validation is static/code-level; browser visual/manual validation still pending.
+- UX_WARN_0002: Dashboard v0.1 does not read live HIA state.
+- UX_WARN_0003: RADAR remains stale and must be refreshed before formal demo baseline.
+- UX_WARN_0004: Suggested command still points to create-file-project for semantic tasks.
+
+02.50_DECISION
+- Dashboard v0.1 is acceptable as a basic functional UI anchor.
+- Do not present it as a connected management console.
+- Proceed to PRJPB_008D-2 for RADAR/demo baseline or to manual visual review if human wants visual refinement first.

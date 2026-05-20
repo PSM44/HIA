@@ -64,3 +64,46 @@ Formato:
 
 STATUS............: DRAFT
 NEXT_STEP.........: ejecutar evaluación manual contra dashboard abierto.
+
+==========
+03.00_EVALUATION_RESULT_UXEVAL_0002
+==========
+
+03.10_VISUAL_STRUCTURE
+[WARN] El dashboard abre localmente sin error. Pendiente confirmación visual humana en navegador.
+[PASS] La pantalla inicial se entiende sin explicar arquitectura interna.
+[PASS] La jerarquía visual distingue título, estado, roadmap y brechas.
+[WARN] El layout parece preparado para notebook, pero falta validación visual humana.
+[WARN] El layout tiene media query responsive, pero falta validación visual humana.
+
+03.20_FUNCTIONALITY
+[PASS] Filtro Todo/Listo/Próximamente/Futuro existe a nivel de HTML/JS.
+[PASS] Las tarjetas tienen data-status para ocultar/mostrar.
+[PASS] Los comandos demo mínimos están visibles.
+[PASS] La UI no requiere servidor local.
+[PASS] La UI no requiere internet.
+
+03.30_CONTENT_ACCURACY
+[PASS] "Listo" contiene capacidades ya creadas o demostradas.
+[PASS] "Próximamente" contiene trabajo accionable de corto plazo.
+[PASS] "Futuro" no se presenta como ya disponible.
+[PASS] RADAR stale aparece como brecha explícita.
+[PASS] Dashboard estático aparece como limitación explícita.
+
+03.40_MANAGEMENT_USEFULNESS
+[PASS] Permite explicar el estado de HIA rápidamente.
+[PASS] Permite mostrar avance sin abrir múltiples archivos.
+[PASS] Permite distinguir producto actual vs roadmap.
+[PASS] Reduce dependencia de terminal para primera impresión.
+[PASS] No sobrepromete automatización completa.
+
+03.50_TECHNICAL_GOVERNANCE
+[PASS] UI está versionada en Git.
+[PASS] Runner está versionado en Git.
+[PASS] Evaluación UX/UI está versionada en Git.
+[PASS] Evidencia pesada queda separada en ARTIFACTS\UX_EVAL.
+[PASS] Próxima acción queda en BATON/BACKLOG.
+
+03.60_OVERALL
+STATUS: PASS_WITH_WARNINGS
+NEXT_RECOMMENDATION: PRJPB_008D-2 refresh/validación RADAR demo baseline, salvo que se priorice revisión visual humana primero.

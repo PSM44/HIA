@@ -226,3 +226,20 @@ PRJPB_008D_B_VERSION_UX_EVAL_ALLOWLIST
 
 01.00_READY_NOW
 - PRJPB_008D: READY — validar dashboard UI v0.1 y preparar refresh RADAR/demo baseline.
+
+==========
+PRJPB_008D_1_DASHBOARD_UI_FUNCTIONAL_EVAL
+==========
+
+00.00_DONE
+- PRJPB_008D-1: DONE — dashboard UI v0.1 validado funcionalmente.
+- Result: PASS_WITH_WARNINGS.
+- UX registry updated with UXEVAL_0002.
+
+01.00_READY_NOW
+- PRJPB_008D-2: READY — refresh/validación RADAR para demo baseline.
+
+02.00_TECHNICAL_DEBT
+- UX_ISSUE_0006: falta validación visual humana en navegador.
+- UX_ISSUE_0007: dashboard no muestra timestamp de última evaluación UX/UI.
+- UX_ISSUE_0008: comandos demo no tienen botón copiar.
