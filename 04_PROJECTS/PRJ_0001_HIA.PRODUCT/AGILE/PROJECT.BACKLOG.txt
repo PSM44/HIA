@@ -188,7 +188,7 @@ PRJPB_008C_BASIC_MANAGEMENT_UI
 - Runner: 02_TOOLS\Run-PRJPB-008C.ps1.
 
 01.00_READY_NOW
-- PRJPB_008D: READY — validar dashboard UI v0.1 y preparar refresh RADAR/demo baseline.
+- PRJPB_008D: PARTIAL — dashboard UI v0.1 validado funcionalmente; RADAR/demo baseline pendiente.
 
 02.00_TECHNICAL_DEBT
 - PRJPB_UI_DATA_BINDING_001: conectar dashboard a outputs reales de CLI/BATON/RADAR.
@@ -209,7 +209,7 @@ PRJPB_008D_A_UX_UI_EVALUATION_REGISTRY
   - UX_UI.DECISIONS.LOG.txt
 
 01.00_READY_NOW
-- PRJPB_008D: READY — validar dashboard UI v0.1 y preparar refresh RADAR/demo baseline.
+- PRJPB_008D: PARTIAL — dashboard UI v0.1 validado funcionalmente; RADAR/demo baseline pendiente.
 
 02.00_TECHNICAL_DEBT
 - UX_ISSUE_0001: dashboard v0.1 estático; requiere data binding en v0.2.
@@ -225,7 +225,7 @@ PRJPB_008D_B_VERSION_UX_EVAL_ALLOWLIST
 - Files in scope: README.UX_EVAL.txt, UX_UI.EVALUATION.LOG.txt, UX_UI.EVALUATION.CHECKLIST.txt, UX_UI.ISSUES.BACKLOG.txt, UX_UI.DECISIONS.LOG.txt.
 
 01.00_READY_NOW
-- PRJPB_008D: READY — validar dashboard UI v0.1 y preparar refresh RADAR/demo baseline.
+- PRJPB_008D: PARTIAL — dashboard UI v0.1 validado funcionalmente; RADAR/demo baseline pendiente.
 
 ==========
 PRJPB_008D_1_DASHBOARD_UI_FUNCTIONAL_EVAL
@@ -243,3 +243,42 @@ PRJPB_008D_1_DASHBOARD_UI_FUNCTIONAL_EVAL
 - UX_ISSUE_0006: falta validación visual humana en navegador.
 - UX_ISSUE_0007: dashboard no muestra timestamp de última evaluación UX/UI.
 - UX_ISSUE_0008: comandos demo no tienen botón copiar.
+
+==========
+SESSION_CLOSE_20260519_UX_UI_BLOCK
+==========
+
+00.00_DONE
+- PRJPB_008A: DONE — paquete funcional mínimo para demo gerencial.
+- PRJPB_008A_R: DONE — continuidad reconciliada.
+- PRJPB_008B: DONE — smoke demo end-to-end.
+- PRJPB_008C: DONE — dashboard UX/UI básico v0.1.
+- PRJPB_008D-A: DONE — registro UX/UI.
+- PRJPB_008D-B: DONE — UX_EVAL versionado vía .gitignore allowlist.
+- PRJPB_008D-1: DONE — validación funcional estática UX/UI PASS_WITH_WARNINGS.
+
+01.00_READY_NOW
+- PRJPB_008D-2: READY — refresh/validación RADAR para demo baseline.
+
+02.00_BACKLOG_NEXT
+- PRJPB_008E: BACKLOG — validación visual humana del dashboard en navegador.
+- PRJPB_008F: BACKLOG — dashboard v0.2 con datos reales desde CLI/BATON/RADAR.
+- PRJPB_008G: BACKLOG — suggested command semántico.
+- PRJPB_008H: BACKLOG — protocolo de screenshots UX/UI y evidencia visual.
+
+03.00_TECHNICAL_DEBT_ROLLOVER
+- TD_001/P1: RADAR stale.
+- TD_002/P1: dashboard estático sin datos vivos.
+- TD_003/P1: suggested command genérico.
+- TD_004/P2: validación visual humana pendiente.
+- TD_005/P2: protocolo screenshots UX/UI pendiente.
+- TD_006/P2: warning git global ignore por permisos.
+- TD_007/P3: copy-to-clipboard pendiente.
+- TD_008/P3: timestamp última evaluación UX/UI pendiente.
+
+04.00_DELIVERABLE_PATH_TO_MANAGEMENT
+- Step 1: PRJPB_008D-2 refresh/validación RADAR.
+- Step 2: validación visual humana dashboard.
+- Step 3: ajustar dashboard si hay blockers UX.
+- Step 4: confirmar BATON/BACKLOG/RADAR/UX_EVAL alineados.
+- Step 5: demo funcional a gerencia con UI + CLI mínimo + brechas explícitas.

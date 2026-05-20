@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_008D | validar dashboard UI v0.1 y preparar refresh RADAR/demo baseline | ready
+PRJPB_008D-2 | refresh/validación RADAR para demo baseline | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -171,7 +171,7 @@ SESSION_CLOSE_20260518_HIA_PRJPB_007C_TO_007H
 
 02.00_ESTADO_ACTUAL
 - Git: clean antes del cierre documental.
-- NEXT_ACTION: PRJPB_008D | validar dashboard UI v0.1 y preparar refresh RADAR/demo baseline | ready
+- NEXT_ACTION: PRJPB_008D-2 | refresh/validación RADAR para demo baseline | ready
 - Runtime artifacts: ignorados por Git.
 - Continuidad mínima: versionada en Git.
 - project continue: funcional.
@@ -331,3 +331,49 @@ PRJPB_008D_1_DASHBOARD_UI_FUNCTIONAL_EVAL
 
 02.00_NEXT_ACTION
 - PRJPB_008D-2: READY — refresh/validación RADAR para demo baseline.
+
+==========
+SESSION_CLOSE_20260519_UX_UI_BLOCK
+==========
+
+00.00_METADATA
+- CLOSED_LOCAL: 2026-05-19 20:13:45
+- CLOSED_UTC: 2026-05-20T00:13:45.0533977Z
+- GIT_BRANCH: feat/20260405-console-v2-phase1-phase2
+- GIT_HEAD_BEFORE_CLOSE_COMMIT: 559c017
+- PROJECT_ID: PRJ_0001_HIA.PRODUCT
+- PURPOSE: cierre de sesión después de PRJPB_008D-1.
+
+01.00_DONE_THIS_SESSION
+- PRJPB_008A: DONE — paquete funcional mínimo para demo gerencial.
+- PRJPB_008A_R: DONE — continuidad reconciliada hacia PRJPB_008B.
+- PRJPB_008B: DONE — smoke demo end-to-end y evidencia runtime.
+- PRJPB_008C: DONE — dashboard UX/UI básico v0.1 creado y versionado.
+- PRJPB_008D-A: DONE — registro UX/UI creado.
+- PRJPB_008D-B: DONE — UX_EVAL allowlisted y versionado.
+- PRJPB_008D-1: DONE — evaluación funcional estática UX/UI registrada como PASS_WITH_WARNINGS.
+
+02.00_CURRENT_STATE
+- UI dashboard v0.1 existe.
+- UX_EVAL existe y está versionado.
+- Dashboard v0.1 validado funcionalmente a nivel estático/código.
+- Resultado UX/UI: PASS_WITH_WARNINGS.
+- Git quedó limpio al cierre previo.
+- Sesión debe cerrarse después de este commit de continuidad.
+
+03.00_TECHNICAL_DEBT
+- TD_001: RADAR stale; requiere refresh/validación antes de demo formal.
+- TD_002: dashboard v0.1 estático; requiere data binding en v0.2.
+- TD_003: suggested command sigue usando create-file-project genérico.
+- TD_004: falta validación visual humana en navegador.
+- TD_005: falta protocolo de screenshots UX/UI.
+- TD_006: warning de permisos en git ignore global del entorno.
+- TD_007: dashboard sin botón copiar comandos.
+- TD_008: dashboard no muestra timestamp de última evaluación UX/UI.
+
+04.00_NEXT_ACTION
+- PRJPB_008D-2: READY — refresh/validación RADAR para demo baseline.
+
+05.00_OPTIONAL_HANDOFF_PROMPT
+Para continuar próxima sesión:
+""Hoy es [fecha/hora], Santiago Chile. Continuemos HIA desde PRJPB_008D-2. Primero verifica Git limpio, session status, project continue y estado RADAR. Objetivo: refresh/validación RADAR para demo baseline, sin tocar narrativa todavía salvo que sea necesario.""
