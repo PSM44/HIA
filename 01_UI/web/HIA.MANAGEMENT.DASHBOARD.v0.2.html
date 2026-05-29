@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HIA — Management Dashboard v0.2</title>
+  <style>
+    :root {
+      --bg:#0f172a; --panel:#111827; --panel2:#1f2937; --text:#e5e7eb; --muted:#9ca3af;
+      --line:#374151; --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444; --next:#38bdf8; --future:#a78bfa;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Segoe UI,Arial,sans-serif; color:var(--text); background:radial-gradient(circle at top left,#1e293b 0%,var(--bg) 45%,#020617 100%); }
+    .shell { max-width:1280px; margin:0 auto; padding:28px; }
+    .grid { display:grid; gap:16px; }
+    .hero { grid-template-columns:1.4fr .9fr; }
+    .cards4 { grid-template-columns:repeat(4,1fr); }
+    .cards3 { grid-template-columns:repeat(3,1fr); }
+    .card { background:rgba(17,24,39,.94); border:1px solid var(--line); border-radius:18px; padding:20px; box-shadow:0 20px 40px rgba(0,0,0,.25); }
+    h1,h2,h3 { margin:0; }
+    h1 { font-size:34px; letter-spacing:-.04em; line-height:1.05; }
+    h2 { font-size:20px; margin-bottom:12px; }
+    h3 { font-size:15px; margin-bottom:8px; }
+    p { color:var(--muted); line-height:1.5; }
+    .subtitle { margin-top:12px; color:var(--muted); }
+    .meta-row { display:flex; justify-content:space-between; gap:12px; border-bottom:1px solid rgba(255,255,255,.08); padding:8px 0; font-size:13px; }
+    .meta-row span:first-child { color:var(--muted); }
+    .meta-row span:last-child { text-align:right; }
+    .label { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.08em; }
+    .value { margin-top:8px; font-size:20px; font-weight:700; }
+    .pill { display:inline-flex; align-items:center; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700; border:1px solid rgba(255,255,255,.12); }
+    .pill.ok { color:var(--ok); background:rgba(34,197,94,.10); }
+    .pill.warn { color:var(--warn); background:rgba(245,158,11,.10); }
+    .pill.bad { color:var(--bad); background:rgba(239,68,68,.10); }
+    .pill.next { color:var(--next); background:rgba(56,189,248,.10); }
+    code, pre { background:#020617; border:1px solid var(--line); border-radius:14px; color:#d1d5db; }
+    pre { padding:14px; overflow:auto; white-space:pre-wrap; font-size:12px; line-height:1.45; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    td,th { border-bottom:1px solid rgba(255,255,255,.08); padding:10px; text-align:left; }
+    th { color:var(--muted); font-weight:600; }
+    ul { margin:0; padding-left:18px; color:var(--muted); line-height:1.6; }
+    .section { margin-top:18px; }
+    .footer { margin-top:18px; color:var(--muted); font-size:12px; text-align:center; }
+    @media (max-width:980px) { .hero,.cards4,.cards3 { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+<main class="shell">
+  <section class="grid hero">
+    <div class="card">
+      <span class="pill next">HIA PRODUCT · Dashboard v0.2</span>
+      <h1 style="margin-top:14px;">Management Dashboard con estado real</h1>
+      <p class="subtitle">Vista ejecutiva generada desde CLI, BATON, BACKLOG, RADAR, UX_EVAL y Git. No es web app viva todavía: es HTML estático regenerable desde fuentes reales.</p>
+    </div>
+    <div class="card">
+      <div class="meta-row"><span>Project ID</span><span>PRJ_0001_HIA.PRODUCT</span></div>
+      <div class="meta-row"><span>Branch</span><span>feat/20260405-console-v2-phase1-phase2</span></div>
+      <div class="meta-row"><span>HEAD</span><span>9797fde 20260529_HIA_PRJPB_008E_fix_human_visual_review_artifact_status</span></div>
+      <div class="meta-row"><span>Generado local</span><span>2026-05-29 13:15:28</span></div>
+      <div class="meta-row"><span>Generado UTC</span><span>2026-05-29T17:15:28Z</span></div>
+      <div class="meta-row"><span>Modo</span><span>Static HTML generated from real repo state</span></div>
+    </div>
+  </section>
+
+  <section class="grid cards4 section">
+    <div class="card"><div class="label">Git</div><div class="value"><span class="pill ok">Limpio</span></div></div>
+    <div class="card"><div class="label">Evidence</div><div class="value"><span class="pill ok">FRESH</span></div></div>
+    <div class="card"><div class="label">RADAR</div><div class="value"><span class="pill ok">Active OK</span></div></div>
+    <div class="card"><div class="label">UX latest</div><div class="value"><span class="pill ok">PASS_WITH_WARNINGS</span></div></div>
+  </section>
+
+  <section class="grid cards3 section">
+    <div class="card">
+      <h2>Estado operativo</h2>
+      <div class="meta-row"><span>Project state</span><span>active</span></div>
+      <div class="meta-row"><span>Config</span><span>OK</span></div>
+      <div class="meta-row"><span>Sesión</span><span>closed</span></div>
+      <div class="meta-row"><span>AI memory</span><span>MISSING</span></div>
+    </div>
+    <div class="card">
+      <h2>Next action real</h2>
+      <p>PRJPB_008F | dashboard v0.2 con datos reales desde CLI/BATON/RADAR | ready</p>
+      <h3>Guidance</h3>
+      <p>Review evidence anchor then start session before executing next task.</p>
+    </div>
+    <div class="card">
+      <h2>Suggested command</h2>
+      <pre>hia project review PRJ_0001_HIA.PRODUCT</pre>
+      <p>Comando sugerido calculado desde `project continue`.</p>
+    </div>
+  </section>
+
+  <section class="card section">
+    <h2>Evidence anchor</h2>
+    <div class="meta-row"><span>State</span><span>FRESH</span></div>
+    <div class="meta-row"><span>Age hours</span><span>0.7</span></div>
+    <div class="meta-row"><span>Consistency</span><span>CONSISTENT</span></div>
+    <pre>source=PRJPB_008D-2.RADAR_BASELINE_EVIDENCE.20260529_123032 | captured_utc=2026-05-29T16:30:33.9181137Z | output=C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_0001_HIA.PRODUCT\ARTIFACTS\TASKS\PRJPB_008D-2.RADAR_BASELINE_EVIDENCE.20260529_123032.txt | log=C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_0001_HIA.PRODUCT\ARTIFACTS\LOGS\PRJPB_008D-2.RADAR_BASELINE_EVIDENCE.20260529_123032.log</pre>
+    <div class="meta-row"><span>Latest output</span><span>C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_0001_HIA.PRODUCT\ARTIFACTS\TASKS\PRJPB_008D-2.RADAR_BASELINE_EVIDENCE.20260529_123032.txt</span></div>
+    <div class="meta-row"><span>Latest log</span><span>C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_0001_HIA.PRODUCT\ARTIFACTS\LOGS\PRJPB_008D-2.RADAR_BASELINE_EVIDENCE.20260529_123032.log</span></div>
+  </section>
+
+  <section class="card section">
+    <h2>RADAR freshness</h2>
+    <table>
+      <thead><tr><th>Archivo</th><th>Última modificación</th><th>Bytes</th><th>Estado</th></tr></thead>
+      <tbody><tr><td>Radar.Index.ACTIVE.txt</td><td>2026-05-29 11:47:43</td><td>86130</td><td><span class="pill ok">OK</span></td></tr>
+<tr><td>Radar.Registry.ACTIVE.txt</td><td>2026-05-29 11:47:46</td><td>91773</td><td><span class="pill ok">OK</span></td></tr>
+<tr><td>Radar.Core.ACTIVE.txt</td><td>2026-05-29 11:47:46</td><td>1004579</td><td><span class="pill ok">OK</span></td></tr>
+<tr><td>Radar.Lite.ACTIVE.txt</td><td>2026-05-29 11:47:47</td><td>2365</td><td><span class="pill ok">OK</span></td></tr></tbody>
+    </table>
+  </section>
+
+  <section class="grid cards3 section">
+    <div class="card">
+      <h2>Ready / next backlog</h2>
+      <ul><li>PRJPB_008F: READY — dashboard v0.2 con datos reales desde CLI/BATON/RADAR.</li>
+<li>PRJPB_008G: BACKLOG — suggested command semántico.</li>
+<li>PRJPB_008H: BACKLOG — protocolo de screenshots UX/UI y evidencia visual.</li>
+<li>PRJPB_EVIDENCE_POLICY_001: BACKLOG — formalizar política runtime/versionable.</li></ul>
+    </div>
+    <div class="card">
+      <h2>UX issues abiertos</h2>
+      <ul><li>UX_ISSUE_0001 debe resolverse en dashboard v0.2, no en v0.1.</li>
+<li>UX_ISSUE_0002 puede resolverse con PRJPB_008D si el foco incluye RADAR refresh.</li>
+<li>UX_ISSUE_0006 | P2 | falta validación visual humana en navegador | OPEN</li>
+<li>UX_ISSUE_0007 | P2 | dashboard no muestra timestamp de última evaluación UX/UI | OPEN</li>
+<li>UX_ISSUE_0008 | P3 | comandos demo aparecen como texto pero no tienen botón copiar | OPEN</li>
+<li>UX_ISSUE_0009/P1: dashboard v0.1 estático muestra contenido desactualizado respecto a estado real.</li>
+<li>UX_ISSUE_0010/P1: dashboard debe leer/mostrar HEAD, NEXT_ACTION, EVIDENCE_STATE, RADAR freshness y UX_EVAL latest result.</li>
+<li>UX_ISSUE_0011/P2: mantener brechas explícitas, pero calculadas desde estado vigente.</li></ul>
+    </div>
+    <div class="card">
+      <h2>Brechas explícitas</h2>
+      <ul>
+        <li>Dashboard v0.2 es generado, no app viva con API.</li>
+        <li>AI_MEMORY_STATUS sigue pendiente si aparece MISSING.</li>
+        <li>Botones copiar comandos siguen como mejora UX.</li>
+        <li>Protocolo screenshots UX/UI sigue en backlog.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card section">
+    <h2>Comandos demo mínimos</h2>
+    <pre>git status --short
+.\01_UI\terminal\hia.ps1 project status PRJ_0001_HIA.PRODUCT
+.\01_UI\terminal\hia.ps1 project continue PRJ_0001_HIA.PRODUCT
+.\01_UI\terminal\hia.ps1 project review PRJ_0001_HIA.PRODUCT
+.\01_UI\terminal\hia.ps1 project session status PRJ_0001_HIA.PRODUCT</pre>
+  </section>
+
+  <div class="footer">HIA Management Dashboard v0.2 · Generated from real CLI/BATON/BACKLOG/RADAR/UX_EVAL/Git state · PRJPB_008F-B</div>
+</main>
+</body>
+</html>
