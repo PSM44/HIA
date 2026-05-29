@@ -9,7 +9,7 @@ CREATED_LOCAL.....: 2026-05-29 13:00:07 -04
 CREATED_UTC.......: 2026-05-29T17:00:07Z
 TYPE..............: human-visual-validation
 TARGET............: 01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.1.html
-STATUS............: PENDING_HUMAN_REVIEW
+STATUS............: CLOSED
 
 ==========
 01.00_OBJECTIVE
@@ -40,9 +40,9 @@ Completar manualmente después de abrir el dashboard en navegador.
 03.00_RESULT
 ==========
 
-RESULT............: PENDING
-HUMAN_DECISION....: PENDING
-PASS_LEVEL........: PENDING
+RESULT............: PASS_WITH_WARNINGS
+HUMAN_DECISION....: Dashboard v0.1 visualmente presentable para demo interna.
+PASS_LEVEL........: PASS_WITH_WARNINGS
 
 Opciones:
 - PASS
@@ -55,7 +55,13 @@ Opciones:
 
 Anotar observaciones humanas aquí:
 
-- 
+- Layout limpio y entendible.
+- Jerarquía visual aceptable para conversación interna.
+- Secciones Listo / Próximamente / Futuro son claras.
+- Comandos demo mínimos visibles.
+- Dashboard v0.1 sigue siendo estático.
+- Contenido visible quedó parcialmente desactualizado respecto a HEAD/evidence/RADAR vigente.
+- Debe evolucionar a v0.2 con lectura real de CLI/BATON/RADAR. 
 
 ==========
 05.00_ISSUES_TO_REGISTER
@@ -63,7 +69,9 @@ Anotar observaciones humanas aquí:
 
 Si hay problemas, registrar también en UX_UI.ISSUES.BACKLOG.txt.
 
-- 
+- UX_ISSUE_0009/P1: dashboard v0.1 estático muestra contenido desactualizado respecto a estado real.
+- UX_ISSUE_0010/P1: dashboard debe leer/mostrar HEAD, NEXT_ACTION, EVIDENCE_STATE, RADAR freshness y UX_EVAL latest result.
+- UX_ISSUE_0011/P2: mantener brechas explícitas, pero calculadas desde estado vigente. 
 
 ==========
 06.00_DECISION
