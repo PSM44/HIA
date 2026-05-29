@@ -40,6 +40,22 @@
     th { color:var(--muted); font-weight:600; }
     ul { margin:0; padding-left:18px; color:var(--muted); line-height:1.6; }
     .section { margin-top:18px; }
+
+    .cmd-block { position: relative; }
+    .copy-btn {
+      cursor: pointer;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(56,189,248,.12);
+      color: var(--text);
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      margin: 8px 0 10px 0;
+    }
+    .copy-btn:hover { background: rgba(56,189,248,.22); border-color: #38bdf8; }
+    .copy-note { color: var(--muted); font-size: 12px; margin-top: 6px; }
+
     .footer { margin-top:18px; color:var(--muted); font-size:12px; text-align:center; }
     @media (max-width:980px) { .hero,.cards4,.cards3 { grid-template-columns:1fr; } }
   </style>
@@ -85,8 +101,14 @@
     </div>
     <div class="card">
       <h2>Suggested command</h2>
-      <pre>hia project review PRJ_0001_HIA.PRODUCT</pre>
-      <p>Comando sugerido calculado desde `project continue`.</p>
+      <h3>Demo semántica recomendada</h3>
+      <button class="copy-btn" data-copy=".\\01_UI\\terminal\\hia.ps1 project open PRJ_0001_HIA.PRODUCT">Copiar comando</button>
+      <pre>.\01_UI\terminal\hia.ps1 project open PRJ_0001_HIA.PRODUCT</pre>
+      <p>Comando recomendado para demo ejecutiva: abrir el proyecto y mostrar navegación operativa.</p>
+      <h3>Engine suggested command</h3>
+      <button class="copy-btn" data-copy=".\\01_UI\\terminal\\hia.ps1 project review PRJ_0001_HIA.PRODUCT">Copiar comando</button>
+      <pre>.\01_UI\terminal\hia.ps1 project review PRJ_0001_HIA.PRODUCT</pre>
+      <p>Comando conservador calculado desde project continue. Correcto para control operativo, menos útil para demo.</p>
     </div>
   </section>
 
@@ -135,7 +157,7 @@
       <ul>
         <li>Dashboard v0.2 es generado, no app viva con API.</li>
         <li>AI_MEMORY_STATUS sigue pendiente si aparece MISSING.</li>
-        <li>Botones copiar comandos siguen como mejora UX.</li>
+        <li>Botones copiar comandos incorporados en v0.2; validar comportamiento según política del navegador local file://.</li>
         <li>Protocolo screenshots UX/UI sigue en backlog.</li>
       </ul>
     </div>
@@ -143,14 +165,58 @@
 
   <section class="card section">
     <h2>Comandos demo mínimos</h2>
-    <pre>git status --short
-.\01_UI\terminal\hia.ps1 project status PRJ_0001_HIA.PRODUCT
-.\01_UI\terminal\hia.ps1 project continue PRJ_0001_HIA.PRODUCT
-.\01_UI\terminal\hia.ps1 project review PRJ_0001_HIA.PRODUCT
-.\01_UI\terminal\hia.ps1 project session status PRJ_0001_HIA.PRODUCT</pre>
+      <div class="cmd-block">
+        <h3>Git status</h3>
+        <button class="copy-btn" data-copy="git status --short">Copiar comando</button>
+        <pre>git status --short</pre>
+      </div>
+      <div class="cmd-block">
+        <h3>Project status</h3>
+        <button class="copy-btn" data-copy=".\\01_UI\\terminal\\hia.ps1 project status PRJ_0001_HIA.PRODUCT">Copiar comando</button>
+        <pre>.\01_UI\terminal\hia.ps1 project status PRJ_0001_HIA.PRODUCT</pre>
+      </div>
+      <div class="cmd-block">
+        <h3>Project continue</h3>
+        <button class="copy-btn" data-copy=".\\01_UI\\terminal\\hia.ps1 project continue PRJ_0001_HIA.PRODUCT">Copiar comando</button>
+        <pre>.\01_UI\terminal\hia.ps1 project continue PRJ_0001_HIA.PRODUCT</pre>
+      </div>
+      <div class="cmd-block">
+        <h3>Project review</h3>
+        <button class="copy-btn" data-copy=".\\01_UI\\terminal\\hia.ps1 project review PRJ_0001_HIA.PRODUCT">Copiar comando</button>
+        <pre>.\01_UI\terminal\hia.ps1 project review PRJ_0001_HIA.PRODUCT</pre>
+      </div>
+      <div class="cmd-block">
+        <h3>Project open</h3>
+        <button class="copy-btn" data-copy=".\\01_UI\\terminal\\hia.ps1 project open PRJ_0001_HIA.PRODUCT">Copiar comando</button>
+        <pre>.\01_UI\terminal\hia.ps1 project open PRJ_0001_HIA.PRODUCT</pre>
+      </div>
+      <div class="cmd-block">
+        <h3>Session status</h3>
+        <button class="copy-btn" data-copy=".\\01_UI\\terminal\\hia.ps1 project session status PRJ_0001_HIA.PRODUCT">Copiar comando</button>
+        <pre>.\01_UI\terminal\hia.ps1 project session status PRJ_0001_HIA.PRODUCT</pre>
+      </div>
+    <p class="copy-note">Los botones usan navigator.clipboard cuando el navegador lo permite. Si falla por política local file://, copiar desde el bloque pre.</p>
   </section>
 
-  <div class="footer">HIA Management Dashboard v0.2 · Generated from real CLI/BATON/BACKLOG/RADAR/UX_EVAL/Git state · PRJPB_008F-B</div>
+  <div class="footer">HIA Management Dashboard v0.2 · Generated from real CLI/BATON/BACKLOG/RADAR/UX_EVAL/Git state · PRJPB_008G-A</div>
 </main>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const value = btn.getAttribute('data-copy') || '';
+      const original = btn.textContent;
+      try {
+        await navigator.clipboard.writeText(value);
+        btn.textContent = 'Copiado';
+        setTimeout(() => { btn.textContent = original; }, 1200);
+      } catch (err) {
+        btn.textContent = 'Copiar manualmente';
+        setTimeout(() => { btn.textContent = original; }, 1600);
+      }
+    });
+  });
+</script>
+
 </body>
 </html>
