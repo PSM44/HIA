@@ -1,4 +1,4 @@
-<#
+﻿<#
 ===============================================================================
 MODULE: HIA_ROUTER.ps1
 SYSTEM: HIA — Human Intelligence Amplifier

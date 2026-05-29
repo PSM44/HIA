@@ -1,4 +1,4 @@
-<#
+﻿<#
 ===============================================================================
 HIA CLI ENTRYPOINT
 ===============================================================================
@@ -28,7 +28,6 @@ if ($Command -eq "hia" -and $RouterArgs.Count -gt 0) {
     }
 }
 
-Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 $isJsonMode = $false
@@ -130,7 +129,19 @@ if (-not $isJsonMode) {
 # RESOLVE PROJECT ROOT
 # -----------------------------------------------------------------------------
 
-$current = $PSScriptRoot
+$scriptRoot = if (-not [string]::IsNullOrWhiteSpace($PSScriptRoot)) {
+    $PSScriptRoot
+}
+elseif ($MyInvocation.MyCommand.Path) {
+    Split-Path -LiteralPath $MyInvocation.MyCommand.Path -Parent
+}
+else {
+    (Get-Location).Path
+}
+
+$current = $scriptRoot
+$parent = $null
+$projectRoot = $null
 
 while ($true) {
 
@@ -159,6 +170,9 @@ if (-not (Test-Path $routerPath)) {
 }
 
 . $routerPath
+
+# Enable strict mode only after wrapper bootstrap/root/router load is stable.
+Set-StrictMode -Version Latest
 
 # -----------------------------------------------------------------------------
 # PARSE COMMAND
@@ -470,6 +484,5 @@ catch {
     Write-Host ""
     exit $exitCode
 }
-
 
 
