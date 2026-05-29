@@ -68,3 +68,13 @@ DECISION..........: Dashboard v0.1 pasa validación visual humana con advertenci
 RATIONALE.........: Visualmente es presentable para demo interna, pero no debe avanzar como baseline formal sin data binding real.
 RESULT............: PASS_WITH_WARNINGS
 NEXT_ACTION.......: PRJPB_008F | dashboard v0.2 con datos reales desde CLI/BATON/RADAR | ready
+
+==========
+UX_DECISION_0004_PRJPB_008F
+==========
+DATE_LOCAL........: 2026-05-29 13:24:49
+DECISION..........: Dashboard v0.2 se acepta como PASS_WITH_WARNINGS.
+RATIONALE.........: Ya muestra estado real y elimina ruido histórico, pero sigue siendo HTML estático generado.
+RESULT............: PASS_WITH_WARNINGS
+NEXT_ACTION.......: PRJPB_008G | suggested command semántico y botones copiar comandos demo | ready
+

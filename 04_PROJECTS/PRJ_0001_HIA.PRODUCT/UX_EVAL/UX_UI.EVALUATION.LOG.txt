@@ -136,3 +136,25 @@ WARNINGS..........:
 - Contenido visible quedó parcialmente desactualizado respecto a HEAD/evidence/RADAR vigente.
 - Debe evolucionar a v0.2 con lectura real de CLI/BATON/RADAR.
 NEXT_ACTION.......: PRJPB_008F | dashboard v0.2 con datos reales desde CLI/BATON/RADAR | ready
+
+==========
+UXEVAL_0004_PRJPB_008F_DASHBOARD_V02_REAL_DATA
+==========
+DATE_LOCAL........: 2026-05-29 13:24:49
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+MB_ID.............: PRJPB_008F
+TARGET............: 01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.2.html
+RESULT............: PASS_WITH_WARNINGS
+HUMAN_DECISION....: Dashboard v0.2 apto para demo interna como HTML generado desde estado real.
+OBSERVATIONS......:
+- Muestra Evidence FRESH.
+- Muestra RADAR Active OK.
+- Muestra UX latest PASS_WITH_WARNINGS.
+- Backlog ejecutivo limpio.
+- Brechas explícitas visibles.
+WARNINGS..........:
+- No es app viva con API.
+- HEAD mostrado es source HEAD al momento de generación.
+- Falta copy-to-clipboard en comandos demo.
+NEXT_ACTION.......: PRJPB_008G | suggested command semántico y botones copiar comandos demo | ready
+

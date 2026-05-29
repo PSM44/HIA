@@ -262,8 +262,8 @@ SESSION_CLOSE_20260519_UX_UI_BLOCK
 
 02.00_BACKLOG_NEXT
 - PRJPB_008E: DONE — validación visual humana del dashboard en navegador. Resultado PASS_WITH_WARNINGS.
-- PRJPB_008F: READY — dashboard v0.2 con datos reales desde CLI/BATON/RADAR.
-- PRJPB_008G: BACKLOG — suggested command semántico.
+- PRJPB_008F: DONE — dashboard v0.2 con datos reales desde CLI/BATON/RADAR. Resultado PASS_WITH_WARNINGS.
+- PRJPB_008G: READY — suggested command semántico y botones copiar comandos demo.
 - PRJPB_008H: BACKLOG — protocolo de screenshots UX/UI y evidencia visual.
 
 03.00_TECHNICAL_DEBT_ROLLOVER
@@ -304,8 +304,8 @@ PRJPB_008D_2_RADAR_BASELINE_REFRESH
 - PRJPB_008E: DONE — validación visual humana del dashboard en navegador. Resultado PASS_WITH_WARNINGS.
 
 03.00_BACKLOG_NEXT
-- PRJPB_008F: READY — dashboard v0.2 con datos reales desde CLI/BATON/RADAR.
-- PRJPB_008G: BACKLOG — suggested command semántico.
+- PRJPB_008F: DONE — dashboard v0.2 con datos reales desde CLI/BATON/RADAR. Resultado PASS_WITH_WARNINGS.
+- PRJPB_008G: READY — suggested command semántico y botones copiar comandos demo.
 - PRJPB_008H: BACKLOG — protocolo de screenshots UX/UI y evidencia visual.
 - PRJPB_EVIDENCE_POLICY_001: BACKLOG — formalizar política runtime/versionable.
 
@@ -328,7 +328,7 @@ PRJPB_008E_VISUAL_DASHBOARD_VALIDATION
 - No leer estado vivo limita valor gerencial.
 
 02.00_READY_NOW
-- PRJPB_008F: READY — dashboard v0.2 con datos reales desde CLI/BATON/RADAR.
+- PRJPB_008F: DONE — dashboard v0.2 con datos reales desde CLI/BATON/RADAR. Resultado PASS_WITH_WARNINGS.
 
 03.00_ACCEPTANCE_FOR_008F
 - Debe mostrar NEXT_ACTION real.
@@ -337,4 +337,34 @@ PRJPB_008E_VISUAL_DASHBOARD_VALIDATION
 - Debe mostrar RADAR freshness real.
 - Debe mostrar UX_EVAL latest result.
 - Debe mantener brechas explícitas, pero actualizadas.
+
+==========
+PRJPB_008F_DASHBOARD_V02_REAL_DATA
+==========
+
+00.00_DONE
+- PRJPB_008F: DONE — dashboard v0.2 generado desde datos reales CLI/BATON/BACKLOG/RADAR/UX_EVAL/Git.
+- Resultado: PASS_WITH_WARNINGS.
+- Commit: d8d3f96 20260529_HIA_PRJPB_008F_generate_dashboard_v02_real_data.
+
+01.00_RESULT
+- Dashboard v0.2 muestra Evidence FRESH.
+- Dashboard v0.2 muestra RADAR Active OK.
+- Dashboard v0.2 muestra UX latest PASS_WITH_WARNINGS.
+- Dashboard v0.2 muestra NEXT_ACTION real.
+- Dashboard v0.2 eliminó ruido histórico en Ready / next backlog.
+
+02.00_WARNINGS
+- HTML estático generado, no app viva con API.
+- HEAD mostrado es source HEAD de generación; el commit del dashboard siempre queda posterior.
+- AI_MEMORY_STATUS MISSING sigue pendiente.
+- No hay botones copiar comandos.
+- Protocolo screenshots UX/UI pendiente.
+
+03.00_READY_NOW
+- PRJPB_008G: READY — suggested command semántico y botones copiar comandos demo.
+
+04.00_BACKLOG_NEXT
+- PRJPB_008H: BACKLOG — protocolo de screenshots UX/UI y evidencia visual.
+- PRJPB_EVIDENCE_POLICY_001: BACKLOG — formalizar política runtime/versionable.
 

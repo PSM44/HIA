@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_008F | dashboard v0.2 con datos reales desde CLI/BATON/RADAR | ready
+PRJPB_008G | suggested command semántico y botones copiar comandos demo | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -444,4 +444,42 @@ Para continuar:
 1) project review.
 2) project continue.
 3) implementar PRJPB_008F sin reabrir estética de v0.1 salvo blocker visual.
+
+===============================================================================
+SESSION_UPDATE_20260529_HIA_PRJPB_008F_DONE
+===============================================================================
+00.00_CONTEXT
+- Fecha local: 2026-05-29 13:24:49
+- Fecha UTC: 2026-05-29T17:24:49Z
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- Propósito: cerrar dashboard v0.2 generado desde datos reales.
+
+01.00_DONE_CONFIRMED
+- PRJPB_008F: DONE — dashboard v0.2 con datos reales desde CLI/BATON/RADAR.
+- Resultado: PASS_WITH_WARNINGS.
+- Artifact principal: 01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.2.html
+- Commit dashboard: d8d3f96 20260529_HIA_PRJPB_008F_generate_dashboard_v02_real_data
+
+02.00_ACCEPTANCE
+- Evidence: FRESH.
+- RADAR: Active OK.
+- UX latest: PASS_WITH_WARNINGS.
+- Backlog ejecutivo limpio, sin ruido histórico PRJPB_007D/007G/007H.
+- Dashboard muestra estado real generado desde CLI/BATON/BACKLOG/RADAR/UX_EVAL/Git.
+
+03.00_WARNINGS
+- Dashboard v0.2 es HTML estático generado; no es app viva con API.
+- HEAD mostrado corresponde al source HEAD capturado al momento de generación, no al commit autorreferencial del propio dashboard.
+- AI_MEMORY_STATUS sigue MISSING.
+- Botones copiar comandos siguen pendientes.
+- Protocolo screenshots UX/UI sigue en backlog.
+
+04.00_NEXT_ACTION
+- PRJPB_008G: READY — suggested command semántico y botones copiar comandos demo.
+
+05.00_HANDOFF_OPERATIVO
+Para continuar:
+1) project review.
+2) project continue.
+3) implementar PRJPB_008G sin reabrir data binding salvo blocker.
 

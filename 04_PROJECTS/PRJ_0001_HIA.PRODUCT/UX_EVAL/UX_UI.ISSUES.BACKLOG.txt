@@ -85,3 +85,19 @@ UX_ISSUES_FROM_UXEVAL_0003_PRJPB_008E
 - UX_ISSUE_0011/P2: mantener brechas explícitas, pero calculadas desde estado vigente.
   Estado: OPEN
   Next: resolver en PRJPB_008F/008G.
+
+==========
+UX_ISSUES_FROM_UXEVAL_0004_PRJPB_008F
+==========
+- UX_ISSUE_0012/P2: dashboard v0.2 muestra source HEAD de generación, no commit autorreferencial del artifact.
+  Estado: ACCEPTED_LIMITATION
+  Next: documentar en v0.3/generator metadata si se formaliza release.
+
+- UX_ISSUE_0013/P1: comandos demo mínimos no tienen botón copiar.
+  Estado: OPEN
+  Next: resolver en PRJPB_008G.
+
+- UX_ISSUE_0014/P1: suggested command sigue siendo correcto pero conservador; falta experiencia de ejecución guiada para demo.
+  Estado: OPEN
+  Next: resolver en PRJPB_008G.
+
