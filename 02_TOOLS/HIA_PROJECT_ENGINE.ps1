@@ -274,6 +274,104 @@ function Get-HIAProjectLastActionLog {
     return $result
 }
 
+function Get-HIAProjectSemanticEvidenceAnchor {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectRootPath
+    )
+
+    $result = [ordered]@{
+        STATUS = "N/A"
+        SOURCE_TASK = "N/A"
+        CAPTURED_UTC = "N/A"
+        OUTPUT_STATUS = "N/A"
+        OUTPUT_PATH = "N/A"
+        OUTPUT_PREVIEW = "N/A"
+        LOG_STATUS = "N/A"
+        LOG_PATH = "N/A"
+        LOG_PREVIEW = "N/A"
+        TIMESTAMP = $null
+    }
+
+    $tasksRootPath = Join-Path $ProjectRootPath "ARTIFACTS\TASKS"
+    if (-not (Test-Path -LiteralPath $tasksRootPath -PathType Container)) {
+        return $result
+    }
+
+    $candidateTasks = @(
+        Get-ChildItem -LiteralPath $tasksRootPath -File -Filter "PRJPB_*.RADAR_BASELINE_EVIDENCE.*.txt" -ErrorAction SilentlyContinue |
+            Sort-Object LastWriteTimeUtc -Descending
+    )
+
+    if ($null -eq $candidateTasks -or $candidateTasks.Count -eq 0) {
+        return $result
+    }
+
+    $logsRootPath = Join-Path $ProjectRootPath "ARTIFACTS\LOGS"
+    $hasLogsRoot = Test-Path -LiteralPath $logsRootPath -PathType Container
+
+    foreach ($taskFile in $candidateTasks) {
+        $taskContent = ""
+        try {
+            $taskContent = Get-Content -LiteralPath $taskFile.FullName -Raw -ErrorAction Stop
+        }
+        catch {
+            continue
+        }
+
+        if ([string]::IsNullOrWhiteSpace($taskContent)) {
+            continue
+        }
+
+        $hasSemanticMarker = (
+            $taskContent -match '(?im)^\s*TYPE\.+:\s*semantic-evidence\s*$' -or
+            $taskContent -match '(?im)^\s*RESULT\.+:\s*BASELINE_EVIDENCE_CREATED\s*$' -or
+            $taskContent -match '(?im)^\s*EVIDENCE_KIND\.+:\s*semantic-radar-baseline\s*$'
+        )
+
+        if (-not $hasSemanticMarker) {
+            continue
+        }
+
+        $semanticSourceTask = [System.IO.Path]::GetFileNameWithoutExtension($taskFile.Name)
+        $semanticLogPath = "N/A"
+        $semanticLogStatus = "N/A"
+
+        if ($hasLogsRoot) {
+            $logCandidates = @(
+                (Join-Path $logsRootPath ($semanticSourceTask + ".log")),
+                (Join-Path $logsRootPath ("{0}.log" -f $taskFile.Name.Replace(".txt", "")))
+            )
+
+            foreach ($logPath in $logCandidates) {
+                if (Test-Path -LiteralPath $logPath -PathType Leaf) {
+                    $semanticLogPath = $logPath
+                    $semanticLogStatus = "FOUND"
+                    break
+                }
+            }
+        }
+
+        if ($semanticLogStatus -ne "FOUND") {
+            continue
+        }
+
+        $result.STATUS = "FOUND"
+        $result.SOURCE_TASK = $semanticSourceTask
+        $result.CAPTURED_UTC = Convert-HIAUtcValueToString -Value $taskFile.LastWriteTimeUtc -Default "N/A"
+        $result.OUTPUT_STATUS = "FOUND"
+        $result.OUTPUT_PATH = $taskFile.FullName
+        $result.OUTPUT_PREVIEW = Get-HIAFilePreview -FilePath $taskFile.FullName -MaxLength 160
+        $result.LOG_STATUS = $semanticLogStatus
+        $result.LOG_PATH = $semanticLogPath
+        $result.LOG_PREVIEW = Get-HIAFilePreview -FilePath $semanticLogPath -MaxLength 160
+        $result.TIMESTAMP = $taskFile.LastWriteTimeUtc
+        return $result
+    }
+
+    return $result
+}
+
 function Get-HIAProjectLastTaskOutcome {
     param(
         [Parameter(Mandatory = $true)]
@@ -384,10 +482,54 @@ function Get-HIAProjectEvidenceContinuity {
         }
     }
 
+    $legacyEvidenceTimestamp = $null
+    if ($capturedUtc -ne "N/A") {
+        try { $legacyEvidenceTimestamp = [datetime]::Parse($capturedUtc).ToUniversalTime() } catch { $legacyEvidenceTimestamp = $null }
+    }
+    if ($null -eq $legacyEvidenceTimestamp -and $lastActionOutput.STATUS -eq "FOUND") {
+        try { $legacyEvidenceTimestamp = (Get-Item -LiteralPath $lastActionOutput.PATH).LastWriteTimeUtc } catch { $legacyEvidenceTimestamp = $null }
+    }
+    if ($null -eq $legacyEvidenceTimestamp -and $lastActionLog.STATUS -eq "FOUND") {
+        try { $legacyEvidenceTimestamp = (Get-Item -LiteralPath $lastActionLog.PATH).LastWriteTimeUtc } catch { $legacyEvidenceTimestamp = $null }
+    }
+
+    $semanticAnchor = Get-HIAProjectSemanticEvidenceAnchor -ProjectRootPath $ProjectRootPath
+    $semanticIsPreferred = $false
+    if ($semanticAnchor.STATUS -eq "FOUND") {
+        if ($null -eq $legacyEvidenceTimestamp -or $semanticAnchor.TIMESTAMP -gt $legacyEvidenceTimestamp) {
+            $semanticIsPreferred = $true
+        }
+    }
+
+    if ($semanticIsPreferred) {
+        $sourceTask = $semanticAnchor.SOURCE_TASK
+        $capturedUtc = $semanticAnchor.CAPTURED_UTC
+        $sessionId = "N/A"
+        $lastActionOutput = [ordered]@{
+            STATUS = $semanticAnchor.OUTPUT_STATUS
+            PATH = $semanticAnchor.OUTPUT_PATH
+            PREVIEW = $semanticAnchor.OUTPUT_PREVIEW
+        }
+        $lastActionLog = [ordered]@{
+            STATUS = $semanticAnchor.LOG_STATUS
+            PATH = $semanticAnchor.LOG_PATH
+            PREVIEW = $semanticAnchor.LOG_PREVIEW
+        }
+        $snapshotOutputPath = $semanticAnchor.OUTPUT_PATH
+        $snapshotLogPath = $semanticAnchor.LOG_PATH
+        $hasMismatch = $false
+        $anchorParts.Clear()
+        $anchorParts.Add(("source={0}" -f $sourceTask))
+        $anchorParts.Add(("captured_utc={0}" -f $capturedUtc))
+        $anchorParts.Add(("output={0}" -f $lastActionOutput.PATH))
+        $anchorParts.Add(("log={0}" -f $lastActionLog.PATH))
+    }
+
     # Evidence presence
     $hasEvidence = ($lastActionSnapshot.STATUS -eq "FOUND" -or $lastActionOutput.STATUS -eq "FOUND" -or $lastActionLog.STATUS -eq "FOUND")
 
     # Build anchor parts
+    $anchorParts.Clear()
     if ($sourceTask -ne "N/A") { $anchorParts.Add(("source={0}" -f $sourceTask)) }
     if ($capturedUtc -ne "N/A") { $anchorParts.Add(("captured_utc={0}" -f $capturedUtc)) }
     if ($lastActionOutput.STATUS -eq "FOUND") { $anchorParts.Add(("output={0}" -f $lastActionOutput.PATH)) }
