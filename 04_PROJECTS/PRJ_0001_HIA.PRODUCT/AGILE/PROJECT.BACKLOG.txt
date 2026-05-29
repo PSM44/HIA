@@ -237,7 +237,7 @@ PRJPB_008D_1_DASHBOARD_UI_FUNCTIONAL_EVAL
 - UX registry updated with UXEVAL_0002.
 
 01.00_READY_NOW
-- PRJPB_008D-2: READY — refresh/validación RADAR para demo baseline.
+- PRJPB_008D-2: DONE — refresh/validación RADAR para demo baseline cerrado con evidencia FRESH.
 
 02.00_TECHNICAL_DEBT
 - UX_ISSUE_0006: falta validación visual humana en navegador.
@@ -258,7 +258,7 @@ SESSION_CLOSE_20260519_UX_UI_BLOCK
 - PRJPB_008D-1: DONE — validación funcional estática UX/UI PASS_WITH_WARNINGS.
 
 01.00_READY_NOW
-- PRJPB_008D-2: READY — refresh/validación RADAR para demo baseline.
+- PRJPB_008D-2: DONE — refresh/validación RADAR para demo baseline cerrado con evidencia FRESH.
 
 02.00_BACKLOG_NEXT
 - PRJPB_008E: BACKLOG — validación visual humana del dashboard en navegador.
@@ -277,8 +277,39 @@ SESSION_CLOSE_20260519_UX_UI_BLOCK
 - TD_008/P3: timestamp última evaluación UX/UI pendiente.
 
 04.00_DELIVERABLE_PATH_TO_MANAGEMENT
-- Step 1: PRJPB_008D-2 refresh/validación RADAR.
+- Step 1: PRJPB_008D-2 refresh/validación RADAR. DONE.
 - Step 2: validación visual humana dashboard.
 - Step 3: ajustar dashboard si hay blockers UX.
 - Step 4: confirmar BATON/BACKLOG/RADAR/UX_EVAL alineados.
 - Step 5: demo funcional a gerencia con UI + CLI mínimo + brechas explícitas.
+
+==========
+PRJPB_008D_2_RADAR_BASELINE_REFRESH
+==========
+
+00.00_DONE
+- PRJPB_008D-2: DONE — refresh/validación RADAR para demo baseline.
+- PRJPB_008D-2A: DONE — CLI WSL2/PowerShell 5.1/StrictMode/BOM reparado.
+- PRJPB_008D-2B: DONE — evidencia semántica RADAR baseline versionada.
+- PRJPB_008D-2C: DONE — HIA_PROJECT_ENGINE reconoce evidencia semántica como anchor moderno.
+
+01.00_RESULT
+- project review: OK.
+- project continue: OK.
+- EVIDENCE_STATE: FRESH.
+- EVIDENCE_CONSISTENCY: CONSISTENT.
+- EVIDENCE_ANCHOR: PRJPB_008D-2.RADAR_BASELINE_EVIDENCE.20260529_123032.
+
+02.00_READY_NOW
+- PRJPB_008E: READY — validación visual humana del dashboard en navegador.
+
+03.00_BACKLOG_NEXT
+- PRJPB_008F: BACKLOG — dashboard v0.2 con datos reales desde CLI/BATON/RADAR.
+- PRJPB_008G: BACKLOG — suggested command semántico.
+- PRJPB_008H: BACKLOG — protocolo de screenshots UX/UI y evidencia visual.
+- PRJPB_EVIDENCE_POLICY_001: BACKLOG — formalizar política runtime/versionable.
+
+04.00_NOTES
+- No usar create-file-project como sustituto de evidencia semántica.
+- LEGACY_LAST_TASK_* permanece visible por compatibilidad, pero ya no domina el anchor moderno.
+

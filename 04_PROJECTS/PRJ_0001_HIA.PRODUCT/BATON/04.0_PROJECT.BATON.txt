@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_008D-2 | refresh/validación RADAR para demo baseline | ready
+PRJPB_008E | validación visual humana del dashboard en navegador | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -377,3 +377,44 @@ SESSION_CLOSE_20260519_UX_UI_BLOCK
 05.00_OPTIONAL_HANDOFF_PROMPT
 Para continuar próxima sesión:
 ""Hoy es [fecha/hora], Santiago Chile. Continuemos HIA desde PRJPB_008D-2. Primero verifica Git limpio, session status, project continue y estado RADAR. Objetivo: refresh/validación RADAR para demo baseline, sin tocar narrativa todavía salvo que sea necesario.""
+
+===============================================================================
+SESSION_UPDATE_20260529_HIA_PRJPB_008D_2_DONE
+===============================================================================
+00.00_CONTEXT
+- Fecha local: 2026-05-29
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- Propósito: reconciliar BATON después de refresh/validación RADAR demo baseline.
+
+01.00_DONE_CONFIRMED
+- PRJPB_008D-2: DONE — refresh/validación RADAR para demo baseline cerrado.
+- PRJPB_008D-2A: DONE — fix CLI entrypoint WSL2 / Windows PowerShell 5.1 / StrictMode / UTF-8 BOM.
+- PRJPB_008D-2B: DONE — artifact semántico RADAR baseline creado y versionado.
+- PRJPB_008D-2C: DONE — HIA_PROJECT_ENGINE reconoce evidencia semántica moderna como anchor válido.
+
+02.00_EVIDENCE
+- EVIDENCE_STATE: FRESH
+- EVIDENCE_CONSISTENCY: CONSISTENT
+- EVIDENCE_ANCHOR: PRJPB_008D-2.RADAR_BASELINE_EVIDENCE.20260529_123032
+- RADAR active files refrescados el 2026-05-29.
+- Commits:
+  - 8773170 20260529_HIA_PRJPB_008D_2A_fix_cli_entrypoint_strictmode_wsl
+  - 75bd119 20260529_HIA_PRJPB_008D_2B_add_radar_baseline_semantic_evidence
+  - f53c0f0 20260529_HIA_PRJPB_008D_2C_recognize_semantic_evidence_anchor
+
+03.00_NEXT_ACTION
+- PRJPB_008E: READY — validación visual humana del dashboard en navegador.
+
+04.00_TECHNICAL_DEBT_ROLLOVER
+- UX_ISSUE_0006: falta validación visual humana en navegador.
+- UX_ISSUE_0007: dashboard no muestra timestamp de última evaluación UX/UI.
+- UX_ISSUE_0008: comandos demo no tienen botón copiar.
+- PRJPB_EVIDENCE_POLICY_001: formalizar política de evidencia runtime/versionable.
+- AI_MEMORY_STATUS: MISSING sigue pendiente.
+
+05.00_HANDOFF_OPERATIVO
+Para continuar:
+1) hia project review PRJ_0001_HIA.PRODUCT
+2) hia project continue PRJ_0001_HIA.PRODUCT
+3) ejecutar PRJPB_008E con foco visual humano, no data binding todavía.
+
