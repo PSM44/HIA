@@ -1,0 +1,69 @@
+==========
+00.00_METADATA
+==========
+
+ID_UNICO..........: PRJPB_008D-2.RADAR_BASELINE_EVIDENCE.20260529_123032
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+MB_ID.............: PRJPB_008D-2
+CREATED_LOCAL.....: 2026-05-29 12:30:33 -04
+CREATED_UTC.......: 2026-05-29T16:30:33Z
+SHELL.............: bash WSL2
+TYPE..............: semantic-evidence
+PURPOSE...........: Registrar evidencia semántica de refresh/validación RADAR para demo baseline.
+
+==========
+01.00_CONTEXT
+==========
+
+NEXT_ACTION vigente:
+PRJPB_008D-2 | refresh/validación RADAR para demo baseline | ready
+
+Situación previa:
+- HIA reportaba EVIDENCE_STATE: STALE.
+- El anchor activo apuntaba a PRJPB_007H.NEXT_ACTION.txt vía create-file-project.
+- Se confirmó que project review/project continue no generan nuevo evidence anchor.
+- Se confirmó que RADAR fue refrescado correctamente el 2026-05-29.
+
+==========
+02.00_RADAR_BASELINE
+==========
+
+2026-05-29 11:47:43.0561626000      86130 ./03_ARTIFACTS/RADAR/Radar.Index.ACTIVE.txt
+2026-05-29 11:47:46.4153304000      91773 ./03_ARTIFACTS/RADAR/Radar.Registry.ACTIVE.txt
+2026-05-29 11:47:46.7054299000    1004579 ./03_ARTIFACTS/RADAR/Radar.Core.ACTIVE.txt
+2026-05-29 11:47:47.1225218000       2365 ./03_ARTIFACTS/RADAR/Radar.Lite.ACTIVE.txt
+
+==========
+03.00_CLI_BASELINE
+==========
+
+CLI entrypoint reparado y versionado:
+
+Commit:
+8773170 20260529_HIA_PRJPB_008D_2A_fix_cli_entrypoint_strictmode_wsl
+
+Resultado:
+- project status ejecuta OK.
+- project continue ejecuta OK.
+- bug StrictMode + UTF-8 BOM + PowerShell 5.1 resuelto.
+
+==========
+04.00_EVIDENCE_RESULT
+==========
+
+RESULT............: BASELINE_EVIDENCE_CREATED
+EVIDENCE_KIND.....: semantic-radar-baseline
+EVIDENCE_STATE....: CREATED
+LIMITATION........: HIA_PROJECT_ENGINE aún puede seguir mostrando EVIDENCE_STATE=STALE si solo lee LAST.ACTION.json/create-file-project.
+FOLLOW_UP.........: Si continue sigue stale, crear bugfix para que el engine reconozca evidencia semántica moderna o RADAR refresh como anchor válido.
+
+==========
+05.00_NEXT_DECISION
+==========
+
+Si este artifact no cambia EVIDENCE_STATE automáticamente:
+- No editar BATON manualmente.
+- No usar create-file-project como sustituto.
+- Abrir PRJPB_008D-2C para ajustar evidence anchor logic en HIA_PROJECT_ENGINE.ps1.
+
+FIN
