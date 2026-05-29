@@ -116,3 +116,23 @@ OUTPUT_EXPECTED...: issues priorizados + decisión sobre v0.2.
 - Dashboard v0.1 is acceptable as a basic functional UI anchor.
 - Do not present it as a connected management console.
 - Proceed to PRJPB_008D-2 for RADAR/demo baseline or to manual visual review if human wants visual refinement first.
+
+==========
+UXEVAL_0003_PRJPB_008E_HUMAN_VISUAL_DASHBOARD_VALIDATION
+==========
+DATE_LOCAL........: 2026-05-29 13:07:48 -04
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+MB_ID.............: PRJPB_008E
+TARGET............: 01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.1.html
+RESULT............: PASS_WITH_WARNINGS
+HUMAN_DECISION....: Dashboard v0.1 visualmente presentable para demo interna.
+OBSERVATIONS......:
+- Layout limpio y entendible.
+- Jerarquía visual aceptable para conversación interna.
+- Secciones Listo / Próximamente / Futuro son claras.
+- Comandos demo mínimos visibles.
+WARNINGS..........:
+- Dashboard v0.1 es estático.
+- Contenido visible quedó parcialmente desactualizado respecto a HEAD/evidence/RADAR vigente.
+- Debe evolucionar a v0.2 con lectura real de CLI/BATON/RADAR.
+NEXT_ACTION.......: PRJPB_008F | dashboard v0.2 con datos reales desde CLI/BATON/RADAR | ready

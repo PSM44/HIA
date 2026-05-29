@@ -107,3 +107,17 @@ NEXT_STEP.........: ejecutar evaluación manual contra dashboard abierto.
 03.60_OVERALL
 STATUS: PASS_WITH_WARNINGS
 NEXT_RECOMMENDATION: PRJPB_008D-2 refresh/validación RADAR demo baseline, salvo que se priorice revisión visual humana primero.
+
+==========
+UXEVAL_0003_CHECKLIST_PRJPB_008E
+==========
+[OK] 01. Carga sin error visible.
+[OK] 02. Layout principal se ve ordenado.
+[OK] 03. Jerarquía visual clara: título, bloques, secciones.
+[OK] 04. Texto legible.
+[OK] 05. Roadmap visible y entendible.
+[OK] 06. Brechas visibles y no ocultas.
+[WARN] 07. Contenido estático no refleja estado actual post PRJPB_008D-2.
+[WARN] 08. RADAR/evidence ya está FRESH, pero dashboard v0.1 aún muestra narrativa antigua.
+[WARN] 09. Falta data binding real.
+[DECISION] PASS_WITH_WARNINGS.

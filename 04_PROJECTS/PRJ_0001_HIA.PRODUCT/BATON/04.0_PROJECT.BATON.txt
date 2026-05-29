@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_008E | validación visual humana del dashboard en navegador | ready
+PRJPB_008F | dashboard v0.2 con datos reales desde CLI/BATON/RADAR | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -417,4 +417,31 @@ Para continuar:
 1) hia project review PRJ_0001_HIA.PRODUCT
 2) hia project continue PRJ_0001_HIA.PRODUCT
 3) ejecutar PRJPB_008E con foco visual humano, no data binding todavía.
+
+===============================================================================
+SESSION_UPDATE_20260529_HIA_PRJPB_008E_DONE
+===============================================================================
+00.00_CONTEXT
+- Fecha local: 2026-05-29
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- Propósito: cerrar validación visual humana del dashboard v0.1.
+
+01.00_DONE_CONFIRMED
+- PRJPB_008E: DONE — validación visual humana del dashboard en navegador.
+- Resultado: PASS_WITH_WARNINGS.
+- Dashboard v0.1 es visualmente presentable para demo interna.
+
+02.00_WARNINGS
+- Dashboard v0.1 sigue siendo estático.
+- Contenido visible quedó parcialmente desactualizado respecto a evidencia/RADAR/HEAD vigente.
+- No debe usarse como baseline formal sin data binding real.
+
+03.00_NEXT_ACTION
+- PRJPB_008F: READY — dashboard v0.2 con datos reales desde CLI/BATON/RADAR.
+
+04.00_HANDOFF_OPERATIVO
+Para continuar:
+1) project review.
+2) project continue.
+3) implementar PRJPB_008F sin reabrir estética de v0.1 salvo blocker visual.
 

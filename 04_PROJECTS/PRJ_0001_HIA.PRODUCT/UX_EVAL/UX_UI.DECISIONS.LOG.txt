@@ -59,3 +59,12 @@ Reason:
 - RADAR active files are stale relative to the current session.
 Impact:
 - PRJPB_008D-2 remains necessary before formal baseline.
+
+==========
+UX_DECISION_0003_PRJPB_008E
+==========
+DATE_LOCAL........: 2026-05-29 13:07:48 -04
+DECISION..........: Dashboard v0.1 pasa validación visual humana con advertencias.
+RATIONALE.........: Visualmente es presentable para demo interna, pero no debe avanzar como baseline formal sin data binding real.
+RESULT............: PASS_WITH_WARNINGS
+NEXT_ACTION.......: PRJPB_008F | dashboard v0.2 con datos reales desde CLI/BATON/RADAR | ready

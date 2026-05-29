@@ -70,3 +70,18 @@ Impacto:
 - Para demo o uso operativo, copiar comandos desde pre puede ser suficiente, pero no óptimo.
 Recomendación:
 - Agregar botones copy-to-clipboard en v0.2.
+
+==========
+UX_ISSUES_FROM_UXEVAL_0003_PRJPB_008E
+==========
+- UX_ISSUE_0009/P1: dashboard v0.1 estático muestra contenido desactualizado respecto a estado real.
+  Estado: OPEN
+  Next: resolver en PRJPB_008F dashboard v0.2 con datos reales.
+
+- UX_ISSUE_0010/P1: dashboard debe leer/mostrar HEAD, NEXT_ACTION, EVIDENCE_STATE, RADAR freshness y UX_EVAL latest result.
+  Estado: OPEN
+  Next: resolver en PRJPB_008F.
+
+- UX_ISSUE_0011/P2: mantener brechas explícitas, pero calculadas desde estado vigente.
+  Estado: OPEN
+  Next: resolver en PRJPB_008F/008G.

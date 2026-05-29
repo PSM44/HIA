@@ -261,8 +261,8 @@ SESSION_CLOSE_20260519_UX_UI_BLOCK
 - PRJPB_008D-2: DONE — refresh/validación RADAR para demo baseline cerrado con evidencia FRESH.
 
 02.00_BACKLOG_NEXT
-- PRJPB_008E: BACKLOG — validación visual humana del dashboard en navegador.
-- PRJPB_008F: BACKLOG — dashboard v0.2 con datos reales desde CLI/BATON/RADAR.
+- PRJPB_008E: DONE — validación visual humana del dashboard en navegador. Resultado PASS_WITH_WARNINGS.
+- PRJPB_008F: READY — dashboard v0.2 con datos reales desde CLI/BATON/RADAR.
 - PRJPB_008G: BACKLOG — suggested command semántico.
 - PRJPB_008H: BACKLOG — protocolo de screenshots UX/UI y evidencia visual.
 
@@ -301,10 +301,10 @@ PRJPB_008D_2_RADAR_BASELINE_REFRESH
 - EVIDENCE_ANCHOR: PRJPB_008D-2.RADAR_BASELINE_EVIDENCE.20260529_123032.
 
 02.00_READY_NOW
-- PRJPB_008E: READY — validación visual humana del dashboard en navegador.
+- PRJPB_008E: DONE — validación visual humana del dashboard en navegador. Resultado PASS_WITH_WARNINGS.
 
 03.00_BACKLOG_NEXT
-- PRJPB_008F: BACKLOG — dashboard v0.2 con datos reales desde CLI/BATON/RADAR.
+- PRJPB_008F: READY — dashboard v0.2 con datos reales desde CLI/BATON/RADAR.
 - PRJPB_008G: BACKLOG — suggested command semántico.
 - PRJPB_008H: BACKLOG — protocolo de screenshots UX/UI y evidencia visual.
 - PRJPB_EVIDENCE_POLICY_001: BACKLOG — formalizar política runtime/versionable.
@@ -312,4 +312,29 @@ PRJPB_008D_2_RADAR_BASELINE_REFRESH
 04.00_NOTES
 - No usar create-file-project como sustituto de evidencia semántica.
 - LEGACY_LAST_TASK_* permanece visible por compatibilidad, pero ya no domina el anchor moderno.
+
+==========
+PRJPB_008E_VISUAL_DASHBOARD_VALIDATION
+==========
+
+00.00_DONE
+- PRJPB_008E: DONE — validación visual humana del dashboard v0.1 en navegador.
+- Resultado: PASS_WITH_WARNINGS.
+- Decisión: visualmente presentable para demo interna.
+
+01.00_WARNINGS
+- Dashboard v0.1 es estático.
+- Contenido desactualizado respecto a HEAD/evidence/RADAR vigente.
+- No leer estado vivo limita valor gerencial.
+
+02.00_READY_NOW
+- PRJPB_008F: READY — dashboard v0.2 con datos reales desde CLI/BATON/RADAR.
+
+03.00_ACCEPTANCE_FOR_008F
+- Debe mostrar NEXT_ACTION real.
+- Debe mostrar EVIDENCE_STATE real.
+- Debe mostrar HEAD/branch real.
+- Debe mostrar RADAR freshness real.
+- Debe mostrar UX_EVAL latest result.
+- Debe mantener brechas explícitas, pero actualizadas.
 
