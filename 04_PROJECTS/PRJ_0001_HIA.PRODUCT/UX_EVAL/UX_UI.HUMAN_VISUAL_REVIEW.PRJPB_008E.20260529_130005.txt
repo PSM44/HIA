@@ -1,0 +1,76 @@
+==========
+00.00_METADATA
+==========
+
+ID_UNICO..........: UXEVAL_0003
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+MB_ID.............: PRJPB_008E
+CREATED_LOCAL.....: 2026-05-29 13:00:07 -04
+CREATED_UTC.......: 2026-05-29T17:00:07Z
+TYPE..............: human-visual-validation
+TARGET............: 01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.1.html
+STATUS............: PENDING_HUMAN_REVIEW
+
+==========
+01.00_OBJECTIVE
+==========
+
+Validar visualmente en navegador el dashboard HIA Management Dashboard v0.1 antes de avanzar a data binding o dashboard v0.2.
+
+==========
+02.00_HUMAN_REVIEW_CHECKLIST
+==========
+
+Completar manualmente después de abrir el dashboard en navegador.
+
+[ ] 01. Carga sin error visible.
+[ ] 02. Layout principal se ve ordenado.
+[ ] 03. Jerarquía visual clara: título, bloques, secciones.
+[ ] 04. Texto legible sin zoom excesivo.
+[ ] 05. No hay cortes de texto relevantes.
+[ ] 06. No hay overflow horizontal innecesario.
+[ ] 07. Colores/contraste aceptables.
+[ ] 08. Información clave visible sin scroll excesivo.
+[ ] 09. Estados del proyecto se entienden.
+[ ] 10. Riesgos/brechas se distinguen de datos confirmados.
+[ ] 11. UI parece presentable para demo gerencial interna.
+[ ] 12. Queda claro que dashboard v0.1 es estático y no conectado a datos vivos.
+
+==========
+03.00_RESULT
+==========
+
+RESULT............: PENDING
+HUMAN_DECISION....: PENDING
+PASS_LEVEL........: PENDING
+
+Opciones:
+- PASS
+- PASS_WITH_WARNINGS
+- FAIL_REQUIRES_FIX
+
+==========
+04.00_NOTES
+==========
+
+Anotar observaciones humanas aquí:
+
+- 
+
+==========
+05.00_ISSUES_TO_REGISTER
+==========
+
+Si hay problemas, registrar también en UX_UI.ISSUES.BACKLOG.txt.
+
+- 
+
+==========
+06.00_DECISION
+==========
+
+Decisión recomendada después de revisión:
+- Si PASS o PASS_WITH_WARNINGS: continuar a PRJPB_008F dashboard v0.2 con datos reales desde CLI/BATON/RADAR.
+- Si FAIL_REQUIRES_FIX: abrir PRJPB_008E-FIX antes de data binding.
+
+FIN
