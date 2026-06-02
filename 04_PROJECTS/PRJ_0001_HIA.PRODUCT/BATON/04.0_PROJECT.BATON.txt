@@ -592,3 +592,30 @@ SESSION_UPDATE_20260602_HIA_PRJPB_008H_R_EVIDENCE_ANCHOR
 04.00_NEXT_ACTION
 - PRJPB_008I: READY — demo pack gerencial v0.2.
 
+===============================================================================
+SESSION_UPDATE_20260602_HIA_PRJPB_008I_MANAGEMENT_DEMO_PACK
+===============================================================================
+00.00_CONTEXT
+- Fecha UTC: 2026-06-02T17:57:26Z
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- Propósito: crear demo pack gerencial v0.2.
+
+01.00_DONE_CONFIRMED
+- PRJPB_008I: DONE — demo pack gerencial v0.2 creado en DELIVERY.
+- Se abrió allowlist explícita para DELIVERY/*.txt.
+- Se mantiene ARTIFACTS runtime ignorado por Git.
+
+02.00_CURRENT_STATE
+- Demo pack v0.2 disponible como texto versionable.
+- El demo pack declara deuda técnica visible, incluyendo EVIDENCE_STATE STALE.
+- NEXT_ACTION propuesta: PRJPB_008J | guion ejecutivo demo gerencial | ready.
+
+03.00_TECHNICAL_DEBT_ROLLOVER
+- TD_EVIDENCE_ANCHOR_008H/P1: project continue sigue anclado a evidencia PRJPB_008D-2.
+- TD_AI_MEMORY/P2: AI_MEMORY_STATUS MISSING.
+- TD_ROOT_WBS_NAMING_001/P2: auditar 04_AGENTS / 04_CONSOLE / 04_PROJECTS.
+- TD_DASHBOARD_STATIC/P2: dashboard v0.2 generado, no app viva.
+
+04.00_NEXT_ACTION
+- PRJPB_008J: READY — guion ejecutivo demo gerencial.
+

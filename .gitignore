@@ -48,3 +48,9 @@ Raw/**
 # Python cache
 __pycache__/
 *.pyc
+
+# HIA project delivery allowlist — PRJPB_008I
+!04_PROJECTS/
+!04_PROJECTS/PRJ_0001_HIA.PRODUCT/
+!04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/
+!04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/*.txt

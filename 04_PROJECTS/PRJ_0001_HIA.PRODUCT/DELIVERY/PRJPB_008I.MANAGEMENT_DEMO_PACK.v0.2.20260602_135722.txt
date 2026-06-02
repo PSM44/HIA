@@ -1,0 +1,126 @@
+===============================================================================
+FILE: PRJPB_008I.MANAGEMENT_DEMO_PACK.v0.2.20260602_135722.txt
+PROJECT: PRJ_0001_HIA.PRODUCT
+TYPE: MANAGEMENT DEMO PACK
+VERSION: v0.2
+MB_ID: PRJPB_008I
+CREATED_LOCAL: 2026-06-02 13:57:26 -0400
+CREATED_UTC: 2026-06-02T17:57:22Z
+HEAD: c0718f0 20260602_HIA_PRJPB_008H_R_record_evidence_anchor_debt
+===============================================================================
+
+00.00_RESUMEN_EJECUTIVO
+HIA ya tiene una demo interna defendible a nivel funcional:
+- CLI operativo para project status / continue / session status.
+- Dashboard v0.2 generado desde datos reales.
+- BATON y BACKLOG alineados hacia PRJPB_008I.
+- Protocolo UX/UI de screenshots creado en PRJPB_008H.
+- Botones de copiar comandos demo incorporados en PRJPB_008G.
+- Git limpio antes de preparar este demo pack.
+
+Advertencia ejecutiva:
+El sistema aún reporta EVIDENCE_STATE STALE porque el resolver de evidencia sigue anclado a PRJPB_008D-2.
+Esto no invalida PRJPB_008H ni PRJPB_008I, pero sí debe declararse como deuda técnica P1.
+
+01.00_OBJETIVO_DE_LA_DEMO
+Mostrar a gerencia que HIA puede:
+1) mantener continuidad operativa por proyecto;
+2) exponer estado, siguiente acción y brechas;
+3) presentar dashboard interno;
+4) sostener trazabilidad con Git/BATON/BACKLOG/RADAR/UX_EVAL;
+5) registrar deuda técnica sin ocultarla.
+
+02.00_ALCANCE_DE_LA_DEMO
+Incluye:
+- Project status.
+- Project continue.
+- Project session status.
+- Dashboard HTML v0.2.
+- Protocolo de screenshots UX/UI.
+- Backlog siguiente.
+- Deuda técnica visible.
+
+No incluye:
+- App viva con API.
+- Dashboard React/Next/Vite.
+- Evidence resolver completamente corregido.
+- AI memory implementada.
+- Normalización de carpetas root 04_*.
+
+03.00_ESTADO_FUNCIONAL_CONFIRMADO
+03.10_CLI
+- project status: operativo.
+- project continue: operativo.
+- project session status: operativo.
+- NEXT_ACTION vigente antes del demo pack: PRJPB_008I.
+
+03.20_UI
+- Dashboard principal:
+  01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.2.html
+- Estado:
+  PASS_WITH_WARNINGS.
+- Limitación:
+  HTML estático generado, no app viva con API.
+
+03.30_UX_EVIDENCE
+- Protocolo creado:
+  04_PROJECTS/PRJ_0001_HIA.PRODUCT/UX_EVAL/UX_UI.SCREENSHOT.PROTOCOL.txt
+- Screenshots pesados:
+  ARTIFACTS/UX_EVAL/SCREENSHOTS
+- Manifests runtime:
+  ARTIFACTS/UX_EVAL/MANIFESTS
+- Política:
+  TXT versionable; evidencia pesada runtime/ignored.
+
+04.00_GUIÓN_DE_DEMO_RECOMENDADO
+04.10_Apertura
+"Este dashboard no pretende ser una app final. Es una demo de gobernanza operativa: estado, continuidad, evidencia y siguiente acción."
+
+04.20_Mostrar CLI
+Comandos:
+- hia project status PRJ_0001_HIA.PRODUCT
+- hia project continue PRJ_0001_HIA.PRODUCT
+- hia project session status PRJ_0001_HIA.PRODUCT
+
+Mensaje:
+"El sistema sabe cuál es el proyecto, cuál es su siguiente acción y qué evidencia sostiene la continuidad."
+
+04.30_Mostrar dashboard
+Abrir:
+01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.2.html
+
+Mensaje:
+"El dashboard resume datos reales capturados desde CLI/BATON/BACKLOG/RADAR/UX_EVAL/Git."
+
+04.40_Mostrar brechas
+Brechas que se deben declarar:
+- EVIDENCE_STATE STALE por resolver anclado a PRJPB_008D-2.
+- AI_MEMORY_STATUS MISSING.
+- Dashboard v0.2 estático.
+- Clipboard bajo file:// puede fallar.
+- Carpetas root 04_* requieren auditoría de naming.
+
+05.00_RIESGOS_Y_DEUDA_TECNICA
+05.10_P1
+- TD_EVIDENCE_ANCHOR_008H: HIA_PROJECT_ENGINE no reconoce evidencia semántica genérica post PRJPB_008H como anchor fresco.
+
+05.20_P2
+- TD_AI_MEMORY: AI_MEMORY_STATUS MISSING.
+- TD_ROOT_WBS_NAMING_001: revisar 04_AGENTS / 04_CONSOLE / 04_PROJECTS.
+- TD_EVIDENCE_POLICY: política runtime/versionable no canónica.
+
+05.30_P3
+- TD_CLIPBOARD_FILE_POLICY: navigator.clipboard puede fallar bajo file://.
+- TD_DASHBOARD_STATIC: dashboard v0.2 es generado, no dinámico.
+
+06.00_DECISIÓN_RECOMENDADA
+Aprobar el demo pack como demo interna v0.2, con disclosure explícito de deuda técnica.
+No presentarlo como producto final.
+No prometer app viva.
+No ocultar EVIDENCE_STATE STALE.
+
+07.00_NEXT_ACTION_PROPUESTA
+PRJPB_008J: guion ejecutivo demo gerencial.
+Luego:
+PRJPB_008K: release candidate interno con RADAR/BATON/BACKLOG frescos.
+===============================================================================

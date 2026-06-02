@@ -471,3 +471,25 @@ PRJPB_008H_R_EVIDENCE_ANCHOR_RECONCILIATION
   3) Evidence resolver puede seguir stale por deuda técnica si no reconoce evidencia genérica.
   4) No ocultar TD_EVIDENCE_ANCHOR_008H.
 
+==========
+PRJPB_008I_MANAGEMENT_DEMO_PACK
+==========
+00.00_DONE
+- PRJPB_008I: DONE — demo pack gerencial v0.2 creado y versionado.
+- Entregable: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_008I.MANAGEMENT_DEMO_PACK.v0.2.*.txt
+- Allowlist DELIVERY/*.txt agregada a .gitignore.
+
+01.00_READY_NOW
+- PRJPB_008J: READY — guion ejecutivo demo gerencial.
+
+02.00_BACKLOG_NEXT
+- PRJPB_008K: BACKLOG — release candidate interno con RADAR/BATON/BACKLOG frescos.
+- TD_EVIDENCE_ANCHOR_008H/P1: corregir resolver de evidencia para anchors semánticos genéricos.
+- TD_ROOT_WBS_NAMING_001/P2: auditar carpetas root 04_*.
+
+03.00_ACCEPTANCE_FOR_008J
+- Guion máximo 5 minutos.
+- Debe decir explícitamente que HIA no es app final.
+- Debe declarar deuda P1 Evidence STALE.
+- Debe explicar valor gerencial: continuidad, trazabilidad, control y próximos pasos.
+
