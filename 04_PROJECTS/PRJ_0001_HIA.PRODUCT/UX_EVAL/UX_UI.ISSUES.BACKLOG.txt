@@ -101,3 +101,17 @@ UX_ISSUES_FROM_UXEVAL_0004_PRJPB_008F
   Estado: OPEN
   Next: resolver en PRJPB_008G.
 
+==========
+UX_ISSUES_SESSION_CLOSE_20260602
+==========
+- UX_ISSUE_0015/P1: falta protocolo screenshots UX/UI para demo gerencial.
+  Estado: OPEN
+  Next: resolver en PRJPB_008H.
+
+- UX_ISSUE_0016/P2: dashboard v0.2 requiere evidencia visual versionable o runtime referenciada.
+  Estado: OPEN
+  Next: definir artefacto screenshots + checklist.
+
+- UX_ISSUE_0017/P3: copy buttons dependen de navigator.clipboard y pueden fallar bajo file://.
+  Estado: ACCEPTED_LIMITATION
+  Next: mantener fallback manual visible.

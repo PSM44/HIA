@@ -263,8 +263,8 @@ SESSION_CLOSE_20260519_UX_UI_BLOCK
 02.00_BACKLOG_NEXT
 - PRJPB_008E: DONE — validación visual humana del dashboard en navegador. Resultado PASS_WITH_WARNINGS.
 - PRJPB_008F: DONE — dashboard v0.2 con datos reales desde CLI/BATON/RADAR. Resultado PASS_WITH_WARNINGS.
-- PRJPB_008G: READY — suggested command semántico y botones copiar comandos demo.
-- PRJPB_008H: BACKLOG — protocolo de screenshots UX/UI y evidencia visual.
+- PRJPB_008G: DONE — suggested command semántico y botones copiar comandos demo. Resultado PASS_WITH_WARNINGS.
+- PRJPB_008H: READY — protocolo de screenshots UX/UI y evidencia visual.
 
 03.00_TECHNICAL_DEBT_ROLLOVER
 - TD_001/P1: RADAR stale.
@@ -305,8 +305,8 @@ PRJPB_008D_2_RADAR_BASELINE_REFRESH
 
 03.00_BACKLOG_NEXT
 - PRJPB_008F: DONE — dashboard v0.2 con datos reales desde CLI/BATON/RADAR. Resultado PASS_WITH_WARNINGS.
-- PRJPB_008G: READY — suggested command semántico y botones copiar comandos demo.
-- PRJPB_008H: BACKLOG — protocolo de screenshots UX/UI y evidencia visual.
+- PRJPB_008G: DONE — suggested command semántico y botones copiar comandos demo. Resultado PASS_WITH_WARNINGS.
+- PRJPB_008H: READY — protocolo de screenshots UX/UI y evidencia visual.
 - PRJPB_EVIDENCE_POLICY_001: BACKLOG — formalizar política runtime/versionable.
 
 04.00_NOTES
@@ -358,13 +358,49 @@ PRJPB_008F_DASHBOARD_V02_REAL_DATA
 - HTML estático generado, no app viva con API.
 - HEAD mostrado es source HEAD de generación; el commit del dashboard siempre queda posterior.
 - AI_MEMORY_STATUS MISSING sigue pendiente.
-- No hay botones copiar comandos.
+- Botones copiar comandos incorporados; validar política navegador local file://.
 - Protocolo screenshots UX/UI pendiente.
 
 03.00_READY_NOW
-- PRJPB_008G: READY — suggested command semántico y botones copiar comandos demo.
+- PRJPB_008G: DONE — suggested command semántico y botones copiar comandos demo. Resultado PASS_WITH_WARNINGS.
 
 04.00_BACKLOG_NEXT
-- PRJPB_008H: BACKLOG — protocolo de screenshots UX/UI y evidencia visual.
+- PRJPB_008H: READY — protocolo de screenshots UX/UI y evidencia visual.
 - PRJPB_EVIDENCE_POLICY_001: BACKLOG — formalizar política runtime/versionable.
 
+==========
+SESSION_CLOSE_20260602_HIA_DASHBOARD_BASELINE_TO_008H
+==========
+
+00.00_DONE_THIS_SESSION
+- PRJPB_008D-2A: DONE — fix CLI WSL2/PS5.1/StrictMode/BOM.
+- PRJPB_008D-2B: DONE — semantic RADAR baseline evidence.
+- PRJPB_008D-2C: DONE — semantic evidence anchor in HIA_PROJECT_ENGINE.
+- PRJPB_008E: DONE — human visual dashboard validation. PASS_WITH_WARNINGS.
+- PRJPB_008F: DONE — dashboard v0.2 real data. PASS_WITH_WARNINGS.
+- PRJPB_008G: DONE — semantic suggested command + copy buttons. PASS_WITH_WARNINGS.
+
+01.00_READY_NOW
+- PRJPB_008H: READY — protocolo de screenshots UX/UI y evidencia visual.
+
+02.00_BACKLOG_NEXT
+- PRJPB_008I: BACKLOG — demo pack gerencial v0.2.
+- PRJPB_008J: BACKLOG — guion ejecutivo demo gerencial.
+- PRJPB_008K: BACKLOG — release candidate interno con RADAR/BATON/backlog frescos.
+- PRJPB_EVIDENCE_POLICY_001: BACKLOG — formalizar política runtime/versionable.
+- PRJPB_AI_MEMORY_001: BACKLOG — evaluar AI_MEMORY_STATUS MISSING.
+
+03.00_TECHNICAL_DEBT
+- TD_SCREENSHOT_PROTOCOL/P2: falta protocolo de screenshots UX/UI.
+- TD_AI_MEMORY/P2: AI_MEMORY_STATUS MISSING.
+- TD_EVIDENCE_POLICY/P2: política runtime/versionable no canónica.
+- TD_DASHBOARD_STATIC/P2: dashboard v0.2 generado, no app viva.
+- TD_CLIPBOARD_FILE_POLICY/P3: copy buttons dependen de navigator.clipboard bajo file://.
+
+04.00_PATH_TO_MANAGEMENT_DELIVERABLE
+- Step 1: RADAR/evidence baseline — DONE.
+- Step 2: dashboard visual human validation — DONE.
+- Step 3: dashboard v0.2 real data — DONE.
+- Step 4: semantic command + copy buttons — DONE.
+- Step 5: screenshots UX/UI protocol — READY.
+- Step 6: demo pack gerencial v0.2 — BACKLOG.

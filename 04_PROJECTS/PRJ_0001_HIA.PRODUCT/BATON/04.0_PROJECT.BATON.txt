@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_008G | suggested command semántico y botones copiar comandos demo | ready
+PRJPB_008H | protocolo de screenshots UX/UI y evidencia visual | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -483,3 +483,51 @@ Para continuar:
 2) project continue.
 3) implementar PRJPB_008G sin reabrir data binding salvo blocker.
 
+===============================================================================
+SESSION_CLOSE_20260602_HIA_DASHBOARD_BASELINE_TO_008H
+===============================================================================
+00.00_CONTEXT
+- Fecha local: 2026-06-02 10:55 Santiago Chile
+- Fecha UTC: 2026-06-02T15:03:43Z
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- Branch: feat/20260405-console-v2-phase1-phase2
+- HEAD: 33646eb 20260529_HIA_PRJPB_008G_add_dashboard_copy_buttons_semantic_command
+- Propósito: cierre formal de sesión; consolidar PRJPB_008G y mover continuidad a PRJPB_008H.
+
+01.00_DONE_CONFIRMED
+- PRJPB_008D-2A: DONE — fix CLI entrypoint WSL2 / PowerShell 5.1 / StrictMode / UTF-8 BOM.
+- PRJPB_008D-2B: DONE — evidencia semántica RADAR baseline versionada.
+- PRJPB_008D-2C: DONE — HIA_PROJECT_ENGINE reconoce evidencia semántica moderna.
+- PRJPB_008E: DONE — validación visual humana dashboard v0.1. Resultado PASS_WITH_WARNINGS.
+- PRJPB_008F: DONE — dashboard v0.2 con datos reales CLI/BATON/BACKLOG/RADAR/UX_EVAL/Git. Resultado PASS_WITH_WARNINGS.
+- PRJPB_008G: DONE — suggested command semántico y botones copiar comandos demo. Resultado PASS_WITH_WARNINGS.
+
+02.00_CURRENT_STATE
+- Dashboard principal: 01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.2.html
+- Dashboard v0.2 muestra Evidence FRESH, RADAR Active OK, UX latest PASS_WITH_WARNINGS.
+- Dashboard incorpora demo semántica recomendada: project open.
+- Dashboard conserva engine suggested command: project review.
+- Dashboard incorpora botones copiar con navigator.clipboard y fallback manual.
+
+03.00_TECHNICAL_DEBT_ROLLOVER
+- TD_005/P2: protocolo screenshots UX/UI pendiente.
+- TD_006/P2: warning git global ignore/permisos pendiente si reaparece.
+- TD_008/P3: timestamp última evaluación UX/UI requiere política formal.
+- AI_MEMORY_STATUS: MISSING sigue pendiente.
+- PRJPB_EVIDENCE_POLICY_001: formalizar política runtime/versionable.
+- Dashboard v0.2 sigue siendo HTML generado, no app viva con API.
+- Clipboard puede fallar bajo navegador local file://.
+
+04.00_NEXT_ACTION
+- PRJPB_008H: READY — protocolo de screenshots UX/UI y evidencia visual.
+
+05.00_PATH_TO_MANAGEMENT_DELIVERABLE
+- Battle 01: evidencia/continuidad FRESH — DONE.
+- Battle 02: dashboard v0.1 validado visualmente — DONE.
+- Battle 03: dashboard v0.2 con datos reales + copy buttons — DONE/PASS_WITH_WARNINGS.
+- Battle 04: protocolo screenshots UX/UI — NEXT.
+- Battle 05: demo pack gerencial v0.2 — BACKLOG.
+
+06.00_OPTIONAL_HANDOFF_PROMPT
+Para continuar próxima sesión:
+"Hoy es [fecha/hora], Santiago Chile. Continuemos HIA desde PRJPB_008H. Primero verifica git status, project review, project continue y frescura RADAR contra HEAD. Objetivo: crear protocolo de screenshots UX/UI y evidencia visual para dejar el dashboard v0.2 defendible como demo gerencial interna."

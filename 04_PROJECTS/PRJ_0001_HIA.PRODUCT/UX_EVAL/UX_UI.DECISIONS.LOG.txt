@@ -78,3 +78,11 @@ RATIONALE.........: Ya muestra estado real y elimina ruido histórico, pero sigu
 RESULT............: PASS_WITH_WARNINGS
 NEXT_ACTION.......: PRJPB_008G | suggested command semántico y botones copiar comandos demo | ready
 
+==========
+UX_DECISION_0006_SESSION_CLOSE_20260602
+==========
+DATE_LOCAL........: 2026-06-02 10:55 Santiago Chile
+DECISION..........: Avanzar a protocolo de screenshots UX/UI antes de demo pack gerencial.
+RATIONALE.........: El dashboard v0.2 ya es útil, pero sin evidencia visual estándar el entregable gerencial queda artesanal.
+RESULT............: PRJPB_008H READY
+NEXT_ACTION.......: PRJPB_008H | protocolo de screenshots UX/UI y evidencia visual | ready
