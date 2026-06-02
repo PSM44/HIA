@@ -564,3 +564,31 @@ SESSION_UPDATE_20260602_HIA_PRJPB_008H_DONE
 
 04.00_NEXT_ACTION
 - PRJPB_008I: READY — demo pack gerencial v0.2.
+
+===============================================================================
+SESSION_UPDATE_20260602_HIA_PRJPB_008H_R_EVIDENCE_ANCHOR
+===============================================================================
+00.00_CONTEXT
+- Fecha UTC: 2026-06-02T16:45:15Z
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- Propósito: reconciliar evidencia semántica posterior a PRJPB_008H.
+
+01.00_DONE_CONFIRMED
+- PRJPB_008H: DONE — protocolo de screenshots UX/UI y evidencia visual creado, versionado y pusheado.
+- PRJPB_008H-R: DONE — evidencia semántica de cierre 008H creada para continuidad operativa.
+
+02.00_CURRENT_STATE
+- NEXT_ACTION: PRJPB_008I | demo pack gerencial v0.2 | ready.
+- Git quedó clean tras PRJPB_008H antes de esta reconciliación.
+- RADAR refresh posterior a PRJPB_008H ejecutado correctamente.
+- project continue todavía puede reportar EVIDENCE_STATE STALE si el engine no reconoce evidencia semántica 008H como anchor fresco.
+
+03.00_TECHNICAL_DEBT_ROLLOVER
+- TD_EVIDENCE_ANCHOR_008H/P1: confirmar si HIA_PROJECT_ENGINE debe reconocer evidencia semántica genérica PRJPB_*.SEMANTIC_EVIDENCE.* o solo patrones RADAR_BASELINE_EVIDENCE.
+- TD_ROOT_WBS_NAMING_001/P2: auditar colisión semántica root 04_AGENTS / 04_CONSOLE / 04_PROJECTS.
+- TD_AI_MEMORY/P2: AI_MEMORY_STATUS MISSING.
+- TD_EVIDENCE_POLICY/P2: política runtime/versionable no canónica.
+
+04.00_NEXT_ACTION
+- PRJPB_008I: READY — demo pack gerencial v0.2.
+

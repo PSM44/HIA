@@ -444,3 +444,30 @@ PRJPB_008H_SCREENSHOT_UX_UI_PROTOCOL
 - Step 4: semantic command + copy buttons — DONE.
 - Step 5: screenshots UX/UI protocol — DONE.
 - Step 6: demo pack gerencial v0.2 — READY.
+
+==========
+PRJPB_008H_R_EVIDENCE_ANCHOR_RECONCILIATION
+==========
+00.00_DONE
+- PRJPB_008H-R: DONE — evidencia semántica post screenshot protocol creada.
+- Objetivo: evitar que la continuidad quede conceptualmente anclada solo en PRJPB_008D-2.
+
+01.00_READY_NOW
+- PRJPB_008I: READY — demo pack gerencial v0.2.
+
+02.00_TECHNICAL_DEBT
+- TD_EVIDENCE_ANCHOR_008H/P1: verificar soporte del engine para evidencia semántica genérica.
+- TD_ROOT_WBS_NAMING_001/P2: auditar carpetas root con prefijo 04_*:
+  - 04_AGENTS
+  - 04_CONSOLE
+  - 04_PROJECTS
+- TD_AI_MEMORY/P2: AI_MEMORY_STATUS MISSING.
+- TD_EVIDENCE_POLICY/P2: formalizar política runtime/versionable.
+
+03.00_ACCEPTANCE_FOR_008I
+- Demo pack debe indicar explícitamente:
+  1) PRJPB_008H cerrado.
+  2) Protocolo screenshots existe.
+  3) Evidence resolver puede seguir stale por deuda técnica si no reconoce evidencia genérica.
+  4) No ocultar TD_EVIDENCE_ANCHOR_008H.
+
