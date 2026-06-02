@@ -171,3 +171,31 @@ WARNINGS..........:
 - Dashboard sigue siendo HTML generado.
 - Clipboard puede fallar bajo file://.
 NEXT_ACTION.......: PRJPB_008H | protocolo de screenshots UX/UI y evidencia visual | ready
+
+===============================================================================
+UXEVAL_0003_PRJPB_008H_SCREENSHOT_PROTOCOL
+===============================================================================
+00.00_METADATA
+- LOCAL_TIMESTAMP: 2026-06-02 12:32:18 -0400
+- UTC_TIMESTAMP: 2026-06-02T16:32:18Z
+- PROJECT_ID: PRJ_0001_HIA.PRODUCT
+- MINIBATTLE_ID: PRJPB_008H
+- TYPE: UX/UI SCREENSHOT PROTOCOL
+- RESULT: PASS_WITH_WARNINGS
+
+01.00_DONE
+- Se crea protocolo versionable UX_UI.SCREENSHOT.PROTOCOL.txt.
+- Se definen rutas runtime para screenshots y manifests.
+- Se define naming obligatorio de capturas.
+- Se define manifest mínimo por screenshot.
+- Se define política Git: registros textuales versionables; screenshots binarios runtime por defecto.
+
+02.00_WARNINGS
+- No se capturaron screenshots reales en esta MiniBattle.
+- La captura efectiva queda para PRJPB_008I o para ejecución manual posterior.
+- Dashboard v0.2 sigue siendo HTML estático generado.
+- Clipboard bajo file:// puede fallar según navegador.
+
+03.00_DECISION
+- PRJPB_008H puede cerrar como protocolo.
+- La demo gerencial v0.2 debe usar este protocolo como evidencia visual base.

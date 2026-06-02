@@ -404,3 +404,43 @@ SESSION_CLOSE_20260602_HIA_DASHBOARD_BASELINE_TO_008H
 - Step 4: semantic command + copy buttons — DONE.
 - Step 5: screenshots UX/UI protocol — READY.
 - Step 6: demo pack gerencial v0.2 — BACKLOG.
+
+
+===============================================================================
+PRJPB_008H_SCREENSHOT_UX_UI_PROTOCOL
+===============================================================================
+00.00_DONE
+- PRJPB_008H: DONE — protocolo de screenshots UX/UI y evidencia visual creado.
+- Protocol: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/UX_EVAL/UX_UI.SCREENSHOT.PROTOCOL.txt
+- Runner: 02_TOOLS/Run-PRJPB-008H.ps1
+- Runtime screenshots: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/UX_EVAL/SCREENSHOTS
+- Runtime manifests: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/UX_EVAL/MANIFESTS
+- Result: PASS_WITH_WARNINGS.
+
+01.00_READY_NOW
+- PRJPB_008I: READY — demo pack gerencial v0.2.
+
+02.00_BACKLOG_NEXT
+- PRJPB_008J: BACKLOG — guion ejecutivo demo gerencial.
+- PRJPB_008K: BACKLOG — release candidate interno con RADAR/BATON/backlog frescos.
+- PRJPB_EVIDENCE_POLICY_001: BACKLOG — formalizar política runtime/versionable.
+- PRJPB_AI_MEMORY_001: BACKLOG — evaluar AI_MEMORY_STATUS MISSING.
+
+03.00_TECHNICAL_DEBT
+- TD_ROOT_NAMING_001/P2: auditar root folders con prefijo 04_xxx:
+  - 04_AGENTS
+  - 04_CONSOLE
+  - 04_PROJECTS
+  Riesgo: ambigüedad WBS/ID_FS y fricción de navegación.
+  Regla: no renombrar sin mapa de referencias, RADAR y validación.
+- TD_ENCODING_WSL_WINPS_001/P3: salida mojibake al invocar Windows PowerShell desde WSL.
+- TD_SCREENSHOT_CAPTURE_001/P2: capturar screenshot real dashboard v0.2 con manifest.
+- TD_DASHBOARD_STATIC/P2: dashboard v0.2 generado, no app viva.
+
+04.00_PATH_TO_MANAGEMENT_DELIVERABLE
+- Step 1: RADAR/evidence baseline — DONE.
+- Step 2: dashboard visual human validation — DONE.
+- Step 3: dashboard v0.2 real data — DONE.
+- Step 4: semantic command + copy buttons — DONE.
+- Step 5: screenshots UX/UI protocol — DONE.
+- Step 6: demo pack gerencial v0.2 — READY.

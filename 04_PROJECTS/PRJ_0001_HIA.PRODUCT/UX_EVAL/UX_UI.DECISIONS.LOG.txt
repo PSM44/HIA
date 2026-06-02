@@ -86,3 +86,18 @@ DECISION..........: Avanzar a protocolo de screenshots UX/UI antes de demo pack 
 RATIONALE.........: El dashboard v0.2 ya es útil, pero sin evidencia visual estándar el entregable gerencial queda artesanal.
 RESULT............: PRJPB_008H READY
 NEXT_ACTION.......: PRJPB_008H | protocolo de screenshots UX/UI y evidencia visual | ready
+
+===============================================================================
+DECISION_UX_0003_PRJPB_008H_SCREENSHOT_POLICY
+===============================================================================
+00.00_DECISION
+Se adopta política de evidencia visual liviana:
+- protocolo y registros UX/UI se versionan en UX_EVAL.
+- screenshots y manifests runtime se guardan bajo ARTIFACTS/UX_EVAL.
+- screenshots binarios no se versionan salvo aprobación humana explícita.
+
+01.00_REASON
+Evita contaminar Git con binarios pesados y mantiene trazabilidad suficiente para demo gerencial interna.
+
+02.00_IMPACT
+PRJPB_008I demo pack gerencial v0.2 debe apoyarse en este protocolo para screenshots/evidencia visual.

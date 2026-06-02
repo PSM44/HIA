@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_008H | protocolo de screenshots UX/UI y evidencia visual | ready
+PRJPB_008I | demo pack gerencial v0.2 | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -531,3 +531,36 @@ SESSION_CLOSE_20260602_HIA_DASHBOARD_BASELINE_TO_008H
 06.00_OPTIONAL_HANDOFF_PROMPT
 Para continuar próxima sesión:
 "Hoy es [fecha/hora], Santiago Chile. Continuemos HIA desde PRJPB_008H. Primero verifica git status, project review, project continue y frescura RADAR contra HEAD. Objetivo: crear protocolo de screenshots UX/UI y evidencia visual para dejar el dashboard v0.2 defendible como demo gerencial interna."
+
+
+===============================================================================
+SESSION_UPDATE_20260602_HIA_PRJPB_008H_DONE
+===============================================================================
+00.00_CONTEXT
+- Fecha local: 2026-06-02 12:32:18 -0400
+- Fecha UTC: 2026-06-02T16:32:18Z
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- Propósito: cerrar protocolo de screenshots UX/UI y evidencia visual.
+
+01.00_DONE_CONFIRMED
+- PRJPB_008H: DONE — protocolo de screenshots UX/UI y evidencia visual creado.
+- Protocolo versionado: UX_EVAL/UX_UI.SCREENSHOT.PROTOCOL.txt.
+- Runner versionado: 02_TOOLS/Run-PRJPB-008H.ps1.
+- Runtime screenshots path: ARTIFACTS/UX_EVAL/SCREENSHOTS.
+- Runtime manifests path: ARTIFACTS/UX_EVAL/MANIFESTS.
+- UX_EVAL actualizado con evaluación, checklist, issues y decisiones.
+
+02.00_RESULT
+- Resultado: PASS_WITH_WARNINGS.
+- El protocolo existe y deja defendible la captura visual futura.
+- No se capturó screenshot real en esta MiniBattle.
+- Evidence formal de project continue puede seguir marcada como STALE hasta que el engine reconozca nueva evidencia semántica o se ejecute refresh específico.
+
+03.00_TECHNICAL_DEBT_ROLLOVER
+- TD_ROOT_NAMING_001/P2: auditar root folders 04_AGENTS, 04_CONSOLE, 04_PROJECTS.
+- TD_ENCODING_WSL_WINPS_001/P3: corregir mojibake WSL -> Windows PowerShell.
+- PRJPB_EVIDENCE_POLICY_001/P2: formalizar política runtime/versionable.
+- TD_DASHBOARD_STATIC/P2: dashboard v0.2 sigue siendo HTML generado, no app viva.
+
+04.00_NEXT_ACTION
+- PRJPB_008I: READY — demo pack gerencial v0.2.

@@ -115,3 +115,11 @@ UX_ISSUES_SESSION_CLOSE_20260602
 - UX_ISSUE_0017/P3: copy buttons dependen de navigator.clipboard y pueden fallar bajo file://.
   Estado: ACCEPTED_LIMITATION
   Next: mantener fallback manual visible.
+
+===============================================================================
+UX_ISSUE_ROLLOVER_PRJPB_008H
+===============================================================================
+- UX_ISSUE_0004: DONE — protocolo de screenshots UX/UI creado en PRJPB_008H.
+- UX_ISSUE_0009/P2: BACKLOG — capturar screenshot real dashboard v0.2 usando protocolo.
+- UX_ISSUE_0010/P2: BACKLOG — crear manifest real asociado a captura dashboard v0.2.
+- UX_ISSUE_0011/P3: BACKLOG — evaluar comportamiento clipboard bajo file:// vs navegador servido por localhost.

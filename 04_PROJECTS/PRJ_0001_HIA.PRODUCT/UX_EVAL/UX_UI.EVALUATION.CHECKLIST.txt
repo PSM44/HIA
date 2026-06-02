@@ -121,3 +121,19 @@ UXEVAL_0003_CHECKLIST_PRJPB_008E
 [WARN] 08. RADAR/evidence ya está FRESH, pero dashboard v0.1 aún muestra narrativa antigua.
 [WARN] 09. Falta data binding real.
 [DECISION] PASS_WITH_WARNINGS.
+
+===============================================================================
+CHECKLIST_UXEVAL_0003_PRJPB_008H
+===============================================================================
+01.00_PROTOCOL
+- Protocolo de screenshots UX/UI existe: OK
+- Ruta runtime screenshots definida: OK
+- Ruta runtime manifests definida: OK
+- Naming de screenshots definido: OK
+- Manifest mínimo definido: OK
+- Política Git definida: OK
+
+02.00_PENDING
+- Screenshot real dashboard v0.2: PENDING
+- Manifest real screenshot dashboard v0.2: PENDING
+- Confirmación visual post-008H: PENDING

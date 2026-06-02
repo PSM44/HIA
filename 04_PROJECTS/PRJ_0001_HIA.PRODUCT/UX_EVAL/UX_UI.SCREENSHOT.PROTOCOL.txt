@@ -1,0 +1,134 @@
+===============================================================================
+FILE: UX_UI.SCREENSHOT.PROTOCOL.txt
+PROJECT: PRJ_0001_HIA.PRODUCT
+TYPE: UX/UI SCREENSHOT PROTOCOL
+VERSION: v0.1-DRAFT
+STATUS: ACTIVE
+OWNER: HUMAN + SYSTEM
+SCOPE: HIA dashboard / UX evidence / management demo baseline
+===============================================================================
+
+00.00_PROPOSITO
+Definir el protocolo mínimo para capturar, nombrar, registrar y conservar evidencia visual UX/UI
+del dashboard HIA, sin contaminar Git con binarios pesados ni perder trazabilidad para demo
+gerencial interna.
+
+01.00_REGLA_BASE
+01.10 La evidencia visual pesada vive en ARTIFACTS/UX_EVAL/SCREENSHOTS.
+01.20 Los manifests y registros textuales viven en UX_EVAL cuando sean versionables.
+01.30 Los screenshots binarios no se versionan por defecto.
+01.40 Los registros .txt sí se versionan cuando describen decisión, evaluación, protocolo o checklist.
+01.50 La evidencia visual no reemplaza RADAR, BATON, BACKLOG ni Git; solo los complementa.
+
+02.00_RUTAS_CANONICAS
+02.10 Dashboard principal:
+01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.2.html
+
+02.20 Protocolo versionable:
+04_PROJECTS/PRJ_0001_HIA.PRODUCT/UX_EVAL/UX_UI.SCREENSHOT.PROTOCOL.txt
+
+02.30 Registro UX/UI versionable:
+04_PROJECTS/PRJ_0001_HIA.PRODUCT/UX_EVAL/UX_UI.EVALUATION.LOG.txt
+04_PROJECTS/PRJ_0001_HIA.PRODUCT/UX_EVAL/UX_UI.EVALUATION.CHECKLIST.txt
+04_PROJECTS/PRJ_0001_HIA.PRODUCT/UX_EVAL/UX_UI.ISSUES.BACKLOG.txt
+04_PROJECTS/PRJ_0001_HIA.PRODUCT/UX_EVAL/UX_UI.DECISIONS.LOG.txt
+
+02.40 Evidencia pesada runtime:
+04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/UX_EVAL/SCREENSHOTS
+
+02.50 Manifests runtime:
+04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/UX_EVAL/MANIFESTS
+
+03.00_NAMING_SCREENSHOTS
+Formato obligatorio:
+
+PRJPB_008H.UXEVAL_<NNNN>.<YYYYMMDD_HHMMSS>.<VIEW>.<BROWSER>.<WIDTH>x<HEIGHT>.<RESULT>.png
+
+Ejemplo:
+
+PRJPB_008H.UXEVAL_0003.20260602_122500.DASHBOARD_HOME.CHROME.1920x1080.PASS_WITH_WARNINGS.png
+
+04.00_CAMPOS_MINIMOS_DEL_MANIFEST
+Cada captura debe tener manifest textual con estos campos:
+
+SCREENSHOT_ID
+MINIBATTLE_ID
+LOCAL_TIMESTAMP
+UTC_TIMESTAMP
+PROJECT_ID
+GIT_BRANCH
+GIT_HEAD
+DASHBOARD_PATH
+BROWSER
+OS_CONTEXT
+VIEW
+WIDTH
+HEIGHT
+ZOOM
+RESULT
+FINDINGS
+RISKS
+DECISION
+SCREENSHOT_PATH
+CAPTURED_BY
+
+05.00_RESULTADOS_PERMITIDOS
+PASS
+PASS_WITH_WARNINGS
+FAIL
+NOT_REVIEWED
+
+06.00_CHECKLIST_MINIMO_POR_CAPTURA
+06.10 ¿El dashboard carga sin error visible?
+06.20 ¿El contenido principal es legible?
+06.30 ¿NEXT_ACTION visible coincide con BATON/BACKLOG?
+06.40 ¿EVIDENCE/RADAR/UX status son visibles?
+06.50 ¿Los botones copiar se ven y son entendibles?
+06.60 ¿Hay brechas explícitas visibles?
+06.70 ¿La captura tiene manifest asociado?
+06.80 ¿La captura no expone secretos, rutas sensibles innecesarias o datos personales no requeridos?
+
+07.00_POLITICA_GIT
+07.10 Versionar:
+- UX_UI.SCREENSHOT.PROTOCOL.txt
+- UX_UI.EVALUATION.LOG.txt
+- UX_UI.EVALUATION.CHECKLIST.txt
+- UX_UI.ISSUES.BACKLOG.txt
+- UX_UI.DECISIONS.LOG.txt
+- runners PowerShell asociados a MiniBattle.
+
+07.20 No versionar por defecto:
+- PNG/JPG/WebP screenshots.
+- logs runtime.
+- manifests runtime si contienen rutas locales extensas o evidencia temporal pesada.
+
+07.30 Excepción:
+Un screenshot puede versionarse solo si el humano lo aprueba explícitamente como evidencia liviana y estable.
+Sin aprobación explícita, queda en ARTIFACTS.
+
+08.00_DEFINITION_OF_DONE_PRJPB_008H
+PRJPB_008H queda DONE si:
+
+01) existe este protocolo versionable.
+02) existe carpeta runtime para screenshots.
+03) existe carpeta runtime para manifests.
+04) UX_EVAL queda actualizado.
+05) BATON/BACKLOG avanzan a PRJPB_008I.
+06) Git queda clean.
+07) RADAR se refresca si el runner RADAR existe.
+08) queda evidencia textual de ejecución.
+
+09.00_DEUDA_RELACIONADA
+09.10 TD_ROOT_NAMING_001/P2:
+Auditar root folders con prefijo 04_xxx: 04_AGENTS, 04_CONSOLE, 04_PROJECTS.
+No renombrar sin mapa de referencias y validación RADAR.
+
+09.20 TD_ENCODING_WSL_WINPS_001/P3:
+Corregir mojibake en salida WSL -> Windows PowerShell cuando aparezca en evidencia.
+No bloquea PRJPB_008H.
+
+10.00_NOTAS
+10.10 Este protocolo prepara PRJPB_008I demo pack gerencial v0.2.
+10.20 No convierte el dashboard en app viva.
+10.30 No formaliza aún toda la política runtime/versionable; eso sigue en PRJPB_EVIDENCE_POLICY_001.
+===============================================================================
