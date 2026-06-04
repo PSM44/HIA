@@ -1596,3 +1596,55 @@ PURPOSE...........: Limpiar UX layer, eliminar floating buttons y documentar pat
 04.00_NEXT_ACTION
 - PRJPB_009N-C: READY — implementar estado real read-only visible en Control Tower Shell.
 ===============================================================================
+
+===============================================================================
+SESSION_CLOSE_20260604_HIA_PRJPB_009N_B
+===============================================================================
+ID_UNICO..........: SESSION_CLOSE_20260604_HIA_PRJPB_009N_B_20260604_185836
+STATUS............: CLOSED
+FECHA_LOCAL.......: 2026-06-04 18:58:42 -0400
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+BRANCH............: feat/20260405-console-v2-phase1-phase2
+HEAD_BEFORE_CLOSE.: 851ec9c 20260604_HIA_PRJPB_009N_B_clean_ux_layer_functional_path
+
+01.00_ESTADO_ACTUAL
+- PRJPB_009N-B completado.
+- Floating buttons eliminados.
+- UX search/help movido a topbar.
+- Barra contextual conserva copiar contexto/ruta/WSL.
+- NEXT_ACTION canónica: PRJPB_009N-C | implementar estado real read-only visible en Control Tower Shell | ready.
+
+02.00_DEUDA_TECNICA
+- Falta conexión fina de hia.state.js a vistas.
+- Falta estado real visible en Control Tower.
+- Costos IA y estados IA siguen demo/no validados.
+- Falta refresh real desde UI.
+- Falta mini server local o backend equivalente.
+- Falta Project Workspace real por proyecto.
+
+03.00_BACKLOG_OPERATIVO
+P0:
+- PRJPB_009N-C | implementar estado real read-only visible en Control Tower Shell.
+P1:
+- Project Workspace real.
+- IA/costos por proyecto.
+- Refresh/action layer.
+P2:
+- Reportes, colaboración, integraciones, Obsidian/similar, encriptación.
+
+04.00_PATH_GERENCIA
+- PRJPB_009N-C: Control Tower con estado real.
+- PRJPB_009O: Workspace real por proyecto.
+- PRJPB_009P: IA/costos por proyecto.
+- PRJPB_009Q: Refresh local.
+- PRJPB_009R: Demo flow gerencial.
+- PRJPB_009S: Snapshot/reporte ejecutivo.
+
+05.00_HANDOFF
+Siguiente sesión debe partir en:
+PRJPB_009N-C | implementar estado real read-only visible en Control Tower Shell | ready
+
+No avanzar más cosmética antes de dato real.
+Reporte de cierre:
+04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/SESSION_CLOSE.HIA.20260604_20260604_185836.txt
+===============================================================================

@@ -1619,3 +1619,51 @@ PURPOSE...........: Limpiar UX layer, eliminar floating buttons y documentar pat
 
 04.00_NEXT
 - PRJPB_009N-C: READY — implementar estado real read-only visible en Control Tower Shell.
+
+===============================================================================
+SESSION_CLOSE_HIA_20260604_20260604_185836
+===============================================================================
+ID_UNICO..........: SESSION_CLOSE_HIA_20260604_20260604_185836
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 18:58:42 -0400
+PURPOSE...........: Cierre formal de sesión; consolidar deuda, backlog, avances, faltantes y path gerencial.
+
+01.00_ESTADO
+- Branch: feat/20260405-console-v2-phase1-phase2
+- HEAD before close: 851ec9c 20260604_HIA_PRJPB_009N_B_clean_ux_layer_functional_path
+- NEXT_ACTION: PRJPB_009N-C | implementar estado real read-only visible en Control Tower Shell | ready
+
+02.00_DEUDA_TECNICA
+- Estado real no visible completamente en Control Tower Shell.
+- hia.state.js no conectado fino a todas las vistas.
+- IA/costos/routing siguen demo o diseño.
+- Falta refresh real desde UI.
+- Falta mini server local o backend equivalente.
+- Falta control de write actions.
+- Future feature: reportes, colaboración, integraciones, Obsidian/similar, encriptación.
+
+03.00_BACKLOG_PRIORIZADO
+P0:
+- PRJPB_009N-C | implementar estado real read-only visible en Control Tower Shell.
+- Conectar hia.state.js a vistas global/proyecto/IA/costos/evidencia.
+
+P1:
+- Mini server local.
+- Project Workspace real.
+- IA y costos por proyecto.
+- Refresh/action layer.
+
+P2:
+- Reportes.
+- Colaboración.
+- Integraciones.
+- Obsidian/similar.
+- Encriptación.
+- Migración React/Vite/Next/Tauri/Electron.
+
+04.00_PATH_GERENCIAL
+- PRJPB_009N-C -> PRJPB_009O -> PRJPB_009P -> PRJPB_009Q -> PRJPB_009R -> PRJPB_009S.
+
+05.00_REPORT
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/SESSION_CLOSE.HIA.20260604_20260604_185836.txt
