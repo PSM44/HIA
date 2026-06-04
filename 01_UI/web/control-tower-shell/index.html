@@ -4,65 +4,73 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0f141b">
-  <meta name="description" content="HIA Control Tower Shell">
+  <meta name="description" content="HIA Control Tower Shell v0.2">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="stylesheet" href="./assets/app.css">
-  <title>HIA — Control Tower</title>
+  <title>HIA — Control Tower v0.2</title>
 </head>
 <body>
-  <div class="shell">
+  <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">
         <div class="brand-mark">H</div>
         <div>
           <div class="brand-title">HIA</div>
-          <div class="brand-subtitle">Control Tower</div>
+          <div class="brand-subtitle">Human Intelligence Amplifier</div>
         </div>
       </div>
 
-      <div class="nav-group">
-        <div class="nav-heading">Global</div>
-        <button class="nav-item is-active" data-route="control-tower">Control Tower</button>
-        <button class="nav-item" data-route="portfolio">Portfolio</button>
-        <button class="nav-item" data-route="ai-control">AI Control Tower</button>
-        <button class="nav-item" data-route="cost-center">Cost Center</button>
-      </div>
+      <button class="create-button" data-route-shortcut="project-overview">
+        <span>↪</span>
+        <strong>Continue last project</strong>
+        <small>Último proyecto trabajado</small>
+      </button>
 
-      <div class="nav-group">
-        <div class="nav-heading">Project Workspace</div>
-        <button class="nav-item" data-route="project-overview">Project Overview</button>
-        <button class="nav-item" data-route="project-ai">Project AI</button>
-        <button class="nav-item" data-route="project-chat">Project Chat</button>
-        <button class="nav-item" data-route="project-costs">Project Costs</button>
-        <button class="nav-item" data-route="project-evidence">Project Evidence</button>
-        <button class="nav-item" data-route="project-settings">Project Settings</button>
-      </div>
+      <nav>
+        <div class="nav-section">
+          <div class="nav-label">01 · Global HIA</div>
+          <button class="nav-item is-active" data-route="control-tower">Torre de Control HIA</button>
+          <button class="nav-item" data-route="portfolio">Portafolio</button>
+          <button class="nav-item" data-route="ai-control">Control de IA</button>
+          <button class="nav-item" data-route="cost-center">Centro de Costos</button>
+        </div>
 
-      <div class="nav-group">
-        <div class="nav-heading">Enterprise</div>
-        <button class="nav-item" data-route="reports">Reports</button>
-        <button class="nav-item" data-route="collaboration">Collaboration</button>
-        <button class="nav-item" data-route="integrations">Integrations</button>
-        <button class="nav-item" data-route="knowledge-vault">Knowledge / Vault</button>
-        <button class="nav-item" data-route="admin-settings">Admin / Settings</button>
-      </div>
+        <div class="nav-section">
+          <div class="nav-label">02 · Proyecto seleccionado</div>
+          <button class="nav-item" data-route="project-overview">Workspace / Vista General</button>
+          <button class="nav-item" data-route="project-ai-chat">IA / Chat del Proyecto</button>
+          <button class="nav-item" data-route="project-costs">Costos del Proyecto</button>
+          <button class="nav-item" data-route="project-evidence">Evidencia del Proyecto</button>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-label">03 · Enterprise / Futuro</div>
+          <button class="nav-item" data-route="reports">Informes</button>
+          <button class="nav-item" data-route="collaboration">Colaboración</button>
+          <button class="nav-item" data-route="integrations">Integraciones</button>
+          <button class="nav-item" data-route="knowledge-vault">Bóveda / Conocimiento</button>
+          <button class="nav-item" data-route="settings">Configuración Global</button>
+        </div>
+      </nav>
 
       <div class="sidebar-footer">
-        <div class="mini-label">Selected project</div>
-        <div class="mini-copy" id="sidebar-project">PRJ_0001_HIA.PRODUCT</div>
+        <div class="mini-label">Proyecto seleccionado</div>
+        <div class="mini-value" id="sidebar-project">PRJ_0001_HIA.PRODUCT</div>
+        <div class="mini-label second">Estado de datos</div>
+        <div class="mini-value">Demo saneado + estado parcial</div>
       </div>
     </aside>
 
     <main class="main">
       <header class="topbar">
         <div>
-          <div class="eyebrow" id="view-layer">HIA GLOBAL</div>
-          <h1 id="view-title">Control Tower</h1>
-          <p id="view-subtitle">Vista global de HIA: portfolio, IAs, costos, alertas y continuidad.</p>
+          <div class="layer-chip" id="view-layer">HIA GLOBAL</div>
+          <h1 id="view-title">Torre de Control HIA</h1>
+          <p id="view-subtitle">Vista global: portfolio, IAs, costos, alertas, continuidad y acceso a proyectos.</p>
         </div>
         <div class="top-actions">
-          <button class="secondary-btn" id="continue-last-project">Continue last project</button>
-          <span class="status-chip">PWA-ready · no build</span>
+          <span class="state-pill">PWA-ready</span>
+          <span class="state-pill warning">Datos no reales marcados</span>
         </div>
       </header>
 

@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009M-B | implementar HIA Control Tower Shell v0.2 basada en Stitch saneado | ready
+PRJPB_009N | conectar hia.state.js fino a HIA Control Tower Shell v0.2 | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -1427,4 +1427,39 @@ PURPOSE...........: Registrar review Stitch/Figma y definir baseline UX para HIA
 
 03.00_NEXT_ACTION
 - PRJPB_009M-B: READY — implementar HIA Control Tower Shell v0.2 basada en Stitch saneado.
+===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009M_B_STITCH_BASED_CONTROL_TOWER_V02
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009M_B_STITCH_BASED_CONTROL_TOWER_V02
+STATUS............: DONE
+PURPOSE...........: Implementar HIA Control Tower Shell v0.2 basada en Stitch saneado.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009M-B: DONE.
+- Control Tower Shell v0.2 implementada.
+- Stitch aplicado como UX reference baseline saneado.
+- Figma mantiene rol de referencia secundaria.
+
+02.00_KEY_CHANGES
+- Torre de Control HIA.
+- Portafolio.
+- Control de IA.
+- Centro de Costos.
+- Project Workspace.
+- Project AI / Chat.
+- Project Costs.
+- Project Evidence.
+- Roadmap enterprise/future layers.
+
+03.00_ANTI_HUMO
+- No hay métricas fake como reales.
+- No hay costos exactos sin modelo.
+- No hay conexión/test/operación declarada sin evidencia.
+- Datos pendientes marcados como pendientes/demo/backend pendiente.
+
+04.00_NEXT_ACTION
+- PRJPB_009N: READY — conectar hia.state.js fino a HIA Control Tower Shell v0.2.
 ===============================================================================

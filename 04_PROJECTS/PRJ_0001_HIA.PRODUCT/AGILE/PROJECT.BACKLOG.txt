@@ -1467,3 +1467,33 @@ PURPOSE...........: Implementar HIA Control Tower Shell v0.2 basada en Stitch sa
 - Incluye Project Evidence.
 - Incluye Roadmap/Integraciones/Knowledge.
 - Todo dato no real está marcado como pendiente/demo/backend pendiente.
+
+===============================================================================
+PRJPB_009M_B_STITCH_BASED_CONTROL_TOWER_V02
+===============================================================================
+ID_UNICO..........: PRJPB_009M_B_STITCH_BASED_CONTROL_TOWER_V02_20260604_173248
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 17:32:50 -0400
+PURPOSE...........: Implementar HIA Control Tower Shell v0.2 basada en Stitch saneado.
+
+01.00_OUTPUTS
+- 01_UI/web/control-tower-shell/index.html
+- 01_UI/web/control-tower-shell/assets/app.css
+- 01_UI/web/control-tower-shell/assets/app.js
+- 01_UI/web/control-tower-shell/README.CONTROL_TOWER_SHELL.txt
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009M_B.STITCH_BASED_CONTROL_TOWER_V02.20260604_173248.txt
+
+02.00_DONE
+- Shell v0.2 implementada.
+- Stitch aplicado como baseline UX.
+- Anti-humo aplicado: datos no reales marcados.
+- Separación Global HIA / Portfolio / Project Workspace.
+- Control de IA global.
+- Centro de Costos global/proyecto.
+- Chat IA por proyecto marcado como backend pendiente.
+- Bóveda/Obsidian futura P1/P2.
+- Encriptación como deuda técnica normal.
+
+03.00_NEXT
+- PRJPB_009N: READY — conectar hia.state.js fino a shell v0.2.

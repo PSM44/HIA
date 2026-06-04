@@ -6,46 +6,62 @@
   const STATE = {
     selectedProjectId: "PRJ_0001_HIA.PRODUCT",
     lastProjectId: "PRJ_0001_HIA.PRODUCT",
+    generatedAt: runtimeState.generatedAt || "Pendiente conexión real",
+    git: {
+      branch: runtimeState?.git?.branch || "Pendiente conexión real",
+      head: runtimeState?.git?.head || "Pendiente conexión real",
+      status: runtimeState?.git?.status || "Pendiente conexión real"
+    },
     global: {
-      portfolioHealth: "Demo shell",
       totalProjects: 3,
       activeProjects: 1,
       blockedProjects: 0,
       humanDecisions: 1,
-      connectedAIs: 3,
-      operatingAIs: 1,
-      globalMonthlyCost: "Manual / pending real cost model",
-      costVisibility: "Visible para todos"
+      availableAIs: 4,
+      testedAIs: "Pendiente health check",
+      operatingAIs: "Pendiente health check",
+      globalCost: "Pendiente modelo real",
+      costPolicy: "Visible para todos"
     },
     aiProviders: [
       {
-        id: "chatgpt",
         name: "ChatGPT",
-        modality: "web / plan",
-        status: "Disponible",
+        modality: "Web / Plan",
+        status: "Disponible declarado por usuario",
         connection: "Pendiente test formal",
-        cost: "Plan / costo global pendiente",
-        recommendedFor: "Planning, governance, writing, analysis",
+        costModel: "Plan / pendiente registrar costo",
+        privacyRisk: "Medio: web",
+        recommendedFor: "Planificación, análisis, governance, redacción",
         assignedProjects: ["PRJ_0001_HIA.PRODUCT"]
       },
       {
-        id: "codex",
         name: "Codex",
-        modality: "desktop / coding",
-        status: "Disponible",
+        modality: "Desktop / Coding",
+        status: "Disponible declarado por usuario",
         connection: "Pendiente test formal",
-        cost: "Plan / uso pendiente",
+        costModel: "Plan / pendiente registrar costo",
+        privacyRisk: "Medio: repo/code context",
         recommendedFor: "Código, refactor, repo operations",
         assignedProjects: ["PRJ_0001_HIA.PRODUCT"]
       },
       {
-        id: "local-llm",
+        name: "Claude / otra IA web",
+        modality: "Web / posible CLI",
+        status: "Backlog operativo",
+        connection: "No testeado en HIA",
+        costModel: "Pendiente",
+        privacyRisk: "Medio: web",
+        recommendedFor: "UX critique, documentos largos, razonamiento narrativo",
+        assignedProjects: []
+      },
+      {
         name: "Local LLM",
-        modality: "local",
-        status: "Backlog",
+        modality: "Local",
+        status: "Future integration",
         connection: "No conectado",
-        cost: "Costo marginal bajo / hardware",
-        recommendedFor: "Privacidad, offline, bajo costo variable",
+        costModel: "Costo marginal bajo / hardware",
+        privacyRisk: "Bajo si es local",
+        recommendedFor: "Privacidad, bajo costo variable, offline",
         assignedProjects: []
       }
     ],
@@ -56,16 +72,17 @@
         status: "active",
         statusLabel: "Activo",
         owner: "Human + System",
-        purpose: "Construir HIA como sistema multi-proyecto con AI Operating Layer.",
-        next: "Implementar navegación Control Tower / Portfolio / Project Workspace.",
-        aiMode: "web + desktop/CLI",
+        purpose: "Construir HIA como Control Tower multi-proyecto con operación IA, costos y evidencia.",
+        nextAction: "Implementar HIA Control Tower Shell v0.2 basada en Stitch saneado.",
         aiAssigned: "ChatGPT + Codex",
-        aiConnection: "Pendiente test formal por proveedor",
-        projectCost: "Pendiente modelo real",
+        aiMode: "Web + Desktop/CLI",
+        aiConnection: "Pendiente health check formal",
+        cost: "Pendiente modelo real",
         tokens: "Pendiente medición",
         budget: "Pendiente definición",
-        risk: "Arquitectura UI en estabilización",
-        evidence: "FRESH"
+        evidence: "FRESH según CLI / resolver",
+        risk: "UI/arquitectura en estabilización",
+        lastActivity: "Sesión actual"
       },
       {
         id: "PRJ_TEMPLATE_CLIENT",
@@ -73,338 +90,299 @@
         status: "backlog",
         statusLabel: "Backlog",
         owner: "Por definir",
-        purpose: "Placeholder para demostrar multi-proyecto.",
-        next: "Alta formal futura.",
-        aiMode: "por definir",
-        aiAssigned: "por definir",
+        purpose: "Placeholder controlado para validar navegación multi-proyecto.",
+        nextAction: "Alta formal futura.",
+        aiAssigned: "Por definir",
+        aiMode: "Por definir",
         aiConnection: "N/A",
-        projectCost: "N/A",
+        cost: "N/A",
         tokens: "N/A",
         budget: "N/A",
+        evidence: "N/A",
         risk: "No iniciado",
-        evidence: "N/A"
+        lastActivity: "N/A"
       },
       {
         id: "PRJ_REPORTING_LAYER",
         name: "Reporting Layer",
         status: "backlog",
-        statusLabel: "Feature futura",
+        statusLabel: "Future feature",
         owner: "Por definir",
-        purpose: "Reportes ejecutivos, operativos y técnicos.",
-        next: "Diseñar modelo de reportes.",
-        aiMode: "por definir",
-        aiAssigned: "por definir",
+        purpose: "Reportes ejecutivos, operativos, técnicos y exportables.",
+        nextAction: "Diseñar modelo de reportes.",
+        aiAssigned: "Por definir",
+        aiMode: "Por definir",
         aiConnection: "N/A",
-        projectCost: "N/A",
+        cost: "N/A",
         tokens: "N/A",
         budget: "N/A",
+        evidence: "N/A",
         risk: "Feature futura",
-        evidence: "N/A"
+        lastActivity: "N/A"
       }
     ],
-    runtime: {
-      head: runtimeState?.git?.head || "Disponible en hia.state.js / pending UI mapping",
-      branch: runtimeState?.git?.branch || "Disponible en hia.state.js / pending UI mapping",
-      projectContinue: runtimeState?.cli?.projectContinueSummary || "CLI state generated / pending mapping",
-      generatedAt: runtimeState?.generatedAt || "N/A"
-    }
+    roadmap: [
+      { item: "Obsidian / similar", priority: "P1/P2", status: "Future integration" },
+      { item: "Encriptación", priority: "P2", status: "Deuda técnica normal" },
+      { item: "Health checks IA", priority: "P0", status: "Pendiente" },
+      { item: "Modelo real de costos", priority: "P0", status: "Pendiente" },
+      { item: "Conectar hia.state.js fino", priority: "P0", status: "Siguiente" }
+    ]
   };
 
   const ROUTES = {
-    "control-tower": {
-      layer: "HIA GLOBAL",
-      title: "Control Tower",
-      subtitle: "Vista global de HIA: portfolio, IAs, costos, alertas y continuidad.",
-      render: renderControlTower
-    },
-    "portfolio": {
-      layer: "HIA GLOBAL",
-      title: "Portfolio",
-      subtitle: "Múltiples proyectos, estado, IA asignada, costo y próxima acción.",
-      render: renderPortfolio
-    },
-    "ai-control": {
-      layer: "HIA GLOBAL",
-      title: "AI Control Tower",
-      subtitle: "IAs disponibles, operativas, conectadas/testeadas y asignadas a proyectos.",
-      render: renderAIControl
-    },
-    "cost-center": {
-      layer: "HIA GLOBAL",
-      title: "Cost Center",
-      subtitle: "Costos globales, por IA y por proyecto. Visible para todos.",
-      render: renderCostCenter
-    },
-    "project-overview": {
-      layer: "PROJECT WORKSPACE",
-      title: "Project Overview",
-      subtitle: "KPIs, estado, riesgos y próxima acción del proyecto seleccionado.",
-      render: renderProjectOverview
-    },
-    "project-ai": {
-      layer: "PROJECT WORKSPACE",
-      title: "Project AI",
-      subtitle: "Configuración IA específica del proyecto seleccionado.",
-      render: renderProjectAI
-    },
-    "project-chat": {
-      layer: "PROJECT WORKSPACE",
-      title: "Project Chat",
-      subtitle: "Chat IA por proyecto. Backend pendiente.",
-      render: renderProjectChat
-    },
-    "project-costs": {
-      layer: "PROJECT WORKSPACE",
-      title: "Project Costs",
-      subtitle: "Costos, tokens y presupuesto del proyecto seleccionado.",
-      render: renderProjectCosts
-    },
-    "project-evidence": {
-      layer: "PROJECT WORKSPACE",
-      title: "Project Evidence",
-      subtitle: "Evidencia, BATON, RADAR, BACKLOG y decisiones humanas del proyecto.",
-      render: renderProjectEvidence
-    },
-    "project-settings": {
-      layer: "PROJECT WORKSPACE",
-      title: "Project Settings",
-      subtitle: "Settings del proyecto: IA, costos, contexto, permisos y fuentes.",
-      render: renderProjectSettings
-    },
-    "reports": {
-      layer: "ENTERPRISE",
-      title: "Reports",
-      subtitle: "Feature futura de reportes portfolio/proyecto/exportables.",
-      render: renderReports
-    },
-    "collaboration": {
-      layer: "ENTERPRISE",
-      title: "Collaboration",
-      subtitle: "Feature futura de roles, comentarios, asignaciones y aprobaciones.",
-      render: renderCollaboration
-    },
-    "integrations": {
-      layer: "ENTERPRISE",
-      title: "Integrations",
-      subtitle: "Feature futura de integraciones externas.",
-      render: renderIntegrations
-    },
-    "knowledge-vault": {
-      layer: "ENTERPRISE",
-      title: "Knowledge / Vault",
-      subtitle: "Obsidian o similar queda como backlog P1/P2.",
-      render: renderKnowledgeVault
-    },
-    "admin-settings": {
-      layer: "GOVERNANCE",
-      title: "Admin / Settings",
-      subtitle: "Settings globales, seguridad, encriptación futura y políticas.",
-      render: renderAdminSettings
-    }
+    "control-tower": ["HIA GLOBAL", "Torre de Control HIA", "Vista ejecutiva global: portfolio, IAs, costos, alertas y continuidad.", renderControlTower],
+    "portfolio": ["HIA GLOBAL", "Portafolio", "Vista multi-proyecto: estado, IA asignada, costos y próxima acción.", renderPortfolio],
+    "ai-control": ["HIA GLOBAL", "Control de IA", "Inventario global de IAs, modalidad, conexión, costo y asignación a proyectos.", renderAIControl],
+    "cost-center": ["HIA GLOBAL", "Centro de Costos", "Costos globales, por IA, por proyecto y por sesión. Visible para todos.", renderCostCenter],
+    "project-overview": ["PROJECT WORKSPACE", "Workspace / Vista General", "KPIs, estado, riesgos y próxima acción del proyecto seleccionado.", renderProjectOverview],
+    "project-ai-chat": ["PROJECT WORKSPACE", "IA / Chat del Proyecto", "IA asignada y chat IA por proyecto. Backend pendiente.", renderProjectAIChat],
+    "project-costs": ["PROJECT WORKSPACE", "Costos del Proyecto", "Presupuesto, tokens, modalidad IA y costos del proyecto.", renderProjectCosts],
+    "project-evidence": ["PROJECT WORKSPACE", "Evidencia del Proyecto", "BATON, RADAR, BACKLOG, artifacts y decisiones humanas.", renderProjectEvidence],
+    "reports": ["ENTERPRISE", "Informes", "Reportabilidad futura: portfolio, proyecto, deuda, evidencia y exportables.", () => renderFuture("Informes", "Reportes ejecutivos, operativos, técnicos, PDF/PPT/HTML.")],
+    "collaboration": ["ENTERPRISE", "Colaboración", "Roles, comentarios, asignaciones, aprobaciones e historial.", () => renderFuture("Colaboración", "Feature futura para trabajo multiusuario y decisiones trazables.")],
+    "integrations": ["ENTERPRISE", "Integraciones", "GitHub, Drive/OneDrive, Jira/Trello/Planner, Slack/Teams, Calendar, Email y APIs.", () => renderFuture("Integraciones", "Feature futura. No declarar conectores como reales sin implementación.")],
+    "knowledge-vault": ["ENTERPRISE", "Bóveda / Conocimiento", "Obsidian o similar como integración futura P1/P2.", renderKnowledgeVault],
+    "settings": ["GOVERNANCE", "Configuración Global", "Settings globales, políticas IA, privacidad, seguridad y deuda técnica.", renderSettings]
   };
 
   function html(strings, ...values) {
     return strings.reduce((acc, str, index) => acc + str + (values[index] ?? ""), "");
   }
 
-  function selectedProject() {
-    return STATE.projects.find((project) => project.id === STATE.selectedProjectId) || STATE.projects[0];
+  function project() {
+    return STATE.projects.find((p) => p.id === STATE.selectedProjectId) || STATE.projects[0];
   }
 
   function statusClass(status) {
     if (status === "active") return "active";
-    if (status === "demo") return "demo";
     if (status === "blocked") return "blocked";
     return "backlog";
+  }
+
+  function providerClass(modality) {
+    return modality.toLowerCase().includes("local") ? "local" : "web";
   }
 
   function renderControlTower() {
     return html`
       <section class="card hero">
-        <h2>HIA Control Tower global</h2>
-        <p><b>Entrada principal de HIA.</b> Desde aquí se ve el estado global, portfolio, IAs disponibles/operativas, costos, alertas y acceso rápido al último proyecto trabajado.</p>
+        <h2>Entrada global de HIA</h2>
+        <p><b>HIA no es un proyecto.</b> HIA es la torre de control para administrar múltiples proyectos, IAs, costos, evidencia y decisiones humanas. Todo dato no conectado a fuente real queda marcado como pendiente o demo.</p>
       </section>
 
-      <div class="grid cols-4" style="margin-top:16px">
-        <div class="card"><div class="label">Proyectos visibles</div><div class="metric">${STATE.projects.length}</div><p>Demo data controlada.</p></div>
-        <div class="card"><div class="label">Activos</div><div class="metric ok">${STATE.global.activeProjects}</div><p>Proyectos con operación actual.</p></div>
-        <div class="card"><div class="label">IAs disponibles</div><div class="metric info">${STATE.aiProviders.length}</div><p>Inventario inicial, conexión formal pendiente.</p></div>
-        <div class="card"><div class="label">Costos</div><div class="metric warn">Pendiente</div><p>Modelo global/proyecto/IA aún por implementar.</p></div>
-      </div>
+      <section class="kpi-strip">
+        <div class="card"><div class="label">Proyectos visibles</div><div class="metric">${STATE.global.totalProjects}</div><p>Incluye placeholders controlados.</p></div>
+        <div class="card"><div class="label">Proyectos activos</div><div class="metric ok">${STATE.global.activeProjects}</div><p>Trabajo operativo actual.</p></div>
+        <div class="card"><div class="label">IAs disponibles</div><div class="metric info">${STATE.global.availableAIs}</div><p>No implica conexión testeada.</p></div>
+        <div class="card"><div class="label">Costo global</div><div class="metric warn">Pendiente</div><p>Modelo real aún no definido.</p></div>
+      </section>
 
-      <div class="grid two-one" style="margin-top:16px">
-        <section class="card">
-          <h2>Alertas globales</h2>
+      <section class="grid two-one" style="margin-top:16px">
+        <div class="card">
+          <h2>Alertas ejecutivas</h2>
+          <div class="alert-list">
+            <div class="alert p0"><b>P0 · Health checks IA pendientes</b><p>No usar “conectado/testeado/operando” sin evidencia técnica.</p></div>
+            <div class="alert p0"><b>P0 · Modelo de costos pendiente</b><p>Costos visibles para todos, pero falta fuente/cálculo/proveedor/proyecto.</p></div>
+            <div class="alert p1"><b>P1 · Bóveda / Obsidian futura</b><p>Integración knowledge/vault queda en backlog P1/P2.</p></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Continue last project</h2>
+          <p>Acceso rápido al último proyecto trabajado. Bookmark directo por proyecto queda como future feature.</p>
+          <div class="action-row">
+            <button class="primary-btn" data-route-shortcut="project-overview">Abrir ${STATE.lastProjectId}</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid cols-2" style="margin-top:16px">
+        <div class="card">
+          <h2>Estado técnico parcial</h2>
           <table class="table">
-            <thead><tr><th>Alerta</th><th>Prioridad</th><th>Lectura</th></tr></thead>
             <tbody>
-              <tr><td>Conexión formal de IAs</td><td>P0</td><td>Hay proveedores listados, pero falta test formal de conexión/funcionamiento.</td></tr>
-              <tr><td>Cost model</td><td>P0</td><td>Costos visibles para todos, pero falta modelo real por IA/proyecto.</td></tr>
-              <tr><td>Estado real UI</td><td>P0</td><td>Existe hia.state.js; falta mapearlo a arquitectura nueva.</td></tr>
+              <tr><td>Branch</td><td>${STATE.git.branch}</td></tr>
+              <tr><td>HEAD</td><td>${STATE.git.head}</td></tr>
+              <tr><td>State generated</td><td>${STATE.generatedAt}</td></tr>
             </tbody>
           </table>
-        </section>
-
-        <section class="card">
-          <h2>Continue last project</h2>
-          <p>Acceso rápido al último proyecto trabajado. Bookmark directo a proyecto queda como future feature.</p>
-          <div class="action-row">
-            <button class="primary-btn" data-route-shortcut="project-overview">Open ${STATE.lastProjectId}</button>
-          </div>
-        </section>
-      </div>
+        </div>
+        <div class="card">
+          <h2>Regla anti-humo</h2>
+          <p>No se declaran métricas, costos, conexiones ni tests como reales sin evidencia. Esta shell toma Stitch como arquitectura visual, pero sanea los datos.</p>
+        </div>
+      </section>
     `;
   }
 
   function renderPortfolio() {
     return html`
-      <section class="card">
-        <h2>Portfolio multi-proyecto</h2>
-        <p>HIA administra múltiples proyectos. El proyecto activo seleccionado no es todo HIA.</p>
-        <div class="grid" style="margin-top:14px">
-          ${STATE.projects.map((project) => `
-            <article class="project-card ${project.id === STATE.selectedProjectId ? "is-selected" : ""}">
-              <div class="card-head">
-                <div>
-                  <div class="card-title">${project.name}</div>
-                  <div class="card-meta">${project.id}</div>
-                </div>
-                <span class="status-pill ${statusClass(project.status)}">${project.statusLabel}</span>
+      <section class="card hero">
+        <h2>Portafolio multi-proyecto</h2>
+        <p>Cada proyecto puede tener IA, modalidad, costos, riesgos, evidencia y settings propios.</p>
+      </section>
+      <section class="project-grid" style="margin-top:16px">
+        ${STATE.projects.map((p) => `
+          <article class="project-card ${p.id === STATE.selectedProjectId ? "is-selected" : ""}">
+            <div class="card-head">
+              <div>
+                <div class="card-title">${p.name}</div>
+                <div class="card-meta">${p.id}</div>
               </div>
-              <p>${project.purpose}</p>
-              <table class="table" style="margin-top:12px">
-                <tbody>
-                  <tr><td>IA</td><td>${project.aiAssigned}</td></tr>
-                  <tr><td>Modalidad</td><td>${project.aiMode}</td></tr>
-                  <tr><td>Costo</td><td>${project.projectCost}</td></tr>
-                  <tr><td>Siguiente</td><td>${project.next}</td></tr>
-                </tbody>
-              </table>
-            </article>
-          `).join("")}
-        </div>
+              <span class="status-pill ${statusClass(p.status)}">${p.statusLabel}</span>
+            </div>
+            <p>${p.purpose}</p>
+            <table class="table" style="margin-top:12px">
+              <tbody>
+                <tr><td>Owner</td><td>${p.owner}</td></tr>
+                <tr><td>IA</td><td>${p.aiAssigned}</td></tr>
+                <tr><td>Modalidad</td><td>${p.aiMode}</td></tr>
+                <tr><td>Costo</td><td>${p.cost}</td></tr>
+                <tr><td>Siguiente</td><td>${p.nextAction}</td></tr>
+              </tbody>
+            </table>
+          </article>
+        `).join("")}
       </section>
     `;
   }
 
   function renderAIControl() {
     return html`
-      <section class="card">
-        <h2>AI Control Tower global</h2>
-        <p>Inventario global de IAs. La prueba formal de conexión/funcionamiento queda pendiente; no se simula como real.</p>
-        <div class="grid cols-3" style="margin-top:14px">
-          ${STATE.aiProviders.map((ai) => `
-            <article class="ai-card">
-              <div class="card-head">
-                <div>
-                  <div class="card-title">${ai.name}</div>
-                  <div class="card-meta">${ai.modality}</div>
-                </div>
-                <span class="status-pill ${ai.modality.includes("local") ? "local" : "web"}">${ai.status}</span>
+      <section class="card hero">
+        <h2>Control de IA global</h2>
+        <p>Inventario global de proveedores/modelos/agentes. “Disponible” no significa testeado: la conexión formal queda pendiente hasta health check.</p>
+      </section>
+      <section class="ai-grid" style="margin-top:16px">
+        ${STATE.aiProviders.map((ai) => `
+          <article class="ai-card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">${ai.name}</div>
+                <div class="card-meta">${ai.modality}</div>
               </div>
-              <p>${ai.recommendedFor}</p>
-              <table class="table" style="margin-top:12px">
-                <tbody>
-                  <tr><td>Conexión</td><td>${ai.connection}</td></tr>
-                  <tr><td>Costo</td><td>${ai.cost}</td></tr>
-                  <tr><td>Proyectos</td><td>${ai.assignedProjects.length ? ai.assignedProjects.join(", ") : "Ninguno"}</td></tr>
-                </tbody>
-              </table>
-            </article>
-          `).join("")}
-        </div>
+              <span class="status-pill ${providerClass(ai.modality)}">${ai.status}</span>
+            </div>
+            <p>${ai.recommendedFor}</p>
+            <table class="table" style="margin-top:12px">
+              <tbody>
+                <tr><td>Conexión</td><td>${ai.connection}</td></tr>
+                <tr><td>Costo</td><td>${ai.costModel}</td></tr>
+                <tr><td>Riesgo privacidad</td><td>${ai.privacyRisk}</td></tr>
+                <tr><td>Proyectos</td><td>${ai.assignedProjects.length ? ai.assignedProjects.join(", ") : "Ninguno"}</td></tr>
+              </tbody>
+            </table>
+          </article>
+        `).join("")}
       </section>
     `;
   }
 
   function renderCostCenter() {
     return html`
-      <section class="card">
-        <h2>Cost Center</h2>
-        <p>Los costos deben ser visibles para todos. Esta vista separa costo global, costo por IA y costo por proyecto.</p>
-        <div class="grid cols-3" style="margin-top:14px">
-          <div class="card"><div class="label">Costo global HIA</div><div class="metric warn">Pendiente</div><p>Falta modelo real.</p></div>
-          <div class="card"><div class="label">Costo por IA</div><div class="metric warn">Pendiente</div><p>Requiere proveedor/modelo/plan/API.</p></div>
-          <div class="card"><div class="label">Costo por proyecto</div><div class="metric warn">Pendiente</div><p>Requiere asignación IA/proyecto.</p></div>
+      <section class="card hero">
+        <h2>Centro de Costos</h2>
+        <p>Costos visibles para todos. Esta vista separa costo global, por IA, por proyecto y por sesión. No se muestran cifras exactas sin modelo real.</p>
+      </section>
+
+      <section class="grid cols-4" style="margin-top:16px">
+        <div class="card"><div class="label">Costo global HIA</div><div class="metric warn">Pendiente</div><p>Requiere modelo real.</p></div>
+        <div class="card"><div class="label">Costo por IA</div><div class="metric warn">Pendiente</div><p>Requiere proveedor/plan/API.</p></div>
+        <div class="card"><div class="label">Costo por proyecto</div><div class="metric warn">Pendiente</div><p>Requiere asignación IA/proyecto.</p></div>
+        <div class="card"><div class="label">Tokens</div><div class="metric warn">Pendiente</div><p>Requiere medición.</p></div>
+      </section>
+
+      <section class="grid two-one" style="margin-top:16px">
+        <div class="card">
+          <h2>Desglose por proyecto</h2>
+          <table class="table">
+            <thead><tr><th>Proyecto</th><th>IA</th><th>Modalidad</th><th>Costo</th><th>Tokens</th></tr></thead>
+            <tbody>
+              ${STATE.projects.map((p) => `<tr><td>${p.name}</td><td>${p.aiAssigned}</td><td>${p.aiMode}</td><td>${p.cost}</td><td>${p.tokens}</td></tr>`).join("")}
+            </tbody>
+          </table>
         </div>
-        <table class="table" style="margin-top:16px">
-          <thead><tr><th>Proyecto</th><th>IA</th><th>Modalidad</th><th>Costo</th><th>Tokens</th></tr></thead>
-          <tbody>
-            ${STATE.projects.map((project) => `
-              <tr><td>${project.name}</td><td>${project.aiAssigned}</td><td>${project.aiMode}</td><td>${project.projectCost}</td><td>${project.tokens}</td></tr>
-            `).join("")}
-          </tbody>
-        </table>
+        <div class="card">
+          <h2>Local vs Web</h2>
+          <div class="chart-placeholder">Pendiente modelo comparativo real</div>
+        </div>
       </section>
     `;
   }
 
   function renderProjectOverview() {
-    const p = selectedProject();
+    const p = project();
     return html`
       <section class="card hero">
         <h2>${p.name}</h2>
         <p>${p.purpose}</p>
       </section>
-      <div class="grid cols-3" style="margin-top:16px">
+      <section class="grid cols-4" style="margin-top:16px">
         <div class="card"><div class="label">Estado</div><div class="metric ok">${p.statusLabel}</div><p>${p.risk}</p></div>
         <div class="card"><div class="label">IA asignada</div><div class="metric info">${p.aiAssigned}</div><p>${p.aiMode}</p></div>
-        <div class="card"><div class="label">Evidencia</div><div class="metric ok">${p.evidence}</div><p>Estado operacional del proyecto.</p></div>
-      </div>
-    `;
-  }
-
-  function renderProjectAI() {
-    const p = selectedProject();
-    return html`
-      <section class="card">
-        <h2>Project AI</h2>
-        <p>Configuración IA específica del proyecto. Cada proyecto puede tener modalidad distinta.</p>
-        <table class="table" style="margin-top:14px">
-          <tbody>
-            <tr><td>Proyecto</td><td>${p.id}</td></tr>
-            <tr><td>IA asignada</td><td>${p.aiAssigned}</td></tr>
-            <tr><td>Modalidad</td><td>${p.aiMode}</td></tr>
-            <tr><td>Conexión</td><td>${p.aiConnection}</td></tr>
-            <tr><td>Routing policy</td><td>Pendiente definir por costo, privacidad, precisión, código, documentos y research.</td></tr>
-          </tbody>
-        </table>
+        <div class="card"><div class="label">Costo</div><div class="metric warn">Pendiente</div><p>${p.cost}</p></div>
+        <div class="card"><div class="label">Evidencia</div><div class="metric ok">${p.evidence}</div><p>Según estado CLI actual.</p></div>
+      </section>
+      <section class="card" style="margin-top:16px">
+        <h2>Próxima acción</h2>
+        <p>${p.nextAction}</p>
       </section>
     `;
   }
 
-  function renderProjectChat() {
-    const p = selectedProject();
+  function renderProjectAIChat() {
+    const p = project();
     return html`
-      <section class="card">
-        <h2>Project Chat — ${p.name}</h2>
-        <p>Chat IA por proyecto. Backend pendiente; UI preparada para contexto del proyecto.</p>
-        <div class="chat-box" style="margin-top:14px">
-          <div class="chat-message"><b>System</b><p>Contexto activo: ${p.id}. Chat global queda como future feature.</p></div>
-          <textarea class="chat-input" placeholder="Escribe un prompt del proyecto. Backend pendiente."></textarea>
+      <section class="chat-layout">
+        <div class="card chat-panel">
+          <h2>Chat IA del Proyecto</h2>
+          <p>Chat por proyecto. Backend pendiente; no se simula IA real.</p>
+          <div class="chat-message"><b>Sistema</b><p>Contexto activo: ${p.id}. IA asignada: ${p.aiAssigned}. Modalidad: ${p.aiMode}.</p></div>
+          <div class="chat-message"><b>Estado</b><p>UI preparada / backend pendiente. Chat global queda como future feature.</p></div>
+          <textarea class="chat-input" placeholder="Prompt del proyecto. Backend pendiente."></textarea>
           <div class="action-row">
-            <button class="primary-btn">Enviar a IA — backend pendiente</button>
+            <button class="primary-btn">Enviar a IA — pendiente backend</button>
             <button class="secondary-btn">Guardar decisión</button>
             <button class="secondary-btn">Enviar a backlog</button>
           </div>
+        </div>
+        <div class="card">
+          <h2>Configuración IA del proyecto</h2>
+          <table class="table">
+            <tbody>
+              <tr><td>Proyecto</td><td>${p.id}</td></tr>
+              <tr><td>IA asignada</td><td>${p.aiAssigned}</td></tr>
+              <tr><td>Modalidad</td><td>${p.aiMode}</td></tr>
+              <tr><td>Conexión</td><td>${p.aiConnection}</td></tr>
+              <tr><td>Routing policy</td><td>Pendiente definir.</td></tr>
+            </tbody>
+          </table>
         </div>
       </section>
     `;
   }
 
   function renderProjectCosts() {
-    const p = selectedProject();
+    const p = project();
     return html`
-      <section class="card">
-        <h2>Project Costs</h2>
-        <p>Costos visibles para todos. Datos reales pendientes de modelo de costos.</p>
-        <table class="table" style="margin-top:14px">
+      <section class="card hero">
+        <h2>Costos del Proyecto</h2>
+        <p>Vista por proyecto. Costos visibles para todos, pero todavía pendientes de modelo real.</p>
+      </section>
+      <section class="grid cols-3" style="margin-top:16px">
+        <div class="card"><div class="label">Costo proyecto</div><div class="metric warn">Pendiente</div><p>${p.cost}</p></div>
+        <div class="card"><div class="label">Tokens</div><div class="metric warn">Pendiente</div><p>${p.tokens}</p></div>
+        <div class="card"><div class="label">Presupuesto</div><div class="metric warn">Pendiente</div><p>${p.budget}</p></div>
+      </section>
+      <section class="card" style="margin-top:16px">
+        <h2>Detalle</h2>
+        <table class="table">
           <tbody>
-            <tr><td>Proyecto</td><td>${p.id}</td></tr>
             <tr><td>IA asignada</td><td>${p.aiAssigned}</td></tr>
-            <tr><td>Costo proyecto</td><td>${p.projectCost}</td></tr>
-            <tr><td>Tokens</td><td>${p.tokens}</td></tr>
-            <tr><td>Presupuesto</td><td>${p.budget}</td></tr>
+            <tr><td>Modalidad</td><td>${p.aiMode}</td></tr>
+            <tr><td>Conexión</td><td>${p.aiConnection}</td></tr>
+            <tr><td>Regla</td><td>No mostrar costo exacto sin fuente, modelo, fecha y cálculo.</td></tr>
           </tbody>
         </table>
       </section>
@@ -412,67 +390,79 @@
   }
 
   function renderProjectEvidence() {
-    const p = selectedProject();
+    const p = project();
     return html`
-      <section class="card">
-        <h2>Project Evidence</h2>
-        <p>Vista preparada para BATON, RADAR, BACKLOG, decisiones humanas y fuentes canónicas.</p>
-        <table class="table" style="margin-top:14px">
+      <section class="card hero">
+        <h2>Evidencia del Proyecto</h2>
+        <p>HIA debe diferenciarse por evidencia, trazabilidad y decisiones humanas versionadas.</p>
+      </section>
+      <section class="grid cols-3" style="margin-top:16px">
+        <div class="card"><h3>BATON</h3><p>Continuidad operativa del proyecto.</p><span class="tag">Disponible en repo</span></div>
+        <div class="card"><h3>RADAR</h3><p>Inventario/frescura de archivos.</p><span class="tag">Generado</span></div>
+        <div class="card"><h3>BACKLOG</h3><p>MiniBattles, deuda y features.</p><span class="tag">Disponible en repo</span></div>
+      </section>
+      <section class="card" style="margin-top:16px">
+        <h2>Estado runtime parcial</h2>
+        <table class="table">
           <tbody>
             <tr><td>Proyecto</td><td>${p.id}</td></tr>
             <tr><td>Evidencia</td><td>${p.evidence}</td></tr>
-            <tr><td>Runtime state</td><td>${STATE.runtime.generatedAt}</td></tr>
-            <tr><td>Git branch</td><td>${STATE.runtime.branch}</td></tr>
-            <tr><td>Git head</td><td>${STATE.runtime.head}</td></tr>
+            <tr><td>Branch</td><td>${STATE.git.branch}</td></tr>
+            <tr><td>HEAD</td><td>${STATE.git.head}</td></tr>
+            <tr><td>Generated at</td><td>${STATE.generatedAt}</td></tr>
           </tbody>
         </table>
       </section>
     `;
   }
 
-  function renderProjectSettings() {
-    return renderFuture("Project Settings", "Settings por proyecto: IA, costos, contexto, permisos, fuentes y workflow.");
-  }
-
-  function renderReports() {
-    return renderFuture("Reports", "Reportes portfolio/proyecto/deuda/evidencia y export PDF/PPT/HTML.");
-  }
-
-  function renderCollaboration() {
-    return renderFuture("Collaboration", "Roles, permisos, comentarios, asignaciones, aprobaciones e historial.");
-  }
-
-  function renderIntegrations() {
-    return renderFuture("Integrations", "GitHub, Drive/OneDrive, Jira/Trello/Planner, Slack/Teams, Calendar, Email, APIs.");
-  }
-
   function renderKnowledgeVault() {
-    return renderFuture("Knowledge / Vault", "Obsidian o similar queda backlog P1/P2. Encriptación queda deuda normal/futura.");
+    return html`
+      <section class="card hero">
+        <h2>Bóveda / Conocimiento</h2>
+        <p>Obsidian o similar queda como integración futura P1/P2. No es core obligatorio de esta iteración.</p>
+      </section>
+      <section class="grid cols-3" style="margin-top:16px">
+        <div class="future-card"><h3>Obsidian / similar</h3><p>Backlog P1/P2.</p></div>
+        <div class="future-card"><h3>Fuentes canónicas</h3><p>BATON, RADAR, BACKLOG, artifacts.</p></div>
+        <div class="future-card"><h3>Vector / RAG futuro</h3><p>Future integration, no implementado.</p></div>
+      </section>
+    `;
   }
 
-  function renderAdminSettings() {
-    return renderFuture("Admin / Settings", "Settings globales: proveedores IA, políticas de modelo, presupuesto global, privacidad y seguridad.");
+  function renderSettings() {
+    return html`
+      <section class="card hero">
+        <h2>Configuración Global</h2>
+        <p>Settings globales: proveedores IA, políticas de modelo, presupuesto, privacidad, seguridad y deuda técnica.</p>
+      </section>
+      <section class="grid cols-3" style="margin-top:16px">
+        <div class="future-card"><h3>Política IA</h3><p>Pendiente: costo, privacidad, precisión, código, documentos, research.</p></div>
+        <div class="future-card"><h3>Encriptación</h3><p>Deuda técnica normal / P2.</p></div>
+        <div class="future-card"><h3>Presupuesto global</h3><p>Pendiente modelo real de costos.</p></div>
+      </section>
+    `;
   }
 
   function renderFuture(title, description) {
     return html`
-      <section class="card">
+      <section class="card hero">
         <h2>${title}</h2>
         <p>${description}</p>
-        <div class="warning" style="margin-top:14px">
-          <b>Feature futura / backend pendiente</b>
-          <p>No se presenta como funcionalidad real. Queda estructurada para roadmap.</p>
-        </div>
+      </section>
+      <section class="footer-note">
+        <b>Future feature / backend pendiente</b>
+        <p>No se presenta como funcionalidad operativa real.</p>
       </section>
     `;
   }
 
   function setRoute(routeName) {
     const route = ROUTES[routeName] || ROUTES["control-tower"];
-    document.getElementById("view-layer").textContent = route.layer;
-    document.getElementById("view-title").textContent = route.title;
-    document.getElementById("view-subtitle").textContent = route.subtitle;
-    document.getElementById("view-root").innerHTML = route.render();
+    document.getElementById("view-layer").textContent = route[0];
+    document.getElementById("view-title").textContent = route[1];
+    document.getElementById("view-subtitle").textContent = route[2];
+    document.getElementById("view-root").innerHTML = route[3]();
 
     document.querySelectorAll(".nav-item").forEach((button) => {
       button.classList.toggle("is-active", button.dataset.route === routeName);
@@ -482,20 +472,15 @@
   }
 
   document.addEventListener("click", (event) => {
-    const navButton = event.target.closest("[data-route]");
-    if (navButton) {
-      setRoute(navButton.dataset.route);
+    const nav = event.target.closest("[data-route]");
+    if (nav) {
+      setRoute(nav.dataset.route);
       return;
     }
-
     const shortcut = event.target.closest("[data-route-shortcut]");
     if (shortcut) {
       setRoute(shortcut.dataset.routeShortcut);
     }
-  });
-
-  document.getElementById("continue-last-project").addEventListener("click", () => {
-    setRoute("project-overview");
   });
 
   window.addEventListener("hashchange", () => {
