@@ -568,18 +568,3 @@ PRJPB_008L_B_EVIDENCE_RESOLVER_FIX
 - TD_ROOT_WBS_NAMING_001/P2: auditar 04_AGENTS / 04_CONSOLE / 04_PROJECTS.
 - TD_AI_MEMORY/P2: AI_MEMORY_STATUS MISSING.
 
-==========
-PRJPB_008M_ENCODING_FIX
-==========
-00.00_DONE
-- PRJPB_008M: DONE — corrección de encoding/mojibake en salida CLI WSL2/Windows PowerShell.
-
-01.00_READY_NOW
-- PRJPB_008N: READY — auditoría naming root 04_* y normalización WBS/ID_FS.
-
-02.00_ACCEPTANCE_FOR_008N
-- Identificar rutas root 04_*.
-- Clasificar si son canon, legacy, runtime o drift.
-- Proponer normalización sin renombrar todavía.
-- No mover carpetas sin matriz de impacto.
-

@@ -1,4 +1,4 @@
-<#
+﻿<#
 ===============================================================================
 HIA CLI ENTRYPOINT
 ===============================================================================
@@ -29,19 +29,6 @@ if ($Command -eq "hia" -and $RouterArgs.Count -gt 0) {
 }
 
 $ErrorActionPreference = "Stop"
-
-# -----------------------------------------------------------------------------
-# OUTPUT ENCODING (WSL2 / WINDOWS POWERSHELL INTEROP)
-# -----------------------------------------------------------------------------
-try {
-    $utf8NoBomForCli = [System.Text.UTF8Encoding]::new($false)
-    [Console]::OutputEncoding = $utf8NoBomForCli
-    $OutputEncoding = $utf8NoBomForCli
-}
-catch {
-    # Non-blocking: encoding hardening must not prevent CLI bootstrap.
-}
-
 
 $isJsonMode = $false
 if (-not [string]::IsNullOrWhiteSpace($Command)) {
