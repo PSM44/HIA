@@ -638,3 +638,20 @@ PRJPB_008O_ROOT_NAMING_IMPACT_MATRIX
 - Delivery debe reflejar que root naming fue auditado y no se renombra.
 - No rediseñar UI salvo ajuste de estado/contenido.
 
+==========
+PRJPB_008P_DASHBOARD_DELIVERY_REFRESH
+==========
+00.00_DONE
+- PRJPB_008P: DONE — dashboard y entregables refrescados con estado real.
+- Dashboard v0.2 refleja evidence FRESH, wrapper UTF8 y decision root naming.
+
+01.00_READY_NOW
+- PRJPB_008Q: READY — final demo readiness smoke y cierre de sesion.
+
+02.00_ACCEPTANCE_FOR_008Q
+- Smoke final con hia.utf8.ps1.
+- Confirmar Git clean.
+- Confirmar project continue/status/session status.
+- Confirmar dashboard existe.
+- Cerrar sesion y dejar handoff.
+

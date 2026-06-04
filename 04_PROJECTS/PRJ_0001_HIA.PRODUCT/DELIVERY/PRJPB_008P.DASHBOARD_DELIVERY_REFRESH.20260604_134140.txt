@@ -1,0 +1,40 @@
+===============================================================================
+FILE: PRJPB_008P.DASHBOARD_DELIVERY_REFRESH.20260604_134140.txt
+PROJECT: PRJ_0001_HIA.PRODUCT
+TYPE: DASHBOARD DELIVERY REFRESH
+MB_ID: PRJPB_008P
+CREATED_LOCAL: 2026-06-04 13:41:46 -0400
+CREATED_UTC: 2026-06-04T17:41:40Z
+HEAD: e8a40de 20260604_HIA_PRJPB_008O_root_naming_impact_matrix
+===============================================================================
+
+01.00_SCOPE
+- Refresh dashboard v0.2 and delivery state after evidence resolver, UTF8 wrapper, and root naming decisions.
+- No UI redesign.
+- No root folder rename.
+
+02.00_CURRENT_CONTROL_STATE
+- NEXT_ACTION: PRJPB_008P | refresh dashboard y entregables con evidence FRESH y wrapper UTF8 | ready
+- EVIDENCE_STATE: FRESH
+- SESSION_STATUS: active
+- BRANCH: feat/20260405-console-v2-phase1-phase2
+- HEAD: e8a40de 20260604_HIA_PRJPB_008O_root_naming_impact_matrix
+
+03.00_UTF8_WRAPPER
+- Recommended WSL2/Windows PowerShell CLI wrapper: 01_UI/terminal/hia.utf8.ps1
+- Main hia.ps1 is preserved.
+
+04.00_ROOT_NAMING_DECISION
+- 04_PROJECTS: KEEP_CANONICAL_ACTIVE.
+- 04_AGENTS: KEEP_DOCUMENT.
+- 04_CONSOLE: KEEP_DOCUMENT.
+- Rename root folders: NOT APPROVED.
+
+05.00_UPDATED_OUTPUTS
+- 01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.2.html
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_008P.DASHBOARD_DELIVERY_REFRESH.20260604_134140.txt
+- 02_TOOLS/Run-PRJPB-008P.ps1
+
+06.00_NEXT_ACTION
+- PRJPB_008Q: final demo readiness smoke and session close.
+===============================================================================
