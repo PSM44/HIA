@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009G | smoke sin explicación sobre dashboard v0.4 | ready
+PRJPB_009I | smoke sin explicación sobre dashboard v0.5 | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -1127,6 +1127,34 @@ PURPOSE...........: Registrar NO_GO de dashboard v0.3 y crear dashboard v0.4.
 
 03.00_NEXT_ACTION
 - PRJPB_009G: READY — smoke sin explicación sobre dashboard v0.4.
+
+04.00_DEBT_VISIBLE
+- TD_CLI_ENCODING_MOJIBAKE/P1.
+- TD_AI_MEMORY_STATUS/P2.
+- TD_EVIDENCE_ANCHOR_SELECTION/P2.
+===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009G_NO_GO_TO_009H_DASHBOARD_V05
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009G_NO_GO_TO_009H_DASHBOARD_V05
+STATUS............: DONE
+PURPOSE...........: Registrar NO_GO de dashboard v0.4 y crear dashboard v0.5 con comandos 100% WSL2 Bash.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009G: DONE_WITH_NO_GO — v0.4 mejora, pero mezcla shells y no deja claro el orden de ejecución.
+- PRJPB_009H: DONE — dashboard v0.5 creado con flujo PASO 1/PASO 2 y comandos visibles 100% WSL2 Bash.
+
+02.00_KEY_CHANGES
+- Se elimina Windows PowerShell como comando visible en dashboard user-facing.
+- Se mantiene PowerShell solo como implementación interna llamada desde WSL2 Bash.
+- Se explicita orden:
+  - PASO 1: abrir demo visual.
+  - PASO 2: ver estado real del proyecto.
+
+03.00_NEXT_ACTION
+- PRJPB_009I: READY — smoke sin explicación sobre dashboard v0.5.
 
 04.00_DEBT_VISIBLE
 - TD_CLI_ENCODING_MOJIBAKE/P1.

@@ -907,3 +907,39 @@ PURPOSE...........: Crear dashboard v0.4 con cintas por audiencia y comandos con
 
 02.00_NEXT_ACTION
 - PRJPB_009G: READY — smoke sin explicación sobre dashboard v0.4.
+
+===============================================================================
+PRJPB_009G_SMOKE_V04_NO_GO
+===============================================================================
+ID_UNICO..........: PRJPB_009G_SMOKE_V04_NO_GO_20260604_154305
+STATUS............: DONE_WITH_NO_GO
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 15:43:07 -0400
+PURPOSE...........: Registrar que dashboard v0.4 no pasa smoke por mezcla de shells y falta de orden de comandos.
+
+01.00_RESULTADO
+- PRJPB_009G: NO_GO.
+- v0.4 se entiende en contenido general, pero falla en flujo de comandos.
+
+02.00_EVIDENCIA
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009G.SMOKE_V04.NO_GO.20260604_154305.txt
+
+03.00_DECISION
+- Crear v0.5 con comandos 100% WSL2 Bash y orden PASO 1/PASO 2.
+
+===============================================================================
+PRJPB_009H_DASHBOARD_V05_WSL_COMMAND_FLOW
+===============================================================================
+ID_UNICO..........: PRJPB_009H_DASHBOARD_V05_WSL_COMMAND_FLOW_20260604_154305
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 15:43:07 -0400
+PURPOSE...........: Crear dashboard v0.5 con flujo de comandos user-facing 100% WSL2 Bash.
+
+01.00_OUTPUTS
+- 01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.5.html
+- 01_UI/launcher/HIA.DEMO.LAUNCHER.PRJPB_009B.ps1
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009H.DASHBOARD_V05_WSL_COMMAND_FLOW.20260604_154305.txt
+
+02.00_NEXT_ACTION
+- PRJPB_009I: READY — smoke sin explicación sobre dashboard v0.5.
