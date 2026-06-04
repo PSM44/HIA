@@ -1,0 +1,57 @@
+===============================================================================
+FILE: PRJPB_009A.VISIBLE_INTERNAL_DEMO_ACTIVATION.20260604_135444.txt
+PROJECT: PRJ_0001_HIA.PRODUCT
+TYPE: VISIBLE INTERNAL DEMO ACTIVATION
+MB_ID: PRJPB_009A
+CREATED_LOCAL: 2026-06-04 13:54:50 -0400
+CREATED_UTC: 2026-06-04T17:54:44Z
+HEAD: 63e51a4 20260604_HIA_PRJPB_008Q_final_demo_readiness_smoke
+===============================================================================
+
+01.00_EXECUTIVE_DECISION
+- Decision: avanzar a demo interna visible, no seguir agregando features antes de mostrar.
+- Objetivo: demostrar utilidad operacional minima de HIA con dashboard, CLI, continuidad, evidencia y entregables.
+- Estado: demo interna defendible, no producto final.
+
+02.00_VISIBLE_ASSETS
+- Dashboard: 01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.2.html
+- CLI UTF8 wrapper: 01_UI/terminal/hia.utf8.ps1
+- Demo pack: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_008I.MANAGEMENT_DEMO_PACK.v0.2.20260602_135722.txt
+- Executive script: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_008J.EXECUTIVE_DEMO_SCRIPT.v0.1.20260604_103403.txt
+- Final readiness smoke: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_008Q.FINAL_DEMO_READINESS_SMOKE.20260604_134326.txt
+
+03.00_DEMO_FLOW_5_MIN
+1) Abrir dashboard v0.2 en navegador.
+2) Mostrar Evidence = FRESH.
+3) Mostrar NEXT_ACTION y control de continuidad.
+4) Ejecutar CLI con wrapper UTF8:
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -Command 'Set-Location "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA"; .\01_UI\terminal\hia.utf8.ps1 project continue PRJ_0001_HIA.PRODUCT'
+5) Mostrar entregables de DELIVERY.
+6) Mostrar root naming decision: no rename, policy controlada.
+7) Cerrar con siguiente fase: PRJPB_009B.
+
+04.00_UTILITY_SHOWN
+- HIA permite continuidad por proyecto.
+- HIA muestra estado operativo.
+- HIA mantiene evidencia FRESH.
+- HIA genera entregables versionados.
+- HIA permite demo interna con trazabilidad.
+
+05.00_LIMITATIONS_TO_DECLARE
+- Dashboard sigue siendo HTML estatico generado, no app viva.
+- Suggested command todavia puede sugerir create-file-project para tareas semanticas.
+- AI_MEMORY_STATUS sigue MISSING.
+- LEGACY_LAST_TASK sigue mostrando ruido historico.
+- Politica evidence runtime/versionable no esta completamente canonizada.
+
+06.00_DECISION_FOR_NEXT_PHASE
+- PRJPB_009B: demo live script + checklist de presentacion interna.
+- No hacer refactor mayor antes de mostrar.
+- No renombrar root folders.
+- No tocar hia.ps1 principal para encoding; usar hia.utf8.ps1.
+
+07.00_CURRENT_CONTROL_STATE
+NEXT_ACTION_NOW: PRJPB_009A | definir siguiente fase post demo gerencial interna | ready
+EVIDENCE_STATE: FRESH
+SESSION_STATUS: active
+===============================================================================

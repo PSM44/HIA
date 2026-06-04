@@ -671,3 +671,20 @@ PRJPB_008Q_FINAL_DEMO_READINESS
 - TD_EVIDENCE_POLICY/P2: politica runtime/versionable no canonica.
 - TD_ROOT_WBS_NAMING_001/P3: documentar policy canonica futura.
 
+==========
+PRJPB_009A_VISIBLE_INTERNAL_DEMO
+==========
+00.00_DONE
+- PRJPB_009A: DONE — demo interna visible activada y decision de fase tomada.
+- Resultado: mostrar dashboard v0.2 + CLI wrapper + entregables, sin agregar mas features antes de demo.
+
+01.00_READY_NOW
+- PRJPB_009B: READY — demo live script y checklist presentacion interna.
+
+02.00_ACCEPTANCE_FOR_009B
+- Crear guion operativo de demo en vivo.
+- Incluir comandos exactos.
+- Incluir fallback si navegador/CLI falla.
+- Incluir que NO prometer: dashboard no es app viva, AI memory pendiente.
+- Mantener demo entre 5 y 8 minutos.
+
