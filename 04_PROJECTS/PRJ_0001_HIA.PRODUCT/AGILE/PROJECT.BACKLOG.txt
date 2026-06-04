@@ -554,3 +554,17 @@ PRJPB_008K_INTERNAL_RELEASE_CANDIDATE
 - Debe evitar fallback silencioso a LEGACY_LAST_TASK.
 - Debe dejar test/smoke mínimo para project continue.
 
+==========
+PRJPB_008L_B_EVIDENCE_RESOLVER_FIX
+==========
+00.00_DONE
+- PRJPB_008L-B: DONE — HIA_PROJECT_ENGINE descubre evidencia semántica genérica y baseline RADAR.
+
+01.00_READY_NOW
+- PRJPB_008M: READY — corregir encoding/mojibake WSL/Windows PowerShell en salida CLI.
+
+02.00_TECHNICAL_DEBT
+- TD_ENCODING_CONSOLE/P2: salida CLI muestra bA�sico / semA�ntica cuando Windows PowerShell es invocado desde WSL.
+- TD_ROOT_WBS_NAMING_001/P2: auditar 04_AGENTS / 04_CONSOLE / 04_PROJECTS.
+- TD_AI_MEMORY/P2: AI_MEMORY_STATUS MISSING.
+

@@ -299,7 +299,11 @@ function Get-HIAProjectSemanticEvidenceAnchor {
     }
 
     $candidateTasks = @(
-        Get-ChildItem -LiteralPath $tasksRootPath -File -Filter "PRJPB_*.RADAR_BASELINE_EVIDENCE.*.txt" -ErrorAction SilentlyContinue |
+        @(
+            Get-ChildItem -LiteralPath $tasksRootPath -File -Filter "PRJPB_*.SEMANTIC_EVIDENCE.*.txt" -ErrorAction SilentlyContinue
+            Get-ChildItem -LiteralPath $tasksRootPath -File -Filter "PRJPB_*.RADAR_BASELINE_EVIDENCE.*.txt" -ErrorAction SilentlyContinue
+        ) |
+            Where-Object { $_ -and $_.FullName } |
             Sort-Object LastWriteTimeUtc -Descending
     )
 

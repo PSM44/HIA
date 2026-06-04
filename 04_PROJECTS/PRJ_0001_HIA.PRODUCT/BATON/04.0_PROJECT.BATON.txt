@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_008L | harden evidence anchor / freshness resolver para evidencia semántica | ready
+PRJPB_008M | corregir encoding/mojibake WSL/Windows PowerShell en salida CLI | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -578,7 +578,7 @@ SESSION_UPDATE_20260602_HIA_PRJPB_008H_R_EVIDENCE_ANCHOR
 - PRJPB_008H-R: DONE — evidencia semántica de cierre 008H creada para continuidad operativa.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_008L | harden evidence anchor / freshness resolver para evidencia semántica | ready.
+- NEXT_ACTION: PRJPB_008M | corregir encoding/mojibake WSL/Windows PowerShell en salida CLI | ready.
 - Git quedó clean tras PRJPB_008H antes de esta reconciliación.
 - RADAR refresh posterior a PRJPB_008H ejecutado correctamente.
 - project continue todavía puede reportar EVIDENCE_STATE STALE si el engine no reconoce evidencia semántica 008H como anchor fresco.
@@ -608,7 +608,7 @@ SESSION_UPDATE_20260602_HIA_PRJPB_008I_MANAGEMENT_DEMO_PACK
 02.00_CURRENT_STATE
 - Demo pack v0.2 disponible como texto versionable.
 - El demo pack declara deuda técnica visible, incluyendo EVIDENCE_STATE STALE.
-- NEXT_ACTION propuesta: PRJPB_008L | harden evidence anchor / freshness resolver para evidencia semántica | ready.
+- NEXT_ACTION propuesta: PRJPB_008M | corregir encoding/mojibake WSL/Windows PowerShell en salida CLI | ready.
 
 03.00_TECHNICAL_DEBT_ROLLOVER
 - TD_EVIDENCE_ANCHOR_008H/P1: project continue sigue anclado a evidencia PRJPB_008D-2.
@@ -634,7 +634,7 @@ SESSION_UPDATE_20260602_HIA_PRJPB_008I_R_ROLLOVER
 - Commit base: dc88dc8 20260602_HIA_PRJPB_008I_management_demo_pack_v02.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_008L | harden evidence anchor / freshness resolver para evidencia semántica | ready.
+- NEXT_ACTION: PRJPB_008M | corregir encoding/mojibake WSL/Windows PowerShell en salida CLI | ready.
 - Git debe quedar clean después de esta reconciliación.
 - EVIDENCE_STATE puede seguir STALE por TD_EVIDENCE_ANCHOR_008H/P1; no bloquear PRJPB_008J, pero sí debe declararse en el guion/demo.
 
@@ -662,7 +662,7 @@ SESSION_UPDATE_20260603_HIA_PRJPB_008J_EXECUTIVE_DEMO_SCRIPT
 - Runner versionado: 02_TOOLS/Run-PRJPB-008J.ps1.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_008L | harden evidence anchor / freshness resolver para evidencia semántica | ready.
+- NEXT_ACTION: PRJPB_008M | corregir encoding/mojibake WSL/Windows PowerShell en salida CLI | ready.
 - EVIDENCE_STATE puede seguir STALE por TD_EVIDENCE_ANCHOR_008H/P1; debe resolverse o explicarse en PRJPB_008K.
 - Demo pack v0.2 y guion ejecutivo ya existen.
 
@@ -695,7 +695,7 @@ SESSION_UPDATE_20260604_HIA_PRJPB_008K_INTERNAL_RC
 - Guion ejecutivo v0.1: disponible.
 - Screenshot protocol: disponible.
 - RADAR refresh: ejecutado durante 008K.
-- NEXT_ACTION: PRJPB_008L | harden evidence anchor / freshness resolver para evidencia semántica | ready.
+- NEXT_ACTION: PRJPB_008M | corregir encoding/mojibake WSL/Windows PowerShell en salida CLI | ready.
 
 03.00_TECHNICAL_DEBT_ROLLOVER
 - TD_EVIDENCE_ANCHOR_008H/P1: resolver reconocimiento de evidencia semántica genérica en HIA_PROJECT_ENGINE.
@@ -706,4 +706,20 @@ SESSION_UPDATE_20260604_HIA_PRJPB_008K_INTERNAL_RC
 
 04.00_NEXT_ACTION
 - PRJPB_008L: READY — harden evidence anchor / freshness resolver para evidencia semántica.
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_008L_B_EVIDENCE_RESOLVER_FIX
+===============================================================================
+00.00_CONTEXT
+- Fecha UTC: 2026-06-04T14:49:06Z
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- Propósito: endurecer resolver de evidencia para aceptar evidencia semántica genérica.
+
+01.00_DONE_CONFIRMED
+- PRJPB_008L-A: DONE — diagnóstico confirmó que HIA_PROJECT_ENGINE solo buscaba RADAR_BASELINE_EVIDENCE.
+- PRJPB_008L-B: DONE — resolver ajustado para descubrir PRJPB_*.SEMANTIC_EVIDENCE.*.txt y PRJPB_*.RADAR_BASELINE_EVIDENCE.*.txt.
+- Evidencia runtime fresca creada: PRJPB_008L.SEMANTIC_EVIDENCE.*.txt.
+
+02.00_NEXT_ACTION
+- PRJPB_008M: READY — corregir encoding/mojibake WSL/Windows PowerShell en salida CLI.
 
