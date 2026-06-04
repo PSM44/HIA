@@ -728,3 +728,23 @@ SESSION_CLOSE_20260604_1419_HIA
 - BATTLE_009: productización demo gerencial.
 - Entregable: HIA Internal Management Demo v0.3.
 
+
+==========
+PRJPB_009B_DEMO_LIVE_SCRIPT_CHECKLIST_LAUNCHER
+==========
+
+STAMP.............: 20260604_143751
+STATUS............: DONE
+PURPOSE...........: Crear guion live demo, checklist presentacion interna y one-click launcher.
+DELIVERABLES......:
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_009B.DEMO_LIVE_SCRIPT.20260604_143751.txt
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_009B.INTERNAL_PRESENTATION_CHECKLIST.20260604_143751.txt
+- 01_UI/launcher/HIA.DEMO.LAUNCHER.PRJPB_009B.ps1
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009B.SUMMARY.20260604_143751.txt
+
+DECISION...........:
+- Se resolvio la discrepancia entre "demo live script/checklist" y "user-facing dashboard/one-click launcher" integrando ambos alcances en PRJPB_009B.
+- No se abrio una tarea paralela para evitar duplicidad de backlog.
+
+NEXT_RECOMMENDED...:
+- PRJPB_009C: demo dry-run y captura de fricciones reales.

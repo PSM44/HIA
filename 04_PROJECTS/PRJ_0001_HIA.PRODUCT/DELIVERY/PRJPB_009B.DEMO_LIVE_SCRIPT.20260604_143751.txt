@@ -1,0 +1,204 @@
+==========
+00.00_METADATA
+==========
+
+ID_UNICO..........: PRJPB_009B.DEMO_LIVE_SCRIPT
+VERSION...........: v0.1
+FECHA.............: 2026-06-04
+CIUDAD............: Santiago, Chile
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+ARTEFACTO.........: Demo live script presentación interna
+ESTADO............: DRAFT
+MODO..............: Demo interna / user-facing walkthrough
+DURACION_OBJETIVO.: 5 a 8 minutos
+
+==========
+00.10_PROPOSITO
+==========
+
+Este documento define el guion operativo para presentar HIA en una demo interna visible.
+
+La demo no busca vender una promesa abstracta. Busca demostrar que HIA ya puede:
+
+- leer estado de proyecto,
+- mantener continuidad,
+- mostrar dashboard gerencial,
+- presentar evidencia fresca,
+- exponer deuda técnica sin ocultarla,
+- orientar próxima acción desde BATON/backlog.
+
+==========
+01.00_AUDIENCIA
+==========
+
+01.10_AUDIENCIA_PRIMARIA
+
+Gerencia interna con conocimiento parcial del proyecto HIA.
+
+01.20_NIVEL_TECNICO_ESPERADO
+
+Medio-bajo a medio. No se asume conocimiento de RADAR, BATON, CIS ni pipeline técnico.
+
+01.30_CRITERIO_DE_EXITO
+
+La audiencia debe entender en menos de 8 minutos:
+
+1) qué problema resuelve HIA;
+2) qué evidencia existe;
+3) qué se puede demostrar hoy;
+4) qué falta para pasar de demo interna a producto operativo más robusto.
+
+==========
+02.00_MENSAJE_EJECUTIVO
+==========
+
+HIA es un sistema operativo de trabajo con IA que transforma interacciones dispersas en un flujo gobernado:
+
+PLAN -> APPLY -> VALIDATE -> LOG
+
+No reemplaza al humano. Ordena cómo la IA trabaja bajo control humano, con evidencia, continuidad y rollback.
+
+==========
+03.00_FLUJO_DEMO_LIVE
+==========
+
+03.10_APERTURA_30_SEGUNDOS
+
+Decir:
+
+"Esta demo muestra HIA funcionando como capa de continuidad y gobernanza para desarrollo asistido por IA. El punto no es que la IA escriba texto bonito; el punto es que el sistema mantenga estado, evidencia, backlog, siguiente acción y trazabilidad."
+
+03.20_MOSTRAR_DASHBOARD_90_SEGUNDOS
+
+Abrir:
+
+01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.2.html
+
+Mostrar:
+
+- estado general,
+- entregables,
+- próximos pasos,
+- evidencia,
+- deuda técnica visible.
+
+Narrativa:
+
+"Este dashboard es el punto de entrada gerencial. No reemplaza los artefactos técnicos; los resume para decisión."
+
+03.30_MOSTRAR_PROJECT_STATUS_60_SEGUNDOS
+
+Ejecutar o mostrar output reciente:
+
+hia project status PRJ_0001_HIA.PRODUCT
+
+Enfatizar:
+
+- PROJECT_STATE active,
+- NEXT_ACTION,
+- BATON OK,
+- BACKLOG OK,
+- PROJECT_CONFIG OK.
+
+03.40_MOSTRAR_PROJECT_CONTINUE_90_SEGUNDOS
+
+Ejecutar o mostrar output reciente:
+
+hia project continue PRJ_0001_HIA.PRODUCT
+
+Enfatizar:
+
+- EVIDENCE_STATE FRESH,
+- EVIDENCE_CONSISTENCY CONSISTENT,
+- LATEST_OUTPUT_PATH,
+- LATEST_LOG_PATH.
+
+03.50_EXPLICAR_BACKLOG_60_SEGUNDOS
+
+Mostrar que el sistema no oculta deuda técnica.
+
+Ejemplos:
+
+- TD_EVIDENCE_POLICY/P2,
+- TD_ROOT_WBS_NAMING_001/P3,
+- TD_DASHBOARD_STALE_BLOCKS_001/P1.
+
+Narrativa:
+
+"HIA no pretende que todo esté perfecto. Pretende que lo pendiente quede visible, priorizado y trazable."
+
+03.60_CIERRE_60_SEGUNDOS
+
+Decir:
+
+"El estado actual permite demo interna. El siguiente salto no es agregar teoría; es reducir fricción de uso, robustecer launcher, limpiar snapshots históricos del dashboard y preparar un demo package final."
+
+==========
+04.00_NO_DECIR
+==========
+
+No decir:
+
+- "HIA está terminado."
+- "Esto ya es producto comercial."
+- "La IA decide sola."
+- "El dashboard es la fuente canónica."
+- "La deuda técnica no afecta."
+
+Sí decir:
+
+- "HIA está listo para demo interna."
+- "El sistema prioriza control, evidencia y continuidad."
+- "La fuente canónica sigue siendo el repositorio y sus artefactos."
+- "Hay deuda técnica visible y priorizada."
+
+==========
+05.00_DEMO_PATH_RECOMENDADO
+==========
+
+1) Abrir dashboard.
+2) Mostrar project status.
+3) Mostrar project continue.
+4) Mostrar entrega PRJPB_008I/008J/008K si aplica.
+5) Mostrar checklist PRJPB_009B.
+6) Cerrar con próximos pasos.
+
+==========
+06.00_RIESGOS_DE_LA_DEMO
+==========
+
+06.10_RIESGO_DE_SOBREEXPLICACION
+
+Si se explica RADAR/BATON/CIS en detalle, se pierde a gerencia.
+
+Mitigación:
+Explicar por función, no por arquitectura interna.
+
+06.20_RIESGO_DE_VENDER_DE_MAS
+
+Si se presenta HIA como producto terminado, se genera expectativa falsa.
+
+Mitigación:
+Usar frase "demo interna visible" y no "release final".
+
+06.30_RIESGO_DE_DASHBOARD_DESACTUALIZADO
+
+Si el dashboard mezcla snapshots históricos, pierde credibilidad.
+
+Mitigación:
+Declarar TD_DASHBOARD_STALE_BLOCKS_001/P1 y validar antes de presentar.
+
+==========
+07.00_DONE_CRITERIA
+==========
+
+PRJPB_009B se considera DONE cuando existan:
+
+1) este demo live script;
+2) checklist de presentación interna;
+3) launcher one-click para abrir la demo;
+4) registro en BATON;
+5) registro en BACKLOG;
+6) git commit y push;
+7) repo clean post-push.
+

@@ -1,0 +1,108 @@
+==========
+00.00_METADATA
+==========
+
+ID_UNICO..........: PRJPB_009B.INTERNAL_PRESENTATION_CHECKLIST
+VERSION...........: v0.1
+FECHA.............: 2026-06-04
+CIUDAD............: Santiago, Chile
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+ARTEFACTO.........: Checklist presentación interna HIA
+ESTADO............: DRAFT
+
+==========
+01.00_CHECKLIST_PRE_DEMO
+==========
+
+01.10_REPO
+
+[ ] git status clean.
+[ ] branch correcta: feat/20260405-console-v2-phase1-phase2.
+[ ] último commit coherente con cierre anterior.
+
+01.20_CLI
+
+[ ] hia project status PRJ_0001_HIA.PRODUCT ejecuta sin error.
+[ ] hia project continue PRJ_0001_HIA.PRODUCT ejecuta sin error.
+[ ] hia project session status PRJ_0001_HIA.PRODUCT ejecuta sin error.
+
+01.30_EVIDENCIA
+
+[ ] EVIDENCE_STATE = FRESH.
+[ ] EVIDENCE_CONSISTENCY = CONSISTENT.
+[ ] LATEST_OUTPUT_PATH existe.
+[ ] LATEST_LOG_PATH existe.
+
+01.40_DASHBOARD
+
+[ ] Existe 01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.2.html.
+[ ] Abre localmente.
+[ ] No muestra bloques contradictorios como estado actual.
+[ ] Si hay snapshots históricos, se explican como historial y no como estado vivo.
+
+01.50_ENTREGABLES
+
+[ ] Existe demo pack gerencial v0.2.
+[ ] Existe guion ejecutivo demo gerencial.
+[ ] Existe release candidate interno.
+[ ] Existe dashboard refresh.
+[ ] Existe este PRJPB_009B checklist.
+[ ] Existe PRJPB_009B demo live script.
+[ ] Existe launcher one-click.
+
+==========
+02.00_CHECKLIST_DURANTE_DEMO
+==========
+
+02.10_NARRATIVA
+
+[ ] Se explica HIA en menos de 60 segundos.
+[ ] Se evita tecnicismo innecesario.
+[ ] Se declara que HIA no reemplaza decisión humana.
+[ ] Se muestra evidencia fresca.
+[ ] Se muestra deuda técnica visible.
+
+02.20_DEMO
+
+[ ] Dashboard abierto.
+[ ] Project status mostrado.
+[ ] Project continue mostrado.
+[ ] Próxima acción mostrada desde BATON/backlog.
+[ ] Riesgos/deudas presentados sin maquillaje.
+
+==========
+03.00_CHECKLIST_POST_DEMO
+==========
+
+03.10_DECISIONES
+
+[ ] Registrar feedback recibido.
+[ ] Clasificar feedback en:
+    - bug,
+    - deuda técnica,
+    - mejora UX,
+    - mejora narrativa,
+    - decisión gerencial.
+[ ] Crear backlog item si corresponde.
+[ ] Actualizar BATON si cambia NEXT_ACTION.
+
+03.20_NO_HACER
+
+[ ] No reescribir HIA desde cero por feedback aislado.
+[ ] No mezclar deuda root naming con demo si no bloquea.
+[ ] No ocultar deuda técnica.
+[ ] No prometer automatización no implementada.
+
+==========
+04.00_DONE_CRITERIA_PRESENTACION
+==========
+
+La presentación interna se considera lista si:
+
+[ ] puede ejecutarse en 5 a 8 minutos;
+[ ] dashboard abre con un comando o launcher;
+[ ] CLI demuestra estado vivo;
+[ ] evidencia aparece FRESH;
+[ ] deuda técnica aparece visible;
+[ ] siguiente acción queda clara.
+

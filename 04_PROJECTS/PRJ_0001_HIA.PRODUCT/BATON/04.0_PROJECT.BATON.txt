@@ -962,3 +962,33 @@ SESSION_CLOSE_20260604_1419_HIA
 06.00_NEXT_ACTION
 - PRJPB_009B: READY — user-facing dashboard y one-click demo launcher.
 
+
+==========
+SESSION_UPDATE_20260604_HIA_PRJPB_009B_DEMO_LIVE_SCRIPT_CHECKLIST_LAUNCHER
+==========
+
+STAMP.............: 20260604_143751
+LOCAL_TIME........: 2026-06-04 14:38:01 -0400
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+
+01.00_DONE_CONFIRMED
+- PRJPB_009B: DONE — demo live script, checklist presentacion interna y one-click launcher creados.
+- Entregables:
+  - 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_009B.DEMO_LIVE_SCRIPT.20260604_143751.txt
+  - 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_009B.INTERNAL_PRESENTATION_CHECKLIST.20260604_143751.txt
+  - 01_UI/launcher/HIA.DEMO.LAUNCHER.PRJPB_009B.ps1
+  - 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009B.SUMMARY.20260604_143751.txt
+
+02.00_CONTEXT
+- Se detecto discrepancia menor entre CLI/BATON:
+  - CLI: demo live script y checklist presentacion interna.
+  - BATON: user-facing dashboard y one-click demo launcher.
+- Decision: integrar ambos alcances dentro de PRJPB_009B.
+
+03.00_RISKS_AND_TECH_DEBT
+- TD_DASHBOARD_STALE_BLOCKS_001/P1 sigue vigente si el dashboard mezcla snapshots historicos.
+- TD_EVIDENCE_POLICY/P2 sigue vigente como politica runtime/versionable no canonica.
+- TD_ROOT_WBS_NAMING_001/P3 queda postergada; no bloquea demo.
+
+04.00_NEXT_ACTION
+- PRJPB_009C: READY — demo dry-run y captura de fricciones reales de presentacion.
