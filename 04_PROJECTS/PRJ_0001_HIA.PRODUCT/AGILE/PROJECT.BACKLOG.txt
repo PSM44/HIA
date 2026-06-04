@@ -655,3 +655,19 @@ PRJPB_008P_DASHBOARD_DELIVERY_REFRESH
 - Confirmar dashboard existe.
 - Cerrar sesion y dejar handoff.
 
+==========
+PRJPB_008Q_FINAL_DEMO_READINESS
+==========
+00.00_DONE
+- PRJPB_008Q: DONE — final demo readiness smoke ejecutado.
+- Resultado: PASS.
+- HIA queda listo para demo gerencial interna.
+
+01.00_READY_NOW
+- PRJPB_009A: READY — definir siguiente fase post demo gerencial interna.
+
+02.00_DEFERRED_TECHNICAL_DEBT
+- TD_AI_MEMORY/P2: AI_MEMORY_STATUS MISSING.
+- TD_EVIDENCE_POLICY/P2: politica runtime/versionable no canonica.
+- TD_ROOT_WBS_NAMING_001/P3: documentar policy canonica futura.
+

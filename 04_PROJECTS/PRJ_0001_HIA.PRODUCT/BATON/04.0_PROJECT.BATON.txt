@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_008Q | final demo readiness smoke y cierre de sesion | ready
+PRJPB_009A | definir siguiente fase post demo gerencial interna | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -578,7 +578,7 @@ SESSION_UPDATE_20260602_HIA_PRJPB_008H_R_EVIDENCE_ANCHOR
 - PRJPB_008H-R: DONE — evidencia semántica de cierre 008H creada para continuidad operativa.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_008Q | final demo readiness smoke y cierre de sesion | ready.
+- NEXT_ACTION: PRJPB_009A | definir siguiente fase post demo gerencial interna | ready.
 - Git quedó clean tras PRJPB_008H antes de esta reconciliación.
 - RADAR refresh posterior a PRJPB_008H ejecutado correctamente.
 - project continue todavía puede reportar EVIDENCE_STATE STALE si el engine no reconoce evidencia semántica 008H como anchor fresco.
@@ -608,7 +608,7 @@ SESSION_UPDATE_20260602_HIA_PRJPB_008I_MANAGEMENT_DEMO_PACK
 02.00_CURRENT_STATE
 - Demo pack v0.2 disponible como texto versionable.
 - El demo pack declara deuda técnica visible, incluyendo EVIDENCE_STATE STALE.
-- NEXT_ACTION propuesta: PRJPB_008Q | final demo readiness smoke y cierre de sesion | ready.
+- NEXT_ACTION propuesta: PRJPB_009A | definir siguiente fase post demo gerencial interna | ready.
 
 03.00_TECHNICAL_DEBT_ROLLOVER
 - TD_EVIDENCE_ANCHOR_008H/P1: project continue sigue anclado a evidencia PRJPB_008D-2.
@@ -634,7 +634,7 @@ SESSION_UPDATE_20260602_HIA_PRJPB_008I_R_ROLLOVER
 - Commit base: dc88dc8 20260602_HIA_PRJPB_008I_management_demo_pack_v02.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_008Q | final demo readiness smoke y cierre de sesion | ready.
+- NEXT_ACTION: PRJPB_009A | definir siguiente fase post demo gerencial interna | ready.
 - Git debe quedar clean después de esta reconciliación.
 - EVIDENCE_STATE puede seguir STALE por TD_EVIDENCE_ANCHOR_008H/P1; no bloquear PRJPB_008J, pero sí debe declararse en el guion/demo.
 
@@ -662,7 +662,7 @@ SESSION_UPDATE_20260603_HIA_PRJPB_008J_EXECUTIVE_DEMO_SCRIPT
 - Runner versionado: 02_TOOLS/Run-PRJPB-008J.ps1.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_008Q | final demo readiness smoke y cierre de sesion | ready.
+- NEXT_ACTION: PRJPB_009A | definir siguiente fase post demo gerencial interna | ready.
 - EVIDENCE_STATE puede seguir STALE por TD_EVIDENCE_ANCHOR_008H/P1; debe resolverse o explicarse en PRJPB_008K.
 - Demo pack v0.2 y guion ejecutivo ya existen.
 
@@ -695,7 +695,7 @@ SESSION_UPDATE_20260604_HIA_PRJPB_008K_INTERNAL_RC
 - Guion ejecutivo v0.1: disponible.
 - Screenshot protocol: disponible.
 - RADAR refresh: ejecutado durante 008K.
-- NEXT_ACTION: PRJPB_008Q | final demo readiness smoke y cierre de sesion | ready.
+- NEXT_ACTION: PRJPB_009A | definir siguiente fase post demo gerencial interna | ready.
 
 03.00_TECHNICAL_DEBT_ROLLOVER
 - TD_EVIDENCE_ANCHOR_008H/P1: resolver reconocimiento de evidencia semántica genérica en HIA_PROJECT_ENGINE.
@@ -738,7 +738,7 @@ SESSION_UPDATE_20260604_HIA_PRJPB_008M_A_ENCODING_DIAG
 - No se modificó hia.ps1.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_008Q | final demo readiness smoke y cierre de sesion | ready.
+- NEXT_ACTION: PRJPB_009A | definir siguiente fase post demo gerencial interna | ready.
 - EVIDENCE_STATE permanece FRESH desde PRJPB_008L-B.
 - Session status activo al inicio de 008M-A.
 
@@ -760,7 +760,7 @@ SESSION_UPDATE_20260604_HIA_PRJPB_008M_B_ENCODING_FIX
 - No se modifico hia.ps1.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_008Q | final demo readiness smoke y cierre de sesion | ready.
+- NEXT_ACTION: PRJPB_009A | definir siguiente fase post demo gerencial interna | ready.
 - EVIDENCE_STATE permanece FRESH desde PRJPB_008L-B.
 - Regla operativa: desde WSL2, preferir hia.utf8.ps1 para capturas con caracteres acentuados.
 
@@ -791,7 +791,7 @@ SESSION_UPDATE_20260604_HIA_PRJPB_008N_ROOT_04_NAMING_AUDIT
 - 04_PROJECTS: canonical active. No renombrar.
 - 04_AGENTS: posible capa AI agents. Requiere decision posterior.
 - 04_CONSOLE: posible capa console/UI legacy o experimental. Requiere decision posterior.
-- NEXT_ACTION: PRJPB_008Q | final demo readiness smoke y cierre de sesion | ready.
+- NEXT_ACTION: PRJPB_009A | definir siguiente fase post demo gerencial interna | ready.
 
 03.00_TECHNICAL_DEBT_ROLLOVER
 - TD_ROOT_WBS_NAMING_001/P2: pendiente matriz de impacto y decision proposal.
@@ -822,7 +822,7 @@ SESSION_UPDATE_20260604_HIA_PRJPB_008O_ROOT_NAMING_IMPACT_MATRIX
 - Root 04_* collision: deuda aceptada, no blocker operativo.
 
 03.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_008Q | final demo readiness smoke y cierre de sesion | ready.
+- NEXT_ACTION: PRJPB_009A | definir siguiente fase post demo gerencial interna | ready.
 - EVIDENCE_STATE sigue FRESH.
 - hia.utf8.ps1 es el wrapper recomendado para salida CLI legible desde WSL2.
 
@@ -852,8 +852,37 @@ SESSION_UPDATE_20260604_HIA_PRJPB_008P_DASHBOARD_DELIVERY_REFRESH
 - EVIDENCE_STATE: FRESH.
 - Session: active.
 - Root naming: auditado; no rename aprobado.
-- NEXT_ACTION: PRJPB_008Q | final demo readiness smoke y cierre de sesion | ready.
+- NEXT_ACTION: PRJPB_009A | definir siguiente fase post demo gerencial interna | ready.
 
 03.00_NEXT_ACTION
 - PRJPB_008Q: READY — final demo readiness smoke y cierre de sesion.
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_008Q_FINAL_DEMO_READINESS
+===============================================================================
+00.00_CONTEXT
+- Fecha UTC: 2026-06-04T17:43:44Z
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- Proposito: ejecutar final demo readiness smoke y preparar cierre de sesion.
+
+01.00_DONE_CONFIRMED
+- PRJPB_008Q: DONE — final demo readiness smoke ejecutado.
+- Reporte versionado: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_008Q.FINAL_DEMO_READINESS_SMOKE.*.txt.
+- Runner versionado: 02_TOOLS/Run-PRJPB-008Q.ps1.
+- RADAR refresh ejecutado.
+- Dashboard v0.2 y entregables versionados verificados.
+
+02.00_CURRENT_STATE
+- HIA listo para demo gerencial interna.
+- EVIDENCE_STATE: FRESH.
+- UTF8 wrapper recomendado: 01_UI/terminal/hia.utf8.ps1.
+- Root naming decision: no rename; 04_PROJECTS canonical, 04_AGENTS/04_CONSOLE keep-document.
+
+03.00_NEXT_ACTION
+- PRJPB_009A: READY — definir siguiente fase post demo gerencial interna.
+
+04.00_TECHNICAL_DEBT_ROLLOVER
+- TD_AI_MEMORY/P2: AI_MEMORY_STATUS MISSING.
+- TD_EVIDENCE_POLICY/P2: politica runtime/versionable no canonica.
+- TD_ROOT_WBS_NAMING_001/P3: canonicalizar policy futura sin renombrar ahora.
 
