@@ -1515,3 +1515,28 @@ PURPOSE...........: Agregar demo seed explicito, AI costs por modalidad y navega
 03.00_NEXT_ACTION
 - PRJPB_009N: READY — conectar hia.state.js fino a HIA Control Tower Shell v0.2.
 ===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009M_C_R_RECOVER_CONTROL_TOWER_JS
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009M_C_R_RECOVER_CONTROL_TOWER_JS
+STATUS............: DONE
+PURPOSE...........: Recuperar Control Tower Shell v0.2 por fallo visual/JS tras PRJPB_009M-C.
+
+01.00_ROOT_CAUSE
+- PRJPB_009M-C aplicó patch incremental sobre app.js.
+- La UI quedó sin render funcional.
+- Corrección: reescritura completa de app.js y validación de sintaxis.
+
+02.00_DONE_CONFIRMED
+- app.js reescrito limpio.
+- Demo seed restaurado.
+- Portfolio cards/list restaurado.
+- Click proyecto -> workspace restaurado.
+- Control de IA con costos demo restaurado.
+- Centro de Costos con demo data restaurado.
+
+03.00_NEXT_ACTION
+- PRJPB_009N: READY — conectar hia.state.js fino a HIA Control Tower Shell v0.2.
+===============================================================================
