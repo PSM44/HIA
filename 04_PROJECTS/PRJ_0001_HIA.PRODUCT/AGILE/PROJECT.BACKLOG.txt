@@ -1249,3 +1249,111 @@ PURPOSE...........: Conectar hia.state.js a vistas Estado real, Portfolio y AI C
 - Mostrar Evidence state.
 - Mostrar AI memory status.
 - Mantener fallback si hia.state.js no existe.
+
+===============================================================================
+PRJPB_009L_ARCH_CONTROL_TOWER_UX_DECISIONS
+===============================================================================
+ID_UNICO..........: PRJPB_009L_ARCH_CONTROL_TOWER_UX_DECISIONS_20260604_165210
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 16:52:12 -0400
+PURPOSE...........: Registrar arquitectura UX/UI objetivo HIA Control Tower global → Portfolio → Project Workspace.
+
+01.00_DECISIONES
+- HIA siempre abre en Control Tower global.
+- Proyecto se abre desde Portfolio o Continue last project.
+- Continue last project queda requerido.
+- Bookmark/acceso directo a proyecto queda future feature.
+- Cada proyecto tiene su propia IA, modalidad, costo y settings.
+- Chat IA es por proyecto.
+- Chat global queda future feature.
+- Costos visibles para todos.
+- Obsidian/similar queda backlog P1/P2.
+- Encriptación queda deuda técnica normal.
+
+02.00_REPORT
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009L_ARCH.CONTROL_TOWER_UX_DECISIONS.20260604_165210.txt
+
+03.00_NEXT
+- PRJPB_009M: READY — implementar navegación Control Tower global / Portfolio / Project Workspace.
+
+===============================================================================
+TD_CONTROL_TOWER_ARCHITECTURE
+===============================================================================
+ID_UNICO..........: TD_CONTROL_TOWER_ARCHITECTURE_20260604_165210
+STATUS............: OPEN
+PRIORIDAD.........: P0
+TIPO..............: UX_ARCHITECTURE
+DESCRIPCION.......: Separar Control Tower global, Portfolio y Project Workspace.
+
+===============================================================================
+TD_PROJECT_WORKSPACE
+===============================================================================
+ID_UNICO..........: TD_PROJECT_WORKSPACE_20260604_165210
+STATUS............: OPEN
+PRIORIDAD.........: P0
+TIPO..............: FRONTEND_ARCHITECTURE
+DESCRIPCION.......: Crear workspace por proyecto con KPIs, datos, IA, costos, evidencia, backlog y settings propios.
+
+===============================================================================
+TD_GLOBAL_AI_CONTROL_TOWER
+===============================================================================
+ID_UNICO..........: TD_GLOBAL_AI_CONTROL_TOWER_20260604_165210
+STATUS............: OPEN
+PRIORIDAD.........: P0
+TIPO..............: AI_OPERATING_LAYER
+DESCRIPCION.......: Crear vista global de IAs disponibles/operativas, conexión testeada, costos globales y asignación a proyectos.
+
+===============================================================================
+TD_PROJECT_AI_CONFIGURATION
+===============================================================================
+ID_UNICO..........: TD_PROJECT_AI_CONFIGURATION_20260604_165210
+STATUS............: OPEN
+PRIORIDAD.........: P0
+TIPO..............: AI_OPERATING_LAYER
+DESCRIPCION.......: Permitir configuración IA específica por proyecto: local/web/API/plan/desktop/CLI.
+
+===============================================================================
+TD_COST_CENTER_GLOBAL_PROJECT
+===============================================================================
+ID_UNICO..........: TD_COST_CENTER_GLOBAL_PROJECT_20260604_165210
+STATUS............: OPEN
+PRIORIDAD.........: P0
+TIPO..............: COST_GOVERNANCE
+DESCRIPCION.......: Crear centro de costos global y por proyecto, visible para todos.
+
+===============================================================================
+TD_CONTINUE_LAST_PROJECT
+===============================================================================
+ID_UNICO..........: TD_CONTINUE_LAST_PROJECT_20260604_165210
+STATUS............: OPEN
+PRIORIDAD.........: P1
+TIPO..............: UX_FEATURE
+DESCRIPCION.......: Agregar botón Continue last project desde Control Tower.
+
+===============================================================================
+TD_PROJECT_BOOKMARK_DIRECT_ACCESS
+===============================================================================
+ID_UNICO..........: TD_PROJECT_BOOKMARK_DIRECT_ACCESS_20260604_165210
+STATUS............: OPEN
+PRIORIDAD.........: P2
+TIPO..............: UX_FEATURE_FUTURE
+DESCRIPCION.......: Permitir acceso directo/bookmark a proyecto específico desde web/PWA.
+
+===============================================================================
+TD_OBSIDIAN_VAULT_INTEGRATION
+===============================================================================
+ID_UNICO..........: TD_OBSIDIAN_VAULT_INTEGRATION_20260604_165210
+STATUS............: OPEN
+PRIORIDAD.........: P1_P2
+TIPO..............: INTEGRATION_FUTURE
+DESCRIPCION.......: Integración futura con Obsidian o similar para knowledge/vault.
+
+===============================================================================
+TD_ENCRYPTION_SECURITY
+===============================================================================
+ID_UNICO..........: TD_ENCRYPTION_SECURITY_20260604_165210
+STATUS............: OPEN
+PRIORIDAD.........: P2
+TIPO..............: SECURITY_DEBT
+DESCRIPCION.......: Encriptación como deuda técnica normal/futura.

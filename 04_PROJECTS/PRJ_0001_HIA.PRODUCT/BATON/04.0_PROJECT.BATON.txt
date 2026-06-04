@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009L-B | conectar hia.state.js a vistas Estado real, Portfolio y AI Cockpit | ready
+PRJPB_009M | implementar navegación Control Tower global / Portfolio / Project Workspace | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -1337,4 +1337,44 @@ PURPOSE...........: Recuperar falla de PRJPB_009L-A y generar hia.state.js.
 
 04.00_NEXT_ACTION
 - PRJPB_009L-B: READY — conectar hia.state.js a vistas Estado real, Portfolio y AI Cockpit.
+===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009L_ARCH_CONTROL_TOWER_UX_DECISIONS
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009L_ARCH_CONTROL_TOWER_UX_DECISIONS
+STATUS............: DONE
+PURPOSE...........: Registrar arquitectura UX HIA Control Tower global antes de seguir conectando estado real.
+
+01.00_HUMAN_DECISIONS
+- HIA siempre debe entrar a Control Tower global.
+- Debe existir botón Continue last project.
+- Bookmark/acceso directo a proyecto queda future feature.
+- Cada proyecto tiene su propia modalidad IA/costos/settings.
+- Chat IA debe ser por proyecto.
+- Chat global queda futuro.
+- Costos visibles para todos.
+- Obsidian/similar queda backlog P1/P2.
+- Encriptación queda deuda técnica normal.
+
+02.00_ARCHITECTURE_DECISION
+- Separar HIA Control Tower global, Portfolio y Project Workspace.
+- Separar AI global de AI por proyecto.
+- Separar costos globales, por IA y por proyecto.
+- No conectar más estado a UI mezclada.
+
+03.00_NEXT_ACTION
+- PRJPB_009M: READY — implementar navegación Control Tower global / Portfolio / Project Workspace.
+
+04.00_DEBT_REGISTERED
+- TD_CONTROL_TOWER_ARCHITECTURE/P0.
+- TD_PROJECT_WORKSPACE/P0.
+- TD_GLOBAL_AI_CONTROL_TOWER/P0.
+- TD_PROJECT_AI_CONFIGURATION/P0.
+- TD_COST_CENTER_GLOBAL_PROJECT/P0.
+- TD_CONTINUE_LAST_PROJECT/P1.
+- TD_PROJECT_BOOKMARK_DIRECT_ACCESS/P2.
+- TD_OBSIDIAN_VAULT_INTEGRATION/P1_P2.
+- TD_ENCRYPTION_SECURITY/P2.
 ===============================================================================
