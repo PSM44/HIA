@@ -787,3 +787,59 @@ PRJPB_009B_R2_CONTINUITY_REPAIR
   - TD_RADAR_PATH_009B_R/P1: corregir scripts/one-shots que usen 02_TOOLS/RADAR/RADAR.ps1; ruta válida actual es 02_TOOLS/RADAR.ps1.
   - TD_CLI_ENCODING_MOJIBAKE/P1: salida CLI aún muestra mojibake en "básico".
   - TD_AI_MEMORY_STATUS/P2: AI_MEMORY_STATUS sigue MISSING.
+
+===============================================================================
+PRJPB_009C_HUMAN_DRY_RUN_NO_GO
+===============================================================================
+ID_UNICO..........: PRJPB_009C_HUMAN_DRY_RUN_NO_GO_20260604_150101
+STATUS............: DONE_WITH_NO_GO
+FECHA_LOCAL.......: 2026-06-04 15:01:02 -0400
+PURPOSE...........: Registrar que el dry-run demo interna no pasa por falla de claridad user-facing.
+
+01.00_RESULTADO
+- PRJPB_009C: DONE_WITH_NO_GO.
+- Launcher ejecuta y dashboard abre.
+- La experiencia no sirve como demo gerencial/user-facing sin rediseño.
+
+02.00_CAUSAS
+- No se entiende qué es HIA.
+- No se entiende "Ready / Next Backlog".
+- "Current NEXT_ACTION" es ambiguo.
+- Falta indicar shell explícita.
+- No hay separación visual por rol/audiencia.
+- Hay mezcla de información técnica y ejecutiva.
+
+03.00_EVIDENCIA
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009C.HUMAN_DRY_RUN_FEEDBACK.NO_GO.20260604_150101.txt
+
+04.00_NEXT_ACTION
+- PRJPB_009D: READY — rediseño dashboard user-facing con roles, shell explícita y narrativa demo.
+
+===============================================================================
+PRJPB_009D_DASHBOARD_USER_FACING_REDESIGN
+===============================================================================
+ID_UNICO..........: PRJPB_009D_DASHBOARD_USER_FACING_REDESIGN_20260604_150101
+STATUS............: READY
+PRIORIDAD.........: P0
+PURPOSE...........: Rediseñar dashboard HIA para demo interna entendible sin explicación previa.
+
+01.00_SCOPE
+- Reestructurar página principal del dashboard.
+- Cambiar lenguaje operacional ambiguo por lenguaje user-facing.
+- Separar información por roles visuales: USER, DEV, QA, EVIDENCE, TECH DEBT.
+- Indicar shell explícita en comandos.
+- Usar mockups adjuntos solo como inspiración visual, no como fuente de datos.
+
+02.00_ACCEPTANCE_CRITERIA
+- El dashboard explica HIA en 60 segundos.
+- Existe bloque "Trabajando ahora".
+- Existe bloque "Siguiente".
+- Existe bloque "Después / Backlog".
+- Todo comando visible indica shell.
+- La demo distingue qué ve el usuario y qué ve developer/QA.
+- No se muestran datos fake como reales.
+- La deuda técnica visible queda agrupada y no domina la página.
+
+03.00_NOTES
+- Mockups adjuntos inspiran estructura visual: sidebar, cards, health/status, active project, vault/knowledge.
+- No copiar contenidos fake como costos, proyectos o métricas no respaldadas.

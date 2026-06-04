@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009C | ejecutar demo interna y capturar feedback/gaps | ready
+PRJPB_009D | rediseño dashboard user-facing con roles, shell explícita y narrativa demo | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -1049,3 +1049,28 @@ SESSION_UPDATE_20260604_HIA_PRJPB_009B_R2_CONTINUITY_REPAIR
 
 03.00_NEXT_ACTION
 - PRJPB_009C: READY — ejecutar demo interna y capturar feedback/gaps.
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009C_NO_GO_TO_009D
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009C_NO_GO_TO_009D
+STATUS............: DONE
+PURPOSE...........: Registrar feedback humano NO_GO de PRJPB_009C y mover continuidad a PRJPB_009D.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009C: DONE_WITH_NO_GO — launcher/dashboard abren, pero demo no comunica lo necesario.
+- Feedback humano: no se entiende HIA, no se entiende Ready/Next/Backlog, falta shell explícita, falta separación por rol/audiencia.
+
+02.00_DECISION
+- No avanzar a demo package final.
+- Primero rediseñar dashboard user-facing.
+
+03.00_NEXT_ACTION
+- PRJPB_009D: READY — rediseño dashboard user-facing con roles, shell explícita y narrativa demo.
+
+04.00_DEBT_VISIBLE
+- TD_CLI_ENCODING_MOJIBAKE/P1: salida CLI sigue mostrando mojibake.
+- TD_AI_MEMORY_STATUS/P2: AI_MEMORY_STATUS MISSING.
+- TD_DASHBOARD_USER_FACING_001/P0: dashboard actual no sirve como demo sin explicación.
+===============================================================================
