@@ -51,3 +51,34 @@ Para instalación en celulares/computadores:
 PRJPB_009K:
 Generar estado real desde CLI/BATON/BACKLOG/RADAR hacia un archivo JSON o JS state consumible por la app shell.
 ===============================================================================
+
+===============================================================================
+07.00_PORTFOLIO_SCOPE_UPDATE_PRJPB_009J_B
+===============================================================================
+
+La app shell ya no debe modelar solo un proyecto.
+Debe modelar dos niveles:
+
+01. HIA SYSTEM / PORTFOLIO
+- múltiples proyectos
+- reportes
+- colaboración
+- integraciones
+- estado global
+
+02. PROJECT DETAIL
+- proyecto activo seleccionado
+- estado operativo
+- evidencia
+- backlog / MiniBattles
+- próxima acción
+
+La futura migración a Vite/React/Next debe respetar esta separación:
+- /portfolio
+- /projects/:projectId
+- /reports
+- /collaboration
+- /integrations
+- /evidence
+- /tech-debt
+===============================================================================

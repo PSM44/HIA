@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009J-B | crear app shell portfolio/client-demo PWA-ready | ready
+PRJPB_009K | generar estado real para app shell portfolio desde CLI/BATON/RADAR | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -1220,4 +1220,35 @@ PURPOSE...........: Registrar que HIA debe representarse como sistema multi-proy
 
 04.00_NEXT_ACTION
 - PRJPB_009J-B: READY — crear app shell portfolio/client-demo PWA-ready.
+===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009J_B_PORTFOLIO_CLIENT_SHELL
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009J_B_PORTFOLIO_CLIENT_SHELL
+STATUS............: DONE
+PURPOSE...........: Ajustar client shell para representar HIA como portfolio multi-proyecto.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009J-B: DONE — app shell actualizada a portfolio multi-proyecto.
+- HIA ya no queda representado como sistema mono-proyecto.
+- Se separa HIA System / Portfolio de Project Detail.
+
+02.00_KEY_CHANGES
+- Nueva vista Portfolio HIA.
+- Proyecto activo redefinido como proyecto activo seleccionado.
+- Agregadas vistas Reportes, Colaboración e Integraciones.
+- Modelo JS actualizado a multi-proyecto.
+- README de migración actualizado con rutas futuras.
+
+03.00_NEXT_ACTION
+- PRJPB_009K: READY — generar estado real para app shell portfolio desde CLI/BATON/RADAR.
+
+04.00_DEBT_VISIBLE
+- TD_FRONTEND_DYNAMIC_STATE/P0.
+- TD_REPORTING_LAYER/P1.
+- TD_COLLABORATION_LAYER/P1.
+- TD_INTEGRATIONS_LAYER/P1.
+- TD_PWA_RUNTIME/P1.
 ===============================================================================

@@ -2,29 +2,86 @@
   "use strict";
 
   const STATE = {
+    systemName: "HIA",
     projectId: "PRJ_0001_HIA.PRODUCT",
-    shellVersion: "v0.1",
-    currentFocus: "Crear front-end app shell navegable para demo cliente.",
-    nextActionHuman: "Conectar estado real CLI/BATON/RADAR a la interfaz.",
-    nextActionCode: "PRJPB_009K",
+    selectedProjectId: "PRJ_0001_HIA.PRODUCT",
+    shellVersion: "v0.2-portfolio",
     repoStatus: "Limpio",
     evidenceStatus: "Disponible",
     architecture: "HTML/CSS/JS sin build, PWA-ready, migrable a Vite/React/Next.",
+    currentFocus: "Crear app shell portfolio/client-demo PWA-ready.",
+    nextActionHuman: "Generar estado real desde CLI/BATON/RADAR para alimentar la app shell.",
+    nextActionCode: "PRJPB_009K",
+    portfolioNote: "Demo data controlada: estructura multi-proyecto preparada; falta conexión real a inventario de proyectos.",
+    projects: [
+      {
+        id: "PRJ_0001_HIA.PRODUCT",
+        name: "HIA Product",
+        status: "active",
+        statusLabel: "Activo",
+        purpose: "Construir el framework HIA, dashboard, CLI, evidencia y app shell cliente.",
+        next: "Generar estado real para la app shell desde CLI/BATON/RADAR.",
+        evidence: "FRESH",
+        owner: "Human + System"
+      },
+      {
+        id: "PRJ_TEMPLATE_CLIENT",
+        name: "Cliente / Proyecto futuro",
+        status: "backlog",
+        statusLabel: "Backlog",
+        purpose: "Placeholder para demostrar que HIA puede administrar múltiples proyectos.",
+        next: "Pendiente de alta formal.",
+        evidence: "N/A",
+        owner: "Por definir"
+      },
+      {
+        id: "PRJ_REPORTING_LAYER",
+        name: "Reporting Layer",
+        status: "backlog",
+        statusLabel: "Feature futura",
+        purpose: "Reportes ejecutivos, operativos y técnicos por proyecto y portfolio.",
+        next: "Diseñar modelo de reportes.",
+        evidence: "N/A",
+        owner: "Por definir"
+      }
+    ],
+    futureFeatures: [
+      {
+        id: "TD_PORTFOLIO_MULTI_PROJECT/P0",
+        title: "Portfolio multi-proyecto",
+        detail: "Representar HIA como sistema portfolio, no como proyecto único."
+      },
+      {
+        id: "TD_REPORTING_LAYER/P1",
+        title: "Reportes",
+        detail: "Reportes gerenciales, operativos, técnicos, deuda, RADAR/BATON/BACKLOG y export PDF/PPT/HTML."
+      },
+      {
+        id: "TD_COLLABORATION_LAYER/P1",
+        title: "Colaboración",
+        detail: "Roles, permisos, comentarios, asignaciones, aprobaciones e historial de decisiones."
+      },
+      {
+        id: "TD_INTEGRATIONS_LAYER/P1",
+        title: "Integraciones",
+        detail: "GitHub, Drive/OneDrive, Jira/Trello/Planner, Slack/Teams, Calendar, Email, Obsidian y APIs."
+      }
+    ],
     debts: [
       {
         id: "TD_FRONTEND_DYNAMIC_STATE/P0",
-        title: "Estado real aún vive en CLI",
-        detail: "La UI ya puede mostrar un panel de estado, pero todavía falta conectarlo a una fuente generada desde CLI/BATON/RADAR."
+        title: "Estado real aún no conectado",
+        detail: "La UI ya tiene paneles; falta generar/embeber estado real desde CLI/BATON/RADAR."
+      },
+      {
+        id: "TD_PWA_RUNTIME/P1",
+        title: "PWA real requiere localhost/HTTPS",
+        detail: "file:// sirve para demo local, pero instalación real requiere servidor local o HTTPS."
       },
       {
         id: "TD_CLI_ENCODING_MOJIBAKE/P1",
         title: "Mojibake CLI",
         detail: "La consola aún puede mostrar caracteres corruptos en palabras con tilde."
-      },
-      {
-        id: "TD_AI_MEMORY_STATUS/P2",
-        title: "AI_MEMORY missing",
-        detail: "No bloquea la demo, pero afecta continuidad avanzada."
       }
     ]
   };
@@ -32,18 +89,23 @@
   const ROUTES = {
     "client-summary": {
       title: "Resumen para Cliente",
-      subtitle: "Qué es HIA, por qué existe y qué valor entrega.",
+      subtitle: "Qué es HIA como sistema multi-proyecto y qué valor entrega.",
       render: renderClientSummary
+    },
+    "portfolio": {
+      title: "Portfolio HIA",
+      subtitle: "Vista de múltiples proyectos, estado global y próximas acciones.",
+      render: renderPortfolio
+    },
+    "active-project": {
+      title: "Proyecto activo seleccionado",
+      subtitle: "Detalle operacional del proyecto seleccionado dentro del portfolio.",
+      render: renderActiveProject
     },
     "guided-demo": {
       title: "Demo guiada",
       subtitle: "Flujo paso a paso para abrir, revisar y validar la demo.",
       render: renderGuidedDemo
-    },
-    "active-project": {
-      title: "Proyecto activo",
-      subtitle: "Qué se está construyendo ahora y qué viene después.",
-      render: renderActiveProject
     },
     "real-status": {
       title: "Estado real",
@@ -55,9 +117,24 @@
       subtitle: "Qué prueba que el estado mostrado tiene respaldo.",
       render: renderEvidence
     },
+    "reports": {
+      title: "Reportes",
+      subtitle: "Feature futura para reportabilidad ejecutiva, operativa y técnica.",
+      render: renderReports
+    },
+    "collaboration": {
+      title: "Colaboración",
+      subtitle: "Feature futura para trabajo multiusuario, decisiones y aprobaciones.",
+      render: renderCollaboration
+    },
+    "integrations": {
+      title: "Integraciones",
+      subtitle: "Feature futura para conectar HIA con aplicaciones externas.",
+      render: renderIntegrations
+    },
     "tech-debt": {
       title: "Deuda técnica",
-      subtitle: "Problemas conocidos, no ocultos.",
+      subtitle: "Problemas conocidos y features futuras no ocultas.",
       render: renderTechDebt
     },
     "support": {
@@ -71,24 +148,35 @@
     return strings.reduce((acc, str, index) => acc + str + (values[index] ?? ""), "");
   }
 
+  function selectedProject() {
+    return STATE.projects.find((project) => project.id === STATE.selectedProjectId) || STATE.projects[0];
+  }
+
+  function statusClass(status) {
+    if (status === "active") return "active";
+    if (status === "demo") return "demo";
+    if (status === "blocked") return "blocked";
+    return "backlog";
+  }
+
   function renderClientSummary() {
     return html`
-      <div class="ribbon client">CLIENTE — Resumen ejecutivo navegable</div>
+      <div class="ribbon client">CLIENTE — Resumen portfolio</div>
       <section class="card hero">
         <h2>Qué es HIA</h2>
-        <p><b>HIA es una capa operativa para trabajar con IA sin perder control.</b> Ordena decisiones humanas, ejecución técnica, evidencia, validación y continuidad. Permite avanzar proyectos con IA sin depender de memoria de chat ni comandos improvisados.</p>
+        <p><b>HIA es una capa operativa multi-proyecto para trabajar con IA sin perder control.</b> Ordena decisiones humanas, ejecución técnica, evidencia, validación, continuidad y portfolio. No administra solo un proyecto: permite operar varios proyectos con estado, trazabilidad y gobierno común.</p>
       </section>
 
       <div class="grid cols-3" style="margin-top:16px">
         <section class="card">
-          <div class="label">Estado</div>
-          <div class="metric warn">App shell</div>
-          <p>Ya no estamos mirando un reporte estático: ahora probamos una interfaz navegable.</p>
+          <div class="label">Sistema</div>
+          <div class="metric ok">Portfolio</div>
+          <p>HIA debe ver múltiples proyectos, no solo el proyecto activo seleccionado.</p>
         </section>
         <section class="card">
-          <div class="label">Repositorio</div>
-          <div class="metric ok">${STATE.repoStatus}</div>
-          <p>Los últimos cambios están guardados y enviados a Git.</p>
+          <div class="label">Proyecto seleccionado</div>
+          <div class="metric warn">${STATE.projectId}</div>
+          <p>Este proyecto es el caso actual de construcción de HIA, no todo HIA.</p>
         </section>
         <section class="card">
           <div class="label">Arquitectura</div>
@@ -96,6 +184,81 @@
           <p>${STATE.architecture}</p>
         </section>
       </div>
+    `;
+  }
+
+  function renderPortfolio() {
+    const active = STATE.projects.filter((p) => p.status === "active").length;
+    const backlog = STATE.projects.filter((p) => p.status === "backlog").length;
+    return html`
+      <div class="ribbon client">CLIENTE — Portfolio HIA</div>
+      <section class="portfolio-grid">
+        <div class="card">
+          <h2>Proyectos</h2>
+          <p>${STATE.portfolioNote}</p>
+          <div class="project-list" style="margin-top:14px">
+            ${STATE.projects.map((project) => `
+              <article class="project-card ${project.id === STATE.selectedProjectId ? "is-selected" : ""}">
+                <div class="project-card-header">
+                  <div>
+                    <div class="project-title">${project.name}</div>
+                    <div class="project-meta">${project.id}</div>
+                  </div>
+                  <span class="status-pill ${statusClass(project.status)}">${project.statusLabel}</span>
+                </div>
+                <p>${project.purpose}</p>
+                <div class="project-meta">Siguiente: ${project.next}</div>
+              </article>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="grid">
+          <section class="card">
+            <div class="label">Total proyectos visibles</div>
+            <div class="metric">${STATE.projects.length}</div>
+            <p>Demo data controlada hasta conectar inventario real.</p>
+          </section>
+          <section class="card">
+            <div class="label">Activos</div>
+            <div class="metric ok">${active}</div>
+            <p>Proyectos con trabajo operativo en curso.</p>
+          </section>
+          <section class="card">
+            <div class="label">Backlog / futuros</div>
+            <div class="metric warn">${backlog}</div>
+            <p>Proyectos o capas futuras registradas.</p>
+          </section>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderActiveProject() {
+    const p = selectedProject();
+    return html`
+      <div class="ribbon client">CLIENTE — Proyecto activo seleccionado</div>
+      <section class="card">
+        <h2>${p.name}</h2>
+        <p>${p.purpose}</p>
+        <div class="grid cols-3" style="margin-top:16px">
+          <div class="step current">
+            <div class="label">Estado</div>
+            <h3>${p.statusLabel}</h3>
+            <p>Proyecto seleccionado dentro del portfolio.</p>
+          </div>
+          <div class="step next">
+            <div class="label">Siguiente acción</div>
+            <h3>${p.next}</h3>
+            <p>Código interno visible solo como trazabilidad: ${STATE.nextActionCode}.</p>
+          </div>
+          <div class="step later">
+            <div class="label">Evidencia</div>
+            <h3>${p.evidence}</h3>
+            <p>Estado de respaldo operacional del proyecto.</p>
+          </div>
+        </div>
+      </section>
     `;
   }
 
@@ -108,17 +271,17 @@
           <div class="step current">
             <div class="label">Paso 1</div>
             <h3>Entiende HIA</h3>
-            <p>Lee el resumen para cliente. Debe quedar claro qué problema resuelve.</p>
+            <p>HIA es portfolio multi-proyecto con gobierno, evidencia y continuidad.</p>
           </div>
           <div class="step next">
             <div class="label">Paso 2</div>
-            <h3>Abre demo</h3>
-            <p>Usa el comando WSL2 Bash para abrir la demo visual.</p>
+            <h3>Revisa portfolio</h3>
+            <p>Ver proyectos, estados y siguientes acciones.</p>
           </div>
           <div class="step later">
             <div class="label">Paso 3</div>
-            <h3>Valida evidencia</h3>
-            <p>Revisa estado, evidencia y deuda visible antes de presentar.</p>
+            <h3>Valida proyecto activo</h3>
+            <p>Entrar al detalle del proyecto seleccionado y revisar evidencia.</p>
           </div>
         </div>
       </section>
@@ -128,35 +291,13 @@
         <h2>Smoke como cliente</h2>
         <div class="checklist">
           ${[
-            "Entiendo qué es HIA en menos de 60 segundos.",
-            "Entiendo qué está pasando ahora.",
-            "Sé qué comando ejecutar primero.",
-            "Entiendo para qué sirve cada comando.",
-            "Puedo distinguir cliente, dev, QA, evidencia y deuda.",
-            "No veo basura técnica bloqueante en la portada."
+            "Entiendo que HIA administra múltiples proyectos.",
+            "Entiendo cuál es el proyecto activo seleccionado.",
+            "Entiendo que reportes, colaboración e integraciones son features futuras.",
+            "Puedo navegar sin recargar.",
+            "Puedo distinguir Cliente, Dev, QA, Evidencia y Deuda.",
+            "No se presentan métricas falsas como reales."
           ].map((item, index) => `<label class="check-item"><input type="checkbox" data-check="${index}"><span>${item}</span></label>`).join("")}
-        </div>
-      </section>
-    `;
-  }
-
-  function renderActiveProject() {
-    return html`
-      <div class="ribbon client">CLIENTE — Proyecto activo</div>
-      <section class="card">
-        <h2>Qué estamos construyendo ahora</h2>
-        <p>${STATE.currentFocus}</p>
-        <div class="grid cols-2" style="margin-top:16px">
-          <div class="step current">
-            <div class="label">Ahora</div>
-            <h3>App shell navegable</h3>
-            <p>Crear una interfaz donde se pueda navegar y testear como cliente.</p>
-          </div>
-          <div class="step next">
-            <div class="label">Siguiente</div>
-            <h3>${STATE.nextActionHuman}</h3>
-            <p>Código interno: ${STATE.nextActionCode}.</p>
-          </div>
         </div>
       </section>
     `;
@@ -166,15 +307,16 @@
     return html`
       <div class="ribbon dev">DEV UX/UI — Estado visible en UI</div>
       <section class="card">
-        <h2>Estado real del proyecto</h2>
-        <p>Hoy este estado todavía viene desde CLI. Esta pantalla deja preparada la ubicación visual para conectarlo después a un generador de estado real.</p>
+        <h2>Estado real del sistema</h2>
+        <p>Hoy este panel usa estado embebido demo/controlado. El siguiente incremento debe generarlo desde CLI/BATON/RADAR.</p>
         <table class="table" style="margin-top:14px">
           <thead><tr><th>Campo</th><th>Estado mostrado</th><th>Fuente futura</th></tr></thead>
           <tbody>
-            <tr><td>Proyecto</td><td>${STATE.projectId}</td><td>PROJECT.CONFIG / CLI</td></tr>
+            <tr><td>Sistema</td><td>${STATE.systemName}</td><td>System registry</td></tr>
+            <tr><td>Portfolio</td><td>${STATE.projects.length} proyectos visibles</td><td>Project registry / filesystem</td></tr>
+            <tr><td>Proyecto seleccionado</td><td>${STATE.selectedProjectId}</td><td>UI state / route param</td></tr>
             <tr><td>Repo</td><td>${STATE.repoStatus}</td><td>git status</td></tr>
             <tr><td>Evidencia</td><td>${STATE.evidenceStatus}</td><td>project continue / resolver</td></tr>
-            <tr><td>Trabajo actual</td><td>${STATE.currentFocus}</td><td>BATON NEXT_ACTION</td></tr>
             <tr><td>Siguiente</td><td>${STATE.nextActionHuman}</td><td>BATON / BACKLOG</td></tr>
           </tbody>
         </table>
@@ -187,11 +329,56 @@
       <div class="ribbon evidence">EVIDENCE / AUDIT — Respaldo</div>
       <section class="card">
         <h2>Evidencia disponible</h2>
-        <p>El objetivo no es llenar la portada de logs. Es mostrar que existe respaldo y dejar el detalle donde corresponde.</p>
+        <p>La evidencia debe respaldar tanto el portfolio como cada proyecto.</p>
         <div class="grid cols-3" style="margin-top:16px">
-          <div class="step"><h3>Git</h3><p>Commits y push respaldan cambios.</p></div>
+          <div class="step"><h3>Git</h3><p>Commits y push respaldan cambios del sistema.</p></div>
           <div class="step"><h3>RADAR</h3><p>Inventario y freshness de archivos.</p></div>
           <div class="step"><h3>Artifacts</h3><p>Reportes de MiniBattles y feedback humano.</p></div>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderReports() {
+    return html`
+      <div class="ribbon evidence">REPORTING — Feature futura</div>
+      <section class="card">
+        <h2>Reportes</h2>
+        <p>Capa futura para reportabilidad ejecutiva, operativa y técnica.</p>
+        <div class="feature-grid" style="margin-top:16px">
+          <div class="future-card"><h3>Reporte portfolio</h3><p>Vista ejecutiva de múltiples proyectos.</p></div>
+          <div class="future-card"><h3>Reporte por proyecto</h3><p>Estado, avances, bloqueos, evidencia y deuda.</p></div>
+          <div class="future-card"><h3>Exportables</h3><p>PDF, PPT, HTML y otros formatos.</p></div>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCollaboration() {
+    return html`
+      <div class="ribbon qa">COLLABORATION — Feature futura</div>
+      <section class="card">
+        <h2>Trabajo colaborativo</h2>
+        <p>Capa futura para trabajo humano/equipo/IA con trazabilidad.</p>
+        <div class="feature-grid" style="margin-top:16px">
+          <div class="future-card"><h3>Roles y permisos</h3><p>Cliente, owner, developer, QA, auditor.</p></div>
+          <div class="future-card"><h3>Comentarios y aprobaciones</h3><p>Decisiones, feedback y gates humanos.</p></div>
+          <div class="future-card"><h3>Asignaciones</h3><p>Responsables por acción, deuda o evidencia.</p></div>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderIntegrations() {
+    return html`
+      <div class="ribbon dev">INTEGRATIONS — Feature futura</div>
+      <section class="card">
+        <h2>Integraciones</h2>
+        <p>Capa futura para conectar HIA con herramientas externas.</p>
+        <div class="feature-grid" style="margin-top:16px">
+          <div class="future-card"><h3>Repositorios</h3><p>GitHub y proveedores Git.</p></div>
+          <div class="future-card"><h3>Productividad</h3><p>Drive, OneDrive, Calendar, Email, Teams, Slack.</p></div>
+          <div class="future-card"><h3>Gestión</h3><p>Jira, Trello, Planner, Obsidian y APIs internas.</p></div>
         </div>
       </section>
     `;
@@ -203,7 +390,7 @@
       <section class="card">
         <h2>Deuda visible</h2>
         <div class="grid cols-3">
-          ${STATE.debts.map((debt) => `
+          ${STATE.futureFeatures.concat(STATE.debts).map((debt) => `
             <div class="step">
               <div class="label">${debt.id}</div>
               <h3>${debt.title}</h3>
@@ -228,7 +415,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Set-Location 'C:\\01
       <section class="grid cols-2">
         <div class="card">
           <h2>PASO 1 — Abrir app shell</h2>
-          <p>Usa este comando primero. Abre la interfaz navegable de cliente.</p>
+          <p>Usa este comando primero. Abre la interfaz navegable portfolio/cliente.</p>
           <div class="cmd" id="cmd-step1">${step1}</div>
           <div class="action-row">
             <button class="primary-btn" data-copy="cmd-step1">Copiar PASO 1</button>

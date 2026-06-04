@@ -7,7 +7,7 @@
   <meta name="description" content="HIA Client Demo Shell">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="stylesheet" href="./assets/app.css">
-  <title>HIA — Client Demo Shell</title>
+  <title>HIA — Portfolio Client Shell</title>
 </head>
 <body>
   <div class="app-shell">
@@ -16,23 +16,27 @@
         <div class="brand-mark">H</div>
         <div>
           <div class="brand-title">HIA</div>
-          <div class="brand-subtitle">Client Demo Shell</div>
+          <div class="brand-subtitle">Portfolio Client Shell</div>
         </div>
       </div>
 
       <nav class="nav" aria-label="Navegación principal">
         <button class="nav-item is-active" data-route="client-summary">Resumen para Cliente</button>
+        <button class="nav-item" data-route="portfolio">Portfolio HIA</button>
+        <button class="nav-item" data-route="active-project">Proyecto activo seleccionado</button>
         <button class="nav-item" data-route="guided-demo">Demo guiada</button>
-        <button class="nav-item" data-route="active-project">Proyecto activo</button>
         <button class="nav-item" data-route="real-status">Estado real</button>
         <button class="nav-item" data-route="evidence">Evidencia</button>
+        <button class="nav-item" data-route="reports">Reportes</button>
+        <button class="nav-item" data-route="collaboration">Colaboración</button>
+        <button class="nav-item" data-route="integrations">Integraciones</button>
         <button class="nav-item" data-route="tech-debt">Deuda técnica</button>
         <button class="nav-item" data-route="support">Comandos / Soporte</button>
       </nav>
 
       <div class="sidebar-footer">
         <div class="mini-label">Arquitectura</div>
-        <div class="mini-copy">HTML/CSS/JS sin build · PWA-ready · migrable a Vite/React/Next</div>
+        <div class="mini-copy">Portfolio shell · PWA-ready · migrable a Vite/React/Next</div>
       </div>
     </aside>
 
@@ -41,7 +45,7 @@
         <div>
           <div class="eyebrow">PRJ_0001_HIA.PRODUCT</div>
           <h1 id="view-title">Resumen para Cliente</h1>
-          <p id="view-subtitle">Vista ejecutiva navegable para entender HIA sin explicación previa.</p>
+          <p id="view-subtitle">Vista portfolio navegable para entender HIA, sus proyectos y su estado operativo.</p>
         </div>
         <div class="status-chip" id="shell-status">Demo shell v0.1</div>
       </header>

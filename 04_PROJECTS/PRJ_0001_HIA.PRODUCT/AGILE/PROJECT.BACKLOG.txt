@@ -1041,3 +1041,29 @@ STATUS............: OPEN
 PRIORIDAD.........: P1
 TIPO..............: FEATURE_FUTURE
 DESCRIPCION.......: Diseñar integración con GitHub, Drive/OneDrive, Jira/Trello/Planner, Slack/Teams, Calendar, Email, Obsidian y APIs.
+
+===============================================================================
+PRJPB_009J_B_PORTFOLIO_CLIENT_SHELL
+===============================================================================
+ID_UNICO..........: PRJPB_009J_B_PORTFOLIO_CLIENT_SHELL_20260604_160412
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 16:04:14 -0400
+PURPOSE...........: Ajustar front-end app shell para representar HIA como portfolio multi-proyecto.
+
+01.00_OUTPUTS
+- 01_UI/web/client-shell/index.html
+- 01_UI/web/client-shell/assets/app.css
+- 01_UI/web/client-shell/assets/app.js
+- 01_UI/web/client-shell/README.FRONTEND.MIGRATION.txt
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009J_B.PORTFOLIO_CLIENT_SHELL.20260604_160412.txt
+
+02.00_DONE
+- Agregada vista Portfolio HIA.
+- Proyecto activo redefinido como proyecto activo seleccionado.
+- Agregadas vistas Reportes, Colaboración e Integraciones.
+- Modelo JS actualizado a multi-proyecto.
+- Mantenida estructura PWA-ready y migrable a Vite/React/Next.
+
+03.00_NEXT
+- PRJPB_009K: READY — generar estado real para app shell portfolio desde CLI/BATON/RADAR.

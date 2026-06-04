@@ -347,3 +347,82 @@ p{
   .sidebar{position:relative;height:auto}
   .cols-2,.cols-3,.stepper{grid-template-columns:1fr}
 }
+
+/* PRJPB_009J-B — Portfolio / multi-project UX additions */
+.portfolio-grid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:16px;
+}
+
+.project-list{
+  display:grid;
+  gap:10px;
+}
+
+.project-card{
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#111923;
+  padding:14px;
+}
+
+.project-card.is-selected{
+  border-color:#58bf82;
+  box-shadow:0 0 0 1px rgba(88,191,130,.22);
+}
+
+.project-card-header{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:flex-start;
+  margin-bottom:8px;
+}
+
+.project-title{
+  font-weight:800;
+}
+
+.project-meta{
+  color:#9da7b6;
+  font-size:12px;
+  margin-top:3px;
+}
+
+.status-pill{
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  padding:5px 8px;
+  border:1px solid var(--line);
+  background:#0b111a;
+  color:#dce5f3;
+  font-size:12px;
+  white-space:nowrap;
+}
+
+.status-pill.active{border-color:#58bf82;color:#8ee2a8}
+.status-pill.demo{border-color:#4d8dff;color:#95bdff}
+.status-pill.backlog{border-color:#e7a546;color:#ffd08b}
+.status-pill.blocked{border-color:#e46060;color:#ffaaaa}
+
+.future-card{
+  border:1px dashed #435267;
+  border-radius:14px;
+  padding:14px;
+  background:rgba(17,25,35,.72);
+}
+
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+
+@media(max-width:1080px){
+  .portfolio-grid,
+  .feature-grid{
+    grid-template-columns:1fr;
+  }
+}
