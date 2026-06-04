@@ -1357,3 +1357,35 @@ STATUS............: OPEN
 PRIORIDAD.........: P2
 TIPO..............: SECURITY_DEBT
 DESCRIPCION.......: Encriptación como deuda técnica normal/futura.
+
+===============================================================================
+PRJPB_009M_CONTROL_TOWER_SHELL
+===============================================================================
+ID_UNICO..........: PRJPB_009M_CONTROL_TOWER_SHELL_20260604_165443
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 16:54:45 -0400
+PURPOSE...........: Implementar navegación Control Tower global / Portfolio / Project Workspace.
+
+01.00_OUTPUTS
+- 01_UI/web/control-tower-shell/index.html
+- 01_UI/web/control-tower-shell/assets/app.css
+- 01_UI/web/control-tower-shell/assets/app.js
+- 01_UI/web/control-tower-shell/manifest.webmanifest
+- 01_UI/web/control-tower-shell/sw.js
+- 01_UI/web/control-tower-shell/README.CONTROL_TOWER_SHELL.txt
+- 01_UI/launcher/HIA.CONTROL.TOWER.SHELL.LAUNCHER.ps1
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009M.CONTROL_TOWER_SHELL.20260604_165443.txt
+
+02.00_DONE
+- Creada nueva shell: 01_UI/web/control-tower-shell.
+- Entrada por Control Tower global.
+- Separado Portfolio.
+- Separado AI Control Tower.
+- Separado Cost Center.
+- Separado Project Workspace.
+- Agregado Continue last project.
+- client-shell queda como evidencia histórica.
+
+03.00_NEXT
+- PRJPB_009N: READY — conectar hia.state.js a Control Tower / Portfolio / Project Workspace.

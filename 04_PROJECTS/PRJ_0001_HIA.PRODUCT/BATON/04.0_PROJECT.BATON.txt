@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009M | implementar navegación Control Tower global / Portfolio / Project Workspace | ready
+PRJPB_009N | conectar hia.state.js a Control Tower / Portfolio / Project Workspace | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -1377,4 +1377,30 @@ PURPOSE...........: Registrar arquitectura UX HIA Control Tower global antes de 
 - TD_PROJECT_BOOKMARK_DIRECT_ACCESS/P2.
 - TD_OBSIDIAN_VAULT_INTEGRATION/P1_P2.
 - TD_ENCRYPTION_SECURITY/P2.
+===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009M_CONTROL_TOWER_SHELL
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009M_CONTROL_TOWER_SHELL
+STATUS............: DONE
+PURPOSE...........: Implementar shell con navegación Control Tower global / Portfolio / Project Workspace.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009M: DONE — Control Tower Shell creada.
+- Nueva base UX: 01_UI/web/control-tower-shell.
+- client-shell anterior se mantiene como evidencia histórica.
+
+02.00_KEY_CHANGES
+- Entrada por Control Tower global.
+- Portfolio separado.
+- AI Control Tower separado.
+- Cost Center separado.
+- Project Workspace separado.
+- Continue last project incorporado.
+- Bookmark directo a proyecto queda future feature.
+
+03.00_NEXT_ACTION
+- PRJPB_009N: READY — conectar hia.state.js a Control Tower / Portfolio / Project Workspace.
 ===============================================================================

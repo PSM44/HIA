@@ -1,0 +1,11 @@
+{
+  "name": "HIA Control Tower",
+  "short_name": "HIA Tower",
+  "description": "HIA global control tower with portfolio and project workspace shell.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f141b",
+  "theme_color": "#0f141b",
+  "orientation": "any",
+  "icons": []
+}
