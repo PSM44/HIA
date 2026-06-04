@@ -1,6 +1,8 @@
 (function () {
   "use strict";
 
+  let portfolioViewMode = "cards";
+
   const runtimeState = window.HIA_STATE || {};
 
   const STATE = {
@@ -25,44 +27,76 @@
     },
     aiProviders: [
       {
+        id: "chatgpt",
         name: "ChatGPT",
         modality: "Web / Plan",
-        status: "Disponible declarado por usuario",
-        connection: "Pendiente test formal",
-        costModel: "Plan / pendiente registrar costo",
+        status: "Demo: disponible",
+        connection: "Demo: health check pendiente",
+        generalCost: "Demo: USD 25/mes",
+        costModel: "Plan mensual / costo fijo demo",
         privacyRisk: "Medio: web",
         recommendedFor: "Planificación, análisis, governance, redacción",
-        assignedProjects: ["PRJ_0001_HIA.PRODUCT"]
+        assignedProjects: ["PRJ_0001_HIA.PRODUCT"],
+        modeCosts: [
+          { name: "Web plan", value: "USD 25/mes demo" },
+          { name: "API", value: "USD 0.01–0.08/1K tokens demo" },
+          { name: "Desktop", value: "Incluido en plan demo" },
+          { name: "Proyecto actual", value: "USD 18/mes demo" }
+        ]
       },
       {
+        id: "codex",
         name: "Codex",
         modality: "Desktop / Coding",
-        status: "Disponible declarado por usuario",
-        connection: "Pendiente test formal",
-        costModel: "Plan / pendiente registrar costo",
+        status: "Demo: disponible",
+        connection: "Demo: health check pendiente",
+        generalCost: "Demo: incluido en plan",
+        costModel: "Plan / uso coding demo",
         privacyRisk: "Medio: repo/code context",
         recommendedFor: "Código, refactor, repo operations",
-        assignedProjects: ["PRJ_0001_HIA.PRODUCT"]
+        assignedProjects: ["PRJ_0001_HIA.PRODUCT"],
+        modeCosts: [
+          { name: "Desktop", value: "Incluido demo" },
+          { name: "API", value: "Pendiente demo" },
+          { name: "Repo ops", value: "USD 12/sesión demo" },
+          { name: "Proyecto actual", value: "USD 42/mes demo" }
+        ]
       },
       {
-        name: "Claude / otra IA web",
+        id: "claude",
+        name: "Claude",
         modality: "Web / posible CLI",
-        status: "Backlog operativo",
-        connection: "No testeado en HIA",
-        costModel: "Pendiente",
+        status: "Demo: candidato",
+        connection: "Demo: no testeado",
+        generalCost: "Demo: USD 20/mes",
+        costModel: "Plan/API demo",
         privacyRisk: "Medio: web",
         recommendedFor: "UX critique, documentos largos, razonamiento narrativo",
-        assignedProjects: []
+        assignedProjects: ["PRJ_TEMPLATE_CLIENT"],
+        modeCosts: [
+          { name: "Web plan", value: "USD 20/mes demo" },
+          { name: "API", value: "USD 0.01–0.09/1K tokens demo" },
+          { name: "CLI", value: "Pendiente demo" },
+          { name: "Proyecto actual", value: "USD 0 demo" }
+        ]
       },
       {
+        id: "local-llm",
         name: "Local LLM",
         modality: "Local",
-        status: "Future integration",
-        connection: "No conectado",
-        costModel: "Costo marginal bajo / hardware",
+        status: "Demo: future integration",
+        connection: "Demo: no conectado",
+        generalCost: "Demo: costo marginal bajo",
+        costModel: "Hardware/local demo",
         privacyRisk: "Bajo si es local",
         recommendedFor: "Privacidad, bajo costo variable, offline",
-        assignedProjects: []
+        assignedProjects: ["PRJ_REPORTING_LAYER"],
+        modeCosts: [
+          { name: "Ollama/local", value: "USD 0 API demo" },
+          { name: "Hardware", value: "Costo hundido demo" },
+          { name: "Electricidad", value: "USD 3/mes demo" },
+          { name: "Proyecto actual", value: "USD 0 demo" }
+        ]
       }
     ],
     projects: [
@@ -77,9 +111,9 @@
         aiAssigned: "ChatGPT + Codex",
         aiMode: "Web + Desktop/CLI",
         aiConnection: "Pendiente health check formal",
-        cost: "Pendiente modelo real",
-        tokens: "Pendiente medición",
-        budget: "Pendiente definición",
+        cost: "Demo: USD 72/mes",
+        tokens: "Demo: 1.2M tokens/mes",
+        budget: "Demo: USD 150/mes",
         evidence: "FRESH según CLI / resolver",
         risk: "UI/arquitectura en estabilización",
         lastActivity: "Sesión actual"
@@ -95,9 +129,9 @@
         aiAssigned: "Por definir",
         aiMode: "Por definir",
         aiConnection: "N/A",
-        cost: "N/A",
-        tokens: "N/A",
-        budget: "N/A",
+        cost: "Demo: USD 25/mes",
+        tokens: "Demo: 280K tokens/mes",
+        budget: "Demo: USD 80/mes",
         evidence: "N/A",
         risk: "No iniciado",
         lastActivity: "N/A"
@@ -113,9 +147,9 @@
         aiAssigned: "Por definir",
         aiMode: "Por definir",
         aiConnection: "N/A",
-        cost: "N/A",
-        tokens: "N/A",
-        budget: "N/A",
+        cost: "Demo: USD 8/mes",
+        tokens: "Demo: 90K tokens/mes",
+        budget: "Demo: USD 30/mes",
         evidence: "N/A",
         risk: "Feature futura",
         lastActivity: "N/A"
@@ -164,11 +198,32 @@
     return modality.toLowerCase().includes("local") ? "local" : "web";
   }
 
+
+  function demoRibbon() {
+    return `
+      <div class="demo-ribbon">
+        <div>
+          <strong>Demo seed / no operacional</strong>
+          <span>Los números permiten validar layout. No son costos reales ni health checks reales.</span>
+        </div>
+        <span>Fuente: seed UX PRJPB_009M-C</span>
+      </div>
+    `;
+  }
+
+  function openProject(projectId) {
+    STATE.selectedProjectId = projectId;
+    const label = document.getElementById("sidebar-project");
+    if (label) label.textContent = projectId;
+    setRoute("project-overview");
+  }
+
   function renderControlTower() {
     return html`
+      ${demoRibbon()}
       <section class="card hero">
         <h2>Entrada global de HIA</h2>
-        <p><b>HIA no es un proyecto.</b> HIA es la torre de control para administrar múltiples proyectos, IAs, costos, evidencia y decisiones humanas. Todo dato no conectado a fuente real queda marcado como pendiente o demo.</p>
+        <p><b>HIA es una plataforma de desarrollo, continuidad, trazabilidad y control de proyectos.</b> Reduce dispersión operativa y coordina trabajo colaborativo entre humanos e IAs. Todo dato demo queda marcado como no operacional.</p>
       </section>
 
       <section class="kpi-strip">
@@ -217,14 +272,10 @@
   }
 
   function renderPortfolio() {
-    return html`
-      <section class="card hero">
-        <h2>Portafolio multi-proyecto</h2>
-        <p>Cada proyecto puede tener IA, modalidad, costos, riesgos, evidencia y settings propios.</p>
-      </section>
+    const cards = `
       <section class="project-grid" style="margin-top:16px">
         ${STATE.projects.map((p) => `
-          <article class="project-card ${p.id === STATE.selectedProjectId ? "is-selected" : ""}">
+          <article class="project-card clickable ${p.id === STATE.selectedProjectId ? "is-selected" : ""}" data-project-id="${p.id}">
             <div class="card-head">
               <div>
                 <div class="card-title">${p.name}</div>
@@ -238,21 +289,57 @@
                 <tr><td>Owner</td><td>${p.owner}</td></tr>
                 <tr><td>IA</td><td>${p.aiAssigned}</td></tr>
                 <tr><td>Modalidad</td><td>${p.aiMode}</td></tr>
-                <tr><td>Costo</td><td>${p.cost}</td></tr>
+                <tr><td>Costo demo</td><td>${p.cost}</td></tr>
                 <tr><td>Siguiente</td><td>${p.nextAction}</td></tr>
               </tbody>
             </table>
+            <div class="action-row"><button class="primary-btn" data-project-id="${p.id}">Abrir workspace</button></div>
           </article>
         `).join("")}
+      </section>`;
+
+    const list = `
+      <section class="project-list" style="margin-top:16px">
+        ${STATE.projects.map((p) => `
+          <div class="project-row" data-project-id="${p.id}">
+            <div><b>${p.name}</b><div class="card-meta">${p.id}</div></div>
+            <span class="status-pill ${statusClass(p.status)}">${p.statusLabel}</span>
+            <div>${p.aiAssigned}</div>
+            <div>${p.cost}</div>
+            <div>${p.lastActivity}</div>
+            <button class="primary-btn" data-project-id="${p.id}">Abrir</button>
+          </div>
+        `).join("")}
+      </section>`;
+
+    return html`
+      ${demoRibbon()}
+      <section class="card hero">
+        <h2>Portafolio multi-proyecto</h2>
+        <p>Cada proyecto puede tener IA, modalidad, costos, riesgos, evidencia y settings propios. Seleccionar un proyecto abre automáticamente su workspace.</p>
       </section>
+      <section class="card soft" style="margin-top:16px">
+        <div class="card-head">
+          <div>
+            <h2>Vista de portafolio</h2>
+            <p>Alterna entre cartas ejecutivas y listado operativo.</p>
+          </div>
+          <div class="segmented">
+            <button class="${portfolioViewMode === "cards" ? "is-active" : ""}" data-portfolio-view="cards">Cartas</button>
+            <button class="${portfolioViewMode === "list" ? "is-active" : ""}" data-portfolio-view="list">Listado</button>
+          </div>
+        </div>
+      </section>
+      ${portfolioViewMode === "cards" ? cards : list}
     `;
   }
 
   function renderAIControl() {
     return html`
+      ${demoRibbon()}
       <section class="card hero">
-        <h2>Control de IA global</h2>
-        <p>Inventario global de proveedores/modelos/agentes. “Disponible” no significa testeado: la conexión formal queda pendiente hasta health check.</p>
+        <h2>IAs disponibles, estado y costos por modalidad</h2>
+        <p>Vista global de proveedores IA. Los costos son demo seed para validar diseño; no son facturación real.</p>
       </section>
       <section class="ai-grid" style="margin-top:16px">
         ${STATE.aiProviders.map((ai) => `
@@ -265,14 +352,23 @@
               <span class="status-pill ${providerClass(ai.modality)}">${ai.status}</span>
             </div>
             <p>${ai.recommendedFor}</p>
+            <div class="mode-cost-grid">
+              ${ai.modeCosts.map((m) => `
+                <div class="mode-cost">
+                  <div class="name">${m.name}</div>
+                  <div class="value">${m.value}</div>
+                </div>
+              `).join("")}
+            </div>
             <table class="table" style="margin-top:12px">
               <tbody>
                 <tr><td>Conexión</td><td>${ai.connection}</td></tr>
-                <tr><td>Costo</td><td>${ai.costModel}</td></tr>
+                <tr><td>Costo general</td><td>${ai.generalCost}</td></tr>
                 <tr><td>Riesgo privacidad</td><td>${ai.privacyRisk}</td></tr>
                 <tr><td>Proyectos</td><td>${ai.assignedProjects.length ? ai.assignedProjects.join(", ") : "Ninguno"}</td></tr>
               </tbody>
             </table>
+            <div class="source-note">Demo seed: reemplazar por health check + modelo de costos real.</div>
           </article>
         `).join("")}
       </section>
@@ -282,15 +378,16 @@
   function renderCostCenter() {
     return html`
       <section class="card hero">
+        ${demoRibbon()}
         <h2>Centro de Costos</h2>
         <p>Costos visibles para todos. Esta vista separa costo global, por IA, por proyecto y por sesión. No se muestran cifras exactas sin modelo real.</p>
       </section>
 
       <section class="grid cols-4" style="margin-top:16px">
-        <div class="card"><div class="label">Costo global HIA</div><div class="metric warn">Pendiente</div><p>Requiere modelo real.</p></div>
-        <div class="card"><div class="label">Costo por IA</div><div class="metric warn">Pendiente</div><p>Requiere proveedor/plan/API.</p></div>
-        <div class="card"><div class="label">Costo por proyecto</div><div class="metric warn">Pendiente</div><p>Requiere asignación IA/proyecto.</p></div>
-        <div class="card"><div class="label">Tokens</div><div class="metric warn">Pendiente</div><p>Requiere medición.</p></div>
+        <div class="card"><div class="label">Costo global HIA</div><div class="metric warn">USD 108</div><p>Demo mensual / no real.</p></div>
+        <div class="card"><div class="label">Costo por IA</div><div class="metric warn">4 IAs</div><p>Demo por modalidad.</p></div>
+        <div class="card"><div class="label">Costo por proyecto</div><div class="metric warn">3</div><p>Demo portfolio.</p></div>
+        <div class="card"><div class="label">Tokens</div><div class="metric warn">1.57M</div><p>Demo mensual / no real.</p></div>
       </section>
 
       <section class="grid two-one" style="margin-top:16px">
@@ -477,6 +574,19 @@
       setRoute(nav.dataset.route);
       return;
     }
+    const projectTarget = event.target.closest("[data-project-id]");
+    if (projectTarget) {
+      openProject(projectTarget.dataset.projectId);
+      return;
+    }
+
+    const viewTarget = event.target.closest("[data-portfolio-view]");
+    if (viewTarget) {
+      portfolioViewMode = viewTarget.dataset.portfolioView;
+      setRoute("portfolio");
+      return;
+    }
+
     const shortcut = event.target.closest("[data-route-shortcut]");
     if (shortcut) {
       setRoute(shortcut.dataset.routeShortcut);

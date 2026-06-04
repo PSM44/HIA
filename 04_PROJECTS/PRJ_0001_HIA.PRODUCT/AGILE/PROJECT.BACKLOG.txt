@@ -1497,3 +1497,26 @@ PURPOSE...........: Implementar HIA Control Tower Shell v0.2 basada en Stitch sa
 
 03.00_NEXT
 - PRJPB_009N: READY — conectar hia.state.js fino a shell v0.2.
+
+===============================================================================
+PRJPB_009M_C_DEMO_SEED_AI_COST_PORTFOLIO_NAV
+===============================================================================
+ID_UNICO..........: PRJPB_009M_C_DEMO_SEED_AI_COST_PORTFOLIO_NAV_20260604_182741
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 18:27:43 -0400
+PURPOSE...........: Agregar demo seed explicito, AI costs por modalidad y navegacion Portfolio -> Project Workspace.
+
+01.00_DONE
+- Definición de HIA corregida.
+- Control de IA muestra IAs disponibles, estado y costos por modalidad con demo seed.
+- Centro de Costos muestra demo data explícita.
+- Portafolio soporta cartas/listado.
+- Click en proyecto abre workspace.
+- Demo data queda marcada como no operacional.
+
+02.00_REPORT
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009M_C.DEMO_SEED_AI_COST_PORTFOLIO_NAV.20260604_182741.txt
+
+03.00_NEXT
+- PRJPB_009N: READY — conectar hia.state.js fino a HIA Control Tower Shell v0.2.
