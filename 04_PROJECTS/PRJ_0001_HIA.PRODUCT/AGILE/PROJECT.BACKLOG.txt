@@ -943,3 +943,42 @@ PURPOSE...........: Crear dashboard v0.5 con flujo de comandos user-facing 100% 
 
 02.00_NEXT_ACTION
 - PRJPB_009I: READY — smoke sin explicación sobre dashboard v0.5.
+
+===============================================================================
+PRJPB_009J_FRONTEND_APP_SHELL_CLIENT_DEMO
+===============================================================================
+ID_UNICO..........: PRJPB_009J_FRONTEND_APP_SHELL_CLIENT_DEMO_20260604_155707
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 15:57:09 -0400
+PURPOSE...........: Crear front-end app shell navegable para demo cliente, PWA-ready y migrable a Vite/React/Next.
+
+01.00_OUTPUTS
+- 01_UI/web/client-shell/index.html
+- 01_UI/web/client-shell/assets/app.css
+- 01_UI/web/client-shell/assets/app.js
+- 01_UI/web/client-shell/manifest.webmanifest
+- 01_UI/web/client-shell/sw.js
+- 01_UI/web/client-shell/README.FRONTEND.MIGRATION.txt
+- 01_UI/launcher/HIA.CLIENT.DEMO.SHELL.LAUNCHER.ps1
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009J.CLIENT_SHELL_PWA_READY.20260604_155707.txt
+
+02.00_DECISIONES
+- Usar HTML/CSS/JS sin build para validar UX rápido.
+- Dejar estructura PWA-ready.
+- Dejar README de migración a Vite/React/Next.
+- No implementar npm/build todavía.
+- No implementar API todavía.
+
+03.00_ACCEPTANCE
+- Se puede navegar por secciones sin recargar.
+- Existe "Resumen para Cliente".
+- Existe "Demo guiada".
+- Existe "Estado real" como panel UI preparado.
+- Existe "Evidencia".
+- Existe "Deuda técnica".
+- Existe "Comandos / Soporte".
+- Existe checklist interactivo.
+
+04.00_NEXT
+- PRJPB_009K: READY — generar/embeber estado real desde CLI/BATON/BACKLOG/RADAR.

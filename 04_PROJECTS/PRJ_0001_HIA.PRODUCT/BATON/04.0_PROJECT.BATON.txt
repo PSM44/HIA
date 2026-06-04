@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009I | smoke sin explicación sobre dashboard v0.5 | ready
+PRJPB_009K | generar estado real para app shell cliente desde CLI/BATON/RADAR | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -1160,4 +1160,36 @@ PURPOSE...........: Registrar NO_GO de dashboard v0.4 y crear dashboard v0.5 con
 - TD_CLI_ENCODING_MOJIBAKE/P1.
 - TD_AI_MEMORY_STATUS/P2.
 - TD_EVIDENCE_ANCHOR_SELECTION/P2.
+===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009J_CLIENT_SHELL_PWA_READY
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009J_CLIENT_SHELL_PWA_READY
+STATUS............: DONE
+PURPOSE...........: Crear front-end app shell navegable para demo cliente, PWA-ready y migrable.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009J: DONE — client demo shell creado.
+- Se crea base HTML/CSS/JS sin build.
+- Se deja estructura PWA-ready.
+- Se documenta migración futura a Vite/React/Next.
+
+02.00_OUTPUTS
+- 01_UI/web/client-shell/index.html
+- 01_UI/web/client-shell/assets/app.css
+- 01_UI/web/client-shell/assets/app.js
+- 01_UI/web/client-shell/manifest.webmanifest
+- 01_UI/web/client-shell/sw.js
+- 01_UI/web/client-shell/README.FRONTEND.MIGRATION.txt
+- 01_UI/launcher/HIA.CLIENT.DEMO.SHELL.LAUNCHER.ps1
+
+03.00_NEXT_ACTION
+- PRJPB_009K: READY — generar estado real para app shell cliente desde CLI/BATON/RADAR.
+
+04.00_DEBT_VISIBLE
+- TD_FRONTEND_DYNAMIC_STATE/P0: estado real aún debe generarse/conectarse.
+- TD_PWA_RUNTIME/P1: PWA real requiere localhost/HTTPS; file:// no basta.
+- TD_CLI_ENCODING_MOJIBAKE/P1.
 ===============================================================================

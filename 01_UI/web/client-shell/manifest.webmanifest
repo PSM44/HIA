@@ -1,0 +1,11 @@
+{
+  "name": "HIA Client Demo Shell",
+  "short_name": "HIA Demo",
+  "description": "HIA front-end app shell for client demo navigation.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f141b",
+  "theme_color": "#111923",
+  "orientation": "any",
+  "icons": []
+}
