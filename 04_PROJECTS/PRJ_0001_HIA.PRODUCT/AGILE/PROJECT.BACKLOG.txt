@@ -1,4 +1,4 @@
-ID | TYPE | PRIORITY | TITLE | VALUE | EFFORT | STATUS
+﻿ID | TYPE | PRIORITY | TITLE | VALUE | EFFORT | STATUS
 PRJPB_001 | minibattle | P0 | abrir proyecto específico desde HIA | habilita navegación real por proyecto | S | done
 PRJPB_002 | minibattle | P0 | continuar desarrollo del proyecto desde HIA | habilita recomendación operativa desde backlog | S | done
 PRJPB_003 | minibattle | P0 | mostrar estado básico del proyecto | permite continuidad operativa visible | S | done
@@ -582,4 +582,20 @@ PRJPB_008M_A_ENCODING_DIAG
 - No modificar hia.ps1 salvo que diagnóstico lo haga inevitable.
 - Preferir wrapper externo si corrige output.
 - Mantener EVIDENCE_STATE FRESH.
+
+==========
+PRJPB_008M_B_ENCODING_FIX
+==========
+00.00_DONE
+- PRJPB_008M-B: DONE — wrapper UTF-8 creado y BATON/BACKLOG convertidos a UTF-8 BOM.
+- No se modifico hia.ps1.
+
+01.00_READY_NOW
+- PRJPB_008N: READY — auditoria naming root 04_* y normalizacion WBS/ID_FS.
+
+02.00_ACCEPTANCE_FOR_008N
+- Identificar rutas root 04_*.
+- Clasificar si son canon, legacy, runtime o drift.
+- Proponer normalizacion sin renombrar todavia.
+- No mover carpetas sin matriz de impacto.
 

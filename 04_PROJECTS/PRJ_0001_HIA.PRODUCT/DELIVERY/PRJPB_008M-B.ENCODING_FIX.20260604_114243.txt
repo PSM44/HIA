@@ -1,0 +1,29 @@
+===============================================================================
+FILE: PRJPB_008M-B.ENCODING_FIX.20260604_114243.txt
+PROJECT: PRJ_0001_HIA.PRODUCT
+TYPE: ENCODING FIX REPORT
+MB_ID: PRJPB_008M-B
+CREATED_LOCAL: 2026-06-04 11:42:45 -0400
+CREATED_UTC: 2026-06-04T15:42:43Z
+HEAD_BEFORE: 9ca5b7b 20260604_HIA_PRJPB_008M_A_encoding_diagnostic
+===============================================================================
+
+01.00_RESULT
+- PRJPB_008M-B applied minimum encoding fix.
+- hia.ps1 was not modified.
+- Added wrapper: 01_UI/terminal/hia.utf8.ps1.
+- Converted BATON/BACKLOG to UTF-8 BOM.
+
+02.00_REASON
+- Diagnostic showed PowerShell 5.1 baseline uses IBM437/us-ascii.
+- Diagnostic showed UTF-8 runtime literal output works.
+- Diagnostic showed UTF-8 no-BOM text files are risky under PowerShell 5.1.
+- Therefore fix targeted wrapper + canonical text compatibility, not entrypoint mutation.
+
+03.00_RULE
+- From WSL2, prefer:
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\01_UI\terminal\hia.utf8.ps1" project continue PRJ_0001_HIA.PRODUCT
+
+04.00_NEXT
+- PRJPB_008N: auditoria naming root 04_* y normalizacion WBS/ID_FS.
+===============================================================================
