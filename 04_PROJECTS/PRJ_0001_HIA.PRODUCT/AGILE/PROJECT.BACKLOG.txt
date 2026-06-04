@@ -982,3 +982,62 @@ PURPOSE...........: Crear front-end app shell navegable para demo cliente, PWA-r
 
 04.00_NEXT
 - PRJPB_009K: READY — generar/embeber estado real desde CLI/BATON/BACKLOG/RADAR.
+
+===============================================================================
+PRJPB_009J_A_REGISTER_PORTFOLIO_SCOPE
+===============================================================================
+ID_UNICO..........: PRJPB_009J_A_REGISTER_PORTFOLIO_SCOPE_20260604_160143
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 16:01:45 -0400
+PURPOSE...........: Registrar que HIA debe representarse como sistema multi-proyecto y no como proyecto único.
+
+01.00_DECISION
+- HIA es multi-proyecto / portfolio.
+- La app shell debe distinguir HIA System vs Project Detail.
+- No presentar PRJ_0001_HIA.PRODUCT como si fuera todo HIA.
+
+02.00_FEATURES_FUTURAS
+- TD_PORTFOLIO_MULTI_PROJECT/P0.
+- TD_REPORTING_LAYER/P1.
+- TD_COLLABORATION_LAYER/P1.
+- TD_INTEGRATIONS_LAYER/P1.
+
+03.00_REPORT
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009J_A.PORTFOLIO_SCOPE_REGISTER.20260604_160143.txt
+
+===============================================================================
+TD_PORTFOLIO_MULTI_PROJECT
+===============================================================================
+ID_UNICO..........: TD_PORTFOLIO_MULTI_PROJECT_20260604_160143
+STATUS............: OPEN
+PRIORIDAD.........: P0
+TIPO..............: FRONTEND_ARCHITECTURE
+DESCRIPCION.......: Representar HIA como portfolio multi-proyecto, no como proyecto único.
+
+===============================================================================
+TD_REPORTING_LAYER
+===============================================================================
+ID_UNICO..........: TD_REPORTING_LAYER_20260604_160143
+STATUS............: OPEN
+PRIORIDAD.........: P1
+TIPO..............: FEATURE_FUTURE
+DESCRIPCION.......: Desarrollar capa de reportes ejecutivos, operativos y técnicos.
+
+===============================================================================
+TD_COLLABORATION_LAYER
+===============================================================================
+ID_UNICO..........: TD_COLLABORATION_LAYER_20260604_160143
+STATUS............: OPEN
+PRIORIDAD.........: P1
+TIPO..............: FEATURE_FUTURE
+DESCRIPCION.......: Desarrollar capacidades de trabajo colaborativo, roles, comentarios, asignaciones, aprobaciones e historial.
+
+===============================================================================
+TD_INTEGRATIONS_LAYER
+===============================================================================
+ID_UNICO..........: TD_INTEGRATIONS_LAYER_20260604_160143
+STATUS............: OPEN
+PRIORIDAD.........: P1
+TIPO..............: FEATURE_FUTURE
+DESCRIPCION.......: Diseñar integración con GitHub, Drive/OneDrive, Jira/Trello/Planner, Slack/Teams, Calendar, Email, Obsidian y APIs.

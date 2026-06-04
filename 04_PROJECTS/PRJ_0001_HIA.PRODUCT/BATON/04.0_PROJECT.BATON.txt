@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009K | generar estado real para app shell cliente desde CLI/BATON/RADAR | ready
+PRJPB_009J-B | crear app shell portfolio/client-demo PWA-ready | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -1192,4 +1192,32 @@ PURPOSE...........: Crear front-end app shell navegable para demo cliente, PWA-r
 - TD_FRONTEND_DYNAMIC_STATE/P0: estado real aún debe generarse/conectarse.
 - TD_PWA_RUNTIME/P1: PWA real requiere localhost/HTTPS; file:// no basta.
 - TD_CLI_ENCODING_MOJIBAKE/P1.
+===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009J_A_REGISTER_PORTFOLIO_SCOPE
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009J_A_REGISTER_PORTFOLIO_SCOPE
+STATUS............: DONE
+PURPOSE...........: Registrar que HIA debe representarse como sistema multi-proyecto.
+
+01.00_FEEDBACK_HUMANO
+- La propuesta de app shell estaba demasiado centrada en un solo proyecto.
+- HIA ve múltiples proyectos.
+- Deben quedar como deuda/feature futura: reportes, trabajo colaborativo e integraciones.
+
+02.00_DECISION
+- Corregir alcance UI a portfolio multi-proyecto.
+- Separar HIA System de Project Detail.
+- No presentar PRJ_0001_HIA.PRODUCT como si fuera todo HIA.
+
+03.00_FEATURES_FUTURAS
+- TD_PORTFOLIO_MULTI_PROJECT/P0.
+- TD_REPORTING_LAYER/P1.
+- TD_COLLABORATION_LAYER/P1.
+- TD_INTEGRATIONS_LAYER/P1.
+
+04.00_NEXT_ACTION
+- PRJPB_009J-B: READY — crear app shell portfolio/client-demo PWA-ready.
 ===============================================================================
