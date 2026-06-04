@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009K | generar estado real para app shell portfolio desde CLI/BATON/RADAR | ready
+PRJPB_009K-B | agregar AI Cockpit, Chat IA, Selector IA y Cost Control a app shell | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -1251,4 +1251,38 @@ PURPOSE...........: Ajustar client shell para representar HIA como portfolio mul
 - TD_COLLABORATION_LAYER/P1.
 - TD_INTEGRATIONS_LAYER/P1.
 - TD_PWA_RUNTIME/P1.
+===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009K_A_REGISTER_AI_OPERATING_LAYER
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009K_A_REGISTER_AI_OPERATING_LAYER
+STATUS............: DONE
+PURPOSE...........: Registrar AI Operating Layer como capa crítica de HIA.
+
+01.00_FEEDBACK_HUMANO
+- La app shell portfolio se ve bien.
+- Falta chat con IA.
+- Falta indicar qué IA está operando.
+- Falta selector de IAs locales/web.
+- Falta control de costos/tokens.
+- Los mockups incluyen elementos que la app shell aún no representa.
+
+02.00_DECISION
+- No avanzar todavía solo con estado real CLI/BATON/RADAR.
+- Insertar AI Operating Layer antes.
+- Registrar AI Cockpit, AI Chat, AI Selector, Cost Control y Context Panel.
+
+03.00_FEATURES_DEBT_REGISTERED
+- TD_AI_OPERATING_LAYER/P0.
+- TD_AI_CHAT_WORKBENCH/P0.
+- TD_AI_SELECTOR_ROUTER/P0.
+- TD_COST_TOKEN_CONTROL/P0.
+- TD_CONTEXT_MEMORY_PANEL/P1.
+- TD_LOCAL_AI_INTEGRATION/P1.
+- TD_AI_MODEL_POLICY/P1.
+
+04.00_NEXT_ACTION
+- PRJPB_009K-B: READY — agregar AI Cockpit, Chat IA, Selector IA y Cost Control a app shell.
 ===============================================================================

@@ -1067,3 +1067,117 @@ PURPOSE...........: Ajustar front-end app shell para representar HIA como portfo
 
 03.00_NEXT
 - PRJPB_009K: READY — generar estado real para app shell portfolio desde CLI/BATON/RADAR.
+
+===============================================================================
+PRJPB_009K_A_REGISTER_AI_OPERATING_LAYER
+===============================================================================
+ID_UNICO..........: PRJPB_009K_A_REGISTER_AI_OPERATING_LAYER_20260604_161607
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 16:16:09 -0400
+PURPOSE...........: Registrar AI Operating Layer como capa crítica de HIA.
+
+01.00_DECISION
+- HIA no debe verse solo como PMO dashboard.
+- HIA debe mostrar operación humano + IA.
+- Antes de conectar estado real, se debe insertar AI Operating Layer en la app shell.
+
+02.00_SCOPE_REGISTRADO
+- AI Cockpit.
+- Chat IA / Workbench.
+- Selector / Router de IA.
+- Costos / Tokens.
+- Contexto activo / Memory / Handoff.
+- Local vs Web.
+- Routing humano/IA.
+
+03.00_REPORT
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009K_A.AI_OPERATING_LAYER_SCOPE.20260604_161607.txt
+
+===============================================================================
+TD_AI_OPERATING_LAYER
+===============================================================================
+ID_UNICO..........: TD_AI_OPERATING_LAYER_20260604_161607
+STATUS............: OPEN
+PRIORIDAD.........: P0
+TIPO..............: FRONTEND_ARCHITECTURE
+DESCRIPCION.......: Diseñar e implementar capa visible de operación IA: IA activa, modelo, agente, modo, routing, contexto y estado.
+
+===============================================================================
+TD_AI_CHAT_WORKBENCH
+===============================================================================
+ID_UNICO..........: TD_AI_CHAT_WORKBENCH_20260604_161607
+STATUS............: OPEN
+PRIORIDAD.........: P0
+TIPO..............: FEATURE_FRONTEND
+DESCRIPCION.......: Crear sección chat/workbench IA con input, historial, contexto y acciones hacia backlog/evidencia.
+
+===============================================================================
+TD_AI_SELECTOR_ROUTER
+===============================================================================
+ID_UNICO..........: TD_AI_SELECTOR_ROUTER_20260604_161607
+STATUS............: OPEN
+PRIORIDAD.........: P0
+TIPO..............: FEATURE_FRONTEND
+DESCRIPCION.......: Crear selector/router de IAs locales, web, CLI/API/Desktop, con recomendación por tarea.
+
+===============================================================================
+TD_COST_TOKEN_CONTROL
+===============================================================================
+ID_UNICO..........: TD_COST_TOKEN_CONTROL_20260604_161607
+STATUS............: OPEN
+PRIORIDAD.........: P0
+TIPO..............: FEATURE_FRONTEND_GOVERNANCE
+DESCRIPCION.......: Crear control de costos, tokens, presupuesto por sesión/proyecto/modelo y recomendación de modo económico.
+
+===============================================================================
+TD_CONTEXT_MEMORY_PANEL
+===============================================================================
+ID_UNICO..........: TD_CONTEXT_MEMORY_PANEL_20260604_161607
+STATUS............: OPEN
+PRIORIDAD.........: P1
+TIPO..............: FEATURE_FRONTEND_GOVERNANCE
+DESCRIPCION.......: Mostrar contexto activo, BATON, RADAR, handoff, decisiones humanas y fuentes canónicas.
+
+===============================================================================
+TD_LOCAL_AI_INTEGRATION
+===============================================================================
+ID_UNICO..........: TD_LOCAL_AI_INTEGRATION_20260604_161607
+STATUS............: OPEN
+PRIORIDAD.........: P1
+TIPO..............: FEATURE_INTEGRATION
+DESCRIPCION.......: Preparar integración con modelos locales, Ollama u otros runtimes privados.
+
+===============================================================================
+TD_AI_MODEL_POLICY
+===============================================================================
+ID_UNICO..........: TD_AI_MODEL_POLICY_20260604_161607
+STATUS............: OPEN
+PRIORIDAD.........: P1
+TIPO..............: GOVERNANCE_POLICY
+DESCRIPCION.......: Definir política de selección de IA por costo, privacidad, precisión, código, documentos y research.
+
+===============================================================================
+PRJPB_009K_B_AI_COCKPIT_COST_CONTROL_APP_SHELL
+===============================================================================
+ID_UNICO..........: PRJPB_009K_B_AI_COCKPIT_COST_CONTROL_APP_SHELL_20260604_161607
+STATUS............: READY
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 16:16:09 -0400
+PURPOSE...........: Agregar AI Cockpit, Chat IA, Selector IA y Cost Control a la app shell portfolio.
+
+01.00_SCOPE
+- Agregar vista AI Cockpit.
+- Agregar vista Chat IA.
+- Agregar vista Selector IA.
+- Agregar vista Costos / Tokens.
+- Agregar vista Contexto activo.
+- Mantener UI honesta: backend pendiente, no simular IA real.
+
+02.00_ACCEPTANCE
+- Navegación incluye AI Operating Layer.
+- Se muestra IA activa placeholder.
+- Se muestra selector de IA/modelo placeholder.
+- Se muestra cost/token control placeholder.
+- Se muestra chat IA/workbench placeholder.
+- Se distingue claramente "UI preparada / backend pendiente".
