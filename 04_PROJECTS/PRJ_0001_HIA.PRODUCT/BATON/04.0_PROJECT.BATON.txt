@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009B | demo live script y checklist presentacion interna | ready
+PRJPB_009C | ejecutar demo interna y capturar feedback/gaps | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
