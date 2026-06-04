@@ -517,3 +517,22 @@ PRJPB_008I_R_ROLLOVER
 - Debe declarar explícitamente EVIDENCE_STATE STALE como deuda técnica conocida, no ocultarla.
 - Debe usar dashboard v0.2, demo pack v0.2 y protocolo screenshots como base.
 
+==========
+PRJPB_008J_EXECUTIVE_DEMO_SCRIPT
+==========
+00.00_DONE
+- PRJPB_008J: DONE — guion ejecutivo demo gerencial creado y versionado.
+
+01.00_READY_NOW
+- PRJPB_008K: READY — release candidate interno con RADAR/BATON/backlog frescos.
+
+02.00_ACCEPTANCE_FOR_008K
+- Git clean.
+- RADAR refresh posterior.
+- BATON/BACKLOG alineados.
+- Dashboard v0.2 disponible.
+- Demo pack v0.2 disponible.
+- Guion ejecutivo disponible.
+- Evidence stale resuelto o declarado como deuda bloqueante/no bloqueante con criterio.
+- Deuda técnica crítica visible.
+

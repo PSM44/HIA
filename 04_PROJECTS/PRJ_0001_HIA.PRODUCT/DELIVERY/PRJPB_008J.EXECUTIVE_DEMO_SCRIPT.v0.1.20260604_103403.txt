@@ -1,0 +1,221 @@
+===============================================================================
+FILE: PRJPB_008J.EXECUTIVE_DEMO_SCRIPT.v0.1.20260604_103403.txt
+PROJECT: PRJ_0001_HIA.PRODUCT
+TYPE: EXECUTIVE DEMO SCRIPT
+VERSION: v0.1
+CREATED_LOCAL: 2026-06-04 10:34:08 -0400
+CREATED_UTC: 2026-06-04T14:34:03Z
+OWNER: HUMAN + SYSTEM
+===============================================================================
+
+00.00_PROPOSITO
+
+Guion ejecutivo para demo gerencial interna de HIA.
+
+Objetivo:
+Mostrar en 5 a 8 minutos que HIA ya permite operar un proyecto con continuidad, evidencia, dashboard, backlog y control de deuda técnica.
+
+No es:
+- Pitch comercial.
+- Manual técnico.
+- Revisión completa de arquitectura.
+- Demo de IA autónoma.
+- Release candidate final.
+
+===============================================================================
+01.00_AUDIENCIA
+
+01.10_AUDIENCIA_PRIMARIA
+- Gerencia / dirección con conocimiento parcial del sistema.
+- Interesados en visibilidad, control, riesgo y próximos pasos.
+- No necesariamente interesados en detalle técnico de scripts.
+
+01.20_CRITERIO_DE_LENGUAJE
+- Ejecutivo.
+- Directo.
+- Sin prometer automatización mágica.
+- Mostrar control, no “show tecnológico”.
+
+===============================================================================
+02.00_MENSAJE_EJECUTIVO_BASE
+
+02.10_PROBLEMA
+
+El trabajo con IA en proyectos técnicos suele perder continuidad:
+- Se pierde contexto entre sesiones.
+- No queda claro cuál es la siguiente acción.
+- La evidencia queda dispersa.
+- Los archivos crecen sin mapa.
+- La gerencia no ve estado, riesgo ni avance de forma simple.
+
+02.20_SOLUCION_HIA
+
+HIA ordena el trabajo con IA mediante:
+- Proyecto versionado en Git.
+- BATON para continuidad operativa.
+- BACKLOG para control de trabajo.
+- RADAR para mapa del filesystem.
+- Dashboard gerencial para visibilidad.
+- UX_EVAL para trazabilidad visual.
+- Protocolo de screenshots para evidencia visual.
+- Demo pack versionado.
+
+02.30_VALOR_GERENCIAL
+
+HIA convierte trabajo asistido por IA en un flujo auditable:
+- Qué se hizo.
+- Qué falta.
+- Qué riesgo existe.
+- Qué evidencia respalda el avance.
+- Qué decisión corresponde tomar después.
+
+===============================================================================
+03.00_DEMO_FLOW_5_A_8_MINUTOS
+
+03.10_MINUTO_0_A_1_APERTURA
+
+Mensaje sugerido:
+"Esta demo muestra el estado funcional actual de HIA como sistema de continuidad, evidencia y control para desarrollo asistido por IA. No estamos mostrando una IA mágica; estamos mostrando gobernanza operativa."
+
+Mostrar:
+- Nombre del proyecto: PRJ_0001_HIA.PRODUCT.
+- Rama Git vigente.
+- HEAD vigente.
+- Dashboard v0.2.
+
+03.20_MINUTO_1_A_3_DASHBOARD
+
+Archivo:
+01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.2.html
+
+Mostrar:
+- Estado del proyecto.
+- NEXT_ACTION.
+- Evidencia.
+- RADAR.
+- UX latest.
+- Botones copiar comandos.
+- Brechas visibles.
+
+Mensaje sugerido:
+"El dashboard no reemplaza Git ni los archivos canónicos; resume el estado para lectura ejecutiva."
+
+03.30_MINUTO_3_A_4_CONTINUIDAD
+
+Mostrar comandos:
+- hia project status PRJ_0001_HIA.PRODUCT
+- hia project continue PRJ_0001_HIA.PRODUCT
+- hia project session status PRJ_0001_HIA.PRODUCT
+
+Mensaje sugerido:
+"El sistema no depende de memoria humana ni de recordar el último chat. La continuidad vive en BATON/BACKLOG y se valida por CLI."
+
+03.40_MINUTO_4_A_5_EVIDENCIA_VISUAL
+
+Mostrar:
+04_PROJECTS/PRJ_0001_HIA.PRODUCT/UX_EVAL/UX_UI.SCREENSHOT.PROTOCOL.txt
+
+Mensaje sugerido:
+"Desde PRJPB_008H existe protocolo formal para screenshots y evidencia visual. La evidencia pesada no se versiona por defecto; se versiona el protocolo y los registros textuales."
+
+03.50_MINUTO_5_A_6_DEMO_PACK
+
+Mostrar:
+04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_008I.MANAGEMENT_DEMO_PACK.v0.2.20260602_135722.txt
+
+Mensaje sugerido:
+"El demo pack deja una versión textual defendible del estado. No es un PPT; es un artefacto operativo versionado."
+
+03.60_MINUTO_6_A_7_RIESGOS_Y_DEUDA
+
+Declarar sin esconder:
+- EVIDENCE_STATE sigue STALE porque el resolver todavía ancla en PRJPB_008D-2.
+- AI_MEMORY_STATUS está MISSING.
+- Hay mojibake en consola bajo WSL/Windows PowerShell.
+- Falta política canónica runtime/versionable.
+- Hay deuda de naming root: 04_AGENTS / 04_CONSOLE / 04_PROJECTS.
+
+Mensaje sugerido:
+"Estas brechas no invalidan la demo; delimitan el hardening requerido antes de release candidate."
+
+03.70_MINUTO_7_A_8_CIERRE
+
+Mensaje sugerido:
+"El siguiente paso no es agregar más pantallas. El siguiente paso es preparar un release candidate interno con RADAR/BATON/BACKLOG frescos, resolver el anchor de evidencia y cerrar deuda mínima de presentación."
+
+===============================================================================
+04.00_CONTROL_LINES_CAPTURADAS
+
+04.10_PROJECT_STATUS
+PROJECT_ID: PRJ_0001_HIA.PRODUCT
+PROJECT_STATE: active
+NEXT_ACTION: PRJPB_008J | guion ejecutivo demo gerencial | ready
+NEXT_STEP_SOURCE: BATON
+AI_MEMORY_STATUS: MISSING
+
+04.20_PROJECT_CONTINUE
+NEXT_ACTION: PRJPB_008J | guion ejecutivo demo gerencial | ready
+RESUME_RECOMMENDATION: PRJPB_008J | guion ejecutivo demo gerencial | ready
+TASK_GUIDANCE: Evidence STALE. Refresh context (status/radar/session) before executing tasks.
+EVIDENCE_STATE: STALE
+EVIDENCE_ANCHOR: source=PRJPB_008D-2.RADAR_BASELINE_EVIDENCE.20260529_123032 | captured_utc=2026-05-29T16:30:33.9181137Z | output=C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_0001_HIA.PRODUCT\ARTIFACTS\TASKS\PRJPB_008D-2.RADAR_BASELINE_EVIDENCE.20260529_123032.txt | log=C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_0001_HIA.PRODUCT\ARTIFACTS\LOGS\PRJPB_008D-2.RADAR_BASELINE_EVIDENCE.20260529_123032.log
+
+04.30_SESSION_STATUS
+SESSION_STATUS: closed
+SESSION_ID: 6d29f084-bc9c-4082-9dbe-40d49dffcbe9
+STARTED_UTC: 2026-05-19T13:53:39.3278253Z
+CLOSED_UTC: 2026-05-20T00:13:48.2709470Z
+
+===============================================================================
+05.00_DECISIONES_REQUERIDAS
+
+05.10_DECISION_1
+Autorizar preparar PRJPB_008K como release candidate interno.
+
+05.20_DECISION_2
+Definir si el dashboard v0.2 sigue como HTML generado o si evoluciona a app viva/API.
+
+05.30_DECISION_3
+Priorizar deuda técnica mínima antes de demo formal:
+- Evidence anchor.
+- Encoding consola.
+- Política runtime/versionable.
+- AI_MEMORY_STATUS.
+
+===============================================================================
+06.00_RIESGOS
+
+06.10_RIESGO_DEMO_CON_EVIDENCE_STALE
+Riesgo:
+Gerencia puede preguntar por qué la evidencia aparece stale.
+
+Respuesta:
+Está identificado. No invalida la ejecución de 008H/008I/008J, pero sí impide declarar release candidate sin resolver o explicar formalmente el criterio de evidencia.
+
+06.20_RIESGO_DASHBOARD_ESTATICO
+Riesgo:
+Dashboard v0.2 no es app viva con API.
+
+Respuesta:
+Correcto. Es dashboard generado desde datos reales capturados, no sistema online.
+
+06.30_RIESGO_OPERATIVO
+Riesgo:
+El sistema tiene varias capas y puede volverse ceremonial.
+
+Respuesta:
+La disciplina correcta es MiniBattle corta + commit + rollover + cierre. No agregar burocracia sin valor.
+
+===============================================================================
+07.00_NEXT_ACTION_RECOMENDADA
+
+PRJPB_008K: release candidate interno con RADAR/BATON/BACKLOG frescos.
+
+Criterio mínimo:
+- Git clean.
+- RADAR refresh posterior.
+- BATON/BACKLOG alineados.
+- Evidence stale explicado o resuelto.
+- Dashboard/demo pack/guion disponibles.
+- Deuda crítica explícita.
+===============================================================================
