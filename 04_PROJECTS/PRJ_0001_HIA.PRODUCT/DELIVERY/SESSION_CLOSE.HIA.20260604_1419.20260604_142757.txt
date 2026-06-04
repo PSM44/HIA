@@ -1,0 +1,86 @@
+===============================================================================
+FILE: SESSION_CLOSE.HIA.20260604_1419.20260604_142757.txt
+PROJECT: PRJ_0001_HIA.PRODUCT
+TYPE: FORMAL SESSION CLOSE
+CREATED_LOCAL: 2026-06-04 14:28:10 -0400
+CREATED_UTC: 2026-06-04T18:27:57Z
+HEAD: ceda2fd 20260604_HIA_PRJPB_009A_visible_internal_demo_activation
+===============================================================================
+
+00.00_EXECUTIVE_STATUS
+- Fecha humana informada: 2026-06-04 14:19 Santiago, Chile.
+- Estado corroborado por CLI/Git durante cierre.
+- HEAD vigente antes de cierre: ceda2fd 20260604_HIA_PRJPB_009A_visible_internal_demo_activation
+- NEXT_ACTION vigente: PRJPB_009B | demo live script y checklist presentacion interna | ready
+- EVIDENCE_STATE vigente: FRESH
+- SESSION_STATUS vigente: active
+- RADAR_STATUS: RUN_ATTEMPTED
+
+01.00_EN_QUE_ESTAMOS
+- Estamos al inicio de PRJPB_009A.
+- El ciclo PRJPB_008H..008Q dejó una demo técnica interna con dashboard, CLI wrapper, delivery y evidence FRESH.
+- La demo todavía no es user-facing suficiente para cliente/gerencia.
+- Crítica vigente: cliente no sabe qué hacer con los datos sin explicación oral.
+
+02.00_QUE_HEMOS_HECHO
+- PRJPB_008H: protocolo screenshots UX/UI.
+- PRJPB_008I: management demo pack v0.2.
+- PRJPB_008J: executive demo script.
+- PRJPB_008K: internal release candidate.
+- PRJPB_008L: semantic evidence resolver hardening; evidence FRESH.
+- PRJPB_008M-A/B: diagnóstico y fix mínimo encoding; hia.utf8.ps1.
+- PRJPB_008N: auditoría root 04_*.
+- PRJPB_008O: matriz impacto naming root; no rename.
+- PRJPB_008P: dashboard/delivery refresh.
+- PRJPB_008Q: final demo readiness smoke; sesión cerrada; NEXT_ACTION a PRJPB_009A.
+
+03.00_DEUDA_TECNICA_ACUMULADA
+- TD_USER_FACING_001/P0: dashboard no es entendible por cliente sin explicación.
+- TD_DEMO_LAUNCHER_001/P0: comandos dependen del shell/ubicación; falta one-click launcher.
+- TD_DASHBOARD_MODE_SPLIT_001/P0: falta separar USER / MANAGER / TECH / DEBUG.
+- TD_DASHBOARD_STALE_BLOCKS_001/P1: evitar mezcla de snapshots históricos con estado actual.
+- TD_SUGGESTED_COMMAND_SEMANTIC_001/P1: suggested command aún puede ser pobre para tareas semánticas.
+- TD_AI_MEMORY_001/P1: AI_MEMORY_STATUS MISSING.
+- TD_ROOT_WBS_NAMING_001/P2: 04_* root folders aceptadas como deuda de naming; no rename inmediato.
+- TD_BATON_BLOAT_001/P2: vigilar que BATON no se convierta en manual/changelog.
+
+04.00_BACKLOG_ACUMULADO
+- PRJPB_009A/READY: definir fase post demo, reajustada a demo visible user-facing.
+- PRJPB_009B/P0: user-facing dashboard + one-click demo launcher.
+- PRJPB_009C/P1: demo live script + checklist presentación interna.
+- PRJPB_009D/P1: no-explanation usability smoke.
+- PRJPB_009E/P1: management demo package final.
+- PRJPB_010A/P2: suggested command semantic resolver.
+- PRJPB_010B/P2: AI_MEMORY decision/implementation.
+- PRJPB_010C/P2: dashboard live generator/app shell.
+- PRJPB_010D/P2: CIS formalization.
+- PRJPB_010E/P2: legacy task noise cleanup.
+
+05.00_QUE_FALTA
+- Convertir demo técnica en demo user-facing.
+- Crear launcher robusto desde cualquier ubicación.
+- Rediseñar dashboard con USER/MANAGER/TECH/DEBUG.
+- Preparar guion de demo de 5-8 minutos.
+- Ejecutar smoke test con usuario sin explicación.
+- Empaquetar demo gerencial final.
+
+06.00_PATH_MINIBATTLES_BATTLES_ENTREGABLE
+MINIBATTLE | OBJETIVO | OUTPUT | BATTLE | ENTREGABLE_GERENCIA | ESTADO
+PRJPB_009A | Definir scope user-facing | Decisión + continuidad | BATTLE_009 | Scope demo gerencial | READY
+PRJPB_009B | Dashboard usuario + launcher | HIA.DEMO.cmd + USER VIEW | BATTLE_009 | Demo operable | NEXT_RECOMMENDED
+PRJPB_009C | Guion demo live | Script 5-8 min + fallback | BATTLE_009 | Presentación controlada | BACKLOG
+PRJPB_009D | Smoke sin explicación | PASS/FAIL UX mínimo | BATTLE_009 | Validación entendible | BACKLOG
+PRJPB_009E | Pack final gerencial | Dashboard + launcher + guion + evidencia | BATTLE_009 | HIA Internal Management Demo v0.3 | BACKLOG
+
+07.00_DECISION_OPERATIVA
+- No seguir produciendo solo documentos técnicos.
+- La siguiente batalla debe producir operabilidad para usuario.
+- PRJPB_009B debe ser: USER-FACING DASHBOARD + ONE-CLICK DEMO LAUNCHER.
+
+08.00_HANDOFF_OPCIONAL_PROXIMA_SESION
+Hoy es [fecha/hora], Santiago Chile.
+Continuemos HIA desde PRJPB_009A/009B.
+Primero corroborar git status, project continue, session status y dashboard actual.
+Objetivo inmediato: transformar demo técnica en demo user-facing con HIA.DEMO.cmd, dashboard USER/MANAGER/TECH/DEBUG y comandos robustos desde cualquier ubicación.
+No agregar features técnicas nuevas antes de que un humano no técnico entienda qué hacer.
+===============================================================================

@@ -688,3 +688,43 @@ PRJPB_009A_VISIBLE_INTERNAL_DEMO
 - Incluir que NO prometer: dashboard no es app viva, AI memory pendiente.
 - Mantener demo entre 5 y 8 minutos.
 
+==========
+SESSION_CLOSE_20260604_1419_HIA
+==========
+00.00_ESTADO
+- Cierre formal solicitado por humano.
+- Estado corroborado: post PRJPB_008Q; siguiente foco pasa a productización user-facing.
+- Lo actual es demo técnica trazable, no MVP cliente.
+
+01.00_DEUDA_TECNICA
+- TD_USER_FACING_001/P0: dashboard no entendible sin explicación.
+- TD_DEMO_LAUNCHER_001/P0: falta launcher one-click.
+- TD_DASHBOARD_MODE_SPLIT_001/P0: separar USER/MANAGER/TECH/DEBUG.
+- TD_DASHBOARD_STALE_BLOCKS_001/P1: limpiar estados históricos mezclados.
+- TD_SUGGESTED_COMMAND_SEMANTIC_001/P1: resolver comandos semánticos.
+- TD_AI_MEMORY_001/P1: resolver o declarar AI_MEMORY.
+- TD_ROOT_WBS_NAMING_001/P2: documentar policy futura.
+- TD_BATON_BLOAT_001/P2: evitar BATON como manual/changelog.
+
+02.00_BACKLOG_PRIORIZADO
+- PRJPB_009B: READY/P0 — user-facing dashboard y one-click demo launcher.
+- PRJPB_009C: BACKLOG/P1 — demo live script + checklist.
+- PRJPB_009D: BACKLOG/P1 — no-explanation usability smoke.
+- PRJPB_009E: BACKLOG/P1 — management demo package final.
+- PRJPB_010A: BACKLOG/P2 — suggested command semantic resolver.
+- PRJPB_010B: BACKLOG/P2 — AI_MEMORY decision.
+- PRJPB_010C: BACKLOG/P2 — dashboard live generator/app shell.
+
+03.00_ACCEPTANCE_CRITERIA_PRJPB_009B
+- Existe HIA.DEMO.cmd o equivalente en root.
+- Funciona desde cualquier ubicación por doble click o comando absoluto.
+- Dashboard abre en navegador.
+- Primera sección explica qué es HIA y qué hacer ahora.
+- Dashboard separa USER / MANAGER / TECH / DEBUG.
+- Comandos visibles no dependen del directorio actual.
+- Mantiene evidencia FRESH y limitaciones declaradas.
+
+04.00_PATH_GERENCIA
+- BATTLE_009: productización demo gerencial.
+- Entregable: HIA Internal Management Demo v0.3.
+
