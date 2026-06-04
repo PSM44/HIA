@@ -1564,3 +1564,28 @@ PURPOSE...........: Recuperar Control Tower Shell v0.2 por fallo visual/JS tras 
 
 03.00_NEXT
 - PRJPB_009N: READY — conectar hia.state.js fino a HIA Control Tower Shell v0.2.
+
+===============================================================================
+PRJPB_009N_A_UX_INTERACTION_LAYER
+===============================================================================
+ID_UNICO..........: PRJPB_009N_A_UX_INTERACTION_LAYER_20260604_184130
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 18:41:32 -0400
+PURPOSE...........: Agregar capa viva UX/UI sin tocar core app.js.
+
+01.00_OUTPUTS
+- 01_UI/web/control-tower-shell/assets/ux.js
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009N_A.UX_INTERACTION_LAYER.20260604_184130.txt
+
+02.00_DONE
+- Command Palette con Ctrl+K.
+- Floating action buttons.
+- Toasts.
+- Copy context/route/WSL2.
+- Keyboard shortcuts.
+- Route indicator.
+- Context action bar.
+
+03.00_NEXT
+- PRJPB_009N-B: READY — mejorar UX de Project Workspace con paneles vivos y acciones demo.

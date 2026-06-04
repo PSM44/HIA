@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009N | conectar hia.state.js fino a HIA Control Tower Shell v0.2 | ready
+PRJPB_009N-B | mejorar UX de Project Workspace con paneles vivos y acciones demo | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -1539,4 +1539,30 @@ PURPOSE...........: Recuperar Control Tower Shell v0.2 por fallo visual/JS tras 
 
 03.00_NEXT_ACTION
 - PRJPB_009N: READY — conectar hia.state.js fino a HIA Control Tower Shell v0.2.
+===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009N_A_UX_INTERACTION_LAYER
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009N_A_UX_INTERACTION_LAYER
+STATUS............: DONE
+PURPOSE...........: Agregar capa viva UX/UI sin tocar core app.js.
+
+01.00_DONE_CONFIRMED
+- ux.js creado como capa complementaria.
+- Command Palette con Ctrl+K.
+- Floating actions.
+- Toasts.
+- Copy context/route/WSL2.
+- Keyboard shortcuts.
+- Route indicator.
+- Context action bar.
+
+02.00_TECHNICAL_NOTE
+- No se reescribió app.js.
+- Decisión correcta para evitar romper el render core.
+
+03.00_NEXT_ACTION
+- PRJPB_009N-B: READY — mejorar UX de Project Workspace con paneles vivos y acciones demo.
 ===============================================================================
