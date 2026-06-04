@@ -1389,3 +1389,81 @@ PURPOSE...........: Implementar navegación Control Tower global / Portfolio / P
 
 03.00_NEXT
 - PRJPB_009N: READY — conectar hia.state.js a Control Tower / Portfolio / Project Workspace.
+
+===============================================================================
+PRJPB_009M_A_REGISTER_STITCH_FIGMA_REVIEW
+===============================================================================
+ID_UNICO..........: PRJPB_009M_A_REGISTER_STITCH_FIGMA_REVIEW_20260604_172839
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 17:28:41 -0400
+PURPOSE...........: Registrar review Stitch/Figma y definir baseline UX para HIA.
+
+01.00_DECISION
+- Stitch = UX_REFERENCE_BASELINE.
+- Figma = UX_STYLE_SECONDARY_REFERENCE.
+- client-shell actual = TECH_PROTOTYPE / evidencia histórica.
+- Nueva shell debe usar Stitch UX + HIA governance.
+- No copiar datos fake como reales.
+
+02.00_COPY_FROM_STITCH
+- Navegación SaaS global.
+- Control de IA.
+- Centro de Costos.
+- Project Workspace.
+- Project AI / Chat.
+- Project Evidence.
+- Roadmap / Integraciones / Knowledge.
+
+03.00_DO_NOT_COPY
+- Métricas inventadas.
+- Costos exactos sin fuente.
+- "Conectado/testeado/operando" sin health check real.
+- Gráficos sin fuente.
+- Over-design.
+- "Centro de Costes" como español peninsular.
+
+04.00_REPORT
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009M_A.STITCH_FIGMA_REVIEW.20260604_172839.txt
+
+05.00_NEXT
+- PRJPB_009M-B: READY — implementar HIA Control Tower Shell v0.2 basada en Stitch saneado.
+
+===============================================================================
+UX_REFERENCE_BASELINE_STITCH
+===============================================================================
+ID_UNICO..........: UX_REFERENCE_BASELINE_STITCH_20260604_172839
+STATUS............: ACTIVE
+PRIORIDAD.........: P0
+TIPO..............: UX_REFERENCE
+DESCRIPCION.......: Stitch queda como referencia principal de arquitectura UX/UI para HIA Control Tower.
+
+===============================================================================
+UX_STYLE_SECONDARY_REFERENCE_FIGMA
+===============================================================================
+ID_UNICO..........: UX_STYLE_SECONDARY_REFERENCE_FIGMA_20260604_172839
+STATUS............: ACTIVE
+PRIORIDAD.........: P2
+TIPO..............: UX_REFERENCE
+DESCRIPCION.......: Figma queda como referencia secundaria de estilo/densidad, no como arquitectura principal.
+
+===============================================================================
+PRJPB_009M_B_STITCH_BASED_CONTROL_TOWER_SHELL
+===============================================================================
+ID_UNICO..........: PRJPB_009M_B_STITCH_BASED_CONTROL_TOWER_SHELL_20260604_172839
+STATUS............: READY
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 17:28:41 -0400
+PURPOSE...........: Implementar HIA Control Tower Shell v0.2 basada en Stitch saneado.
+
+01.00_ACCEPTANCE
+- Incluye Torre de Control HIA.
+- Incluye Portafolio.
+- Incluye Control de IA.
+- Incluye Centro de Costos.
+- Incluye Project Workspace.
+- Incluye Project AI / Chat.
+- Incluye Project Costs.
+- Incluye Project Evidence.
+- Incluye Roadmap/Integraciones/Knowledge.
+- Todo dato no real está marcado como pendiente/demo/backend pendiente.

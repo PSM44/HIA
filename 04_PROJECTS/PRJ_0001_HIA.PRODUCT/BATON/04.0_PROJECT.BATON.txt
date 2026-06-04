@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009N | conectar hia.state.js a Control Tower / Portfolio / Project Workspace | ready
+PRJPB_009M-B | implementar HIA Control Tower Shell v0.2 basada en Stitch saneado | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -1403,4 +1403,28 @@ PURPOSE...........: Implementar shell con navegación Control Tower global / Por
 
 03.00_NEXT_ACTION
 - PRJPB_009N: READY — conectar hia.state.js a Control Tower / Portfolio / Project Workspace.
+===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009M_A_REGISTER_STITCH_FIGMA_REVIEW
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009M_A_REGISTER_STITCH_FIGMA_REVIEW
+STATUS............: DONE
+PURPOSE...........: Registrar review Stitch/Figma y definir baseline UX para HIA.
+
+01.00_DECISION
+- Stitch queda como UX_REFERENCE_BASELINE.
+- Figma queda como UX_STYLE_SECONDARY_REFERENCE.
+- client-shell actual queda como TECH_PROTOTYPE / evidencia histórica.
+- Nueva shell debe implementar Stitch UX + HIA governance.
+
+02.00_IMPLEMENTATION_RULES
+- No copiar datos fake como reales.
+- Todo dato sin fuente debe marcarse como pendiente/demo/backend pendiente.
+- No declarar conexión/test/operación sin evidencia técnica.
+- Usar español Chile: Centro de Costos, no Centro de Costes.
+
+03.00_NEXT_ACTION
+- PRJPB_009M-B: READY — implementar HIA Control Tower Shell v0.2 basada en Stitch saneado.
 ===============================================================================
