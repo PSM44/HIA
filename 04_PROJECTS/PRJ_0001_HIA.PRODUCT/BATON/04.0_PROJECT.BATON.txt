@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_008I | demo pack gerencial v0.2 | ready
+PRJPB_008J | guion ejecutivo demo gerencial | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -578,7 +578,7 @@ SESSION_UPDATE_20260602_HIA_PRJPB_008H_R_EVIDENCE_ANCHOR
 - PRJPB_008H-R: DONE — evidencia semántica de cierre 008H creada para continuidad operativa.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_008I | demo pack gerencial v0.2 | ready.
+- NEXT_ACTION: PRJPB_008J | guion ejecutivo demo gerencial | ready.
 - Git quedó clean tras PRJPB_008H antes de esta reconciliación.
 - RADAR refresh posterior a PRJPB_008H ejecutado correctamente.
 - project continue todavía puede reportar EVIDENCE_STATE STALE si el engine no reconoce evidencia semántica 008H como anchor fresco.
@@ -615,6 +615,35 @@ SESSION_UPDATE_20260602_HIA_PRJPB_008I_MANAGEMENT_DEMO_PACK
 - TD_AI_MEMORY/P2: AI_MEMORY_STATUS MISSING.
 - TD_ROOT_WBS_NAMING_001/P2: auditar 04_AGENTS / 04_CONSOLE / 04_PROJECTS.
 - TD_DASHBOARD_STATIC/P2: dashboard v0.2 generado, no app viva.
+
+04.00_NEXT_ACTION
+- PRJPB_008J: READY — guion ejecutivo demo gerencial.
+
+===============================================================================
+SESSION_UPDATE_20260602_HIA_PRJPB_008I_R_ROLLOVER
+===============================================================================
+00.00_CONTEXT
+- Fecha UTC: 2026-06-04T02:41:49Z
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- Propósito: reconciliar PRJPB_008I después de crear demo pack gerencial v0.2 y mover continuidad a PRJPB_008J.
+
+01.00_DONE_CONFIRMED
+- PRJPB_008I: DONE — demo pack gerencial v0.2 creado, versionado y pusheado.
+- Entregable versionado: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_008I.MANAGEMENT_DEMO_PACK.v0.2.*.txt
+- Runner versionado: 02_TOOLS/Run-PRJPB-008I.ps1.
+- Commit base: dc88dc8 20260602_HIA_PRJPB_008I_management_demo_pack_v02.
+
+02.00_CURRENT_STATE
+- NEXT_ACTION: PRJPB_008J | guion ejecutivo demo gerencial | ready.
+- Git debe quedar clean después de esta reconciliación.
+- EVIDENCE_STATE puede seguir STALE por TD_EVIDENCE_ANCHOR_008H/P1; no bloquear PRJPB_008J, pero sí debe declararse en el guion/demo.
+
+03.00_TECHNICAL_DEBT_ROLLOVER
+- TD_EVIDENCE_ANCHOR_008H/P1: HIA_PROJECT_ENGINE no reconoce evidencia semántica genérica PRJPB_008H como anchor fresco.
+- TD_ENCODING_CONSOLE/P2: salida Windows PowerShell desde WSL muestra mojibake en textos con tildes.
+- TD_ROOT_WBS_NAMING_001/P2: auditar carpetas root 04_AGENTS / 04_CONSOLE / 04_PROJECTS.
+- TD_AI_MEMORY/P2: AI_MEMORY_STATUS MISSING.
+- TD_EVIDENCE_POLICY/P2: política runtime/versionable no canónica.
 
 04.00_NEXT_ACTION
 - PRJPB_008J: READY — guion ejecutivo demo gerencial.

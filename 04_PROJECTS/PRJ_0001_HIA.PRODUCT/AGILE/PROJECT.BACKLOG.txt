@@ -493,3 +493,27 @@ PRJPB_008I_MANAGEMENT_DEMO_PACK
 - Debe declarar deuda P1 Evidence STALE.
 - Debe explicar valor gerencial: continuidad, trazabilidad, control y próximos pasos.
 
+==========
+PRJPB_008I_R_ROLLOVER
+==========
+00.00_DONE
+- PRJPB_008I-R: DONE — reconciliación post demo pack gerencial v0.2.
+- PRJPB_008I: DONE — demo pack gerencial v0.2 creado y versionado.
+- La continuidad debe avanzar a PRJPB_008J.
+
+01.00_READY_NOW
+- PRJPB_008J: READY — guion ejecutivo demo gerencial.
+
+02.00_BACKLOG_NEXT
+- PRJPB_008K: BACKLOG — release candidate interno con RADAR/BATON/backlog frescos.
+- PRJPB_EVIDENCE_POLICY_001: BACKLOG — formalizar política runtime/versionable.
+- PRJPB_AI_MEMORY_001: BACKLOG — evaluar AI_MEMORY_STATUS MISSING.
+- TD_ROOT_WBS_NAMING_001: BACKLOG — auditar carpetas root 04_AGENTS / 04_CONSOLE / 04_PROJECTS.
+- TD_ENCODING_CONSOLE: BACKLOG — corregir mojibake de salida CLI bajo WSL/Windows PowerShell.
+
+03.00_ACCEPTANCE_FOR_008J
+- Guion debe permitir una demo gerencial de 5 a 8 minutos.
+- Debe explicar problema, solución, estado actual, demo flow, riesgos y próximos pasos.
+- Debe declarar explícitamente EVIDENCE_STATE STALE como deuda técnica conocida, no ocultarla.
+- Debe usar dashboard v0.2, demo pack v0.2 y protocolo screenshots como base.
+
