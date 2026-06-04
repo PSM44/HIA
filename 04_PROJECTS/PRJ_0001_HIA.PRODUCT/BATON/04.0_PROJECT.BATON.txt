@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_008M | corregir encoding/mojibake WSL/Windows PowerShell en salida CLI | ready
+PRJPB_008N | auditoría naming root 04_* y normalización WBS/ID_FS | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -578,7 +578,7 @@ SESSION_UPDATE_20260602_HIA_PRJPB_008H_R_EVIDENCE_ANCHOR
 - PRJPB_008H-R: DONE — evidencia semántica de cierre 008H creada para continuidad operativa.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_008M | corregir encoding/mojibake WSL/Windows PowerShell en salida CLI | ready.
+- NEXT_ACTION: PRJPB_008N | auditoría naming root 04_* y normalización WBS/ID_FS | ready.
 - Git quedó clean tras PRJPB_008H antes de esta reconciliación.
 - RADAR refresh posterior a PRJPB_008H ejecutado correctamente.
 - project continue todavía puede reportar EVIDENCE_STATE STALE si el engine no reconoce evidencia semántica 008H como anchor fresco.
@@ -608,7 +608,7 @@ SESSION_UPDATE_20260602_HIA_PRJPB_008I_MANAGEMENT_DEMO_PACK
 02.00_CURRENT_STATE
 - Demo pack v0.2 disponible como texto versionable.
 - El demo pack declara deuda técnica visible, incluyendo EVIDENCE_STATE STALE.
-- NEXT_ACTION propuesta: PRJPB_008M | corregir encoding/mojibake WSL/Windows PowerShell en salida CLI | ready.
+- NEXT_ACTION propuesta: PRJPB_008N | auditoría naming root 04_* y normalización WBS/ID_FS | ready.
 
 03.00_TECHNICAL_DEBT_ROLLOVER
 - TD_EVIDENCE_ANCHOR_008H/P1: project continue sigue anclado a evidencia PRJPB_008D-2.
@@ -634,7 +634,7 @@ SESSION_UPDATE_20260602_HIA_PRJPB_008I_R_ROLLOVER
 - Commit base: dc88dc8 20260602_HIA_PRJPB_008I_management_demo_pack_v02.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_008M | corregir encoding/mojibake WSL/Windows PowerShell en salida CLI | ready.
+- NEXT_ACTION: PRJPB_008N | auditoría naming root 04_* y normalización WBS/ID_FS | ready.
 - Git debe quedar clean después de esta reconciliación.
 - EVIDENCE_STATE puede seguir STALE por TD_EVIDENCE_ANCHOR_008H/P1; no bloquear PRJPB_008J, pero sí debe declararse en el guion/demo.
 
@@ -662,7 +662,7 @@ SESSION_UPDATE_20260603_HIA_PRJPB_008J_EXECUTIVE_DEMO_SCRIPT
 - Runner versionado: 02_TOOLS/Run-PRJPB-008J.ps1.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_008M | corregir encoding/mojibake WSL/Windows PowerShell en salida CLI | ready.
+- NEXT_ACTION: PRJPB_008N | auditoría naming root 04_* y normalización WBS/ID_FS | ready.
 - EVIDENCE_STATE puede seguir STALE por TD_EVIDENCE_ANCHOR_008H/P1; debe resolverse o explicarse en PRJPB_008K.
 - Demo pack v0.2 y guion ejecutivo ya existen.
 
@@ -695,7 +695,7 @@ SESSION_UPDATE_20260604_HIA_PRJPB_008K_INTERNAL_RC
 - Guion ejecutivo v0.1: disponible.
 - Screenshot protocol: disponible.
 - RADAR refresh: ejecutado durante 008K.
-- NEXT_ACTION: PRJPB_008M | corregir encoding/mojibake WSL/Windows PowerShell en salida CLI | ready.
+- NEXT_ACTION: PRJPB_008N | auditoría naming root 04_* y normalización WBS/ID_FS | ready.
 
 03.00_TECHNICAL_DEBT_ROLLOVER
 - TD_EVIDENCE_ANCHOR_008H/P1: resolver reconocimiento de evidencia semántica genérica en HIA_PROJECT_ENGINE.
@@ -722,4 +722,30 @@ SESSION_UPDATE_20260604_HIA_PRJPB_008L_B_EVIDENCE_RESOLVER_FIX
 
 02.00_NEXT_ACTION
 - PRJPB_008M: READY — corregir encoding/mojibake WSL/Windows PowerShell en salida CLI.
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_008M_ENCODING_FIX
+===============================================================================
+00.00_CONTEXT
+- Fecha UTC: 2026-06-04T15:12:54Z
+- Proyecto: PRJ_0001_HIA.PRODUCT
+- Propósito: corregir mojibake en salida CLI al invocar Windows PowerShell desde WSL2.
+
+01.00_DONE_CONFIRMED
+- PRJPB_008M: DONE — hia.ps1 endurecido para setear UTF-8 en modo normal.
+- Runner versionado: 02_TOOLS/Run-PRJPB-008M.ps1.
+- Evidence resolver ya estaba FRESH desde PRJPB_008L-B.
+
+02.00_CURRENT_STATE
+- NEXT_ACTION: PRJPB_008N | auditoría naming root 04_* y normalización WBS/ID_FS | ready.
+- Session start fue intentado si la sesión estaba cerrada.
+- Si persiste mojibake, revisar encoding de archivo fuente o host terminal, no solo OutputEncoding.
+
+03.00_TECHNICAL_DEBT_ROLLOVER
+- TD_ROOT_WBS_NAMING_001/P2: auditar carpetas root 04_AGENTS / 04_CONSOLE / 04_PROJECTS.
+- TD_AI_MEMORY/P2: AI_MEMORY_STATUS MISSING.
+- TD_EVIDENCE_POLICY/P2: política runtime/versionable no canónica.
+
+04.00_NEXT_ACTION
+- PRJPB_008N: READY — auditoría naming root 04_* y normalización WBS/ID_FS.
 
