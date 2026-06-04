@@ -616,3 +616,25 @@ PRJPB_008N_ROOT_04_NAMING_AUDIT
 - Proponer mantener/renombrar/migrar/deprecar.
 - No ejecutar cambios estructurales todavia.
 
+==========
+PRJPB_008O_ROOT_NAMING_IMPACT_MATRIX
+==========
+00.00_DONE
+- PRJPB_008O: DONE — matriz de impacto root naming y decision proposal creada.
+- Decision: no renombrar 04_AGENTS, 04_CONSOLE ni 04_PROJECTS en esta etapa.
+
+01.00_DECISION
+- 04_PROJECTS: KEEP_CANONICAL_ACTIVE.
+- 04_AGENTS: KEEP_DOCUMENT.
+- 04_CONSOLE: KEEP_DOCUMENT.
+- Rename root folders: NOT APPROVED.
+
+02.00_READY_NOW
+- PRJPB_008P: READY — refresh dashboard y entregables con evidence FRESH y wrapper UTF8.
+
+03.00_ACCEPTANCE_FOR_008P
+- Dashboard debe reflejar EVIDENCE_STATE FRESH.
+- Dashboard debe mencionar hia.utf8.ps1 como wrapper recomendado WSL2/WinPS.
+- Delivery debe reflejar que root naming fue auditado y no se renombra.
+- No rediseñar UI salvo ajuste de estado/contenido.
+
