@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009K-B | agregar AI Cockpit, Chat IA, Selector IA y Cost Control a app shell | ready
+PRJPB_009L | generar estado real para app shell portfolio + AI cockpit desde CLI/BATON/RADAR | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -1285,4 +1285,32 @@ PURPOSE...........: Registrar AI Operating Layer como capa crítica de HIA.
 
 04.00_NEXT_ACTION
 - PRJPB_009K-B: READY — agregar AI Cockpit, Chat IA, Selector IA y Cost Control a app shell.
+===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009K_B_AI_COCKPIT_APP_SHELL
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009K_B_AI_COCKPIT_APP_SHELL
+STATUS............: DONE
+PURPOSE...........: Agregar AI Operating Layer a app shell portfolio.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009K-B: DONE — AI Cockpit, Chat IA, Selector IA, Costos/Tokens y Contexto activo agregados a app shell.
+- UI declara backend pendiente.
+- No se simula IA real ni costos/tokens reales.
+
+02.00_KEY_CHANGES
+- Nueva navegación AI Operating Layer.
+- Estado JS incorpora aiOperatingLayer, aiProviders, costControl y contextPanel.
+- README de migración actualizado.
+
+03.00_NEXT_ACTION
+- PRJPB_009L: READY — generar estado real para app shell portfolio + AI cockpit desde CLI/BATON/RADAR.
+
+04.00_DEBT_VISIBLE
+- TD_FRONTEND_DYNAMIC_STATE/P0.
+- TD_AI_CHAT_BACKEND/P0.
+- TD_AI_COST_TELEMETRY/P0.
+- TD_AI_PROVIDER_REGISTRY/P1.
 ===============================================================================

@@ -67,6 +67,63 @@
         detail: "GitHub, Drive/OneDrive, Jira/Trello/Planner, Slack/Teams, Calendar, Email, Obsidian y APIs."
       }
     ],
+    aiOperatingLayer: {
+      activeAI: "ChatGPT / GPT-5.5 Thinking",
+      activeMode: "Planning + Review",
+      activeRuntime: "Web",
+      status: "UI preparada / backend pendiente",
+      privacyMode: "Web / no local todavía",
+      costMode: "Presupuesto no conectado",
+      selectedContext: "PRJ_0001_HIA.PRODUCT + BATON + BACKLOG + RADAR",
+      recommendedNext: "Agregar conexión real a estado CLI/BATON/RADAR antes de activar chat real."
+    },
+    aiProviders: [
+      {
+        name: "ChatGPT",
+        type: "Web",
+        status: "Operando en esta conversación",
+        recommendedFor: "Planning, review, UX, estrategia, síntesis"
+      },
+      {
+        name: "Codex",
+        type: "Cloud / Code agent",
+        status: "Disponible futuro",
+        recommendedFor: "Cambios de código, refactors, tests"
+      },
+      {
+        name: "Claude",
+        type: "Web / Desktop",
+        status: "Disponible futuro",
+        recommendedFor: "Documentos largos, revisión, escritura"
+      },
+      {
+        name: "OpenCode",
+        type: "CLI",
+        status: "Disponible futuro",
+        recommendedFor: "Ejecución local controlada"
+      },
+      {
+        name: "Local LLM / Ollama",
+        type: "Local",
+        status: "Pendiente integración",
+        recommendedFor: "Privacidad, bajo costo, offline parcial"
+      }
+    ],
+    costControl: {
+      sessionBudget: "Pendiente",
+      estimatedTokens: "No conectado",
+      estimatedCost: "No conectado",
+      currentRisk: "Medio: aún sin budget guardrail",
+      recommendation: "Usar IA web para planning/review; local para tareas repetitivas cuando esté integrado."
+    },
+    contextPanel: [
+      { label: "Portfolio activo", value: "HIA System / Portfolio" },
+      { label: "Proyecto seleccionado", value: "PRJ_0001_HIA.PRODUCT" },
+      { label: "BATON", value: "04.0_PROJECT.BATON.txt" },
+      { label: "BACKLOG", value: "PROJECT.BACKLOG.txt" },
+      { label: "RADAR", value: "Radar.*.ACTIVE.txt" },
+      { label: "Fuente canónica", value: "Human + repo artifacts" }
+    ],
     debts: [
       {
         id: "TD_FRONTEND_DYNAMIC_STATE/P0",
@@ -101,6 +158,31 @@
       title: "Proyecto activo seleccionado",
       subtitle: "Detalle operacional del proyecto seleccionado dentro del portfolio.",
       render: renderActiveProject
+    },
+    "ai-cockpit": {
+      title: "AI Cockpit",
+      subtitle: "Qué IA está operando, en qué modo y con qué contexto.",
+      render: renderAICockpit
+    },
+    "ai-chat": {
+      title: "Chat IA",
+      subtitle: "Workbench de conversación IA preparado; backend pendiente.",
+      render: renderAIChat
+    },
+    "ai-selector": {
+      title: "Selector IA",
+      subtitle: "Router de IAs/modelos por costo, privacidad, tarea y runtime.",
+      render: renderAISelector
+    },
+    "cost-control": {
+      title: "Costos / Tokens",
+      subtitle: "Control de presupuesto, tokens y riesgo de gasto.",
+      render: renderCostControl
+    },
+    "context-panel": {
+      title: "Contexto activo",
+      subtitle: "Contexto, memoria, handoff y fuentes canónicas.",
+      render: renderContextPanel
     },
     "guided-demo": {
       title: "Demo guiada",
@@ -164,7 +246,7 @@
       <div class="ribbon client">CLIENTE — Resumen portfolio</div>
       <section class="card hero">
         <h2>Qué es HIA</h2>
-        <p><b>HIA es una capa operativa multi-proyecto para trabajar con IA sin perder control.</b> Ordena decisiones humanas, ejecución técnica, evidencia, validación, continuidad y portfolio. No administra solo un proyecto: permite operar varios proyectos con estado, trazabilidad y gobierno común.</p>
+        <p><b>HIA es una capa operativa multi-proyecto para trabajar con IA sin perder control.</b> Ordena decisiones humanas, ejecución técnica, evidencia, validación, continuidad y portfolio. No administra solo un proyecto: permite operar varios proyectos con estado, trazabilidad, gobierno común y una capa visible de operación IA.</p>
       </section>
 
       <div class="grid cols-3" style="margin-top:16px">
@@ -261,6 +343,144 @@
       </section>
     `;
   }
+
+
+  function renderAICockpit() {
+    const ai = STATE.aiOperatingLayer;
+    return html`
+      <div class="ribbon dev">AI OPERATING LAYER — Cockpit IA</div>
+      <section class="card">
+        <h2>AI Cockpit</h2>
+        <p>Esta vista muestra la operación IA. Hoy es UI preparada; la conexión real con backend/modelos queda pendiente.</p>
+        <div class="ai-kpi" style="margin-top:16px">
+          <div class="ai-kpi-item">
+            <div class="label">IA activa</div>
+            <div class="ai-kpi-value">${ai.activeAI}</div>
+          </div>
+          <div class="ai-kpi-item">
+            <div class="label">Modo</div>
+            <div class="ai-kpi-value">${ai.activeMode}</div>
+          </div>
+          <div class="ai-kpi-item">
+            <div class="label">Runtime</div>
+            <div class="ai-kpi-value">${ai.activeRuntime}</div>
+          </div>
+          <div class="ai-kpi-item">
+            <div class="label">Estado</div>
+            <div class="ai-kpi-value warn">${ai.status}</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ai-grid" style="margin-top:16px">
+        <div class="card">
+          <h2>Modo operacional</h2>
+          <div class="grid cols-2">
+            <div class="ai-card is-primary"><h3>Planning</h3><p>Definir camino, riesgos, alcance y siguiente acción.</p></div>
+            <div class="ai-card"><h3>Execution</h3><p>Ejecutar cambios vía scripts, repo y artifacts.</p></div>
+            <div class="ai-card"><h3>Review / QA</h3><p>Validar, detectar fallas y registrar NO_GO si corresponde.</p></div>
+            <div class="ai-card"><h3>Cost Saving</h3><p>Elegir modelo/runtime según costo, privacidad y complejidad.</p></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Contexto seleccionado</h2>
+          <p>${ai.selectedContext}</p>
+          <div class="backend-note" style="margin-top:14px">
+            Backend pendiente: esta pantalla todavía no invoca IA directamente ni mide tokens reales.
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderAIChat() {
+    return html`
+      <div class="ribbon dev">AI OPERATING LAYER — Chat IA / Workbench</div>
+      <section class="chat-shell">
+        <div class="chat-header">
+          <h2>Chat IA</h2>
+          <p>Workbench preparado para conversación con IA. No envía prompts todavía: backend pendiente.</p>
+        </div>
+        <div class="chat-messages">
+          <div class="msg user"><b>Humano</b><p>Necesito avanzar el proyecto sin perder contexto ni control de costos.</p></div>
+          <div class="msg ai"><b>IA</b><p>UI placeholder: aquí se mostrará respuesta IA, decisiones, tareas propuestas y acciones hacia backlog/evidencia.</p></div>
+          <div class="backend-note">Estado: UI preparada / backend pendiente. No simula llamada real a modelo.</div>
+        </div>
+        <div class="chat-input">
+          <input type="text" value="" placeholder="Escribe prompt futuro aquí..." disabled>
+          <button class="secondary-btn" disabled>Enviar a IA</button>
+        </div>
+      </section>
+
+      <section class="card" style="margin-top:16px">
+        <h2>Acciones futuras del workbench</h2>
+        <div class="action-row">
+          <button class="secondary-btn" disabled>Guardar decisión</button>
+          <button class="secondary-btn" disabled>Crear tarea</button>
+          <button class="secondary-btn" disabled>Enviar a backlog</button>
+          <button class="secondary-btn" disabled>Escalar a otra IA</button>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderAISelector() {
+    return html`
+      <div class="ribbon dev">AI OPERATING LAYER — Selector / Router IA</div>
+      <section class="card">
+        <h2>Selector IA</h2>
+        <p>Router preparado para elegir IA según costo, privacidad, precisión, tarea y runtime. No ejecuta selección real todavía.</p>
+        <div class="selector-grid" style="margin-top:16px">
+          ${STATE.aiProviders.map((provider, index) => `
+            <div class="model-card ${index === 0 ? "recommended" : ""}">
+              <div class="label">${provider.type}</div>
+              <h3>${provider.name}</h3>
+              <p>${provider.recommendedFor}</p>
+              <div class="project-meta">Estado: ${provider.status}</div>
+            </div>
+          `).join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCostControl() {
+    const cost = STATE.costControl;
+    return html`
+      <div class="ribbon debt">AI OPERATING LAYER — Costos / Tokens</div>
+      <section class="card">
+        <h2>Control de costos</h2>
+        <p>HIA no puede prometer control si no controla tokens, modelos y presupuesto. Esta vista deja el espacio de governance preparado.</p>
+        <div class="ai-kpi" style="margin-top:16px">
+          <div class="ai-kpi-item"><div class="label">Budget sesión</div><div class="ai-kpi-value">${cost.sessionBudget}</div></div>
+          <div class="ai-kpi-item"><div class="label">Tokens</div><div class="ai-kpi-value">${cost.estimatedTokens}</div></div>
+          <div class="ai-kpi-item"><div class="label">Costo</div><div class="ai-kpi-value">${cost.estimatedCost}</div></div>
+          <div class="ai-kpi-item"><div class="label">Riesgo</div><div class="ai-kpi-value warn">${cost.currentRisk}</div></div>
+        </div>
+        <div class="cost-bar"><div class="cost-bar-fill"></div></div>
+        <div class="backend-note" style="margin-top:14px">${cost.recommendation}</div>
+      </section>
+    `;
+  }
+
+  function renderContextPanel() {
+    return html`
+      <div class="ribbon evidence">AI OPERATING LAYER — Contexto / Memory / Handoff</div>
+      <section class="card">
+        <h2>Contexto activo</h2>
+        <p>Panel preparado para mostrar qué contexto usa la IA antes de responder o ejecutar.</p>
+        <div class="context-list" style="margin-top:16px">
+          ${STATE.contextPanel.map((item) => `
+            <div class="context-item">
+              <div class="label">${item.label}</div>
+              <h3>${item.value}</h3>
+            </div>
+          `).join("")}
+        </div>
+      </section>
+    `;
+  }
+
 
   function renderGuidedDemo() {
     return html`

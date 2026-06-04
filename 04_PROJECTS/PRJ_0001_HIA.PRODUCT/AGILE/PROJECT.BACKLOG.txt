@@ -1181,3 +1181,31 @@ PURPOSE...........: Agregar AI Cockpit, Chat IA, Selector IA y Cost Control a la
 - Se muestra cost/token control placeholder.
 - Se muestra chat IA/workbench placeholder.
 - Se distingue claramente "UI preparada / backend pendiente".
+
+===============================================================================
+PRJPB_009K_B_AI_COCKPIT_APP_SHELL
+===============================================================================
+ID_UNICO..........: PRJPB_009K_B_AI_COCKPIT_APP_SHELL_20260604_161903
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 16:19:05 -0400
+PURPOSE...........: Agregar AI Cockpit, Chat IA, Selector IA, Cost Control y Context Panel a app shell.
+
+01.00_OUTPUTS
+- 01_UI/web/client-shell/index.html
+- 01_UI/web/client-shell/assets/app.css
+- 01_UI/web/client-shell/assets/app.js
+- 01_UI/web/client-shell/README.FRONTEND.MIGRATION.txt
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009K_B.AI_COCKPIT_APP_SHELL.20260604_161903.txt
+
+02.00_DONE
+- Vista AI Cockpit agregada.
+- Vista Chat IA agregada.
+- Vista Selector IA agregada.
+- Vista Costos / Tokens agregada.
+- Vista Contexto activo agregada.
+- UI declara backend pendiente.
+- No se simula IA real.
+
+03.00_NEXT
+- PRJPB_009L: READY — generar estado real para app shell portfolio + AI cockpit desde CLI/BATON/RADAR.

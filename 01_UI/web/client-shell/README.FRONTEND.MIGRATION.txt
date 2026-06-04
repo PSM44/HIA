@@ -82,3 +82,30 @@ La futura migración a Vite/React/Next debe respetar esta separación:
 - /evidence
 - /tech-debt
 ===============================================================================
+
+===============================================================================
+08.00_AI_OPERATING_LAYER_UPDATE_PRJPB_009K_B
+===============================================================================
+
+La app shell incorpora AI Operating Layer como capa de producto.
+
+Nuevas vistas:
+- AI Cockpit.
+- Chat IA.
+- Selector IA.
+- Costos / Tokens.
+- Contexto activo.
+
+Estado actual:
+- UI preparada.
+- Backend pendiente.
+- No se simulan llamadas reales a modelos.
+- No se inventan tokens ni costos reales.
+
+Migración futura:
+- Convertir cada vista AI en componente.
+- Crear AI provider registry.
+- Crear model routing policy.
+- Crear cost/token telemetry.
+- Conectar chat workbench a backend seguro.
+===============================================================================
