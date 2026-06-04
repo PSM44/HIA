@@ -218,6 +218,26 @@
     setRoute("project-overview");
   }
 
+
+  function demoRibbon() {
+    return `
+      <div class="demo-ribbon">
+        <div>
+          <strong>Demo seed / no operacional</strong>
+          <span>Los números permiten validar layout. No son costos reales ni health checks reales.</span>
+        </div>
+        <span>Fuente: seed UX PRJPB_009M-C</span>
+      </div>
+    `;
+  }
+
+  function openProject(projectId) {
+    STATE.selectedProjectId = projectId;
+    const label = document.getElementById("sidebar-project");
+    if (label) label.textContent = projectId;
+    setRoute("project-overview");
+  }
+
   function renderControlTower() {
     return html`
       ${demoRibbon()}
@@ -377,6 +397,7 @@
 
   function renderCostCenter() {
     return html`
+      ${demoRibbon()}
       <section class="card hero">
         ${demoRibbon()}
         <h2>Centro de Costos</h2>
@@ -574,6 +595,19 @@
       setRoute(nav.dataset.route);
       return;
     }
+    const projectTarget = event.target.closest("[data-project-id]");
+    if (projectTarget) {
+      openProject(projectTarget.dataset.projectId);
+      return;
+    }
+
+    const viewTarget = event.target.closest("[data-portfolio-view]");
+    if (viewTarget) {
+      portfolioViewMode = viewTarget.dataset.portfolioView;
+      setRoute("portfolio");
+      return;
+    }
+
     const projectTarget = event.target.closest("[data-project-id]");
     if (projectTarget) {
       openProject(projectTarget.dataset.projectId);

@@ -1489,3 +1489,29 @@ PURPOSE...........: Agregar demo seed explicito, AI costs por modalidad y navega
 03.00_NEXT_ACTION
 - PRJPB_009N: READY — conectar hia.state.js fino a HIA Control Tower Shell v0.2.
 ===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009M_C_DEMO_SEED_AI_COST_PORTFOLIO_NAV
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009M_C_DEMO_SEED_AI_COST_PORTFOLIO_NAV
+STATUS............: DONE
+PURPOSE...........: Agregar demo seed explicito, AI costs por modalidad y navegación Portfolio -> Project Workspace.
+
+01.00_HUMAN_FEEDBACK
+- Control de IA debe mostrar IAs disponibles, estado y costos por modalidad/general.
+- Se acepta demo data ficticia para validar aspecto real mientras no existan datos reales.
+- Portafolio debe permitir seleccionar proyecto y abrir automáticamente su workspace.
+- Definición de HIA debía enfocarse en plataforma de desarrollo, continuidad, trazabilidad, control, anti-dispersión y colaboración humano/IA.
+
+02.00_DONE_CONFIRMED
+- Definición de HIA corregida.
+- Demo seed explícito agregado.
+- AI Control enriquecido.
+- Cost Center enriquecido.
+- Portfolio card/list agregado.
+- Project selection navega a workspace.
+
+03.00_NEXT_ACTION
+- PRJPB_009N: READY — conectar hia.state.js fino a HIA Control Tower Shell v0.2.
+===============================================================================
