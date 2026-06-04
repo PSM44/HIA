@@ -1209,3 +1209,43 @@ PURPOSE...........: Agregar AI Cockpit, Chat IA, Selector IA, Cost Control y Con
 
 03.00_NEXT
 - PRJPB_009L: READY — generar estado real para app shell portfolio + AI cockpit desde CLI/BATON/RADAR.
+
+===============================================================================
+PRJPB_009L_A_R_RECOVER_CLIENT_STATE_JS
+===============================================================================
+ID_UNICO..........: PRJPB_009L_A_R_RECOVER_CLIENT_STATE_JS_20260604_162951
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 16:30:00 -0400
+PURPOSE...........: Recuperar PRJPB_009L-A tras fallo KeyError STATUS_TXT y generar hia.state.js.
+
+01.00_DONE
+- Generado: 01_UI/web/client-shell/assets/hia.state.js
+- index.html carga hia.state.js antes de app.js.
+- app.js tiene hook RUNTIME_STATE.
+- Root cause documentado.
+
+02.00_LIMITATION
+- UI aún no consume plenamente RUNTIME_STATE.
+
+03.00_REPORT
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009L_A_R.CLIENT_STATE_JS_RECOVERY.20260604_162951.txt
+
+===============================================================================
+PRJPB_009L_B_CONNECT_RUNTIME_STATE_TO_UI
+===============================================================================
+ID_UNICO..........: PRJPB_009L_B_CONNECT_RUNTIME_STATE_TO_UI_20260604_162951
+STATUS............: READY
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 16:30:00 -0400
+PURPOSE...........: Conectar hia.state.js a vistas Estado real, Portfolio y AI Cockpit.
+
+01.00_SCOPE
+- Usar RUNTIME_STATE en renderRealStatus.
+- Usar RUNTIME_STATE en renderPortfolio.
+- Usar RUNTIME_STATE en AI Cockpit.
+- Mostrar Git branch/head/clean.
+- Mostrar NEXT_ACTION vivo.
+- Mostrar Evidence state.
+- Mostrar AI memory status.
+- Mantener fallback si hia.state.js no existe.

@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009L | generar estado real para app shell portfolio + AI cockpit desde CLI/BATON/RADAR | ready
+PRJPB_009L-B | conectar hia.state.js a vistas Estado real, Portfolio y AI Cockpit | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -1313,4 +1313,28 @@ PURPOSE...........: Agregar AI Operating Layer a app shell portfolio.
 - TD_AI_CHAT_BACKEND/P0.
 - TD_AI_COST_TELEMETRY/P0.
 - TD_AI_PROVIDER_REGISTRY/P1.
+===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009L_A_R_CLIENT_STATE_RECOVERY
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009L_A_R_CLIENT_STATE_RECOVERY
+STATUS............: DONE
+PURPOSE...........: Recuperar falla de PRJPB_009L-A y generar hia.state.js.
+
+01.00_ROOT_CAUSE
+- PRJPB_009L-A falló por KeyError STATUS_TXT.
+- Causa: variable esperada por Python no estaba disponible.
+
+02.00_DONE_CONFIRMED
+- hia.state.js generado.
+- index.html carga hia.state.js antes de app.js.
+- app.js tiene hook RUNTIME_STATE.
+
+03.00_LIMITATION
+- UI aún no consume plenamente RUNTIME_STATE.
+
+04.00_NEXT_ACTION
+- PRJPB_009L-B: READY — conectar hia.state.js a vistas Estado real, Portfolio y AI Cockpit.
 ===============================================================================

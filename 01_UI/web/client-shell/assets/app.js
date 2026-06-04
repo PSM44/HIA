@@ -1,6 +1,8 @@
 (function () {
   "use strict";
 
+  const RUNTIME_STATE = window.HIA_RUNTIME_STATE || null;
+
   const STATE = {
     systemName: "HIA",
     projectId: "PRJ_0001_HIA.PRODUCT",
