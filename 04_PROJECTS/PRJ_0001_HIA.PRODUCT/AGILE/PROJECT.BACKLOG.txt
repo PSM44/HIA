@@ -599,3 +599,20 @@ PRJPB_008M_B_ENCODING_FIX
 - Proponer normalizacion sin renombrar todavia.
 - No mover carpetas sin matriz de impacto.
 
+==========
+PRJPB_008N_ROOT_04_NAMING_AUDIT
+==========
+00.00_DONE
+- PRJPB_008N: DONE — auditoria de carpetas root 04_* ejecutada.
+- Carpetas detectadas: 04_AGENTS, 04_CONSOLE, 04_PROJECTS.
+- No se renombro nada.
+
+01.00_READY_NOW
+- PRJPB_008O: READY — matriz impacto root naming y decision proposal.
+
+02.00_ACCEPTANCE_FOR_008O
+- Crear matriz de impacto por carpeta.
+- Identificar referencias internas.
+- Proponer mantener/renombrar/migrar/deprecar.
+- No ejecutar cambios estructurales todavia.
+
