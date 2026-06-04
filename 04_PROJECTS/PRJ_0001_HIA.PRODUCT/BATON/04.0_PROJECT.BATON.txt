@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009D | rediseño dashboard user-facing con roles, shell explícita y narrativa demo | ready
+PRJPB_009E | smoke de uso sin explicación sobre dashboard v0.3 | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -1073,4 +1073,32 @@ PURPOSE...........: Registrar feedback humano NO_GO de PRJPB_009C y mover contin
 - TD_CLI_ENCODING_MOJIBAKE/P1: salida CLI sigue mostrando mojibake.
 - TD_AI_MEMORY_STATUS/P2: AI_MEMORY_STATUS MISSING.
 - TD_DASHBOARD_USER_FACING_001/P0: dashboard actual no sirve como demo sin explicación.
+===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009D_DASHBOARD_USER_FACING_REDESIGN
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009D_DASHBOARD_USER_FACING_REDESIGN
+STATUS............: DONE
+PURPOSE...........: Crear dashboard v0.3 user-facing posterior a NO_GO de PRJPB_009C.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009D: DONE — dashboard user-facing v0.3 creado.
+- Launcher PRJPB_009B actualizado para abrir dashboard v0.3.
+- v0.2 se conserva como evidencia histórica.
+
+02.00_KEY_CHANGES
+- "Current NEXT_ACTION" reemplazado por "Trabajando ahora".
+- "Ready / next backlog" reemplazado por "Ahora / Siguiente / Después".
+- Comandos muestran shell explícita.
+- Separación visual por USER / DEV / QA / EVIDENCE / TECH DEBT.
+
+03.00_NEXT_ACTION
+- PRJPB_009E: READY — smoke de uso sin explicación sobre dashboard v0.3.
+
+04.00_DEBT_VISIBLE
+- TD_CLI_ENCODING_MOJIBAKE/P1: salida CLI sigue mostrando mojibake.
+- TD_AI_MEMORY_STATUS/P2: AI_MEMORY_STATUS MISSING.
+- TD_EVIDENCE_ANCHOR_SELECTION/P2: evidence anchor puede apuntar a evidencia anterior.
 ===============================================================================

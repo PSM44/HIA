@@ -843,3 +843,27 @@ PURPOSE...........: Rediseñar dashboard HIA para demo interna entendible sin ex
 03.00_NOTES
 - Mockups adjuntos inspiran estructura visual: sidebar, cards, health/status, active project, vault/knowledge.
 - No copiar contenidos fake como costos, proyectos o métricas no respaldadas.
+
+===============================================================================
+PRJPB_009D_DASHBOARD_USER_FACING_REDESIGN_DONE
+===============================================================================
+ID_UNICO..........: PRJPB_009D_DASHBOARD_USER_FACING_REDESIGN_DONE_20260604_150332
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 15:03:34 -0400
+PURPOSE...........: Crear dashboard HIA v0.3 user-facing después del NO_GO de PRJPB_009C.
+
+01.00_DONE
+- Dashboard v0.3 creado: 01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.3.html.
+- Launcher actualizado para abrir v0.3.
+- Se mantiene v0.2 como evidencia histórica.
+- Se incorporó separación USER / DEV / QA / EVIDENCE / TECH DEBT.
+- Se incorporó shell explícita para comandos.
+- Se reemplazó "Current NEXT_ACTION" por "Trabajando ahora".
+- Se reemplazó "Ready / next backlog" por "Ahora / Siguiente / Después".
+
+02.00_REPORT
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009D.DASHBOARD_USER_FACING_REDESIGN.20260604_150332.txt
+
+03.00_NEXT_ACTION
+- PRJPB_009E: READY — smoke de uso sin explicación sobre dashboard v0.3.

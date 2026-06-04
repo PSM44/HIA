@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HIA — Demo Dashboard v0.3</title>
+  <style>
+    :root{
+      --bg:#0f141b;
+      --panel:#151c25;
+      --panel2:#101720;
+      --line:#2b3645;
+      --text:#f3f6fb;
+      --muted:#aab4c3;
+      --blue:#4d8dff;
+      --green:#44c078;
+      --orange:#e7a546;
+      --red:#e46060;
+      --purple:#9d7cff;
+      --cyan:#55c7e8;
+      --human:#244b73;
+      --dev:#31405c;
+      --qa:#395235;
+      --evidence:#493f68;
+      --debt:#653838;
+      --shadow:0 12px 30px rgba(0,0,0,.28);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:linear-gradient(135deg,#0b1017,#111923 42%,#0b1017);
+      color:var(--text);
+      font-family:Segoe UI,Roboto,Arial,sans-serif;
+      line-height:1.35;
+    }
+    .app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+    aside{
+      border-right:1px solid var(--line);
+      background:rgba(12,17,24,.92);
+      padding:22px 16px;
+      position:sticky;
+      top:0;
+      height:100vh;
+    }
+    .brand{font-size:28px;font-weight:800;margin-bottom:6px}
+    .tagline{color:var(--muted);font-size:13px;margin-bottom:22px}
+    .nav-title{color:#7f8a99;font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin:22px 8px 8px}
+    .nav-item{
+      padding:12px 14px;
+      border-radius:12px;
+      color:#d8deea;
+      margin:4px 0;
+      border:1px solid transparent;
+    }
+    .nav-item.active{background:linear-gradient(135deg,#1f6f43,#368a5c);color:white}
+    .nav-item.dim{color:#9da7b6}
+    main{padding:22px 26px 40px}
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      align-items:flex-start;
+      margin-bottom:18px;
+    }
+    h1{margin:0;font-size:34px;letter-spacing:-.03em}
+    h2{margin:0 0 12px;font-size:20px}
+    h3{margin:0 0 8px;font-size:16px}
+    p{margin:0;color:var(--muted)}
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:#111923;
+      color:#dce5f3;
+      font-size:13px;
+      white-space:nowrap;
+    }
+    .grid{display:grid;gap:16px}
+    .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.main{grid-template-columns:1.25fr .75fr}
+    .card{
+      background:linear-gradient(180deg,rgba(24,32,43,.96),rgba(16,23,32,.96));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+    .hero{
+      border:1px solid #31506f;
+      background:
+        radial-gradient(circle at top left,rgba(77,141,255,.22),transparent 38%),
+        linear-gradient(180deg,rgba(24,32,43,.98),rgba(13,19,27,.98));
+    }
+    .hero p{font-size:16px}
+    .metric{font-size:30px;font-weight:800;margin:6px 0}
+    .label{color:#9da7b6;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+    .status-ok{color:var(--green)}
+    .status-warn{color:var(--orange)}
+    .status-bad{color:var(--red)}
+    .role{
+      border-left:5px solid var(--blue);
+      padding:14px;
+      border-radius:14px;
+      border-top:1px solid var(--line);
+      border-right:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      background:#121a24;
+    }
+    .role.human{border-left-color:#55a7ff;background:linear-gradient(90deg,rgba(36,75,115,.7),rgba(18,26,36,.96))}
+    .role.dev{border-left-color:#a5b8ff;background:linear-gradient(90deg,rgba(49,64,92,.7),rgba(18,26,36,.96))}
+    .role.qa{border-left-color:#70d36d;background:linear-gradient(90deg,rgba(57,82,53,.7),rgba(18,26,36,.96))}
+    .role.evidence{border-left-color:#b394ff;background:linear-gradient(90deg,rgba(73,63,104,.7),rgba(18,26,36,.96))}
+    .role.debt{border-left-color:#ff7f7f;background:linear-gradient(90deg,rgba(101,56,56,.7),rgba(18,26,36,.96))}
+    .timeline{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+    .step{
+      border:1px solid var(--line);
+      background:#111923;
+      border-radius:14px;
+      padding:14px;
+    }
+    .step.now{border-color:#58bf82;box-shadow:0 0 0 1px rgba(88,191,130,.2)}
+    .step.next{border-color:#4d8dff}
+    .step.later{border-color:#596477}
+    .cmd{
+      background:#070b12;
+      color:#eef5ff;
+      border:1px solid #2d3a4c;
+      padding:14px;
+      border-radius:12px;
+      font-family:Consolas,Menlo,monospace;
+      white-space:pre-wrap;
+      margin-top:10px;
+    }
+    .cmd-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      margin-top:14px;
+    }
+    button{
+      background:#2f79df;
+      color:white;
+      border:0;
+      border-radius:10px;
+      padding:9px 12px;
+      cursor:pointer;
+      font-weight:700;
+    }
+    button.secondary{background:#293342;color:#dce5f3;border:1px solid #3a4759}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}
+    th{color:#b9c4d4;background:#131b26}
+    .small{font-size:12px;color:#9da7b6}
+    .footer{margin-top:22px;color:#8591a3;font-size:12px}
+    @media(max-width:1100px){
+      .app{grid-template-columns:1fr}
+      aside{position:relative;height:auto}
+      .grid.cols-3,.grid.cols-2,.grid.main{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand">HIA</div>
+    <div class="tagline">Human Intelligence Amplifier</div>
+
+    <div class="nav-title">Demo interna</div>
+    <div class="nav-item active">Control Tower</div>
+    <div class="nav-item">Trabajando ahora</div>
+    <div class="nav-item">Comandos por shell</div>
+    <div class="nav-item">Evidencia</div>
+
+    <div class="nav-title">Roles</div>
+    <div class="nav-item dim">USER / HUMAN</div>
+    <div class="nav-item dim">DEV / ENGINE</div>
+    <div class="nav-item dim">QA / VALIDATION</div>
+    <div class="nav-item dim">TECH DEBT</div>
+
+    <div class="nav-title">Nota</div>
+    <div class="nav-item dim">v0.3 rediseñada después de NO_GO en dry-run PRJPB_009C.</div>
+  </aside>
+
+  <main>
+    <div class="topbar">
+      <div>
+        <h1>HIA Demo Dashboard v0.3</h1>
+        <p>Vista user-facing para explicar qué es HIA, qué está pasando ahora y qué debe ejecutar el usuario.</p>
+      </div>
+      <span class="badge">Static HTML · Real repo state · PRJ_0001_HIA.PRODUCT</span>
+    </div>
+
+    <section class="card hero">
+      <h2>Qué es HIA</h2>
+      <p><b>HIA es una capa operativa para trabajar con IA sin perder control:</b> organiza decisiones humanas, ejecución técnica, evidencia, validación, costos y continuidad. No es “otra IA”; es el sistema para que humanos e IAs trabajen con gates, trazabilidad y rollback.</p>
+    </section>
+
+    <div class="grid cols-3" style="margin-top:16px">
+      <section class="card">
+        <div class="label">Estado demo</div>
+        <div class="metric status-warn">Rediseño</div>
+        <p>La demo técnica abrió, pero falló como experiencia user-facing. Se rediseña antes de demo final.</p>
+      </section>
+      <section class="card">
+        <div class="label">Repo</div>
+        <div class="metric status-ok">Clean</div>
+        <p>Último estado esperado: commit/push correcto y continuidad movida a PRJPB_009D.</p>
+      </section>
+      <section class="card">
+        <div class="label">Evidencia</div>
+        <div class="metric status-ok">Fresh</div>
+        <p>RADAR y evidence resolver operativos; aún existe deuda de selección de anchor más reciente.</p>
+      </section>
+    </div>
+
+    <div class="grid main" style="margin-top:16px">
+      <section class="card">
+        <h2>Ahora / Siguiente / Después</h2>
+        <div class="timeline">
+          <div class="step now">
+            <div class="label">Trabajando ahora</div>
+            <h3>PRJPB_009D — Rediseño dashboard user-facing</h3>
+            <p>Separar roles, explicitar shell, simplificar narrativa y convertir la demo en algo entendible sin explicación previa.</p>
+          </div>
+          <div class="step next">
+            <div class="label">Siguiente</div>
+            <h3>PRJPB_009E — Smoke de uso sin explicación</h3>
+            <p>Probar si un usuario entiende la pantalla y ejecuta la demo con mínima asistencia.</p>
+          </div>
+          <div class="step later">
+            <div class="label">Después / Backlog</div>
+            <h3>Demo package final y mejoras engine</h3>
+            <p>Consolidar paquete final, resolver mojibake, AI_MEMORY y selección de evidence anchor.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Roles visibles</h2>
+        <div class="grid">
+          <div class="role human"><b>USER / HUMAN</b><p>Decide, aprueba, rechaza, entrega feedback y define prioridades.</p></div>
+          <div class="role dev"><b>DEV / ENGINE</b><p>Ejecuta scripts, actualiza archivos, mantiene repo, CLI y launcher.</p></div>
+          <div class="role qa"><b>QA / VALIDATION</b><p>Valida parse, comandos, RADAR, sesión, evidencia y estado Git.</p></div>
+          <div class="role evidence"><b>EVIDENCE</b><p>Guarda entregables, logs, RADAR, screenshots y artifacts de continuidad.</p></div>
+          <div class="role debt"><b>TECH DEBT</b><p>Problemas conocidos no bloqueantes o riesgos que requieren backlog.</p></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top:16px">
+      <h2>Comandos de demo por shell</h2>
+      <p>Regla: ningún comando debe mostrarse sin indicar shell. Punto. Sin shell explícita, el comando no es ejecutable para usuario.</p>
+
+      <div class="cmd-head">
+        <span class="badge">Ejecutar en: WSL2 Bash</span>
+        <button onclick="copyText('cmd-wsl')">Copiar comando WSL2 Bash</button>
+      </div>
+      <div class="cmd" id="cmd-wsl">cd "/mnt/c/01. GitHub/Wings3.0/01_PROJECTS/HIA"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\01_UI\launcher\HIA.DEMO.LAUNCHER.PRJPB_009B.ps1"</div>
+
+      <div class="cmd-head">
+        <span class="badge">Ejecutar en: Windows PowerShell</span>
+        <button onclick="copyText('cmd-ps')">Copiar comando Windows PowerShell</button>
+      </div>
+      <div class="cmd" id="cmd-ps">Set-Location "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA"
+.\01_UI\terminal\hia.ps1 project continue PRJ_0001_HIA.PRODUCT
+.\01_UI\terminal\hia.ps1 project status PRJ_0001_HIA.PRODUCT
+.\01_UI\terminal\hia.ps1 project session status PRJ_0001_HIA.PRODUCT</div>
+    </section>
+
+    <div class="grid cols-2" style="margin-top:16px">
+      <section class="card">
+        <h2>Qué está validado</h2>
+        <table>
+          <thead><tr><th>Elemento</th><th>Estado</th><th>Lectura ejecutiva</th></tr></thead>
+          <tbody>
+            <tr><td>Launcher</td><td class="status-ok">OK</td><td>Parsea y abre dashboard.</td></tr>
+            <tr><td>Dashboard v0.2</td><td class="status-bad">NO_GO UX</td><td>Abre, pero no comunica.</td></tr>
+            <tr><td>Dashboard v0.3</td><td class="status-warn">En rediseño</td><td>Nueva versión user-facing.</td></tr>
+            <tr><td>RADAR</td><td class="status-ok">OK</td><td>Genera outputs activos.</td></tr>
+            <tr><td>Git</td><td class="status-ok">Clean esperado</td><td>Commits/push operativos.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2>Deuda técnica visible</h2>
+        <div class="role debt"><b>TD_CLI_ENCODING_MOJIBAKE/P1</b><p>La salida CLI aún muestra caracteres corruptos en palabras con tilde.</p></div>
+        <br>
+        <div class="role debt"><b>TD_AI_MEMORY_STATUS/P2</b><p>AI_MEMORY_STATUS sigue MISSING. No bloquea demo, sí afecta continuidad futura.</p></div>
+        <br>
+        <div class="role debt"><b>TD_EVIDENCE_ANCHOR_SELECTION/P2</b><p>Evidence fresh puede apuntar a anchor antiguo aunque exista evidencia más reciente.</p></div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top:16px">
+      <h2>Qué NO debe hacer esta demo</h2>
+      <div class="grid cols-3">
+        <div class="step"><b>No explicar todo HIA</b><p>Solo mostrar valor, control, continuidad y siguiente acción.</p></div>
+        <div class="step"><b>No mezclar usuario con engine</b><p>El detalle técnico va abajo o en evidencia, no en portada.</p></div>
+        <div class="step"><b>No mostrar datos fake</b><p>Los mockups inspiran layout, no contenido ni métricas reales.</p></div>
+      </div>
+    </section>
+
+    <div class="footer">
+      HIA Management Dashboard v0.3 · User-facing redesign after PRJPB_009C NO_GO · Generated as static HTML from current operating decisions.
+    </div>
+  </main>
+</div>
+
+<script>
+function copyText(id){
+  const text = document.getElementById(id).innerText;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(()=>alert("Comando copiado."));
+  } else {
+    const area=document.createElement("textarea");
+    area.value=text;
+    document.body.appendChild(area);
+    area.select();
+    document.execCommand("copy");
+    document.body.removeChild(area);
+    alert("Comando copiado.");
+  }
+}
+</script>
+</body>
+</html>
