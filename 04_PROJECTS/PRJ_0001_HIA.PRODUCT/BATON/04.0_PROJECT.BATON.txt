@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009N-B | mejorar UX de Project Workspace con paneles vivos y acciones demo | ready
+PRJPB_009N-C | implementar estado real read-only visible en Control Tower Shell | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -1565,4 +1565,34 @@ PURPOSE...........: Agregar capa viva UX/UI sin tocar core app.js.
 
 03.00_NEXT_ACTION
 - PRJPB_009N-B: READY — mejorar UX de Project Workspace con paneles vivos y acciones demo.
+===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009N_B_CLEAN_UX_LAYER_FUNCTIONAL_PATH
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009N_B_CLEAN_UX_LAYER_FUNCTIONAL_PATH
+STATUS............: DONE
+PURPOSE...........: Limpiar UX layer, eliminar floating buttons y documentar path funcional real.
+
+01.00_HUMAN_FEEDBACK
+- Floating buttons visualmente molestos.
+- Se prefiere lupa o signo de pregunta para búsqueda/ayuda.
+- UX/UI ya debe quedar lista para empezar funcionamiento real.
+
+02.00_DONE_CONFIRMED
+- Floating buttons eliminados.
+- Search/help movidos a topbar.
+- CTX/WSL movidos a context bar.
+- Path funcional documentado.
+
+03.00_FUNCTIONAL_PATH
+- UI shell operable.
+- Estado real read-only.
+- Estado refreshable.
+- Write actions con confirmación humana.
+- IA real por proyecto.
+
+04.00_NEXT_ACTION
+- PRJPB_009N-C: READY — implementar estado real read-only visible en Control Tower Shell.
 ===============================================================================

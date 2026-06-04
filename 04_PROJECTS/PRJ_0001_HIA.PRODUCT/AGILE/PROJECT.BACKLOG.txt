@@ -1589,3 +1589,33 @@ PURPOSE...........: Agregar capa viva UX/UI sin tocar core app.js.
 
 03.00_NEXT
 - PRJPB_009N-B: READY — mejorar UX de Project Workspace con paneles vivos y acciones demo.
+
+===============================================================================
+PRJPB_009N_B_CLEAN_UX_LAYER_FUNCTIONAL_PATH
+===============================================================================
+ID_UNICO..........: PRJPB_009N_B_CLEAN_UX_LAYER_FUNCTIONAL_PATH_20260604_185343
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 18:53:45 -0400
+PURPOSE...........: Limpiar UX layer, eliminar floating buttons y documentar path funcional real.
+
+01.00_DONE
+- Floating buttons eliminados.
+- Búsqueda movida a topbar.
+- Ayuda movida a topbar.
+- CTX/WSL movidos a context bar.
+- Command Palette queda por Ctrl+K.
+- Path funcional documentado.
+
+02.00_FUNCTIONAL_PATH
+- Phase 1: UI shell operable.
+- Phase 2: estado real read-only.
+- Phase 3: estado refreshable.
+- Phase 4: write actions con confirmación humana.
+- Phase 5: IA real por proyecto.
+
+03.00_REPORT
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009N_B.CLEAN_UX_LAYER_FUNCTIONAL_PATH.20260604_185343.txt
+
+04.00_NEXT
+- PRJPB_009N-C: READY — implementar estado real read-only visible en Control Tower Shell.

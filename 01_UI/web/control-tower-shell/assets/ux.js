@@ -57,7 +57,7 @@
     window.setTimeout(() => {
       item.classList.remove("is-visible");
       window.setTimeout(() => item.remove(), 260);
-    }, 2800);
+    }, 2200);
   }
 
   function copyText(text, label) {
@@ -79,20 +79,15 @@
     textarea.style.opacity = "0";
     document.body.appendChild(textarea);
     textarea.select();
+
     try {
       document.execCommand("copy");
       toast((label || "Texto") + " copiado", "ok");
     } catch (error) {
       toast("No se pudo copiar", "bad");
     }
-    textarea.remove();
-  }
 
-  function updateRouteIndicator() {
-    const badge = qs("#ux-route-indicator");
-    if (!badge) return;
-    const route = currentRoute();
-    badge.textContent = "Ruta activa · " + routeLabel(route);
+    textarea.remove();
   }
 
   function go(route) {
@@ -103,33 +98,33 @@
     updateRouteIndicator();
   }
 
-  function buildFloatingActions() {
-    if (qs("#ux-floating-actions")) return;
+  function buildTopbarTools() {
+    const topbar = qs(".topbar");
+    if (!topbar || qs("#ux-topbar-tools")) return;
 
-    const root = document.createElement("div");
-    root.id = "ux-floating-actions";
-    root.className = "ux-floating-actions";
-    root.innerHTML = `
-      <button class="ux-fab main" id="ux-open-palette" title="Command Palette · Ctrl+K">⌘K</button>
-      <button class="ux-fab" id="ux-copy-context" title="Copiar contexto">CTX</button>
-      <button class="ux-fab" id="ux-copy-wsl" title="Copiar comando WSL">WSL</button>
+    const tools = document.createElement("div");
+    tools.id = "ux-topbar-tools";
+    tools.className = "ux-topbar-tools";
+    tools.innerHTML = `
+      <button class="ux-search-btn" id="ux-open-palette" title="Buscar / Command Palette · Ctrl+K">
+        <span class="ux-search-icon">⌕</span>
+        <span>Buscar</span>
+        <kbd>Ctrl K</kbd>
+      </button>
+      <button class="ux-help-btn" id="ux-show-help" title="Ayuda rápida">?</button>
+      <span id="ux-route-indicator" class="ux-route-indicator">Ruta activa · ${routeLabel(currentRoute())}</span>
     `;
-    document.body.appendChild(root);
+
+    topbar.appendChild(tools);
 
     qs("#ux-open-palette").addEventListener("click", openPalette);
-    qs("#ux-copy-context").addEventListener("click", copyContext);
-    qs("#ux-copy-wsl").addEventListener("click", copyWslCommand);
+    qs("#ux-show-help").addEventListener("click", showHelp);
   }
 
-  function buildRouteIndicator() {
-    const topbar = qs(".topbar");
-    if (!topbar || qs("#ux-route-indicator")) return;
-
-    const indicator = document.createElement("div");
-    indicator.id = "ux-route-indicator";
-    indicator.className = "ux-route-indicator";
-    indicator.textContent = "Ruta activa · " + routeLabel(currentRoute());
-    topbar.appendChild(indicator);
+  function updateRouteIndicator() {
+    const badge = qs("#ux-route-indicator");
+    if (!badge) return;
+    badge.textContent = "Ruta activa · " + routeLabel(currentRoute());
   }
 
   function buildPalette() {
@@ -144,7 +139,7 @@
       <div class="ux-palette-panel">
         <div class="ux-palette-head">
           <div>
-            <strong>Command Palette</strong>
+            <strong>Buscar en HIA</strong>
             <span>Busca vistas, copia contexto o navega rápido.</span>
           </div>
           <button class="ux-icon-btn" id="ux-close-palette">×</button>
@@ -168,6 +163,7 @@
         const first = qs(".ux-result");
         if (first) go(first.dataset.route);
       }
+
       if (event.key === "Escape") closePalette();
     });
 
@@ -184,9 +180,7 @@
     if (!input || !results) return;
 
     const query = input.value.trim().toLowerCase();
-    const matches = UX.routes.filter((item) => {
-      return !query || item.join(" ").toLowerCase().includes(query);
-    });
+    const matches = UX.routes.filter((item) => !query || item.join(" ").toLowerCase().includes(query));
 
     results.innerHTML = matches.map((item) => `
       <button class="ux-result" data-route="${item[0]}">
@@ -204,6 +198,7 @@
     buildPalette();
     const overlay = qs("#ux-palette");
     const input = qs("#ux-palette-search");
+
     overlay.classList.add("is-open");
     overlay.setAttribute("aria-hidden", "false");
     input.value = "";
@@ -235,17 +230,23 @@
   function copyWslCommand() {
     const command = [
       'cd "/mnt/c/01. GitHub/Wings3.0/01_PROJECTS/HIA"',
-      './01_UI/terminal/hia.ps1 project status PRJ_0001_HIA.PRODUCT'
+      './01_UI/terminal/hia.ps1 project status PRJ_0001_HIA.PRODUCT',
+      './01_UI/terminal/hia.ps1 project continue PRJ_0001_HIA.PRODUCT'
     ].join("\n");
 
     copyText(command, "Comando WSL");
   }
 
-  function enhanceCopyButtons() {
-    if (qs("#ux-context-bar")) return;
+  function showHelp() {
+    toast("Shortcuts: Ctrl+K buscar · Alt+1 global · Alt+2 portfolio · Alt+3 IA · Alt+4 costos · Alt+5 workspace", "info");
+  }
 
+  function enhanceContextBar() {
     const root = qs("#view-root");
     if (!root) return;
+
+    const old = qs("#ux-context-bar");
+    if (old) old.remove();
 
     const bar = document.createElement("div");
     bar.id = "ux-context-bar";
@@ -254,6 +255,7 @@
       <button class="secondary-btn" id="ux-action-copy-context">Copiar contexto</button>
       <button class="secondary-btn" id="ux-action-copy-route">Copiar ruta</button>
       <button class="secondary-btn" id="ux-action-copy-wsl">Copiar WSL2</button>
+      <button class="secondary-btn" id="ux-action-help">Ayuda rápida</button>
     `;
 
     root.prepend(bar);
@@ -261,11 +263,7 @@
     qs("#ux-action-copy-context").addEventListener("click", copyContext);
     qs("#ux-action-copy-route").addEventListener("click", () => copyText(currentRoute(), "Ruta"));
     qs("#ux-action-copy-wsl").addEventListener("click", copyWslCommand);
-  }
-
-  function afterRouteRender() {
-    updateRouteIndicator();
-    window.setTimeout(enhanceCopyButtons, 30);
+    qs("#ux-action-help").addEventListener("click", showHelp);
   }
 
   function installKeyboardShortcuts() {
@@ -291,27 +289,28 @@
     });
   }
 
+  function afterRouteRender() {
+    updateRouteIndicator();
+    window.setTimeout(enhanceContextBar, 20);
+  }
+
   function observeRouteChanges() {
     window.addEventListener("hashchange", afterRouteRender);
 
     const root = qs("#view-root");
     if (!root) return;
 
-    const observer = new MutationObserver(() => {
-      afterRouteRender();
-    });
-
+    const observer = new MutationObserver(() => afterRouteRender());
     observer.observe(root, { childList: true, subtree: false });
   }
 
   function init() {
-    buildFloatingActions();
+    buildTopbarTools();
     buildPalette();
-    buildRouteIndicator();
     installKeyboardShortcuts();
     observeRouteChanges();
     afterRouteRender();
-    toast("UX interaction layer activo", "ok");
+    toast("UX viva activa", "ok");
   }
 
   if (document.readyState === "loading") {
