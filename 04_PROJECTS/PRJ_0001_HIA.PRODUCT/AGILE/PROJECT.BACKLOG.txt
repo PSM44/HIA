@@ -771,3 +771,19 @@ TIPO..............: CONTINUITY_ROLLOVER
 - TD_ENCODING_STATUS_TEXT/P2: persiste mojibake en CURRENT_OBJECTIVE.
 - TD_AI_MEMORY_STATUS/P2: AI_MEMORY_STATUS MISSING.
 - TD_ROOT_WBS_NAMING_001/P3: documentar policy canonica futura.
+
+
+PRJPB_009B_R2_CONTINUITY_REPAIR
+- STATUS: DONE
+- DATE_UTC: 2026-06-04T18:42:54Z
+- PURPOSE: Reparar inconsistencia post rollover PRJPB_009B-R.
+- CONFIRMED:
+  - PRJPB_009B entregables creados y pusheados.
+  - PRJPB_009B-R dejó repo clean, pero project continue seguía apuntando a PRJPB_009B.
+  - NEXT_ACTION corregido a PRJPB_009C.
+- NEXT:
+  - PRJPB_009C: READY — ejecutar demo interna y capturar feedback/gaps.
+- TECH_DEBT:
+  - TD_RADAR_PATH_009B_R/P1: corregir scripts/one-shots que usen 02_TOOLS/RADAR/RADAR.ps1; ruta válida actual es 02_TOOLS/RADAR.ps1.
+  - TD_CLI_ENCODING_MOJIBAKE/P1: salida CLI aún muestra mojibake en "básico".
+  - TD_AI_MEMORY_STATUS/P2: AI_MEMORY_STATUS sigue MISSING.

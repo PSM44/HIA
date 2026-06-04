@@ -578,7 +578,7 @@ SESSION_UPDATE_20260602_HIA_PRJPB_008H_R_EVIDENCE_ANCHOR
 - PRJPB_008H-R: DONE — evidencia semántica de cierre 008H creada para continuidad operativa.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_009B | demo live script y checklist presentacion interna | ready.
+- NEXT_ACTION: PRJPB_009C | ejecutar demo interna y capturar feedback/gaps | ready.
 - Git quedó clean tras PRJPB_008H antes de esta reconciliación.
 - RADAR refresh posterior a PRJPB_008H ejecutado correctamente.
 - project continue todavía puede reportar EVIDENCE_STATE STALE si el engine no reconoce evidencia semántica 008H como anchor fresco.
@@ -634,7 +634,7 @@ SESSION_UPDATE_20260602_HIA_PRJPB_008I_R_ROLLOVER
 - Commit base: dc88dc8 20260602_HIA_PRJPB_008I_management_demo_pack_v02.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_009B | demo live script y checklist presentacion interna | ready.
+- NEXT_ACTION: PRJPB_009C | ejecutar demo interna y capturar feedback/gaps | ready.
 - Git debe quedar clean después de esta reconciliación.
 - EVIDENCE_STATE puede seguir STALE por TD_EVIDENCE_ANCHOR_008H/P1; no bloquear PRJPB_008J, pero sí debe declararse en el guion/demo.
 
@@ -662,7 +662,7 @@ SESSION_UPDATE_20260603_HIA_PRJPB_008J_EXECUTIVE_DEMO_SCRIPT
 - Runner versionado: 02_TOOLS/Run-PRJPB-008J.ps1.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_009B | demo live script y checklist presentacion interna | ready.
+- NEXT_ACTION: PRJPB_009C | ejecutar demo interna y capturar feedback/gaps | ready.
 - EVIDENCE_STATE puede seguir STALE por TD_EVIDENCE_ANCHOR_008H/P1; debe resolverse o explicarse en PRJPB_008K.
 - Demo pack v0.2 y guion ejecutivo ya existen.
 
@@ -695,7 +695,7 @@ SESSION_UPDATE_20260604_HIA_PRJPB_008K_INTERNAL_RC
 - Guion ejecutivo v0.1: disponible.
 - Screenshot protocol: disponible.
 - RADAR refresh: ejecutado durante 008K.
-- NEXT_ACTION: PRJPB_009B | demo live script y checklist presentacion interna | ready.
+- NEXT_ACTION: PRJPB_009C | ejecutar demo interna y capturar feedback/gaps | ready.
 
 03.00_TECHNICAL_DEBT_ROLLOVER
 - TD_EVIDENCE_ANCHOR_008H/P1: resolver reconocimiento de evidencia semántica genérica en HIA_PROJECT_ENGINE.
@@ -738,7 +738,7 @@ SESSION_UPDATE_20260604_HIA_PRJPB_008M_A_ENCODING_DIAG
 - No se modificó hia.ps1.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_009B | demo live script y checklist presentacion interna | ready.
+- NEXT_ACTION: PRJPB_009C | ejecutar demo interna y capturar feedback/gaps | ready.
 - EVIDENCE_STATE permanece FRESH desde PRJPB_008L-B.
 - Session status activo al inicio de 008M-A.
 
@@ -760,7 +760,7 @@ SESSION_UPDATE_20260604_HIA_PRJPB_008M_B_ENCODING_FIX
 - No se modifico hia.ps1.
 
 02.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_009B | demo live script y checklist presentacion interna | ready.
+- NEXT_ACTION: PRJPB_009C | ejecutar demo interna y capturar feedback/gaps | ready.
 - EVIDENCE_STATE permanece FRESH desde PRJPB_008L-B.
 - Regla operativa: desde WSL2, preferir hia.utf8.ps1 para capturas con caracteres acentuados.
 
@@ -791,7 +791,7 @@ SESSION_UPDATE_20260604_HIA_PRJPB_008N_ROOT_04_NAMING_AUDIT
 - 04_PROJECTS: canonical active. No renombrar.
 - 04_AGENTS: posible capa AI agents. Requiere decision posterior.
 - 04_CONSOLE: posible capa console/UI legacy o experimental. Requiere decision posterior.
-- NEXT_ACTION: PRJPB_009B | demo live script y checklist presentacion interna | ready.
+- NEXT_ACTION: PRJPB_009C | ejecutar demo interna y capturar feedback/gaps | ready.
 
 03.00_TECHNICAL_DEBT_ROLLOVER
 - TD_ROOT_WBS_NAMING_001/P2: pendiente matriz de impacto y decision proposal.
@@ -822,7 +822,7 @@ SESSION_UPDATE_20260604_HIA_PRJPB_008O_ROOT_NAMING_IMPACT_MATRIX
 - Root 04_* collision: deuda aceptada, no blocker operativo.
 
 03.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_009B | demo live script y checklist presentacion interna | ready.
+- NEXT_ACTION: PRJPB_009C | ejecutar demo interna y capturar feedback/gaps | ready.
 - EVIDENCE_STATE sigue FRESH.
 - hia.utf8.ps1 es el wrapper recomendado para salida CLI legible desde WSL2.
 
@@ -852,7 +852,7 @@ SESSION_UPDATE_20260604_HIA_PRJPB_008P_DASHBOARD_DELIVERY_REFRESH
 - EVIDENCE_STATE: FRESH.
 - Session: active.
 - Root naming: auditado; no rename aprobado.
-- NEXT_ACTION: PRJPB_009B | demo live script y checklist presentacion interna | ready.
+- NEXT_ACTION: PRJPB_009C | ejecutar demo interna y capturar feedback/gaps | ready.
 
 03.00_NEXT_ACTION
 - PRJPB_008Q: READY — final demo readiness smoke y cierre de sesion.
@@ -907,7 +907,7 @@ SESSION_UPDATE_20260604_HIA_PRJPB_009A_VISIBLE_INTERNAL_DEMO
 - Mantener hia.utf8.ps1 como wrapper recomendado.
 
 03.00_CURRENT_STATE
-- NEXT_ACTION: PRJPB_009B | demo live script y checklist presentacion interna | ready.
+- NEXT_ACTION: PRJPB_009C | ejecutar demo interna y capturar feedback/gaps | ready.
 - EVIDENCE_STATE: FRESH.
 - Session status: active durante ejecucion.
 
@@ -924,7 +924,7 @@ SESSION_CLOSE_20260604_1419_HIA
 
 01.00_ESTADO_ACTUAL
 - Estado: post PRJPB_008Q final demo readiness smoke.
-- NEXT_ACTION operativo recomendado: PRJPB_009B | user-facing dashboard y one-click demo launcher | ready.
+- NEXT_ACTION operativo recomendado: PRJPB_009C | ejecutar demo interna y capturar feedback/gaps | ready.
 - Criterio humano nuevo: lo visible actual no basta para cliente; falta empaquetado user-facing.
 - Dictamen: demo técnica trazable existe; MVP cliente todavía no.
 
@@ -1026,3 +1026,26 @@ PROYECTO..........: PRJ_0001_HIA.PRODUCT
 - TD_ENCODING_STATUS_TEXT/P2: persiste mojibake en CURRENT_OBJECTIVE.
 - TD_AI_MEMORY_STATUS/P2: AI_MEMORY_STATUS MISSING.
 - TD_ROOT_WBS_NAMING_001/P3: documentar policy canonica futura.
+
+
+==========
+SESSION_UPDATE_20260604_HIA_PRJPB_009B_R2_CONTINUITY_REPAIR
+==========
+00.00_METADATA
+- UTC: 2026-06-04T18:42:54Z
+- PURPOSE: Reparar continuidad post PRJPB_009B_R; asegurar que NEXT_ACTION avance a PRJPB_009C.
+- MODE: continuity-repair.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009B: DONE — demo live script, checklist presentación interna y launcher creados, validados, commiteados y pusheados.
+- PRJPB_009B-R: DONE_WITH_WARNINGS — rollover ejecutado, pero detectada inconsistencia: project continue seguía devolviendo PRJPB_009B.
+- PRJPB_009B-R2: DONE — continuidad corregida para avanzar a PRJPB_009C.
+
+02.00_WARNINGS
+- RADAR falló en PRJPB_009B-R por ruta inexistente: 02_TOOLS/RADAR/RADAR.ps1.
+- Ruta correcta actual usada por el repo: 02_TOOLS/RADAR.ps1.
+- Mojibake sigue visible en salida CLI: "b�sico".
+- AI_MEMORY_STATUS sigue MISSING.
+
+03.00_NEXT_ACTION
+- PRJPB_009C: READY — ejecutar demo interna y capturar feedback/gaps.
