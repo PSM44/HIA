@@ -748,3 +748,26 @@ DECISION...........:
 
 NEXT_RECOMMENDED...:
 - PRJPB_009C: demo dry-run y captura de fricciones reales.
+
+==========
+PRJPB_009B_R_ROLLOVER_CONTINUITY
+==========
+
+ID_UNICO..........: PRJPB_009B_R_ROLLOVER_CONTINUITY_20260604_144120
+FECHA.............: 2026-06-04
+HORA_LOCAL........: 2026-06-04 14:41:20 -0400
+STATUS............: DONE
+TIPO..............: CONTINUITY_ROLLOVER
+
+01.00_DONE_CONFIRMED
+- PRJPB_009B: DONE — demo live script, checklist presentacion interna y one-click demo launcher creados, validados, commiteados y pusheados.
+- Commit: f07e94b 20260604_HIA_PRJPB_009B_live_demo_script_checklist_launcher.
+- Evidencia semantica: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009B-R.SEMANTIC_EVIDENCE.20260604_144120.txt
+
+02.00_NEXT_ACTION
+- PRJPB_009C: READY — dry-run demo interna y evidencia launcher/dashboard.
+
+03.00_DEUDA_TECNICA
+- TD_ENCODING_STATUS_TEXT/P2: persiste mojibake en CURRENT_OBJECTIVE.
+- TD_AI_MEMORY_STATUS/P2: AI_MEMORY_STATUS MISSING.
+- TD_ROOT_WBS_NAMING_001/P3: documentar policy canonica futura.

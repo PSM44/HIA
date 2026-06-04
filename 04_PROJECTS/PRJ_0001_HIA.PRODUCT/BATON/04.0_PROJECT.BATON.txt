@@ -992,3 +992,37 @@ PROJECT_ID........: PRJ_0001_HIA.PRODUCT
 
 04.00_NEXT_ACTION
 - PRJPB_009C: READY — demo dry-run y captura de fricciones reales de presentacion.
+
+==========
+SESSION_UPDATE_20260604_HIA_PRJPB_009B_R_ROLLOVER
+==========
+
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009B_R_ROLLOVER_20260604_144120
+FECHA.............: 2026-06-04
+HORA_LOCAL........: 2026-06-04 14:41:20 -0400
+CIUDAD............: Santiago, Chile
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+
+01.00_DONE_CONFIRMED
+- PRJPB_009B: DONE — demo live script, checklist presentacion interna y one-click demo launcher creados, validados, commiteados y pusheados.
+- Commit confirmado: f07e94b 20260604_HIA_PRJPB_009B_live_demo_script_checklist_launcher.
+- Repo clean post push.
+- Evidencia semantica creada: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009B-R.SEMANTIC_EVIDENCE.20260604_144120.txt
+
+02.00_ESTADO_OPERATIVO
+- EVIDENCE_STATE: FRESH.
+- SESSION_STATUS anterior: closed.
+- Dashboard v0.2 existe.
+- Launcher PRJPB_009B parsea correctamente.
+- Falta dry-run real de launcher/dashboard en contexto demo.
+
+03.00_NEXT_ACTION
+- PRJPB_009C: READY — dry-run demo interna y evidencia launcher/dashboard.
+
+04.00_PROMPT_HANDOFF_SUGERIDO
+"Hoy es [fecha/hora], Santiago Chile. Continuemos HIA desde PRJPB_009C. Primero verifica git status, project continue y session status. Objetivo: ejecutar dry-run demo interna, validar launcher/dashboard, capturar evidencia de salida y actualizar continuidad."
+
+05.00_DEUDA_TECNICA_VISIBLE
+- TD_ENCODING_STATUS_TEXT/P2: persiste mojibake en CURRENT_OBJECTIVE.
+- TD_AI_MEMORY_STATUS/P2: AI_MEMORY_STATUS MISSING.
+- TD_ROOT_WBS_NAMING_001/P3: documentar policy canonica futura.
