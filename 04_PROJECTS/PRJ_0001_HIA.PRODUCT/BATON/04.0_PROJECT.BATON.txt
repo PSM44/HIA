@@ -26,7 +26,7 @@ Implementar estado básico del proyecto desde HIA.
 05.00_SIGUIENTE_MINIBATTLE
 PRJPB_007D | reconciliar BATON/BACKLOG y declarar NEXT_ACTION operativa | ready
 06.00_NEXT_ACTION
-PRJPB_009E | smoke de uso sin explicación sobre dashboard v0.3 | ready
+PRJPB_009G | smoke sin explicación sobre dashboard v0.4 | ready
 
 06.00_BLOQUEO_ACTUAL
 No hay bloqueo crítico.
@@ -1101,4 +1101,35 @@ PURPOSE...........: Crear dashboard v0.3 user-facing posterior a NO_GO de PRJPB_
 - TD_CLI_ENCODING_MOJIBAKE/P1: salida CLI sigue mostrando mojibake.
 - TD_AI_MEMORY_STATUS/P2: AI_MEMORY_STATUS MISSING.
 - TD_EVIDENCE_ANCHOR_SELECTION/P2: evidence anchor puede apuntar a evidencia anterior.
+===============================================================================
+
+
+===============================================================================
+SESSION_UPDATE_20260604_HIA_PRJPB_009E_NO_GO_TO_009F_DASHBOARD_V04
+===============================================================================
+ID_UNICO..........: SESSION_UPDATE_20260604_HIA_PRJPB_009E_NO_GO_TO_009F_DASHBOARD_V04
+STATUS............: DONE
+PURPOSE...........: Registrar NO_GO de dashboard v0.3 y crear dashboard v0.4.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009E: DONE_WITH_NO_GO — v0.3 mejora, pero no pasa smoke sin explicación.
+- PRJPB_009F: DONE — dashboard v0.4 creado con cintas por audiencia, comandos explicados y traducción de códigos internos.
+
+02.00_KEY_CHANGES
+- Cintas visuales:
+  - USER UI/UX.
+  - DEV UX/UI.
+  - QA / VALIDATION.
+  - EVIDENCE / AUDIT.
+  - TECH DEBT.
+- Comandos con propósito, shell, usuario objetivo y resultado esperado.
+- PRJPB traducido a lenguaje humano en portada.
+
+03.00_NEXT_ACTION
+- PRJPB_009G: READY — smoke sin explicación sobre dashboard v0.4.
+
+04.00_DEBT_VISIBLE
+- TD_CLI_ENCODING_MOJIBAKE/P1.
+- TD_AI_MEMORY_STATUS/P2.
+- TD_EVIDENCE_ANCHOR_SELECTION/P2.
 ===============================================================================

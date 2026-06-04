@@ -11,7 +11,7 @@ $ErrorActionPreference = "Stop"
 
 $Root = "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA"
 $ProjectId = "PRJ_0001_HIA.PRODUCT"
-$Dashboard = Join-Path $Root "01_UI\web\HIA.MANAGEMENT.DASHBOARD.v0.3.html"
+$Dashboard = Join-Path $Root "01_UI\web\HIA.MANAGEMENT.DASHBOARD.v0.4.html"
 $Delivery = Join-Path $Root "04_PROJECTS\$ProjectId\DELIVERY"
 
 Write-Host "========== HIA DEMO LAUNCHER / PRJPB_009B =========="

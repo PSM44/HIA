@@ -867,3 +867,43 @@ PURPOSE...........: Crear dashboard HIA v0.3 user-facing después del NO_GO de P
 
 03.00_NEXT_ACTION
 - PRJPB_009E: READY — smoke de uso sin explicación sobre dashboard v0.3.
+
+===============================================================================
+PRJPB_009E_SMOKE_V03_NO_GO
+===============================================================================
+ID_UNICO..........: PRJPB_009E_SMOKE_V03_NO_GO_20260604_152821
+STATUS............: DONE_WITH_NO_GO
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 15:28:24 -0400
+PURPOSE...........: Registrar que dashboard v0.3 mejora, pero no pasa smoke sin explicación.
+
+01.00_RESULTADO
+- PRJPB_009E: NO_GO.
+- v0.3 mejora, pero aún no explica suficientemente:
+  - códigos internos,
+  - propósito de comandos,
+  - diferencia de audiencias,
+  - qué debe hacer el usuario.
+
+02.00_EVIDENCIA
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009E.SMOKE_V03.NO_GO.20260604_152821.txt
+
+03.00_DECISION
+- Crear v0.4 con cintas por audiencia y comandos explicados.
+
+===============================================================================
+PRJPB_009F_DASHBOARD_V04_AUDIENCE_RIBBONS
+===============================================================================
+ID_UNICO..........: PRJPB_009F_DASHBOARD_V04_AUDIENCE_RIBBONS_20260604_152821
+STATUS............: DONE
+PRIORIDAD.........: P0
+FECHA_LOCAL.......: 2026-06-04 15:28:24 -0400
+PURPOSE...........: Crear dashboard v0.4 con cintas por audiencia y comandos con propósito.
+
+01.00_OUTPUTS
+- 01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.4.html
+- 01_UI/launcher/HIA.DEMO.LAUNCHER.PRJPB_009B.ps1
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009F.DASHBOARD_V04_AUDIENCE_RIBBONS.20260604_152821.txt
+
+02.00_NEXT_ACTION
+- PRJPB_009G: READY — smoke sin explicación sobre dashboard v0.4.
