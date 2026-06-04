@@ -568,3 +568,18 @@ PRJPB_008L_B_EVIDENCE_RESOLVER_FIX
 - TD_ROOT_WBS_NAMING_001/P2: auditar 04_AGENTS / 04_CONSOLE / 04_PROJECTS.
 - TD_AI_MEMORY/P2: AI_MEMORY_STATUS MISSING.
 
+==========
+PRJPB_008M_A_ENCODING_DIAG
+==========
+00.00_DONE
+- PRJPB_008M-A: DONE — diagnóstico de encoding sin modificar entrypoint.
+
+01.00_READY_NOW
+- PRJPB_008M-B: READY — aplicar fix mínimo de encoding según diagnóstico.
+
+02.00_ACCEPTANCE_FOR_008M_B
+- No romper ejecución CLI.
+- No modificar hia.ps1 salvo que diagnóstico lo haga inevitable.
+- Preferir wrapper externo si corrige output.
+- Mantener EVIDENCE_STATE FRESH.
+

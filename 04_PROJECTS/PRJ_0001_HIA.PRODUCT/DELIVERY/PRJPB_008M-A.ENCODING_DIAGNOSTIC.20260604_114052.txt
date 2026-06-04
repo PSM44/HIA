@@ -1,0 +1,73 @@
+===============================================================================
+FILE: PRJPB_008M-A.ENCODING_DIAGNOSTIC.20260604_114052.txt
+PROJECT: PRJ_0001_HIA.PRODUCT
+TYPE: ENCODING DIAGNOSTIC REPORT
+MB_ID: PRJPB_008M-A
+CREATED_LOCAL: 2026-06-04 11:40:57 -0400
+CREATED_UTC: 2026-06-04T15:40:52Z
+HEAD: 654fcc0 Revert "20260604_HIA_PRJPB_008M_fix_cli_encoding_wsl_winps"
+===============================================================================
+
+01.00_SCOPE
+- Diagn贸stico de mojibake WSL2 + Windows PowerShell sin modificar hia.ps1.
+- No aplica fix de entrypoint.
+
+02.00_INPUTS
+- /tmp/hia_008m_a_ps_encoding.txt
+- /tmp/hia_008m_a_ps_utf8_runtime.txt
+- /tmp/hia_008m_a_cmd_chcp.txt
+- /tmp/hia_008m_a_file_bytes.txt
+- /tmp/hia_008m_a_continue_normal.txt
+- /tmp/hia_008m_a_continue_utf8_wrapper.txt
+
+03.00_FINDINGS_RAW
+---------- POWERSHELL BASELINE ----------
+PSVERSION........: 5.1.26100.8457
+PSEDITION........: Desktop
+OS...............: 
+ConsoleOutput....: IBM437
+OutputEncoding...: us-ascii
+Culture..........: en-US
+UICulture........: en-US
+ACCENT_TEST......: b爏ico sem爊tica validaci sesi acci
+
+---------- POWERSHELL UTF8 RUNTIME ----------
+ConsoleOutput....: utf-8
+OutputEncoding...: utf-8
+ACCENT_TEST_UTF8.: b谩sico sem谩ntica validaci贸n sesi贸n acci贸n
+
+---------- CMD CHCP ----------
+Active code page: 437
+
+---------- FILE BYTES ----------
+FILE.............: 01_UI/terminal/hia.ps1
+SIZE.............: 21339
+BOM..............: UTF8_BOM
+UTF8.............: UTF8_OK
+HEAD16_HEX.......: ef bb bf 3c 23 0a 3d 3d 3d 3d 3d 3d 3d 3d 3d 3d
+-----
+FILE.............: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/BATON/04.0_PROJECT.BATON.txt
+SIZE.............: 32637
+BOM..............: NO_UTF8_BOM
+UTF8.............: UTF8_OK
+HEAD16_HEX.......: 3d 3d 3d 3d 3d 3d 3d 3d 3d 3d 3d 3d 3d 3d 3d 3d
+-----
+FILE.............: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/AGILE/PROJECT.BACKLOG.txt
+SIZE.............: 24407
+BOM..............: NO_UTF8_BOM
+UTF8.............: UTF8_OK
+HEAD16_HEX.......: 49 44 20 7c 20 54 59 50 45 20 7c 20 50 52 49 4f
+-----
+
+---------- NORMAL MOJIBAKE SCAN ----------
+
+---------- UTF8 WRAPPER MOJIBAKE SCAN ----------
+10:CURRENT_OBJECTIVE: Implementar estado b脙隆sico del proyecto desde HIA.
+
+04.00_DECISION_PENDING
+- Si UTF8 wrapper corrige output: crear wrapper oficial y no tocar hia.ps1.
+- Si UTF8 wrapper no corrige output: revisar encoding fuente BATON/BACKLOG o host terminal.
+- Si archivos fuente ya contienen mojibake: corregir contenido, no output encoding.
+
+05.00_NEXT_ACTION
+- PRJPB_008M-B: aplicar fix m铆nimo seg煤n diagn贸stico.
