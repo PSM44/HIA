@@ -536,3 +536,21 @@ PRJPB_008J_EXECUTIVE_DEMO_SCRIPT
 - Evidence stale resuelto o declarado como deuda bloqueante/no bloqueante con criterio.
 - Deuda técnica crítica visible.
 
+==========
+PRJPB_008K_INTERNAL_RELEASE_CANDIDATE
+==========
+00.00_DONE
+- PRJPB_008K: DONE — release candidate interno creado.
+- Resultado: PASS_WITH_WARNINGS.
+- Razón: EVIDENCE_STATE sigue STALE aunque entregables gerenciales existen.
+
+01.00_READY_NOW
+- PRJPB_008L: READY — harden evidence anchor / freshness resolver para evidencia semántica.
+
+02.00_ACCEPTANCE_FOR_008L
+- project continue debe poder reconocer evidencia semántica moderna PRJPB_* como anchor fresco, o declarar regla formal de por qué no.
+- No debe quedar anclado indefinidamente a PRJPB_008D-2 si existen evidencias posteriores válidas.
+- Debe mantener compatibilidad con evidencia RADAR_BASELINE_EVIDENCE.
+- Debe evitar fallback silencioso a LEGACY_LAST_TASK.
+- Debe dejar test/smoke mínimo para project continue.
+

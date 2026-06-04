@@ -1,0 +1,89 @@
+===============================================================================
+FILE: PRJPB_008K.INTERNAL_RELEASE_CANDIDATE.v0.1.20260604_104108.txt
+PROJECT: PRJ_0001_HIA.PRODUCT
+TYPE: INTERNAL_RELEASE_CANDIDATE
+VERSION: v0.1
+CREATED_LOCAL: 2026-06-04 10:41:31 -0400
+CREATED_UTC: 2026-06-04T14:41:08Z
+HEAD_AT_CREATION: ddc4e1a 20260603_HIA_PRJPB_008J_executive_demo_script
+===============================================================================
+
+01.00_RELEASE_CANDIDATE_STATUS
+- RC_ID.............: PRJPB_008K
+- RC_NAME...........: HIA Internal Management Demo Release Candidate v0.1
+- RC_STATUS.........: PASS_WITH_WARNINGS
+- REASON............: entregables gerenciales existen y están versionados, pero project continue mantiene EVIDENCE_STATE STALE.
+- INTENDED_AUDIENCE.: interno / gerencial controlado, no release formal externo.
+
+02.00_INCLUDED_DELIVERABLES
+- Dashboard v0.2:
+  01_UI/web/HIA.MANAGEMENT.DASHBOARD.v0.2.html
+- Demo pack gerencial v0.2:
+  04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_008I.MANAGEMENT_DEMO_PACK.v0.2.20260602_135722.txt
+- Guion ejecutivo demo gerencial v0.1:
+  04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_008J.EXECUTIVE_DEMO_SCRIPT.v0.1.20260604_103403.txt
+- Protocolo screenshots UX/UI:
+  04_PROJECTS/PRJ_0001_HIA.PRODUCT/UX_EVAL/UX_UI.SCREENSHOT.PROTOCOL.txt
+
+03.00_CONTROL_STATE_CAPTURE
+- NEXT_ACTION_AT_CAPTURE:
+  PRJPB_008K | release candidate interno con RADAR/BATON/backlog frescos | ready
+- EVIDENCE_STATE_AT_CAPTURE:
+  STALE
+- EVIDENCE_ANCHOR_AT_CAPTURE:
+  source=PRJPB_008D-2.RADAR_BASELINE_EVIDENCE.20260529_123032 | captured_utc=2026-05-29T16:30:33.9181137Z | output=C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_0001_HIA.PRODUCT\ARTIFACTS\TASKS\PRJPB_008D-2.RADAR_BASELINE_EVIDENCE.20260529_123032.txt | log=C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_PROJECTS\PRJ_0001_HIA.PRODUCT\ARTIFACTS\LOGS\PRJPB_008D-2.RADAR_BASELINE_EVIDENCE.20260529_123032.log
+
+04.00_RELEASE_READINESS_CHECKLIST
+04.10_VERSIONED_DELIVERABLES
+- Dashboard v0.2 exists............................: OK
+- Management demo pack v0.2 exists.................: OK
+- Executive demo script v0.1 exists................: OK
+- Screenshot protocol exists.......................: OK
+
+04.20_CONTINUITY
+- BATON exists.....................................: OK
+- BACKLOG exists...................................: OK
+- NEXT_ACTION captured.............................: OK
+- Git clean before execution.......................: OK
+
+04.30_EVIDENCE_AND_CONTROL
+- RADAR refresh attempted..........................: OK_IF_NO_WARN_IN_LOG
+- EVIDENCE_STATE fresh.............................: FAIL
+- EVIDENCE_STALE declared as known debt............: OK
+- Runtime/versionable evidence policy formalized...: FAIL
+
+04.40_UI_AND_DEMO
+- Dashboard usable for internal demo...............: OK_WITH_WARNINGS
+- Clipboard under local file:// fully guaranteed...: FAIL
+- Screenshot capture protocol defined..............: OK
+- Visual evidence screenshots actually captured....: NOT_IN_SCOPE_FOR_008K
+
+05.00_OPEN_DEBTS_BLOCKING_FORMAL_RELEASE
+- TD_EVIDENCE_ANCHOR_008H/P1:
+  HIA_PROJECT_ENGINE does not recognize generic semantic evidence after PRJPB_008H/008I/008J.
+- TD_EVIDENCE_POLICY/P2:
+  Runtime vs versionable evidence policy is not fully canonical.
+- TD_ENCODING_CONSOLE/P2:
+  Windows PowerShell from WSL shows mojibake in accented Spanish text.
+- TD_ROOT_WBS_NAMING_001/P2:
+  Root contains 04_AGENTS, 04_CONSOLE, 04_PROJECTS; naming/WBS ambiguity requires audit.
+- TD_AI_MEMORY/P2:
+  AI_MEMORY_STATUS remains MISSING.
+
+06.00_RECOMMENDED_NEXT_ACTION
+- PRJPB_008L: READY — harden evidence anchor / freshness resolver for semantic evidence.
+
+07.00_EXECUTIVE_POSITIONING
+This RC can be shown internally as a controlled demo candidate.
+It must not be represented as a fully clean baseline because EVIDENCE_STATE remains STALE.
+The correct executive message is:
+"Functional demo is available; control/evidence layer has one known freshness gap before formal release."
+
+08.00_ATTACHED_COMMAND_OUTPUTS_SUMMARY
+See terminal transcript for:
+- project status
+- project continue
+- project session status
+- git status
+- RADAR refresh
+===============================================================================
