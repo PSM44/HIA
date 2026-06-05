@@ -1878,3 +1878,32 @@ PURPOSE...........: Refrescar hia.state.js luego de alinear project continue/sta
 03.00_NEXT_ACTION
 - PRJPB_009O: READY — endurecer generador hia.state.js como tool reutilizable y eliminar patch manual.
 ==========
+
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009O_HARDEN_HIA_STATE_GENERATOR
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009O_HARDEN_HIA_STATE_GENERATOR_20260605_154628
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 15:46:35 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Endurecer generador hia.state.js como tool reutilizable y eliminar patch manual.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009O: DONE.
+- Tool creado: 02_TOOLS/HIA_CONTROL_TOWER_STATE_GENERATOR.ps1
+- Estado generado: 01_UI/web/control-tower-shell/assets/hia.state.js
+- Delivery: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_009O.HARDEN_HIA_STATE_GENERATOR.20260605_154628.txt
+
+02.00_VALIDATION
+- hia project continue/status resuelven PRJPB_009O antes de generar.
+- hia.state.js contiene PRJPB_009O.
+- Control Tower carga ./assets/hia.state.js.
+- Generador declara snapshot read-only y no reemplaza BATON/BACKLOG/RADAR.
+
+03.00_TECH_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto: crear CURRENT_STATE machine-readable.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001/P2: definir qué TASKS deben versionarse.
+
+04.00_NEXT_ACTION
+- PRJPB_009P: READY — crear CURRENT_STATE machine-readable para eliminar heurística BATON append-only.
+==========

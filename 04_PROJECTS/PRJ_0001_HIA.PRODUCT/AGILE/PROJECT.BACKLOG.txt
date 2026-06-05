@@ -1829,3 +1829,24 @@ PURPOSE...........: Refrescar estado visual Control Tower después de resolver a
 02.00_READY_NOW
 - PRJPB_009O: READY — endurecer generador hia.state.js como tool reutilizable y eliminar patch manual.
 ==========
+
+==========
+PRJPB_009O_HARDEN_HIA_STATE_GENERATOR
+==========
+ID_UNICO..........: PRJPB_009O_HARDEN_HIA_STATE_GENERATOR_20260605_154628
+STATUS............: DONE
+PURPOSE...........: Endurecer generador hia.state.js como tool reutilizable y eliminar patch manual.
+
+01.00_DONE
+- Tool creado: 02_TOOLS/HIA_CONTROL_TOWER_STATE_GENERATOR.ps1
+- Estado generado: 01_UI/web/control-tower-shell/assets/hia.state.js
+- Delivery generado: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_009O.HARDEN_HIA_STATE_GENERATOR.20260605_154628.txt
+
+02.00_READY_NOW
+- PRJPB_009P: READY — crear CURRENT_STATE machine-readable para eliminar heurística BATON append-only.
+
+03.00_ACCEPTANCE_CRITERIA_PRJPB_009P
+- Crear archivo CURRENT_STATE machine-readable versionable o claramente gobernado.
+- project continue/status deben poder consumirlo o validar coherencia contra él.
+- BATON append-only queda como auditoría, no como única fuente de estado vivo.
+==========
