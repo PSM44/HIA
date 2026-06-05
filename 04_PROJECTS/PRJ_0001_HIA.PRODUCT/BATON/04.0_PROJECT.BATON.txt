@@ -1648,3 +1648,36 @@ No avanzar más cosmética antes de dato real.
 Reporte de cierre:
 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/SESSION_CLOSE.HIA.20260604_20260604_185836.txt
 ===============================================================================
+
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009N_C_R_VERIFY_ROLLOVER
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009N_C_R_VERIFY_ROLLOVER_20260605_140537
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 14:05:39 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Verificar corrección de target PRJPB_009N-C-R y avanzar continuidad a PRJPB_009N-D.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009N-C: DONE_WITH_CORRECTION.
+- PRJPB_009N-C-R: DONE — estado real read-only aplicado al Control Tower Shell correcto.
+- Archivo estado: 01_UI/web/control-tower-shell/assets/hia.state.js
+- HTML target: 01_UI/web/control-tower-shell/index.html
+- Se eliminó aplicación errónea en client-shell.
+- Commit corrección: 413642b 20260605_HIA_PRJPB_009N_C_R_correct_real_state_target_control_tower
+
+02.00_VALIDATION
+- Control Tower referencia hia.state.js.
+- Control Tower contiene hia-real-state-panel.
+- hia.state.js contiene window.HIA_REAL_STATE.
+- client-shell no contiene panel erróneo.
+- Repo estaba clean antes del rollover.
+
+03.00_RISKS_AND_DEBT
+- TD_UI_TARGET_DETECTION_001/P1: No autodetectar HTML target cuando la MiniBattle define shell explícito.
+- TD_STATE_NORMALIZATION_001/P2: Normalizar EVIDENCE_STATE a valor limpio FRESH/STALE/UNKNOWN.
+- hia.state.js es snapshot read-only, no live engine.
+
+04.00_NEXT_ACTION
+- PRJPB_009N-D: READY — smoke visual Control Tower Shell con estado real read-only y captura de brechas UX.
+==========

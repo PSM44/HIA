@@ -1667,3 +1667,26 @@ P2:
 
 05.00_REPORT
 - 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/SESSION_CLOSE.HIA.20260604_20260604_185836.txt
+
+==========
+PRJPB_009N_C_R_VERIFY_ROLLOVER
+==========
+ID_UNICO..........: PRJPB_009N_C_R_VERIFY_ROLLOVER_20260605_140537
+STATUS............: DONE
+PURPOSE...........: Verificar corrección de target PRJPB_009N-C-R y preparar smoke visual.
+
+01.00_DONE
+- PRJPB_009N-C: DONE_WITH_CORRECTION.
+- PRJPB_009N-C-R: DONE.
+- Estado real read-only quedó en Control Tower Shell:
+  - 01_UI/web/control-tower-shell/assets/hia.state.js
+  - 01_UI/web/control-tower-shell/index.html
+- Se corrigió aplicación inicial errónea en client-shell.
+
+02.00_READY_NOW
+- PRJPB_009N-D: READY — smoke visual Control Tower Shell con estado real read-only y captura de brechas UX.
+
+03.00_TECH_DEBT
+- TD_UI_TARGET_DETECTION_001/P1: Target UI debe ser explícito, no heurístico por primer index.html.
+- TD_STATE_NORMALIZATION_001/P2: Limpiar extraction de EVIDENCE_STATE.
+==========
