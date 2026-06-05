@@ -1690,3 +1690,23 @@ PURPOSE...........: Verificar corrección de target PRJPB_009N-C-R y preparar sm
 - TD_UI_TARGET_DETECTION_001/P1: Target UI debe ser explícito, no heurístico por primer index.html.
 - TD_STATE_NORMALIZATION_001/P2: Limpiar extraction de EVIDENCE_STATE.
 ==========
+
+==========
+PRJPB_009N_C_R2_FIX_STATE_SRC
+==========
+ID_UNICO..........: PRJPB_009N_C_R2_FIX_STATE_SRC_20260605_140659
+STATUS............: DONE
+PURPOSE...........: Corregir script src de estado real read-only en Control Tower Shell.
+
+01.00_DONE
+- Corregida referencia de hia.state.js en Control Tower.
+- Antes: ../client-shell/assets/hia.state.js
+- Después: ./assets/hia.state.js
+- Validación estricta OK.
+
+02.00_READY_NOW
+- PRJPB_009N-D: READY — smoke visual Control Tower Shell con estado real read-only y captura de brechas UX.
+
+03.00_TECH_DEBT
+- TD_UI_VALIDATION_STRICTNESS_001/P1: validadores UI deben verificar ruta exacta, no solo presencia de string.
+==========

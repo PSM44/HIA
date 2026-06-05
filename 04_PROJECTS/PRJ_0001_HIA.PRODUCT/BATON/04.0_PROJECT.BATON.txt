@@ -1681,3 +1681,34 @@ PURPOSE...........: Verificar corrección de target PRJPB_009N-C-R y avanzar con
 04.00_NEXT_ACTION
 - PRJPB_009N-D: READY — smoke visual Control Tower Shell con estado real read-only y captura de brechas UX.
 ==========
+
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009N_C_R2_FIX_STATE_SRC
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009N_C_R2_FIX_STATE_SRC_20260605_140659
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 14:07:00 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Corregir script src de hia.state.js para que Control Tower cargue su propio estado real read-only.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009N-C-R2: DONE.
+- Se corrigió referencia incorrecta:
+  - Antes: ../client-shell/assets/hia.state.js
+  - Después: ./assets/hia.state.js
+- Archivo HTML: 01_UI/web/control-tower-shell/index.html
+- Archivo estado: 01_UI/web/control-tower-shell/assets/hia.state.js
+
+02.00_VALIDATION
+- No existe referencia a ../client-shell/assets/hia.state.js.
+- Existe referencia a ./assets/hia.state.js.
+- 01_UI/web/control-tower-shell/assets/hia.state.js contiene window.HIA_REAL_STATE.
+- Control Tower mantiene hia-real-state-panel.
+
+03.00_ROOT_CAUSE
+- La validación anterior fue demasiado laxa: aceptaba cualquier aparición de hia.state.js.
+- Se endurece criterio: validar ruta exacta del asset target.
+
+04.00_NEXT_ACTION
+- PRJPB_009N-D: READY — smoke visual Control Tower Shell con estado real read-only y captura de brechas UX.
+==========
