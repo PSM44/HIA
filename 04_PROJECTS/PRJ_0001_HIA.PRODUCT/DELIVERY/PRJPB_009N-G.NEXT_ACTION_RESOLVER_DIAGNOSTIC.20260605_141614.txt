@@ -1,0 +1,22 @@
+==========
+PRJPB_009N-G_NEXT_ACTION_RESOLVER_DIAGNOSTIC
+==========
+ID_UNICO..........: PRJPB_009N-G.NEXT_ACTION_RESOLVER_DIAGNOSTIC.20260605_141614
+STATUS............: DIAGNOSTIC_DONE
+FECHA_LOCAL.......: 2026-06-05 14:16:24 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+
+01.00_LIVE_RESULT
+LIVE_NEXT_ACTION..: PRJPB_009N-C | implementar estado real read-only visible en Control Tower Shell | ready
+
+02.00_EXPECTED_FROM_DOCUMENTS
+BATON_EXPECTED....: PRJPB_009O: READY — endurecer generador hia.state.js como tool reutilizable y eliminar patch manual.
+BACKLOG_EXPECTED..: PRJPB_009O: READY — endurecer generador hia.state.js como tool reutilizable y eliminar patch manual.
+
+03.00_DIAGNOSIS
+El CLI sigue devolviendo PRJPB_009N-C si LIVE_NEXT_ACTION contiene PRJPB_009N-C.
+Esto indica que hia project continue no está usando el último bloque operativo de BATON/BACKLOG,
+o que usa un cache/config/legacy source anterior.
+
+04.00_RECOMMENDED_NEXT_ACTION
+PRJPB_009N-H — patch resolver NEXT_ACTION para usar último bloque válido y excluir bloques DONE/históricos.
