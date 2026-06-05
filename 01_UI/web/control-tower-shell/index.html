@@ -84,7 +84,7 @@
 
 <section id="hia-real-state-panel" class="hia-real-state-panel" style="margin:24px 0;padding:18px;border:1px solid rgba(148,163,184,.35);border-radius:16px;">
   <h2 style="margin:0 0 10px 0;">Estado real read-only</h2>
-  <p style="margin:0 0 14px 0;">Snapshot visible generado desde BATON, BACKLOG, RADAR, Git y HIA CLI. No es fuente canónica; es una vista ejecutiva-operativa.</p>
+  <p style="margin:0 0 14px 0;">Snapshot visible generado desde CURRENT_STATE.json como fuente primaria. BATON, BACKLOG, RADAR, Git y HIA CLI quedan como fuentes de auditoría, contexto y fallback operativo. Esta vista es read-only, CURRENT_STATE gana si es válido y este panel no reemplaza la fuente canónica.</p>
   <div id="hia-real-state-content" style="display:grid;gap:10px;font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;font-size:13px;"></div>
 </section>
 <script>

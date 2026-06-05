@@ -6,10 +6,10 @@
     "generator":  "02_TOOLS/HIA_CURRENT_STATE_GENERATOR.ps1",
     "current_objective":  "Implementar estado básico del proyecto desde HIA.",
     "next_action":  {
-                        "id":  "PRJPB_009V",
-                        "title":  "alinear copy visible de Control Tower con gobernanza CURRENT_STATE/fallback",
+                        "id":  "PRJPB_009W",
+                        "title":  "crear validador gobernado de estado/evidencia/snapshot para release-readiness",
                         "status":  "READY",
-                        "raw":  "PRJPB_009V | alinear copy visible de Control Tower con gobernanza CURRENT_STATE/fallback | ready",
+                        "raw":  "PRJPB_009W | crear validador gobernado de estado/evidencia/snapshot para release-readiness | ready",
                         "source":  "CURRENT_STATE"
                     },
     "evidence":  {

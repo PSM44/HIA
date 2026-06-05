@@ -146,6 +146,27 @@ SESSION_CLOSE_20260518_HIA_PRJPB_007C_TO_007H_BACKLOG
   6) roadmap y deuda técnica visibles.
 
 ==========
+==========
+PRJPB_009V_CONTROL_TOWER_VISIBLE_COPY_ALIGNMENT_EOF
+==========
+FECHA_LOCAL.......: 2026-06-05 18:40:35 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE
+
+01.00_DONE
+- PRJPB_009V: DONE.
+- Control Tower visible copy aligned with CURRENT_STATE/fallback governance.
+- index.html no longer implies BATON/BACKLOG/CLI are primary visible-state source.
+- CURRENT_STATE remains canonical.
+- hia.state.js remains generated read-only snapshot.
+
+02.00_NEXT_ACTION
+- PRJPB_009W: READY — crear validador gobernado de estado/evidencia/snapshot para release-readiness.
+
+03.00_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
+==========
 PRJPB_009S_EVIDENCE_VERSIONING_POLICY_EOF
 ==========
 FECHA_LOCAL.......: 2026-06-05 17:30:15 -0400

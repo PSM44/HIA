@@ -1,0 +1,29 @@
+TASK ID: PRJPB_009V_CONTROL_TOWER_VISIBLE_COPY_CURRENT_STATE_ALIGNMENT
+TIMESTAMP: 20260605_184035
+
+OLD VISIBLE WORDING PROBLEM
+- index.html described the visible snapshot as generated from BATON, BACKLOG, RADAR, Git and HIA CLI as if those were the primary visible-state source.
+- That wording was stale after CURRENT_STATE became the canonical machine-readable operational state.
+
+NEW WORDING
+- Snapshot visible generado desde CURRENT_STATE.json como fuente primaria.
+- BATON, BACKLOG, RADAR, Git y HIA CLI quedan como fuentes de auditoría, contexto y fallback operativo.
+- Esta vista es read-only, CURRENT_STATE gana si es válido y este panel no reemplaza la fuente canónica.
+
+FILES CHANGED
+- 01_UI/web/control-tower-shell/index.html
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/GOVERNANCE/CURRENT_STATE.CONTRACT.md
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/STATE/CURRENT_STATE.json
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/BATON/04.0_PROJECT.BATON.txt
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/AGILE/PROJECT.BACKLOG.txt
+
+VALIDATION RESULTS
+- index.html now names CURRENT_STATE.json as primary.
+- index.html now frames BATON/BACKLOG/RADAR/Git/HIA CLI as audit/context/fallback only.
+- CURRENT_STATE advanced to PRJPB_009W as canonical next action.
+- CLI continue/status remain aligned to CURRENT_STATE.
+- Control Tower generator remains CHECK by default and CURRENT_STATE-first.
+
+REMAINING DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 remains open.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 remains open.

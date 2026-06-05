@@ -57,6 +57,14 @@ Required fields:
 - Regenerate `hia.state.js` only when intentionally refreshing visible Control Tower state.
 - If only timestamp/head changes, commit the refresh only when operationally required.
 
+## Control Tower Visible Copy Policy
+
+- Control Tower UI text must identify `CURRENT_STATE.json` as the primary machine-readable operational source.
+- Control Tower UI text must describe `hia.state.js` as a generated read-only snapshot, not the canonical source.
+- Control Tower UI text may reference `BATON`, `BACKLOG`, `RADAR`, `Git`, and `HIA CLI` only as audit, context, or fallback inputs.
+- Control Tower UI text must not describe fallback sources as primary when `CURRENT_STATE.json` is valid.
+- Visible Control Tower copy must stay aligned with this `CURRENT_STATE`/fallback contract.
+
 ## Fallback Contract
 
 - Missing `CURRENT_STATE.json` -> fallback allowed with warning.

@@ -212,6 +212,29 @@ SESSION_CLOSE_20260518_HIA_PRJPB_007C_TO_007H
   .\01_UI\terminal\hia.ps1 project session start PRJ_0001_HIA.PRODUCT
 
 ==========
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009V_CONTROL_TOWER_VISIBLE_COPY_ALIGNMENT_EOF
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009V_CONTROL_TOWER_VISIBLE_COPY_ALIGNMENT_EOF_20260605_184035
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 18:40:35 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Canonical append-only cierre EOF para alineacion de copy visible Control Tower con gobernanza CURRENT_STATE/fallback.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009V: DONE.
+- Control Tower visible copy aligned with CURRENT_STATE/fallback governance.
+- index.html no longer implies BATON/BACKLOG/CLI are primary visible-state source.
+- CURRENT_STATE remains canonical.
+- hia.state.js remains generated read-only snapshot.
+
+04.00_NEXT_ACTION
+- PRJPB_009W | crear validador gobernado de estado/evidencia/snapshot para release-readiness | ready
+
+05.00_TECH_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
+==========
 SESSION_UPDATE_20260605_HIA_PRJPB_009S_EVIDENCE_VERSIONING_POLICY_EOF
 ==========
 ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009S_EVIDENCE_VERSIONING_POLICY_EOF_20260605_173015
