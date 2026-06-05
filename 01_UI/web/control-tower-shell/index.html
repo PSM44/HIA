@@ -81,5 +81,38 @@
   <script src="../client-shell/assets/hia.state.js"></script>
   <script src="./assets/app.js"></script>
   <script src="./assets/ux.js"></script>
+
+<section id="hia-real-state-panel" class="hia-real-state-panel" style="margin:24px 0;padding:18px;border:1px solid rgba(148,163,184,.35);border-radius:16px;">
+  <h2 style="margin:0 0 10px 0;">Estado real read-only</h2>
+  <p style="margin:0 0 14px 0;">Snapshot visible generado desde BATON, BACKLOG, RADAR, Git y HIA CLI. No es fuente canónica; es una vista ejecutiva-operativa.</p>
+  <div id="hia-real-state-content" style="display:grid;gap:10px;font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;font-size:13px;"></div>
+</section>
+<script>
+(function () {
+  const state = window.HIA_REAL_STATE;
+  const target = document.getElementById("hia-real-state-content");
+  if (!target || !state) return;
+
+  const rows = [
+    ["Project", state.project.id],
+    ["Branch", state.project.branch],
+    ["HEAD", state.project.head_short + " — " + state.project.head_message],
+    ["NEXT_ACTION", state.continuity.next_action],
+    ["Evidence", state.continuity.evidence_state],
+    ["Session", state.continuity.session_status],
+    ["RADAR Lite", state.radar.lite_bytes + " bytes"],
+    ["RADAR Index", state.radar.index_bytes + " bytes"],
+    ["RADAR Core", state.radar.core_bytes + " bytes"],
+    ["Generated", state.continuity.generated_local]
+  ];
+
+  target.innerHTML = rows.map(([k,v]) =>
+    `<div style="display:grid;grid-template-columns:160px 1fr;gap:12px;padding:8px 10px;border-radius:10px;background:rgba(15,23,42,.06);">
+      <strong>${k}</strong><span>${String(v || "N/A")}</span>
+    </div>`
+  ).join("");
+})();
+</script>
+
 </body>
 </html>
