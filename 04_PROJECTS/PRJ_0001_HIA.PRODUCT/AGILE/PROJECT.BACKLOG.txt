@@ -147,6 +147,28 @@ SESSION_CLOSE_20260518_HIA_PRJPB_007C_TO_007H_BACKLOG
 
 ==========
 ==========
+PRJPB_009R_CURRENT_STATE_FALLBACK_CONTRACT
+==========
+FECHA_LOCAL.......: 2026-06-05 16:21:23 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE
+
+01.00_DONE
+- PRJPB_009R: DONE.
+- CURRENT_STATE/fallback contract documented.
+- Control Tower snapshot policy documented.
+- Remaining parser duplication/debt documented.
+
+02.00_NEXT_ACTION
+- PRJPB_009S: READY — definir política de versionado de ARTIFACTS/TASKS y evidencia runtime.
+
+03.00_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto como deuda de fallback.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001/P2 sigue abierto.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
+- TD_GENERATED_STATE_SNAPSHOT_DIRTY_001/P2 sigue abierto.
+==========
+==========
 PRJPB_009Q_CURRENT_STATE_PRIMARY_CONTROL_TOWER_GENERATOR
 ==========
 FECHA_LOCAL.......: 2026-06-05 16:21:23 -0400
@@ -1923,4 +1945,26 @@ STATUS............: DONE
 03.00_DEBT
 - TD_BATON_APPEND_ONLY_STATE_001/P1 parcialmente mitigado; fallback heuristico sigue existiendo.
 - TD_TASK_EVIDENCE_TRACKING_POLICY_001/P2 sigue abierto.
+==========
+==========
+PRJPB_009R_CURRENT_STATE_FALLBACK_CONTRACT_EOF
+==========
+FECHA_LOCAL.......: 2026-06-05 16:21:23 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE
+
+01.00_DONE
+- PRJPB_009R: DONE.
+- CURRENT_STATE/fallback contract documented.
+- Control Tower snapshot policy documented.
+- Remaining parser duplication/debt documented.
+
+02.00_NEXT_ACTION
+- PRJPB_009S: READY — definir política de versionado de ARTIFACTS/TASKS y evidencia runtime.
+
+03.00_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto como deuda de fallback.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001/P2 sigue abierto.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
+- TD_GENERATED_STATE_SNAPSHOT_DIRTY_001/P2 sigue abierto.
 ==========

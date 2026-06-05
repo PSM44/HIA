@@ -2357,6 +2357,9 @@ function Convert-HIACurrentStateNextActionToRaw {
 function Get-HIACurrentState {
     param([string]$ProjectRootPath)
 
+    # Contract: CURRENT_STATE is the primary machine-readable source.
+    # Missing or invalid CURRENT_STATE must not break the CLI; callers fall back
+    # to BATON/BACKLOG and surface status/warnings explicitly.
     $statePath = Get-HIACurrentStatePath -ProjectRootPath $ProjectRootPath
     $result = [ordered]@{
         STATUS = "MISSING"
@@ -2468,7 +2471,7 @@ function Test-HIAActionableNextActionLine {
 
     if ($trimmed -notmatch 'PRJPB_[0-9A-Z\-_]+') { return $false }
 
-    if ($trimmed -match 'DONE|DONE_WITH_WARNINGS|DONE_WITH_NO_GO|STATUS\.+:|PURPOSE\.+:|ID_UNICO\.+:|Reporte?:|Evidencia|Delivery|Commit|ANTES|DESPUES|before|after') {
+    if ($trimmed -match 'DONE|DONE_WITH_WARNINGS|DONE_WITH_NO_GO|STATUS\.+:|PURPOSE\.+:|ID_UNICO\.+:|Reporte?:|Evidencia\s*:|Delivery\s*:|Commit\s*:|ANTES|DESPUES|before|after') {
         return $false
     }
 
@@ -2616,6 +2619,8 @@ function Get-HIAProjectPortfolioSnapshot {
     $batonPath = Join-Path $ProjectRootPath "BATON\04.0_PROJECT.BATON.txt"
     $backlogPath = Join-Path $ProjectRootPath "AGILE\PROJECT.BACKLOG.txt"
     $sessionPath = Join-Path $ProjectRootPath "ARTIFACTS\SESSION.ACTIVE.json"
+    # All operational readers converge here so CURRENT_STATE precedence and
+    # fallback warnings stay consistent across continue/status/review/portfolio.
     $currentState = Get-HIACurrentState -ProjectRootPath $ProjectRootPath
 
     $projectState = "N/A"

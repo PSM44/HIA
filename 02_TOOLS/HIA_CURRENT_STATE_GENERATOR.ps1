@@ -80,7 +80,7 @@ function Test-HIAActionableNextActionLine {
     $trimmed = ([string]$Line).Trim()
     if ($trimmed -notmatch 'PRJPB_[0-9A-Z\-_]+') { return $false }
 
-    if ($trimmed -match 'DONE|DONE_WITH_WARNINGS|DONE_WITH_NO_GO|STATUS\.+:|PURPOSE\.+:|ID_UNICO\.+:|Reporte?:|Evidencia|Delivery|Commit|ANTES|DESPUES|before|after') {
+    if ($trimmed -match 'DONE|DONE_WITH_WARNINGS|DONE_WITH_NO_GO|STATUS\.+:|PURPOSE\.+:|ID_UNICO\.+:|Reporte?:|Evidencia\s*:|Delivery\s*:|Commit\s*:|ANTES|DESPUES|before|after') {
         return $false
     }
 

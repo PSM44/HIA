@@ -33,6 +33,8 @@ function Get-FileBytes {
 function Get-CurrentStatePayload {
     param([string]$Path)
 
+    # Contract mirror: Control Tower consumes CURRENT_STATE first and only
+    # falls back to CLI-derived parsing when CURRENT_STATE is missing or invalid.
     $result = [ordered]@{
         status = "MISSING"
         warning = "CURRENT_STATE missing"

@@ -213,6 +213,62 @@ SESSION_CLOSE_20260518_HIA_PRJPB_007C_TO_007H
 
 ==========
 ==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009R_CURRENT_STATE_FALLBACK_CONTRACT_EOF
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009R_CURRENT_STATE_FALLBACK_CONTRACT_EOF_20260605_162123
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 16:21:23 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Canonical append-only cierre EOF para contrato CURRENT_STATE/fallback.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009R: DONE.
+- CURRENT_STATE/fallback contract documented.
+- Control Tower snapshot policy documented.
+- Remaining parser duplication/debt documented.
+
+04.00_NEXT_ACTION
+- PRJPB_009S | definir política de versionado de ARTIFACTS/TASKS y evidencia runtime | ready
+
+05.00_TECH_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto como deuda de fallback.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001/P2 sigue abierto.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
+- TD_GENERATED_STATE_SNAPSHOT_DIRTY_001/P2 sigue abierto.
+==========
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009R_CURRENT_STATE_FALLBACK_CONTRACT
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009R_CURRENT_STATE_FALLBACK_CONTRACT_20260605_162123
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 16:21:23 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Documentar contrato CURRENT_STATE/fallback y reducir duplicacion de parsing donde es seguro.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009R: DONE.
+- CURRENT_STATE/fallback contract documented.
+- Control Tower snapshot policy documented.
+- Remaining parser duplication/debt documented.
+
+02.00_VALIDATION
+- CURRENT_STATE sigue siendo la fuente primaria para continue/status/review.
+- Control Tower generator consume CURRENT_STATE como primary y expone fallback explicito.
+- hia.state.js final fue regenerado con estado canonical.
+
+04.00_NEXT_ACTION
+- PRJPB_009S: READY — definir política de versionado de ARTIFACTS/TASKS y evidencia runtime.
+
+05.00_TECH_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto como deuda de fallback.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001/P2 sigue abierto.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
+- TD_GENERATED_STATE_SNAPSHOT_DIRTY_001/P2 sigue abierto.
+==========
+
+04.00_NEXT_ACTION
+- PRJPB_009S | definir política de versionado de ARTIFACTS/TASKS y evidencia runtime | ready
+==========
 SESSION_UPDATE_20260605_HIA_PRJPB_009Q_CURRENT_STATE_PRIMARY_CONTROL_TOWER_GENERATOR
 ==========
 ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009Q_CURRENT_STATE_PRIMARY_CONTROL_TOWER_GENERATOR_20260605_162123
@@ -2031,4 +2087,28 @@ PURPOSE...........: Canonical append-only cierre EOF para CURRENT_STATE machine-
 03.00_TECH_DEBT
 - TD_BATON_APPEND_ONLY_STATE_001/P1 parcialmente mitigado; fallback heuristico sigue existiendo.
 - TD_TASK_EVIDENCE_TRACKING_POLICY_001/P2 sigue abierto.
+==========
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009R_CURRENT_STATE_FALLBACK_CONTRACT_EOF
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009R_CURRENT_STATE_FALLBACK_CONTRACT_EOF_20260605_162123
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 16:21:23 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Canonical append-only cierre EOF para contrato CURRENT_STATE/fallback.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009R: DONE.
+- CURRENT_STATE/fallback contract documented.
+- Control Tower snapshot policy documented.
+- Remaining parser duplication/debt documented.
+
+04.00_NEXT_ACTION
+- PRJPB_009S | definir política de versionado de ARTIFACTS/TASKS y evidencia runtime | ready
+
+05.00_TECH_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto como deuda de fallback.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001/P2 sigue abierto.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
+- TD_GENERATED_STATE_SNAPSHOT_DIRTY_001/P2 sigue abierto.
 ==========
