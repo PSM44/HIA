@@ -2009,3 +2009,23 @@ STATUS............: DONE
 - TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto.
 - TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
 ==========
+==========
+PRJPB_009T_HIA_STATE_JS_DIRTY_DIFF_NORMALIZATION_EOF
+==========
+FECHA_LOCAL.......: 2026-06-05 18:10:00 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE
+
+01.00_DONE
+- PRJPB_009T: DONE.
+- hia.state.js generator write semantics normalized.
+- Default generator mode no longer dirties repo on semantic no-op.
+- Explicit write/refresh mode documented.
+
+02.00_NEXT_ACTION
+- PRJPB_009U: READY — reducir duplicación de parsing fallback y centralizar helpers CURRENT_STATE donde sea seguro.
+
+03.00_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
+==========

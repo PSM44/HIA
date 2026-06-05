@@ -1,0 +1,32 @@
+TASK_ID: PRJPB_009T_HIA_STATE_JS_DIRTY_DIFF_NORMALIZATION
+STATUS: DONE
+DATE_LOCAL: 2026-06-05 18:10:00 -0400
+PROJECT: PRJ_0001_HIA.PRODUCT
+
+OLD_BEHAVIOR
+- `HIA_CONTROL_TOWER_STATE_GENERATOR.ps1` always wrote `hia.state.js`.
+- Volatile metadata such as timestamps and git head fields dirtied the repo even when operational state was unchanged.
+
+NEW_BEHAVIOR
+- Default mode is `CHECK` and does not write.
+- Explicit `-Write` and `-Refresh` modes are supported.
+- Semantic payload comparison decides whether a write is needed.
+- Volatile metadata no longer forces writes during semantic no-op runs.
+
+GENERATOR_MODES
+- Default: `CHECK`
+- Explicit write: `-Write`
+- Explicit write alias: `-Refresh`
+- Forced rewrite: `-ForceRefresh`
+
+IDEMPOTENCY_VALIDATION
+- Default run reported `WOULD_WRITE: NO`, `WROTE_FILE: NO`, `NO_WRITE_NEEDED: YES`.
+- Two consecutive `-Write` runs after normalization reported `WOULD_WRITE: NO`, `WROTE_FILE: NO`, `NO_WRITE_NEEDED: YES`.
+
+CLI_VALIDATION
+- `hia project continue PRJ_0001_HIA.PRODUCT` resolves `PRJPB_009U` from `CURRENT_STATE`.
+- `hia project status PRJ_0001_HIA.PRODUCT` resolves `PRJPB_009U` from `CURRENT_STATE`.
+
+REMAINING_DEBT
+- `TD_BATON_APPEND_ONLY_STATE_001/P1` remains open.
+- `TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1` remains open.

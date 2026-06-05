@@ -1,15 +1,15 @@
 ﻿{
     "schema":  "HIA_CURRENT_STATE.v1",
     "project_id":  "PRJ_0001_HIA.PRODUCT",
-    "generated_local":  "2026-06-05 17:31:09 -04:00",
-    "generated_utc":  "2026-06-05T21:31:09.0880952Z",
+    "generated_local":  "2026-06-05 18:07:03 -04:00",
+    "generated_utc":  "2026-06-05T22:07:03.6193991Z",
     "generator":  "02_TOOLS/HIA_CURRENT_STATE_GENERATOR.ps1",
     "current_objective":  "Implementar estado básico del proyecto desde HIA.",
     "next_action":  {
-                        "id":  "PRJPB_009T",
-                        "title":  "normalizar regeneración de hia.state.js para evitar dirty diffs innecesarios",
+                        "id":  "PRJPB_009U",
+                        "title":  "reducir duplicación de parsing fallback y centralizar helpers CURRENT_STATE donde sea seguro",
                         "status":  "READY",
-                        "raw":  "PRJPB_009T | normalizar regeneración de hia.state.js para evitar dirty diffs innecesarios | ready",
+                        "raw":  "PRJPB_009U | reducir duplicación de parsing fallback y centralizar helpers CURRENT_STATE donde sea seguro | ready",
                         "source":  "CURRENT_STATE"
                     },
     "evidence":  {
@@ -23,8 +23,8 @@
                 },
     "git":  {
                 "branch":  "feat/20260405-console-v2-phase1-phase2",
-                "head_short":  "fb0c767",
-                "head_message":  "20260605_HIA_PRJPB_009R_R_refresh_state_after_verify"
+                "head_short":  "23c6459",
+                "head_message":  "20260605_HIA_PRJPB_009S_evidence_versioning_policy"
             },
     "policy":  {
                    "precedence":  "CURRENT_STATE first; fallback to BATON/BACKLOG only if missing or invalid",
