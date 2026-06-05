@@ -2070,3 +2070,50 @@ STATUS............: DONE
 - TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto.
 - TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
 ==========
+
+==========
+SESSION_CLOSE_20260605_1844_HIA_BACKLOG_ROLLOVER
+==========
+FECHA_LOCAL.......: 2026-06-05 18:44 Santiago Chile
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: CLOSED
+
+01.00_DONE_THIS_SESSION
+- PRJPB_009P: DONE — CURRENT_STATE machine-readable creado y consumido por continue/status/review.
+- PRJPB_009Q: DONE — Control Tower generator usa CURRENT_STATE como primary.
+- PRJPB_009R: DONE — CURRENT_STATE/fallback contract documentado.
+- PRJPB_009S: DONE — evidence versioning policy documentada.
+- PRJPB_009T: DONE — hia.state.js dirty diff normalization implementada.
+- PRJPB_009U: DONE — helper compartido HIA_STATE_HELPERS.ps1 creado y duplicación reducida.
+- PRJPB_009V: DONE — copy visible Control Tower alineado con CURRENT_STATE/fallback governance.
+
+02.00_READY_NOW
+- PRJPB_009W: READY — crear validador gobernado de estado/evidencia/snapshot para release-readiness.
+
+03.00_NEXT_BACKLOG
+- PRJPB_009X: BACKLOG — internal release-candidate hardening pass and evidence package.
+- PRJPB_009Y: BACKLOG — normalizar HIA_CURRENT_STATE_GENERATOR.ps1 contra dirty diffs por metadata volátil.
+- PRJPB_009Z: BACKLOG — probar fallback degradado CURRENT_STATE missing/invalid -> BATON/BACKLOG con warning explícito.
+- PRJPB_010A: BACKLOG — release candidate interno Control Tower/estado/evidencia/CLI.
+- PRJPB_010B: BACKLOG — demo pack gerencial interno con script, checklist y capturas.
+- PRJPB_010C: BACKLOG — paquete funcional gerencial HIA v0.1.
+
+04.00_TECHNICAL_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1: OPEN — fallback BATON/BACKLOG append-order sensitive.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1: OPEN — converger consumidores safe hacia CURRENT_STATE.
+- TD_CURRENT_STATE_GENERATOR_DIRTY_001/P2: OPEN — metadata volátil puede ensuciar CURRENT_STATE.json.
+- TD_GENERATED_STATE_SNAPSHOT_DIRTY_001/P2: MITIGATED/OBSERVE — hia.state.js semantic hash reduce dirty diffs.
+- TD_RELEASE_VALIDATION_AUTOMATION_001/P2: OPEN — objetivo directo de PRJPB_009W.
+
+05.00_DELIVERY_PATH_TO_MANAGEMENT
+PRJPB_009W | Validator PASS/FAIL | Release-readiness | Evidencia repetible | NEXT
+PRJPB_009X | RC hardening report | Release Candidate | Paquete interno estable | BACKLOG
+PRJPB_010A | Smoke demo final | Demo | Control Tower demostrable | BACKLOG
+PRJPB_010B | Guion demo gerencial | Presentación | Demo ejecutiva | BACKLOG
+PRJPB_010C | Delivery pack gerencial | Gerencia | Entregable funcional | BACKLOG
+
+06.00_NOTES
+- CURRENT_STATE es fuente primaria; BATON/BACKLOG quedan como fallback/auditoría.
+- DELIVERY/GOVERNANCE/STATE/BATON/BACKLOG son tracked según política de evidencia.
+- ARTIFACTS/TASKS y ARTIFACTS/LOGS permanecen runtime-local salvo promoción explícita.
+==========

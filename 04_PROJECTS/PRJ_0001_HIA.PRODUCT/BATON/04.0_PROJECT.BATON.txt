@@ -2224,3 +2224,61 @@ PURPOSE...........: Canonical append-only cierre EOF para helper shared path de 
 - TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto.
 - TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
 ==========
+
+==========
+SESSION_CLOSE_20260605_1844_HIA_CURRENT_STATE_CONTROL_TOWER_RELEASE_READINESS
+==========
+ID_UNICO..........: SESSION_CLOSE_20260605_1844_HIA_CURRENT_STATE_CONTROL_TOWER_RELEASE_READINESS
+STATUS............: CLOSED
+FECHA_LOCAL.......: 2026-06-05 18:44 Santiago Chile
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+ROOT_WIN..........: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
+ROOT_WSL..........: /mnt/c/01. GitHub/Wings3.0/01_PROJECTS/HIA
+PURPOSE...........: Cierre documental de sesión posterior a PRJPB_009V y preparación de PRJPB_009W.
+
+01.00_ESTADO_CORROBORADO
+- CURRENT_STATE.json declara schema HIA_CURRENT_STATE.v1.
+- CURRENT_STATE.json declara project_id PRJ_0001_HIA.PRODUCT.
+- CURRENT_STATE.json declara NEXT_ACTION: PRJPB_009W | crear validador gobernado de estado/evidencia/snapshot para release-readiness | ready.
+- BATON contiene PRJPB_009V como DONE y PRJPB_009W como NEXT_ACTION.
+- BACKLOG contiene PRJPB_009V como DONE y PRJPB_009W como READY.
+- RADAR fue adjuntado/regenerado con timestamp 2026-06-05T22:48 UTC.
+
+02.00_HECHO_EN_SESION
+- PRJPB_009P: CURRENT_STATE machine-readable creado y consumido por CLI.
+- PRJPB_009Q: Control Tower generator migrado a CURRENT_STATE primary.
+- PRJPB_009R: contrato CURRENT_STATE/fallback documentado.
+- PRJPB_009S: política de versionado de evidencia documentada.
+- PRJPB_009T: hia.state.js normalizado con write semantics / semantic no-op.
+- PRJPB_009U: helpers de fallback/current-state centralizados donde era seguro.
+- PRJPB_009V: copy visible del Control Tower alineado con gobernanza CURRENT_STATE/fallback.
+
+03.00_DEUDA_TECNICA_ABIERTA
+- TD_BATON_APPEND_ONLY_STATE_001/P1: BATON/BACKLOG siguen existiendo como fallback append-order/parser-driven.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1: faltan consumidores futuros por converger completamente a CURRENT_STATE.
+- TD_CURRENT_STATE_GENERATOR_DIRTY_001/P2: CURRENT_STATE generator aún puede ensuciar CURRENT_STATE.json por metadata volátil.
+- TD_GENERATED_STATE_SNAPSHOT_DIRTY_001/P2: mitigada materialmente para hia.state.js; mantener en observación.
+- TD_RELEASE_VALIDATION_AUTOMATION_001/P2: pendiente crear validador gobernado de release-readiness.
+
+04.00_NEXT_ACTION
+- PRJPB_009W | crear validador gobernado de estado/evidencia/snapshot para release-readiness | ready
+
+05.00_PATH_A_ENTREGABLE_FUNCIONAL_GERENCIA
+- PRJPB_009W -> validador gobernado PASS/FAIL de CURRENT_STATE, CLI, snapshot, evidence policy, RADAR y git clean.
+- PRJPB_009X -> hardening release-candidate interno y evidence package.
+- PRJPB_010A -> smoke demo final Control Tower + CLI + evidencia.
+- PRJPB_010B -> guion demo gerencial y decisiones requeridas.
+- PRJPB_010C -> paquete funcional gerencial HIA v0.1.
+
+06.00_HANDOFF_OPERATIVO
+- Próxima sesión debe iniciar verificando:
+  1) git status --short
+  2) git log --oneline -8
+  3) CURRENT_STATE.json next_action.id = PRJPB_009W
+  4) hia project continue/status/review
+  5) HIA_CONTROL_TOWER_STATE_GENERATOR.ps1 en modo CHECK
+  6) hia.state.js con CURRENT_STATE_PRIMARY y SEMANTIC_HASH
+- No iniciar PRJPB_009X hasta completar PRJPB_009W.
+- No tocar HUMAN salvo cambio doctrinal explícito.
+- No eliminar BATON/BACKLOG fallback todavía.
+==========
