@@ -146,6 +146,26 @@ SESSION_CLOSE_20260518_HIA_PRJPB_007C_TO_007H_BACKLOG
   6) roadmap y deuda técnica visibles.
 
 ==========
+PRJPB_009S_EVIDENCE_VERSIONING_POLICY_EOF
+==========
+FECHA_LOCAL.......: 2026-06-05 17:30:15 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE
+
+01.00_DONE
+- PRJPB_009S: DONE.
+- Evidence versioning policy documented.
+- ARTIFACTS/TASKS policy defined.
+- DELIVERY/GOVERNANCE/STATE/BATON/BACKLOG versioning policy clarified.
+
+02.00_NEXT_ACTION
+- PRJPB_009T: READY — normalizar regeneración de hia.state.js para evitar dirty diffs innecesarios.
+
+03.00_DEBT
+- TD_GENERATED_STATE_SNAPSHOT_DIRTY_001/P2 sigue abierto.
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
+==========
 ==========
 PRJPB_009R_CURRENT_STATE_FALLBACK_CONTRACT
 ==========
@@ -1967,4 +1987,25 @@ STATUS............: DONE
 - TD_TASK_EVIDENCE_TRACKING_POLICY_001/P2 sigue abierto.
 - TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
 - TD_GENERATED_STATE_SNAPSHOT_DIRTY_001/P2 sigue abierto.
+==========
+==========
+PRJPB_009S_EVIDENCE_VERSIONING_POLICY_EOF_CANON
+==========
+FECHA_LOCAL.......: 2026-06-05 17:37:45 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE
+
+01.00_DONE
+- PRJPB_009S: DONE.
+- Evidence versioning policy documented.
+- ARTIFACTS/TASKS policy defined.
+- DELIVERY/GOVERNANCE/STATE/BATON/BACKLOG versioning policy clarified.
+
+02.00_NEXT_ACTION
+- PRJPB_009T: READY — normalizar regeneración de hia.state.js para evitar dirty diffs innecesarios.
+
+03.00_DEBT
+- TD_GENERATED_STATE_SNAPSHOT_DIRTY_001/P2 sigue abierto.
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
 ==========

@@ -1,15 +1,15 @@
 ﻿{
     "schema":  "HIA_CURRENT_STATE.v1",
     "project_id":  "PRJ_0001_HIA.PRODUCT",
-    "generated_local":  "2026-06-05 16:59:35 -04:00",
-    "generated_utc":  "2026-06-05T20:59:35.9354377Z",
+    "generated_local":  "2026-06-05 17:31:09 -04:00",
+    "generated_utc":  "2026-06-05T21:31:09.0880952Z",
     "generator":  "02_TOOLS/HIA_CURRENT_STATE_GENERATOR.ps1",
     "current_objective":  "Implementar estado básico del proyecto desde HIA.",
     "next_action":  {
-                        "id":  "PRJPB_009S",
-                        "title":  "definir política de versionado de ARTIFACTS/TASKS y evidencia runtime",
+                        "id":  "PRJPB_009T",
+                        "title":  "normalizar regeneración de hia.state.js para evitar dirty diffs innecesarios",
                         "status":  "READY",
-                        "raw":  "PRJPB_009S | definir política de versionado de ARTIFACTS/TASKS y evidencia runtime | ready",
+                        "raw":  "PRJPB_009T | normalizar regeneración de hia.state.js para evitar dirty diffs innecesarios | ready",
                         "source":  "CURRENT_STATE"
                     },
     "evidence":  {
@@ -23,8 +23,8 @@
                 },
     "git":  {
                 "branch":  "feat/20260405-console-v2-phase1-phase2",
-                "head_short":  "c751e54",
-                "head_message":  "20260605_HIA_PRJPB_009Q_R_refresh_state_after_verify"
+                "head_short":  "fb0c767",
+                "head_message":  "20260605_HIA_PRJPB_009R_R_refresh_state_after_verify"
             },
     "policy":  {
                    "precedence":  "CURRENT_STATE first; fallback to BATON/BACKLOG only if missing or invalid",

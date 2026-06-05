@@ -1,0 +1,21 @@
+TASK_ID: PRJPB_009S_TASK_EVIDENCE_VERSIONING_POLICY
+STATUS: DONE
+DATE_LOCAL: 2026-06-05 17:30:15 -0400
+PROJECT: PRJ_0001_HIA.PRODUCT
+
+SUMMARY
+- Evidence versioning policy documented.
+- `DELIVERY`, `GOVERNANCE`, `STATE/CURRENT_STATE.json`, `BATON`, and `BACKLOG` clarified as tracked canonical continuity artifacts.
+- `ARTIFACTS/TASKS` and `ARTIFACTS/LOGS` kept runtime-local by default, with selective promotion only.
+- `.gitignore` minimally updated to allow `GOVERNANCE/*.md` and `STATE/CURRENT_STATE.json` without unignoring broad runtime folders.
+
+TRACKING_DECISIONS
+- DELIVERY reports are tracked by default.
+- GOVERNANCE documents are tracked by default.
+- CURRENT_STATE.json is tracked by default.
+- BATON/BACKLOG are tracked by default.
+- ARTIFACTS/LOGS remain runtime-local unless explicitly promoted.
+- ARTIFACTS/TASKS remain runtime-local by default; compact decision-relevant evidence may be force-added selectively.
+
+VALIDATION_TARGET
+- NEXT_ACTION after completion: PRJPB_009T | normalizar regeneración de hia.state.js para evitar dirty diffs innecesarios | ready
