@@ -1747,3 +1747,28 @@ PURPOSE...........: Refrescar hia.state.js y corregir smoke anti-stale.
 - TD_UI_SMOKE_ANTI_STALE_001/P1.
 - TD_STATE_GENERATOR_001/P1.
 ==========
+
+==========
+PRJPB_009N_E_SNAPSHOT_STATE_POLICY
+==========
+ID_UNICO..........: PRJPB_009N_E_SNAPSHOT_STATE_POLICY_20260605_141212
+STATUS............: DONE
+PURPOSE...........: Evitar falso stale en hia.state.js por self-reference de commit.
+
+01.00_DONE
+- Política snapshot formalizada.
+- hia.state.js usa generated_from_head_before_commit.
+- Se registra que el hash final post-commit no es hard freshness gate.
+- Control Tower Shell sigue validado.
+
+02.00_READY_NOW
+- PRJPB_009O: READY — endurecer generador hia.state.js como tool reutilizable y eliminar patch manual.
+
+03.00_ACCEPTANCE_CRITERIA_PRJPB_009O
+- Existe tool/script reusable para generar hia.state.js.
+- Usa target explícito Control Tower.
+- Normaliza evidence_state.
+- Declara snapshot_policy.
+- Valida ruta exacta ./assets/hia.state.js.
+- No usa find/head heurístico para target UI.
+==========

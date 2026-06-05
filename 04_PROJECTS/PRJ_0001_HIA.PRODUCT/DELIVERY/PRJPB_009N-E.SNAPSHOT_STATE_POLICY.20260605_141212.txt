@@ -1,0 +1,30 @@
+==========
+PRJPB_009N-E_SNAPSHOT_STATE_POLICY
+==========
+ID_UNICO..........: PRJPB_009N-E.SNAPSHOT_STATE_POLICY.20260605_141212
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 14:12:15 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+
+01.00_DECISION
+hia.state.js es un snapshot versionado read-only. No puede conocer el hash del commit final que lo contiene sin producir otro commit posterior.
+
+02.00_POLICY
+- Usar generated_from_head_before_commit.
+- No validar frescura comparando contra HEAD final post-commit.
+- Validar sí:
+  - target HTML exacto.
+  - asset exacto.
+  - NEXT_ACTION vivo.
+  - evidence_state normalizado.
+  - session_status.
+  - existencia de panel UI.
+  - ausencia de rutas equivocadas.
+
+03.00_DONE
+- Control Tower Shell mantiene estado real visible.
+- Se evita bucle de falso stale por self-reference de commit.
+- Se registra deuda TD_STATE_SELF_REFERENCE_001/P1.
+
+04.00_NEXT_ACTION
+PRJPB_009O — endurecer generador hia.state.js como tool reutilizable y eliminar patch manual.

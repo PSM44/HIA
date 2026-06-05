@@ -1764,3 +1764,32 @@ PURPOSE...........: Refrescar hia.state.js y corregir brecha de smoke anti-stale
 04.00_NEXT_ACTION
 - PRJPB_009N-E: READY — integrar generador de estado real para evitar snapshots manuales stale.
 ==========
+
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009N_E_SNAPSHOT_STATE_POLICY
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009N_E_SNAPSHOT_STATE_POLICY_20260605_141212
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 14:12:15 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Formalizar política de snapshot para hia.state.js y evitar falso stale por commit hash.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009N-D: DONE — smoke visual Control Tower Shell resultó GO.
+- PRJPB_009N-D-R: DONE — hia.state.js refrescado y evidencia normalizada.
+- PRJPB_009N-E: DONE — política snapshot formalizada.
+
+02.00_DECISION
+- hia.state.js es snapshot read-only generado antes del commit.
+- No debe exigirse que contenga el hash del commit que lo contiene.
+- Se usa generated_from_head_before_commit.
+- El freshness gate debe validar contenido, ruta, evidence, session y NEXT_ACTION, no self-reference final.
+
+03.00_TECH_DEBT
+- TD_STATE_SELF_REFERENCE_001/P1: Documentado y mitigado por política snapshot.
+- TD_STATE_GENERATOR_TOOL_001/P1: Falta tool reusable para generar hia.state.js sin patches manuales.
+- TD_UI_VALIDATION_STRICTNESS_001/P1: Validadores UI deben verificar ruta exacta del asset.
+
+04.00_NEXT_ACTION
+- PRJPB_009O: READY — endurecer generador hia.state.js como tool reutilizable y eliminar patch manual.
+==========
