@@ -212,6 +212,38 @@ SESSION_CLOSE_20260518_HIA_PRJPB_007C_TO_007H
   .\01_UI\terminal\hia.ps1 project session start PRJ_0001_HIA.PRODUCT
 
 ==========
+
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009N_H3_RESOLVE_STATUS_CONTINUE_NEXT_ACTION_ALIGNMENT
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009N_H3_RESOLVE_STATUS_CONTINUE_NEXT_ACTION_ALIGNMENT_20260605_151016
+STATUS............: GO
+FECHA_LOCAL.......: 2026-06-05 15:10:16 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Alinear el resolver NEXT_ACTION entre continue, status y review.
+
+01.00_RESULT
+- PRJPB_009N-H2 partially fixed continue but failed status.
+- PRJPB_009N-H3 fixed resolver alignment for continue/status/review.
+- NEXT_ACTION after fix:
+  PRJPB_009O: READY - endurecer generador hia.state.js como tool reutilizable y eliminar patch manual.
+
+02.00_VALIDATION
+- hia project continue devolvio PRJPB_009O en NEXT_ACTION y RESUME_RECOMMENDATION.
+- hia project status devolvio PRJPB_009O en NEXT_ACTION y NEXT_STEP_SNAPSHOT.
+- hia project review no contradijo PRJPB_009O ni emitio sync hints stale.
+
+03.00_ROOT_CAUSE
+- Show-HIAProjectStatus mantenia un helper local Find-HIABatonValue que recorria BATON de arriba hacia abajo.
+- Continue-HIAProject ya usaba el resolver compartido Get-HIABatonValueByHeaders con heuristica de ultimo bloque operacional.
+- La duplicacion hacia que status resolviera PRJPB_009N-C mientras continue resolvia PRJPB_009O.
+
+04.00_NEXT_ACTION
+- PRJPB_009O: READY - endurecer generador hia.state.js como tool reutilizable y eliminar patch manual.
+
+05.00_TECH_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 remains open: create machine-readable CURRENT_STATE to avoid parser heuristics.
+==========
 PRJPB_008A_R_CONTINUITY_RECONCILIATION
 ==========
 

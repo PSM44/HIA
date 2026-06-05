@@ -1,0 +1,18 @@
+DELIVERY_ID: PRJPB_009N-H3.RESOLVE_STATUS_CONTINUE_NEXT_ACTION_ALIGNMENT
+TIMESTAMP_LOCAL: 2026-06-05 15:10:16 -0400
+PROJECT: PRJ_0001_HIA.PRODUCT
+STATUS: GO
+
+DELIVERED_CHANGE
+- Aligned NEXT_ACTION resolution for `hia project continue`, `hia project status`, and shared review/snapshot paths.
+- Removed the status-only local BATON resolver path and reused the shared BATON/BACKLOG helpers.
+
+VERIFIED_RESULT
+- NEXT_ACTION after fix:
+  PRJPB_009O: READY - endurecer generador hia.state.js como tool reutilizable y eliminar patch manual.
+- project continue and project status now report the same PRJPB_009O-leading NEXT_ACTION.
+
+NOTES
+- PRJPB_009N-H2 partially fixed continue but failed status.
+- PRJPB_009N-H3 fixed resolver alignment for continue/status/review.
+- TD_BATON_APPEND_ONLY_STATE_001/P1 remains open: create machine-readable CURRENT_STATE to avoid parser heuristics.

@@ -1902,64 +1902,6 @@ function Show-HIAProjectStatus {
     $projectRoot = Resolve-HIAProjectRoot -ProjectId $ProjectId
     $lastTask = Get-HIAProjectLastTaskOutcome -ProjectRootPath $projectRoot
 
-    function Find-HIABatonValue {
-        param(
-            [string[]]$Lines,
-            [string[]]$Headers,
-            [switch]$NextActionOnly
-        )
-
-        if (-not $Lines -or $Lines.Count -eq 0) {
-            return "N/A"
-        }
-
-        foreach ($header in $Headers) {
-            for ($i = 0; $i -lt $Lines.Count; $i++) {
-                if ($Lines[$i].Trim().ToUpperInvariant() -ne $header.Trim().ToUpperInvariant()) {
-                    continue
-                }
-
-                $j = $i + 1
-                while ($j -lt $Lines.Count) {
-                    $candidate = $Lines[$j].Trim()
-                    if ([string]::IsNullOrWhiteSpace($candidate)) {
-                        $j++
-                        continue
-                    }
-
-                    if ($candidate -match '^\d{2}\.\d{2}_') {
-                        break
-                    }
-
-                    if ($NextActionOnly.IsPresent) {
-                        if (-not $candidate.Contains("|")) {
-                            $j++
-                            continue
-                        }
-
-                        $parts = @($candidate -split '\|' | ForEach-Object { $_.Trim() })
-                        if ($parts.Count -lt 3) {
-                            $j++
-                            continue
-                        }
-
-                        $status = $parts[$parts.Count - 1].Trim().ToLowerInvariant()
-                        if ($status -eq "ready") {
-                            return $candidate
-                        }
-
-                        $j++
-                        continue
-                    }
-
-                    return $candidate
-                }
-            }
-        }
-
-        return "N/A"
-    }
-
     $readmePath = Join-Path $projectRoot "README.PROJECT.txt"
     $configPath = Join-Path $projectRoot "PROJECT.CONFIG.json"
     $batonPath = Join-Path $projectRoot "BATON\04.0_PROJECT.BATON.txt"
@@ -1980,68 +1922,28 @@ function Show-HIAProjectStatus {
         }
     }
 
-    $batonLines = @()
-    if (Test-Path -LiteralPath $batonPath) {
-        try {
-            $batonLines = @(Get-Content -LiteralPath $batonPath)
-        }
-        catch {
-            $batonLines = @()
-        }
-    }
-
-    $currentObjective = Find-HIABatonValue -Lines $batonLines -Headers @(
+    $currentObjective = Get-HIABatonValueByHeaders -BatonPath $batonPath -Headers @(
         "04.00_OBJETIVO_ACTUAL",
         "04.00_CURRENT_OBJECTIVE"
     )
 
-    $nextAction = Find-HIABatonValue -Lines $batonLines -Headers @(
+    $nextAction = Get-HIABatonValueByHeaders -BatonPath $batonPath -Headers @(
         "06.00_NEXT_ACTION",
         "06.00_PROXIMA_ACCION",
         "06.00_SIGUIENTE_ACCION",
         "05.00_NEXT_ACTION",
         "05.00_PROXIMA_ACCION",
         "05.00_SIGUIENTE_ACCION"
-    ) -NextActionOnly
+    )
 
     if ($nextAction -eq "N/A") {
-        $nextAction = Find-HIABatonValue -Lines $batonLines -Headers @(
+        $nextAction = Get-HIABatonValueByHeaders -BatonPath $batonPath -Headers @(
             "05.00_SIGUIENTE_MINIBATTLE",
             "05.00_NEXT_MINIBATTLE"
-        ) -NextActionOnly
+        )
     }
 
-    $nextReadyItem = "N/A"
-    if (Test-Path -LiteralPath $backlogPath) {
-        try {
-            $backlogLines = Get-Content -LiteralPath $backlogPath
-            foreach ($line in $backlogLines) {
-                $trimmed = $line.Trim()
-                if ([string]::IsNullOrWhiteSpace($trimmed)) { continue }
-                if (-not $trimmed.Contains("|")) { continue }
-
-                $parts = $trimmed -split '\|', 7
-                $parts = @($parts | ForEach-Object { $_.Trim() })
-                if ($parts.Count -ne 7) { continue }
-
-                if (
-                    $parts[0].ToUpperInvariant() -eq "ID" -and
-                    $parts[1].ToUpperInvariant() -eq "TYPE" -and
-                    $parts[2].ToUpperInvariant() -eq "PRIORITY"
-                ) {
-                    continue
-                }
-
-                if ($parts[6].ToLowerInvariant() -eq "ready") {
-                    $nextReadyItem = ("{0} | {1} | {2}" -f $parts[0], $parts[3], $parts[6])
-                    break
-                }
-            }
-        }
-        catch {
-            $nextReadyItem = "N/A"
-        }
-    }
+    $nextReadyItem = Get-HIANextReadyBacklogItem -BacklogPath $backlogPath
 
     if ($nextAction -eq "N/A" -and $nextReadyItem -ne "N/A") {
         $nextAction = $nextReadyItem
@@ -2408,6 +2310,97 @@ function Close-HIAProjectSession {
     Write-Host ""
 }
 
+function Normalize-HIANextActionLine {
+    param([string]$Line)
+
+    if ([string]::IsNullOrWhiteSpace($Line)) { return "N/A" }
+
+    $value = ([string]$Line).Trim()
+    $value = $value -replace '^[\-\*\s]+', ''
+    $value = $value -replace '^NEXT_ACTION\s*:\s*', ''
+
+    if ($value -match '^(?<id>PRJPB_[0-9A-Z\-_]+)\s*:\s*READY\s*[—-]\s*(?<desc>.+)$') {
+        return ("{0} | {1} | ready" -f $Matches['id'], $Matches['desc'].Trim())
+    }
+
+    if ($value -match '^(?<id>PRJPB_[0-9A-Z\-_]+)\s*\|\s*(?<desc>.+?)\s*\|\s*ready\.?$') {
+        return ("{0} | {1} | ready" -f $Matches['id'], $Matches['desc'].Trim())
+    }
+
+    if ($value -match '^(?<id>PRJPB_[0-9A-Z\-_]+)\s*\|\s*(?<desc>.+)$') {
+        return ("{0} | {1}" -f $Matches['id'], $Matches['desc'].Trim())
+    }
+
+    if ($value -match '^(?<id>PRJPB_[0-9A-Z\-_]+)\s*:\s*(?<desc>.+)$') {
+        return ("{0} | {1}" -f $Matches['id'], $Matches['desc'].Trim())
+    }
+
+    return $value
+}
+
+function Test-HIAOperationalNextActionHeader {
+    param([string]$Line)
+
+    if ([string]::IsNullOrWhiteSpace($Line)) { return $false }
+
+    $trimmed = ([string]$Line).Trim()
+
+    return ($trimmed -match '^(04|05|06)\.00_(NEXT_ACTION|PROXIMA_ACCION|SIGUIENTE_ACCION)$')
+}
+
+function Test-HIAActionableNextActionLine {
+    param([string]$Line)
+
+    if ([string]::IsNullOrWhiteSpace($Line)) { return $false }
+
+    $trimmed = ([string]$Line).Trim()
+
+    if ($trimmed -notmatch 'PRJPB_[0-9A-Z\-_]+') { return $false }
+
+    if ($trimmed -match 'DONE|DONE_WITH_WARNINGS|DONE_WITH_NO_GO|STATUS\.+:|PURPOSE\.+:|ID_UNICO\.+:|Reporte?:|Evidencia|Delivery|Commit|ANTES|DESPUES|before|after') {
+        return $false
+    }
+
+    if ($trimmed -match 'READY|ready|NEXT_ACTION') { return $true }
+
+    return $false
+}
+
+function Get-HIALatestSectionalNextAction {
+    param([string[]]$Lines)
+
+    if ($null -eq $Lines -or $Lines.Count -eq 0) { return "N/A" }
+
+    for ($i = $Lines.Count - 1; $i -ge 0; $i--) {
+        if (-not (Test-HIAOperationalNextActionHeader -Line ([string]$Lines[$i]))) {
+            continue
+        }
+
+        for ($j = $i + 1; $j -lt $Lines.Count; $j++) {
+            $candidate = [string]$Lines[$j]
+            $trimmed = $candidate.Trim()
+
+            if ([string]::IsNullOrWhiteSpace($trimmed)) {
+                continue
+            }
+
+            if ($trimmed -match '^=+$|^[0-9]{2}\.[0-9]{2}_') {
+                break
+            }
+
+            if (Test-HIAActionableNextActionLine -Line $candidate) {
+                $normalized = Normalize-HIANextActionLine -Line $candidate
+                if (-not [string]::IsNullOrWhiteSpace($normalized) -and $normalized -ne "N/A") {
+                    return $normalized
+                }
+            }
+        }
+    }
+
+    return "N/A"
+}
+
+
 function Get-HIABatonValueByHeaders {
     param(
         [string]$BatonPath,
@@ -2418,67 +2411,45 @@ function Get-HIABatonValueByHeaders {
         return "N/A"
     }
 
-    $lines = @()
     try {
-        $lines = @(Get-Content -LiteralPath $BatonPath)
+        $lines = @(Get-Content -LiteralPath $BatonPath -ErrorAction Stop)
     }
     catch {
         return "N/A"
     }
 
-    if ($lines.Count -eq 0) {
+    if ($null -eq $lines -or $lines.Count -eq 0) {
         return "N/A"
     }
 
-    $isNextActionHeader = $false
-    foreach ($header in $Headers) {
-        $normalizedHeader = [string]$header
-        if ($normalizedHeader -match "NEXT_ACTION|PROXIMA_ACCION|SIGUIENTE_ACCION|NEXT_MINIBATTLE|SIGUIENTE_MINIBATTLE") {
-            $isNextActionHeader = $true
+    $isNextActionLookup = $false
+    foreach ($h in $Headers) {
+        if ([string]$h -match "NEXT_ACTION|PROXIMA_ACCION|SIGUIENTE_ACCION|NEXT_MINIBATTLE|SIGUIENTE_MINIBATTLE") {
+            $isNextActionLookup = $true
             break
         }
     }
 
-    foreach ($header in $Headers) {
-        for ($i = 0; $i -lt $lines.Count; $i++) {
-            if ($lines[$i].Trim().ToUpperInvariant() -ne $header.Trim().ToUpperInvariant()) {
-                continue
-            }
+    if ($isNextActionLookup) {
+        $sectional = Get-HIALatestSectionalNextAction -Lines $lines
+        if (-not [string]::IsNullOrWhiteSpace($sectional) -and $sectional -ne "N/A") {
+            return $sectional
+        }
+    }
 
-            $j = $i + 1
-            while ($j -lt $lines.Count) {
-                $candidate = $lines[$j].Trim()
-                if ([string]::IsNullOrWhiteSpace($candidate)) {
-                    $j++
-                    continue
-                }
-
-                if ($candidate -match '^\d{2}\.\d{2}_') {
-                    break
-                }
-
-                if ($isNextActionHeader) {
-                    if (-not $candidate.Contains("|")) {
-                        $j++
-                        continue
+    for ($i = $lines.Count - 1; $i -ge 0; $i--) {
+        $line = [string]$lines[$i]
+        foreach ($header in $Headers) {
+            if ($line.Trim().Equals($header, [System.StringComparison]::OrdinalIgnoreCase)) {
+                for ($j = $i + 1; $j -lt $lines.Count; $j++) {
+                    $value = [string]$lines[$j]
+                    if ([string]::IsNullOrWhiteSpace($value)) { continue }
+                    if ($value.Trim() -match '^[0-9]{2}\.[0-9]{2}_|^=+$') { break }
+                    $clean = $value.Trim() -replace '^[\-\*\s]+', ''
+                    if (-not [string]::IsNullOrWhiteSpace($clean)) {
+                        return $clean
                     }
-
-                    $parts = @($candidate -split '\|' | ForEach-Object { $_.Trim() })
-                    if ($parts.Count -lt 3) {
-                        $j++
-                        continue
-                    }
-
-                    $status = $parts[$parts.Count - 1].Trim().ToLowerInvariant()
-                    if ($status -eq "ready") {
-                        return $candidate
-                    }
-
-                    $j++
-                    continue
                 }
-
-                return $candidate
             }
         }
     }
@@ -2833,4 +2804,3 @@ function Get-HIAProjects {
     Write-Host ("- hia project open {0}" -f $firstProjectId)
     Write-Host ""
 }
-
