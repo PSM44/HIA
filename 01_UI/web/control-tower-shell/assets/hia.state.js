@@ -1,7 +1,7 @@
 ﻿// ========== HIA CONTROL TOWER REAL READ-ONLY STATE ==========
 // ID_UNICO..........: PRJPB_009Q_CURRENT_STATE_PRIMARY_CONTROL_TOWER_GENERATOR
-// GENERATED_AT......: 2026-06-05 16:22:06 -04:00
-// GENERATED_UTC.....: 2026-06-05T20:22:06.7085719Z
+// GENERATED_AT......: 2026-06-05 16:28:49 -04:00
+// GENERATED_UTC.....: 2026-06-05T20:28:49.4374246Z
 // SOURCE............: CURRENT_STATE primary with CLI fallback
 // MODE..............: READ_ONLY_SNAPSHOT
 // DO_NOT_USE_AS_CANON: YES
@@ -13,8 +13,8 @@ window.HIA_REAL_STATE = Object.freeze({
     root_wsl: "/mnt/c/01. GitHub/Wings3.0/01_PROJECTS/HIA",
     root_win: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA",
     branch: "feat/20260405-console-v2-phase1-phase2",
-    generated_from_head_before_commit: "dd18a98",
-    generated_from_head_message_before_commit: "20260605_HIA_PRJPB_009P_current_state_machine_readable"
+    generated_from_head_before_commit: "671c203",
+    generated_from_head_message_before_commit: "20260605_HIA_PRJPB_009Q_current_state_primary_control_tower_generator"
   }),
   continuity: Object.freeze({
     next_action: "PRJPB_009Q | usar CURRENT_STATE como fuente primaria para generador Control Tower y reducir parsing CLI duplicado | ready",
@@ -22,8 +22,8 @@ window.HIA_REAL_STATE = Object.freeze({
     evidence_state: "FRESH",
     evidence_consistency: "CONSISTENT",
     session_status: "closed",
-    generated_local: "2026-06-05 16:22:06 -04:00",
-    generated_utc: "2026-06-05T20:22:06.7085719Z",
+    generated_local: "2026-06-05 16:28:49 -04:00",
+    generated_utc: "2026-06-05T20:28:49.4374246Z",
     resolver_status: "CURRENT_STATE_PRIMARY",
     source: "CURRENT_STATE",
     current_state_source: "CURRENT_STATE",
