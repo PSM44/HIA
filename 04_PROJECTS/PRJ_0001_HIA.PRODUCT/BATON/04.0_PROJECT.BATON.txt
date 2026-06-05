@@ -1737,3 +1737,30 @@ PURPOSE...........: Smoke visual/documental del Control Tower Shell con estado r
 03.00_NEXT_ACTION
 - PRJPB_009N-E: READY — captura visual/manual y decisión de siguiente UX increment.
 ==========
+
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009N_D_R_REFRESH_STATE
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009N_D_R_REFRESH_STATE_20260605_141050
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 14:10:54 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Refrescar hia.state.js y corregir brecha de smoke anti-stale.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009N-D: DONE_WITH_WARNINGS — smoke wiring OK, pero state snapshot estaba stale.
+- PRJPB_009N-D-R: DONE — hia.state.js refrescado con HEAD/NEXT_ACTION/EVIDENCE/SESSION reales.
+- Validación anti-stale: OK.
+- Delivery: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_009N-D-R.STATE_REFRESH_REPORT.20260605_141050.txt
+
+02.00_ROOT_CAUSE
+- Smoke 009N-D validaba wiring y presencia de strings, no frescura semántica.
+- hia.state.js conservaba HEAD/NEXT_ACTION antiguos.
+
+03.00_TECH_DEBT
+- TD_UI_SMOKE_ANTI_STALE_001/P1: Smoke UI debe validar datos vivos, no solo estructura.
+- TD_STATE_GENERATOR_001/P1: Crear generador reproducible de hia.state.js.
+
+04.00_NEXT_ACTION
+- PRJPB_009N-E: READY — integrar generador de estado real para evitar snapshots manuales stale.
+==========
