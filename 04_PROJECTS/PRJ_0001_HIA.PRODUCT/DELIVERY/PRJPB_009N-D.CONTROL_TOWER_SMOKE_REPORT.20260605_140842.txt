@@ -1,0 +1,35 @@
+==========
+PRJPB_009N-D_CONTROL_TOWER_SMOKE_REPORT
+==========
+ID_UNICO..........: PRJPB_009N-D.CONTROL_TOWER_SMOKE_REPORT.20260605_140842
+STATUS............: GO
+FECHA_LOCAL.......: 2026-06-05 14:08:44 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+
+01.00_OBJETIVO
+Ejecutar smoke visual/documental del Control Tower Shell con estado real read-only.
+
+02.00_TARGETS
+- HTML: 01_UI/web/control-tower-shell/index.html
+- STATE: 01_UI/web/control-tower-shell/assets/hia.state.js
+- APP: 01_UI/web/control-tower-shell/assets/app.js
+- UX: 01_UI/web/control-tower-shell/assets/ux.js
+- CSS: 01_UI/web/control-tower-shell/assets/app.css
+
+03.00_VALIDACIONES
+- Script correcto ./assets/hia.state.js: OK
+- Panel hia-real-state-panel: OK
+- window.HIA_REAL_STATE: OK
+- NEXT_ACTION visible en state: OK
+- evidence_state visible en state: OK
+- session_status visible en state: OK
+
+04.00_RESULTADO
+SMOKE_RESULT: GO
+BREACHES_COUNT: 0
+
+05.00_BRECHAS
+- No se detectaron brechas estáticas bloqueantes.
+
+06.00_DECISION
+- GO: avanzar a captura visual/manual o mejora siguiente.

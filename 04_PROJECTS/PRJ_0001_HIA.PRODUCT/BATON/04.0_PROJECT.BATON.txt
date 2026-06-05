@@ -1712,3 +1712,28 @@ PURPOSE...........: Corregir script src de hia.state.js para que Control Tower c
 04.00_NEXT_ACTION
 - PRJPB_009N-D: READY — smoke visual Control Tower Shell con estado real read-only y captura de brechas UX.
 ==========
+
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009N_D_CONTROL_TOWER_SMOKE
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009N_D_CONTROL_TOWER_SMOKE_20260605_140842
+STATUS............: GO
+FECHA_LOCAL.......: 2026-06-05 14:08:44 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Smoke visual/documental del Control Tower Shell con estado real read-only.
+
+01.00_RESULT
+- PRJPB_009N-D: GO
+- Brechas detectadas: 0
+- Reporte: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_009N-D.CONTROL_TOWER_SMOKE_REPORT.20260605_140842.txt
+- Evidencia task: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/ARTIFACTS/TASKS/PRJPB_009N-D.CONTROL_TOWER_SMOKE.20260605_140842.txt
+
+02.00_VALIDATION
+- Control Tower carga ./assets/hia.state.js.
+- hia-real-state-panel existe.
+- hia.state.js contiene window.HIA_REAL_STATE.
+- Se validaron labels mínimos de estado real, read-only, evidence/session/radar.
+
+03.00_NEXT_ACTION
+- PRJPB_009N-E: READY — captura visual/manual y decisión de siguiente UX increment.
+==========
