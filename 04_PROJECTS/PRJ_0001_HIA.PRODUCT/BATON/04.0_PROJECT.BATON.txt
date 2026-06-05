@@ -1907,3 +1907,21 @@ PURPOSE...........: Endurecer generador hia.state.js como tool reutilizable y el
 04.00_NEXT_ACTION
 - PRJPB_009P: READY — crear CURRENT_STATE machine-readable para eliminar heurística BATON append-only.
 ==========
+
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009O_R2_REFRESH_STATE_009P_PUSH
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009O_R2_REFRESH_STATE_009P_PUSH_20260605_155124
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 15:51:31 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Refrescar hia.state.js con generador reusable y alinear NEXT_ACTION visible a PRJPB_009P.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009O: DONE — generador reutilizable hia.state.js creado.
+- PRJPB_009O-R2: DONE — state refresh a PRJPB_009P validado.
+- El fallo previo fue parsing/grep binario, no fallo del CLI.
+
+02.00_NEXT_ACTION
+- PRJPB_009P: READY — crear CURRENT_STATE machine-readable para eliminar heurística BATON append-only.
+==========

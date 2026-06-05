@@ -1850,3 +1850,19 @@ PURPOSE...........: Endurecer generador hia.state.js como tool reutilizable y el
 - project continue/status deben poder consumirlo o validar coherencia contra él.
 - BATON append-only queda como auditoría, no como única fuente de estado vivo.
 ==========
+
+==========
+PRJPB_009O_R2_REFRESH_STATE_009P_PUSH
+==========
+ID_UNICO..........: PRJPB_009O_R2_REFRESH_STATE_009P_PUSH_20260605_155124
+STATUS............: DONE
+PURPOSE...........: Refrescar estado Control Tower a PRJPB_009P después de cerrar PRJPB_009O.
+
+01.00_DONE
+- hia.state.js generado por 02_TOOLS/HIA_CONTROL_TOWER_STATE_GENERATOR.ps1.
+- continue/status devuelven PRJPB_009P.
+- State JS contiene PRJPB_009P.
+
+02.00_READY_NOW
+- PRJPB_009P: READY — crear CURRENT_STATE machine-readable para eliminar heurística BATON append-only.
+==========
