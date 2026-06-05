@@ -1448,8 +1448,8 @@ function Continue-HIAProject {
     }
 
     $nextAction = "N/A"
-    if (-not [string]::IsNullOrWhiteSpace([string]$snapshot.NEXT_ACTION_BATON)) {
-        $nextAction = [string]$snapshot.NEXT_ACTION_BATON
+    if (-not [string]::IsNullOrWhiteSpace([string]$snapshot.NEXT_ACTION)) {
+        $nextAction = [string]$snapshot.NEXT_ACTION
     }
 
     $nextReadyItem = "N/A"
@@ -1494,7 +1494,7 @@ function Continue-HIAProject {
         $taskGuidance = "Start project session before executing project task."
     }
     elseif ($nextAction -ne "N/A") {
-        $taskGuidance = "Use NEXT_ACTION from BATON as immediate task."
+        $taskGuidance = ("Use NEXT_ACTION from {0} as immediate task." -f [string]$snapshot.NEXT_ACTION_SOURCE)
     }
     elseif ($nextReadyItem -ne "N/A") {
         $taskGuidance = "Use NEXT_READY_ITEM from backlog as immediate task."
@@ -1596,6 +1596,10 @@ function Continue-HIAProject {
     Write-Host ("NEXT_ACTION: {0}" -f $nextAction)
     Write-Host ("NEXT_READY_ITEM: {0}" -f $nextReadyItem)
     Write-Host ("RESUME_RECOMMENDATION: {0}" -f $resumeRecommendation)
+    Write-Host ("NEXT_ACTION_SOURCE: {0}" -f [string]$snapshot.NEXT_ACTION_SOURCE)
+    Write-Host ("NEXT_ACTION_WARNING: {0}" -f [string]$snapshot.NEXT_ACTION_WARNING)
+    Write-Host ("CURRENT_STATE_STATUS: {0}" -f [string]$snapshot.CURRENT_STATE_STATUS)
+    Write-Host ("CURRENT_STATE_PATH: {0}" -f [string]$snapshot.CURRENT_STATE_PATH)
     Write-Host ("TASK_GUIDANCE: {0}" -f $taskGuidance)
     Write-Host ("SUGGESTED_COMMAND: {0}" -f $suggestedCommand)
     Write-Host ("OPERATIONAL_THREAD: {0}" -f $operationalThread)
@@ -1737,16 +1741,24 @@ function Review-HIAProject {
     # BATON/BACKLOG for sync hint
     $batonPath = Join-Path $projectRoot "BATON\04.0_PROJECT.BATON.txt"
     $backlogPath = Join-Path $projectRoot "AGILE\PROJECT.BACKLOG.txt"
+    $currentState = Get-HIACurrentState -ProjectRootPath $projectRoot
     $nextActionBaton = Get-HIABatonValueByHeaders -BatonPath $batonPath -Headers @(
         "06.00_NEXT_ACTION","06.00_PROXIMA_ACCION","06.00_SIGUIENTE_ACCION",
         "05.00_NEXT_ACTION","05.00_PROXIMA_ACCION","05.00_SIGUIENTE_ACCION",
         "05.00_SIGUIENTE_MINIBATTLE","05.00_NEXT_MINIBATTLE"
     )
     $nextReadyBacklog = Get-HIANextReadyBacklogItem -BacklogPath $backlogPath
+    $nextActionReview = if ($currentState.STATUS -eq "VALID") { [string]$currentState.NEXT_ACTION } else { [string]$nextActionBaton }
 
     $reviewHandoff = $evidenceContinuity.HANDOFF
     if ($lastTask.FOUND -and $lastTask.RESULT -eq "rejected") {
         $reviewHandoff = ("Last task rejected: {0}. " -f $lastTask.MESSAGE) + $reviewHandoff
+    }
+    if ($currentState.STATUS -eq "VALID") {
+        $reviewHandoff = ("CURRENT_STATE active: {0}. " -f $currentState.NEXT_ACTION) + $reviewHandoff
+    }
+    elseif ($currentState.STATUS -ne "MISSING") {
+        $reviewHandoff = ("CURRENT_STATE fallback: {0}. " -f (($currentState.NOTES) -join "; ")) + $reviewHandoff
     }
     $suggestedCommand = ("hia project status {0}" -f $ProjectId)
     if ($evidenceContinuity.STATE -eq "FRESH" -and $evidenceContinuity.CONSISTENCY -eq "CONSISTENT") {
@@ -1808,10 +1820,13 @@ function Review-HIAProject {
     Write-Host ("LEDGER_RESULT: {0}" -f $ledgerResult)
     Write-Host ("PROJECT_CONFIG_STATUS: {0}" -f $configCheck.STATUS)
     Write-Host ("PROJECT_CONFIG_NOTES: {0}" -f (($configCheck.NOTES) -join ", "))
+    Write-Host ("CURRENT_STATE_STATUS: {0}" -f $currentState.STATUS)
+    Write-Host ("CURRENT_STATE_PATH: {0}" -f $currentState.PATH)
+    Write-Host ("CURRENT_STATE_NEXT_ACTION: {0}" -f $currentState.NEXT_ACTION)
     $syncHint = "N/A"
     $syncNotes = "N/A"
-    if ($nextActionBaton -ne "N/A" -and $nextReadyBacklog -ne "N/A") {
-        $batonToken = ($nextActionBaton -split "\|")[0].Trim()
+    if ($nextActionReview -ne "N/A" -and $nextReadyBacklog -ne "N/A") {
+        $batonToken = ($nextActionReview -split "\|")[0].Trim()
         $readyToken = ($nextReadyBacklog -split "\|")[0].Trim()
         if ([string]::IsNullOrWhiteSpace($batonToken) -or [string]::IsNullOrWhiteSpace($readyToken)) {
             $syncHint = "N/A"
@@ -1926,28 +1941,12 @@ function Show-HIAProjectStatus {
         "04.00_OBJETIVO_ACTUAL",
         "04.00_CURRENT_OBJECTIVE"
     )
-
-    $nextAction = Get-HIABatonValueByHeaders -BatonPath $batonPath -Headers @(
-        "06.00_NEXT_ACTION",
-        "06.00_PROXIMA_ACCION",
-        "06.00_SIGUIENTE_ACCION",
-        "05.00_NEXT_ACTION",
-        "05.00_PROXIMA_ACCION",
-        "05.00_SIGUIENTE_ACCION"
-    )
-
-    if ($nextAction -eq "N/A") {
-        $nextAction = Get-HIABatonValueByHeaders -BatonPath $batonPath -Headers @(
-            "05.00_SIGUIENTE_MINIBATTLE",
-            "05.00_NEXT_MINIBATTLE"
-        )
+    $snapshot = Get-HIAProjectPortfolioSnapshot -ProjectRootPath $projectRoot -ProjectId $ProjectId
+    if ($snapshot.CURRENT_OBJECTIVE -ne "N/A") {
+        $currentObjective = [string]$snapshot.CURRENT_OBJECTIVE
     }
-
-    $nextReadyItem = Get-HIANextReadyBacklogItem -BacklogPath $backlogPath
-
-    if ($nextAction -eq "N/A" -and $nextReadyItem -ne "N/A") {
-        $nextAction = $nextReadyItem
-    }
+    $nextAction = [string]$snapshot.NEXT_ACTION
+    $nextReadyItem = [string]$snapshot.NEXT_READY_ITEM
 
     $lastSessionStatus = "N/A"
     $lastSessionId = "N/A"
@@ -1982,8 +1981,18 @@ function Show-HIAProjectStatus {
 
     if ($nextAction -ne "N/A") {
         $nextStepSnapshot = $nextAction
-        $nextStepReason = "BATON NEXT_ACTION"
-        $nextStepSource = "BATON"
+        if ([string]$snapshot.NEXT_ACTION_SOURCE -eq "CURRENT_STATE") {
+            $nextStepReason = "CURRENT_STATE next_action"
+            $nextStepSource = "CURRENT_STATE"
+        }
+        elseif ([string]$snapshot.NEXT_ACTION_SOURCE -eq "BACKLOG") {
+            $nextStepReason = "BACKLOG first READY item"
+            $nextStepSource = "BACKLOG"
+        }
+        else {
+            $nextStepReason = "BATON NEXT_ACTION"
+            $nextStepSource = "BATON"
+        }
     }
     elseif ($nextReadyItem -ne "N/A") {
         $nextStepSnapshot = $nextReadyItem
@@ -2060,6 +2069,8 @@ function Show-HIAProjectStatus {
     Write-Host ("CURRENT_OBJECTIVE: {0}" -f $currentObjective)
     Write-Host ("NEXT_ACTION: {0}" -f $nextAction)
     Write-Host ("NEXT_READY_ITEM: {0}" -f $nextReadyItem)
+    Write-Host ("NEXT_ACTION_SOURCE: {0}" -f [string]$snapshot.NEXT_ACTION_SOURCE)
+    Write-Host ("NEXT_ACTION_WARNING: {0}" -f [string]$snapshot.NEXT_ACTION_WARNING)
     Write-Host ("NEXT_STEP_SNAPSHOT: {0}" -f $nextStepSnapshot)
     Write-Host ("NEXT_STEP_REASON: {0}" -f $nextStepReason)
     Write-Host ("NEXT_STEP_SOURCE: {0}" -f $nextStepSource)
@@ -2079,6 +2090,8 @@ function Show-HIAProjectStatus {
     Write-Host ("SYNC_HINT_NOTES: {0}" -f $syncNotes)
     Write-Host ("PROJECT_CONFIG_STATUS: {0}" -f $configStatus)
     Write-Host ("PROJECT_CONFIG_NOTES: {0}" -f (($configCheck.NOTES) -join ", "))
+    Write-Host ("CURRENT_STATE_STATUS: {0}" -f [string]$snapshot.CURRENT_STATE_STATUS)
+    Write-Host ("CURRENT_STATE_PATH: {0}" -f [string]$snapshot.CURRENT_STATE_PATH)
     $memoryDir = Join-Path $projectRoot "ARTIFACTS\MEMORY"
     $memoryPath = Join-Path $memoryDir "PROJECT_MEMORY.log"
     $aiMemoryStatus = "MISSING"
@@ -2310,6 +2323,104 @@ function Close-HIAProjectSession {
     Write-Host ""
 }
 
+function Get-HIACurrentStatePath {
+    param([string]$ProjectRootPath)
+
+    return (Join-Path $ProjectRootPath "STATE\CURRENT_STATE.json")
+}
+
+function Convert-HIACurrentStateNextActionToRaw {
+    param($NextAction)
+
+    if ($null -eq $NextAction) { return "N/A" }
+
+    $raw = [string]$NextAction.raw
+    if (-not [string]::IsNullOrWhiteSpace($raw)) {
+        $normalized = Normalize-HIANextActionLine -Line $raw
+        if (-not [string]::IsNullOrWhiteSpace($normalized) -and $normalized -ne "N/A") {
+            return $normalized
+        }
+    }
+
+    $id = [string]$NextAction.id
+    if ([string]::IsNullOrWhiteSpace($id)) { return "N/A" }
+
+    $title = [string]$NextAction.title
+    if ([string]::IsNullOrWhiteSpace($title)) { $title = "N/A" }
+
+    $status = [string]$NextAction.status
+    if ([string]::IsNullOrWhiteSpace($status)) { $status = "unknown" }
+
+    return ("{0} | {1} | {2}" -f $id.Trim(), $title.Trim().TrimEnd("."), $status.Trim().ToLowerInvariant())
+}
+
+function Get-HIACurrentState {
+    param([string]$ProjectRootPath)
+
+    $statePath = Get-HIACurrentStatePath -ProjectRootPath $ProjectRootPath
+    $result = [ordered]@{
+        STATUS = "MISSING"
+        PATH = $statePath
+        NOTES = @()
+        CURRENT_OBJECTIVE = "N/A"
+        NEXT_ACTION = "N/A"
+        NEXT_ACTION_ID = "N/A"
+        NEXT_ACTION_STATUS = "N/A"
+        SESSION_STATUS = "N/A"
+        LAST_SESSION_ID = "N/A"
+        EVIDENCE_STATE = "N/A"
+        EVIDENCE_CONSISTENCY = "N/A"
+        EVIDENCE_CAPTURED_UTC = "N/A"
+        PROJECT_ID = "N/A"
+        GENERATED_UTC = "N/A"
+        FOUND = $false
+    }
+
+    if (-not (Test-Path -LiteralPath $statePath -PathType Leaf)) {
+        $result.NOTES += "CURRENT_STATE missing"
+        return $result
+    }
+
+    try {
+        $payload = Get-Content -LiteralPath $statePath -Raw -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop
+    }
+    catch {
+        $result.STATUS = "INVALID"
+        $result.NOTES += "CURRENT_STATE invalid JSON"
+        return $result
+    }
+
+    if ([string]$payload.schema -ne "HIA_CURRENT_STATE.v1") {
+        $result.STATUS = "INVALID"
+        $result.NOTES += "CURRENT_STATE schema mismatch"
+        return $result
+    }
+
+    $nextActionRaw = Convert-HIACurrentStateNextActionToRaw -NextAction $payload.next_action
+    if ([string]::IsNullOrWhiteSpace($nextActionRaw) -or $nextActionRaw -eq "N/A") {
+        $result.STATUS = "INVALID"
+        $result.NOTES += "CURRENT_STATE next_action missing"
+        return $result
+    }
+
+    $result.STATUS = "VALID"
+    $result.FOUND = $true
+    $result.CURRENT_OBJECTIVE = if ([string]::IsNullOrWhiteSpace([string]$payload.current_objective)) { "N/A" } else { [string]$payload.current_objective }
+    $result.NEXT_ACTION = $nextActionRaw
+    $result.NEXT_ACTION_ID = if ([string]::IsNullOrWhiteSpace([string]$payload.next_action.id)) { "N/A" } else { [string]$payload.next_action.id }
+    $result.NEXT_ACTION_STATUS = if ([string]::IsNullOrWhiteSpace([string]$payload.next_action.status)) { "N/A" } else { [string]$payload.next_action.status }
+    $result.SESSION_STATUS = if ([string]::IsNullOrWhiteSpace([string]$payload.session.status)) { "N/A" } else { [string]$payload.session.status }
+    $result.LAST_SESSION_ID = if ([string]::IsNullOrWhiteSpace([string]$payload.session.last_session_id)) { "N/A" } else { [string]$payload.session.last_session_id }
+    $result.EVIDENCE_STATE = if ([string]::IsNullOrWhiteSpace([string]$payload.evidence.state)) { "N/A" } else { [string]$payload.evidence.state }
+    $result.EVIDENCE_CONSISTENCY = if ([string]::IsNullOrWhiteSpace([string]$payload.evidence.consistency)) { "N/A" } else { [string]$payload.evidence.consistency }
+    $result.EVIDENCE_CAPTURED_UTC = if ([string]::IsNullOrWhiteSpace([string]$payload.evidence.captured_utc)) { "N/A" } else { [string]$payload.evidence.captured_utc }
+    $result.PROJECT_ID = if ([string]::IsNullOrWhiteSpace([string]$payload.project_id)) { "N/A" } else { [string]$payload.project_id }
+    $result.GENERATED_UTC = if ([string]::IsNullOrWhiteSpace([string]$payload.generated_utc)) { "N/A" } else { [string]$payload.generated_utc }
+    $result.NOTES += "CURRENT_STATE primary"
+
+    return $result
+}
+
 function Normalize-HIANextActionLine {
     param([string]$Line)
 
@@ -2505,6 +2616,7 @@ function Get-HIAProjectPortfolioSnapshot {
     $batonPath = Join-Path $ProjectRootPath "BATON\04.0_PROJECT.BATON.txt"
     $backlogPath = Join-Path $ProjectRootPath "AGILE\PROJECT.BACKLOG.txt"
     $sessionPath = Join-Path $ProjectRootPath "ARTIFACTS\SESSION.ACTIVE.json"
+    $currentState = Get-HIACurrentState -ProjectRootPath $ProjectRootPath
 
     $projectState = "N/A"
     if (Test-Path -LiteralPath $configPath) {
@@ -2523,6 +2635,9 @@ function Get-HIAProjectPortfolioSnapshot {
         "04.00_OBJETIVO_ACTUAL",
         "04.00_CURRENT_OBJECTIVE"
     )
+    if ($currentState.STATUS -eq "VALID" -and [string]$currentState.CURRENT_OBJECTIVE -ne "N/A") {
+        $currentObjective = [string]$currentState.CURRENT_OBJECTIVE
+    }
 
     $nextActionBaton = Get-HIABatonValueByHeaders -BatonPath $batonPath -Headers @(
         "06.00_NEXT_ACTION",
@@ -2535,10 +2650,27 @@ function Get-HIAProjectPortfolioSnapshot {
         "05.00_NEXT_MINIBATTLE"
     )
     $nextAction = $nextActionBaton
+    $nextActionSource = "BATON"
+    $nextActionWarning = "N/A"
 
     $nextReadyItem = Get-HIANextReadyBacklogItem -BacklogPath $backlogPath
-    if ($nextAction -eq "N/A" -and $nextReadyItem -ne "N/A") {
+    if ($currentState.STATUS -eq "VALID") {
+        $nextAction = [string]$currentState.NEXT_ACTION
+        $nextActionSource = "CURRENT_STATE"
+        if ($nextActionBaton -ne "N/A") {
+            $stateToken = ($nextAction -split "\|")[0].Trim()
+            $batonToken = ($nextActionBaton -split "\|")[0].Trim()
+            if (-not [string]::IsNullOrWhiteSpace($stateToken) -and -not [string]::IsNullOrWhiteSpace($batonToken) -and -not $stateToken.Equals($batonToken, [System.StringComparison]::OrdinalIgnoreCase)) {
+                $nextActionWarning = ("CURRENT_STATE={0} overrides BATON={1}" -f $stateToken, $batonToken)
+            }
+        }
+    }
+    elseif ($nextAction -eq "N/A" -and $nextReadyItem -ne "N/A") {
         $nextAction = $nextReadyItem
+        $nextActionSource = "BACKLOG"
+    }
+    elseif ($currentState.STATUS -ne "MISSING") {
+        $nextActionWarning = ("CURRENT_STATE fallback to BATON/BACKLOG: {0}" -f (($currentState.NOTES) -join "; "))
     }
 
     $lastSessionStatus = "N/A"
@@ -2566,8 +2698,14 @@ function Get-HIAProjectPortfolioSnapshot {
         PROJECT_ID = $ProjectId
         PROJECT_STATE = $projectState
         CURRENT_OBJECTIVE = $currentObjective
+        CURRENT_STATE_STATUS = $currentState.STATUS
+        CURRENT_STATE_PATH = $currentState.PATH
+        CURRENT_STATE_NOTES = ($currentState.NOTES -join "; ")
         NEXT_ACTION_BATON = $nextActionBaton
+        NEXT_ACTION_CURRENT_STATE = $currentState.NEXT_ACTION
         NEXT_ACTION = $nextAction
+        NEXT_ACTION_SOURCE = $nextActionSource
+        NEXT_ACTION_WARNING = $nextActionWarning
         NEXT_READY_ITEM = $nextReadyItem
         LAST_SESSION_STATUS = $lastSessionStatus
         LAST_SESSION_ID = $lastSessionId
@@ -2682,19 +2820,9 @@ function Get-HIAProjects {
         foreach ($proj in $projects) {
             try {
                 $root = $proj.FullName
-                $batonPath = Join-Path $root "BATON\04.0_PROJECT.BATON.txt"
-                $backlogPath = Join-Path $root "AGILE\PROJECT.BACKLOG.txt"
                 $sessionPath = Join-Path $root "ARTIFACTS\SESSION.ACTIVE.json"
-
-                $nextAction = Get-HIABatonValueByHeaders -BatonPath $batonPath -Headers @(
-                    "06.00_NEXT_ACTION","06.00_PROXIMA_ACCION","06.00_SIGUIENTE_ACCION",
-                    "05.00_NEXT_ACTION","05.00_PROXIMA_ACCION","05.00_SIGUIENTE_ACCION",
-                    "05.00_SIGUIENTE_MINIBATTLE","05.00_NEXT_MINIBATTLE"
-                )
-                if ($nextAction -eq "N/A") {
-                    $nextReady = Get-HIANextReadyBacklogItem -BacklogPath $backlogPath
-                    if ($nextReady -ne "N/A") { $nextAction = $nextReady }
-                }
+                $snapshot = Get-HIAProjectPortfolioSnapshot -ProjectRootPath $root -ProjectId $proj.Name
+                $nextAction = [string]$snapshot.NEXT_ACTION
 
                 $sessionStatus = "N/A"
                 if (Test-Path -LiteralPath $sessionPath) {

@@ -148,6 +148,26 @@ SESSION_CLOSE_20260518_HIA_PRJPB_007C_TO_007H_BACKLOG
 ==========
 
 ==========
+PRJPB_009P_CURRENT_STATE_MACHINE_READABLE
+==========
+FECHA_LOCAL.......: 2026-06-05 16:05:41 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE
+
+01.00_DONE
+- PRJPB_009P: DONE — CURRENT_STATE machine-readable creado y consumido por continue/status/review.
+- CURRENT_STATE.json usa schema HIA_CURRENT_STATE.v1.
+- El CLI usa CURRENT_STATE como fuente primaria y cae a BATON/BACKLOG solo si falta o es invalido.
+
+02.00_NEXT_ACTION
+- PRJPB_009Q: READY — usar CURRENT_STATE como fuente primaria para generador Control Tower y reducir parsing CLI duplicado.
+
+03.00_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 parcialmente mitigado; fallback heuristico sigue existiendo.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001/P2 sigue abierto.
+==========
+
+==========
 PRJPB_009N_H3_RESOLVE_STATUS_CONTINUE_NEXT_ACTION_ALIGNMENT
 ==========
 FECHA_LOCAL.......: 2026-06-05 15:10:16 -0400
@@ -1865,4 +1885,23 @@ PURPOSE...........: Refrescar estado Control Tower a PRJPB_009P después de cerr
 
 02.00_READY_NOW
 - PRJPB_009P: READY — crear CURRENT_STATE machine-readable para eliminar heurística BATON append-only.
+==========
+==========
+PRJPB_009P_CURRENT_STATE_MACHINE_READABLE_EOF
+==========
+FECHA_LOCAL.......: 2026-06-05 16:05:41 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE
+
+01.00_DONE
+- PRJPB_009P: DONE — CURRENT_STATE machine-readable creado y consumido por continue/status/review.
+- CURRENT_STATE.json usa schema HIA_CURRENT_STATE.v1.
+- El CLI usa CURRENT_STATE como fuente primaria y cae a BATON/BACKLOG solo si falta o es invalido.
+
+02.00_NEXT_ACTION
+- PRJPB_009Q: READY — usar CURRENT_STATE como fuente primaria para generador Control Tower y reducir parsing CLI duplicado.
+
+03.00_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 parcialmente mitigado; fallback heuristico sigue existiendo.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001/P2 sigue abierto.
 ==========

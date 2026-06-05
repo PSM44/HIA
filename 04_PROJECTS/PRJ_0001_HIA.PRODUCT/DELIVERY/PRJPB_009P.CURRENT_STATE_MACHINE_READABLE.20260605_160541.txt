@@ -1,0 +1,20 @@
+DELIVERY_ID: PRJPB_009P.CURRENT_STATE_MACHINE_READABLE
+TIMESTAMP_LOCAL: 2026-06-05 16:05:41 -0400
+PROJECT: PRJ_0001_HIA.PRODUCT
+STATUS: DONE
+
+SUMMARY
+- Implemented `STATE/CURRENT_STATE.json` with schema `HIA_CURRENT_STATE.v1`.
+- Added `02_TOOLS/HIA_CURRENT_STATE_GENERATOR.ps1` to generate CURRENT_STATE from BATON/BACKLOG/session/evidence/git, not from CLI recursion.
+- Updated `02_TOOLS/HIA_PROJECT_ENGINE.ps1` so continue/status/review/snapshot paths prefer CURRENT_STATE and fall back to BATON/BACKLOG only when necessary.
+
+ROOT_CAUSE
+- Previous attempt used stale text anchors and failed with `Continue-HIAProject projectRoot anchor not found`.
+- Failed generator design depended on `hia project continue/status`, which would become self-referential after CURRENT_STATE precedence.
+
+RESULT
+- CURRENT_ACTION_AFTER_CLOSE: PRJPB_009Q | usar CURRENT_STATE como fuente primaria para generador Control Tower y reducir parsing CLI duplicado | ready
+- Fallback remains available when CURRENT_STATE is missing or invalid.
+
+DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 partially mitigated, still open while BATON/BACKLOG remain heuristic fallback sources.

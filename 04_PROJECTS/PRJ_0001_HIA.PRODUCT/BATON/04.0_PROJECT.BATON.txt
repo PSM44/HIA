@@ -212,6 +212,61 @@ SESSION_CLOSE_20260518_HIA_PRJPB_007C_TO_007H
   .\01_UI\terminal\hia.ps1 project session start PRJ_0001_HIA.PRODUCT
 
 ==========
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009P_CURRENT_STATE_MACHINE_READABLE_EOF
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009P_CURRENT_STATE_MACHINE_READABLE_EOF_20260605_160541
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 16:05:41 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Canonical append-only cierre EOF para CURRENT_STATE machine-readable.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009P: DONE — CURRENT_STATE machine-readable creado y consumido por continue/status/review.
+- CURRENT_STATE.json vive en STATE/CURRENT_STATE.json con schema HIA_CURRENT_STATE.v1.
+- El CLI ahora prefiere CURRENT_STATE y cae a BATON/BACKLOG solo si falta o es invalido.
+
+02.00_NEXT_ACTION
+- PRJPB_009Q: READY — usar CURRENT_STATE como fuente primaria para generador Control Tower y reducir parsing CLI duplicado.
+
+04.00_NEXT_ACTION
+- PRJPB_009Q | usar CURRENT_STATE como fuente primaria para generador Control Tower y reducir parsing CLI duplicado | ready
+
+03.00_TECH_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 parcialmente mitigado; fallback heuristico sigue existiendo.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001/P2 sigue abierto.
+==========
+
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009P_CURRENT_STATE_MACHINE_READABLE
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009P_CURRENT_STATE_MACHINE_READABLE_20260605_160541
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 16:05:41 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Crear CURRENT_STATE machine-readable y hacerlo fuente primaria del CLI para NEXT_ACTION.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009P: DONE — CURRENT_STATE machine-readable creado y consumido por continue/status/review.
+- CURRENT_STATE.json vive en STATE/CURRENT_STATE.json con schema HIA_CURRENT_STATE.v1.
+- El CLI ahora prefiere CURRENT_STATE y cae a BATON/BACKLOG solo si falta o es invalido.
+
+02.00_ROOT_CAUSE
+- El intento previo fallo por anchor patching contra texto stale en HIA_PROJECT_ENGINE.ps1.
+- El generador fallido dependia de `hia project continue/status`, creando riesgo de realimentacion una vez que el CLI leyera CURRENT_STATE.
+- La correccion reubica la precedencia en Get-HIAProjectPortfolioSnapshot y genera CURRENT_STATE desde BATON/BACKLOG/session/evidence/git sin depender del propio CLI.
+
+03.00_CURRENT_STATE
+- CURRENT_STATE source primary: STATE/CURRENT_STATE.json
+- CURRENT_STATE precedence: CURRENT_STATE first; fallback to BATON/BACKLOG only if missing or invalid.
+
+04.00_NEXT_ACTION
+- PRJPB_009Q: READY — usar CURRENT_STATE como fuente primaria para generador Control Tower y reducir parsing CLI duplicado.
+
+05.00_TECH_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 parcialmente mitigado pero sigue abierto mientras BATON/BACKLOG sigan siendo fallback heuristico.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001/P2 sigue abierto: definir qué TASKS deben versionarse.
+==========
 
 ==========
 SESSION_UPDATE_20260605_HIA_PRJPB_009N_H3_RESOLVE_STATUS_CONTINUE_NEXT_ACTION_ALIGNMENT
@@ -1924,4 +1979,28 @@ PURPOSE...........: Refrescar hia.state.js con generador reusable y alinear NEXT
 
 02.00_NEXT_ACTION
 - PRJPB_009P: READY — crear CURRENT_STATE machine-readable para eliminar heurística BATON append-only.
+==========
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009P_CURRENT_STATE_MACHINE_READABLE_EOF
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009P_CURRENT_STATE_MACHINE_READABLE_EOF_20260605_160541
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 16:05:41 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Canonical append-only cierre EOF para CURRENT_STATE machine-readable.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009P: DONE — CURRENT_STATE machine-readable creado y consumido por continue/status/review.
+- CURRENT_STATE.json vive en STATE/CURRENT_STATE.json con schema HIA_CURRENT_STATE.v1.
+- El CLI ahora prefiere CURRENT_STATE y cae a BATON/BACKLOG solo si falta o es invalido.
+
+02.00_NEXT_ACTION
+- PRJPB_009Q: READY — usar CURRENT_STATE como fuente primaria para generador Control Tower y reducir parsing CLI duplicado.
+
+04.00_NEXT_ACTION
+- PRJPB_009Q | usar CURRENT_STATE como fuente primaria para generador Control Tower y reducir parsing CLI duplicado | ready
+
+03.00_TECH_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 parcialmente mitigado; fallback heuristico sigue existiendo.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001/P2 sigue abierto.
 ==========
