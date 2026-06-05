@@ -213,6 +213,34 @@ SESSION_CLOSE_20260518_HIA_PRJPB_007C_TO_007H
 
 ==========
 ==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009Q_CURRENT_STATE_PRIMARY_CONTROL_TOWER_GENERATOR
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009Q_CURRENT_STATE_PRIMARY_CONTROL_TOWER_GENERATOR_20260605_162123
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 16:21:23 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Migrar generador Control Tower para usar CURRENT_STATE como fuente primaria.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009Q: DONE.
+- HIA_CONTROL_TOWER_STATE_GENERATOR.ps1 ahora usa CURRENT_STATE como fuente primaria.
+- Fallback a CLI/BATON/BACKLOG se mantiene para CURRENT_STATE faltante o invalido.
+- hia.state.js final expone PRJPB_009Q, CURRENT_STATE, VALID, generator_file y current_state_path.
+
+02.00_VALIDATION
+- hia project continue usa CURRENT_STATE y devuelve PRJPB_009Q.
+- hia project status usa CURRENT_STATE y devuelve PRJPB_009Q.
+- CURRENT_STATE.json valida schema HIA_CURRENT_STATE.v1 y next_action.id PRJPB_009Q.
+- Control Tower genera fallback explicito si CURRENT_STATE falta y luego se regenera limpio al restaurar CURRENT_STATE.
+
+04.00_NEXT_ACTION
+- PRJPB_009R: READY — reducir duplicación de parsing CLI y documentar contrato CURRENT_STATE/fallback.
+
+05.00_TECH_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto mientras el generador mantenga fallback heuristico.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001/P2 sigue abierto.
+==========
+==========
 SESSION_UPDATE_20260605_HIA_PRJPB_009P_CURRENT_STATE_MACHINE_READABLE_EOF
 ==========
 ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009P_CURRENT_STATE_MACHINE_READABLE_EOF_20260605_160541

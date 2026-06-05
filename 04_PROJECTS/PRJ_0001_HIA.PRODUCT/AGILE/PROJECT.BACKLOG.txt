@@ -146,6 +146,25 @@ SESSION_CLOSE_20260518_HIA_PRJPB_007C_TO_007H_BACKLOG
   6) roadmap y deuda técnica visibles.
 
 ==========
+==========
+PRJPB_009Q_CURRENT_STATE_PRIMARY_CONTROL_TOWER_GENERATOR
+==========
+FECHA_LOCAL.......: 2026-06-05 16:21:23 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE
+
+01.00_DONE
+- PRJPB_009Q: DONE.
+- HIA_CONTROL_TOWER_STATE_GENERATOR.ps1 ahora usa CURRENT_STATE como fuente primaria.
+- Fallback a CLI/BATON/BACKLOG se mantiene para CURRENT_STATE faltante o invalido.
+
+02.00_NEXT_ACTION
+- PRJPB_009R: READY — reducir duplicación de parsing CLI y documentar contrato CURRENT_STATE/fallback.
+
+03.00_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto mientras exista fallback heuristico.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001/P2 sigue abierto.
+==========
 
 ==========
 PRJPB_009P_CURRENT_STATE_MACHINE_READABLE

@@ -1,0 +1,19 @@
+DELIVERY_ID: PRJPB_009Q.CURRENT_STATE_PRIMARY_CONTROL_TOWER_GENERATOR
+TIMESTAMP_LOCAL: 2026-06-05 16:21:23 -0400
+PROJECT: PRJ_0001_HIA.PRODUCT
+STATUS: DONE
+
+SUMMARY
+- Migrated `02_TOOLS/HIA_CONTROL_TOWER_STATE_GENERATOR.ps1` to use `04_PROJECTS/PRJ_0001_HIA.PRODUCT/STATE/CURRENT_STATE.json` as primary source.
+- Kept explicit CLI/BATON/BACKLOG fallback for missing or invalid CURRENT_STATE.
+- Regenerated `01_UI/web/control-tower-shell/assets/hia.state.js` with PRJPB_009Q and CURRENT_STATE markers.
+
+RESULT
+- next_action: PRJPB_009Q
+- current_state_source: CURRENT_STATE
+- current_state_status: VALID
+- current_state_path: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/STATE/CURRENT_STATE.json
+- generator_file: 02_TOOLS/HIA_CONTROL_TOWER_STATE_GENERATOR.ps1
+
+NEXT_ACTION
+- PRJPB_009R: READY — reducir duplicación de parsing CLI y documentar contrato CURRENT_STATE/fallback.
