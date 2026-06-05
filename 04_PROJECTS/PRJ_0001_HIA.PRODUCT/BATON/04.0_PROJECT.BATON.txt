@@ -1793,3 +1793,31 @@ PURPOSE...........: Formalizar política de snapshot para hia.state.js y evitar 
 04.00_NEXT_ACTION
 - PRJPB_009O: READY — endurecer generador hia.state.js como tool reutilizable y eliminar patch manual.
 ==========
+
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009N_F_REPAIR_NEXT_ACTION_RESOLVER
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009N_F_REPAIR_NEXT_ACTION_RESOLVER_20260605_141401
+STATUS............: READY
+FECHA_LOCAL.......: 2026-06-05 14:14:04 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Reparar continuidad viva porque hia project continue seguía leyendo PRJPB_009N-C pese a rollovers PRJPB_009N-D/E.
+
+01.00_STATE_CONFIRMED
+- PRJPB_009N-C: DONE_WITH_CORRECTIONS.
+- PRJPB_009N-D: DONE — smoke Control Tower Shell result GO.
+- PRJPB_009N-D-R: DONE — hia.state.js refrescado y evidence_state normalizado.
+- PRJPB_009N-E: DONE — política snapshot formalizada.
+- Problema actual: CLI project continue seguía devolviendo PRJPB_009N-C.
+
+02.00_NEXT_ACTION_CANONICAL_HARD
+NEXT_ACTION: PRJPB_009N-F | reparar resolver NEXT_ACTION vivo y reconciliar Control Tower state | ready
+
+03.00_REASON
+- El resolver vivo necesita una línea NEXT_ACTION explícita y parseable.
+- Las entradas previas de rollover fueron suficientemente humanas, pero no suficientemente machine-readable.
+
+04.00_TECH_DEBT
+- TD_NEXT_ACTION_RESOLVER_001/P0: endurecer parser para reconocer último bloque READY/DONE y evitar quedarse con NEXT_ACTION antiguo.
+- TD_BATON_MACHINE_READABILITY_001/P1: separar secciones humanas de campos machine-readable.
+==========

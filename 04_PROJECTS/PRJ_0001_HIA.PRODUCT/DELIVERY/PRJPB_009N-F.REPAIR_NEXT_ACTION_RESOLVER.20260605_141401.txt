@@ -1,0 +1,27 @@
+==========
+PRJPB_009N-F_REPAIR_NEXT_ACTION_RESOLVER
+==========
+ID_UNICO..........: PRJPB_009N-F.REPAIR_NEXT_ACTION_RESOLVER.20260605_141401
+STATUS............: DONE_WITH_OBSERVATION
+FECHA_LOCAL.......: 2026-06-05 14:14:06 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+
+01.00_PROBLEM
+project continue seguía devolviendo PRJPB_009N-C pese a rollovers PRJPB_009N-D/E.
+
+02.00_ACTION
+Se agregó NEXT_ACTION machine-readable explícito en BATON/BACKLOG:
+PRJPB_009N-F | reparar resolver NEXT_ACTION vivo y reconciliar Control Tower state | ready
+
+03.00_RESULT
+LIVE_NEXT_BEFORE: PRJPB_009N-C | implementar estado real read-only visible en Control Tower Shell | ready
+LIVE_NEXT_AFTER : PRJPB_009N-C | implementar estado real read-only visible en Control Tower Shell | ready
+RESOLVER_STATUS : CLI_STILL_STALE_OVERRIDE_WITH_CANONICAL_TARGET
+
+04.00_STATE
+Control Tower hia.state.js fue refrescado con EFFECTIVE_NEXT_ACTION:
+PRJPB_009N-F | reparar resolver NEXT_ACTION vivo y reconciliar Control Tower state | ready
+
+05.00_NEXT_RECOMMENDATION
+Si CLI sigue stale, la próxima MiniBattle debe corregir el parser/resolver de hia.ps1 / HIA_PROJECT_ENGINE.
+Si CLI ya avanzó, continuar con PRJPB_009N-G o cierre de sesión.

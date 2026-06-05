@@ -1772,3 +1772,27 @@ PURPOSE...........: Evitar falso stale en hia.state.js por self-reference de com
 - Valida ruta exacta ./assets/hia.state.js.
 - No usa find/head heurístico para target UI.
 ==========
+
+==========
+PRJPB_009N_F_REPAIR_NEXT_ACTION_RESOLVER
+==========
+ID_UNICO..........: PRJPB_009N_F_REPAIR_NEXT_ACTION_RESOLVER_20260605_141401
+STATUS............: READY
+PURPOSE...........: Reparar resolver NEXT_ACTION vivo y reconciliar estado Control Tower.
+
+01.00_PROBLEM
+- project continue seguía devolviendo PRJPB_009N-C.
+- BATON/BACKLOG tenían rollovers posteriores, pero no fueron reconocidos como NEXT_ACTION vivo.
+
+02.00_READY_NOW
+NEXT_ACTION: PRJPB_009N-F | reparar resolver NEXT_ACTION vivo y reconciliar Control Tower state | ready
+
+03.00_ACCEPTANCE_CRITERIA
+- hia project continue debe devolver PRJPB_009N-F o una acción posterior, no PRJPB_009N-C.
+- hia.state.js debe reflejar el NEXT_ACTION vivo actualizado.
+- Registrar evidencia y commit.
+
+04.00_TECH_DEBT
+- TD_NEXT_ACTION_RESOLVER_001/P0.
+- TD_BATON_MACHINE_READABILITY_001/P1.
+==========
