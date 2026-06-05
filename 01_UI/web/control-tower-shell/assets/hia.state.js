@@ -1,8 +1,8 @@
 // ========== HIA CONTROL TOWER REAL READ-ONLY STATE ==========
 // ID_UNICO..........: PRJPB_009Q_CURRENT_STATE_PRIMARY_CONTROL_TOWER_GENERATOR
-// GENERATED_AT......: 2026-06-05 18:09:25 -04:00
-// GENERATED_UTC.....: 2026-06-05T22:09:25.6608135Z
-// SEMANTIC_HASH.....: 27CAEF59B25DC3879748198523C9AC32E0C69143B66821855F7FB36A1E27E426
+// GENERATED_AT......: 2026-06-05 18:23:41 -04:00
+// GENERATED_UTC.....: 2026-06-05T22:23:41.5731865Z
+// SEMANTIC_HASH.....: 4AAE61C5D50D671CA8F9140398E8B54366B2392AE368A8B20E53335DE99161E7
 // SOURCE............: CURRENT_STATE primary with CLI fallback
 // MODE..............: READ_ONLY_SNAPSHOT
 // WRITE_MODE........: WRITE
@@ -15,17 +15,17 @@ window.HIA_REAL_STATE = Object.freeze({
     root_wsl: "/mnt/c/01. GitHub/Wings3.0/01_PROJECTS/HIA",
     root_win: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA",
     branch: "feat/20260405-console-v2-phase1-phase2",
-    generated_from_head_before_commit: "23c6459",
-    generated_from_head_message_before_commit: "20260605_HIA_PRJPB_009S_evidence_versioning_policy"
+    generated_from_head_before_commit: "6232c40",
+    generated_from_head_message_before_commit: "20260605_HIA_PRJPB_009T_normalize_hia_state_js_regeneration"
   }),
   continuity: Object.freeze({
-    next_action: "PRJPB_009U | reducir duplicación de parsing fallback y centralizar helpers CURRENT_STATE donde sea seguro | ready",
-    resume_recommendation: "PRJPB_009U | reducir duplicación de parsing fallback y centralizar helpers CURRENT_STATE donde sea seguro | ready",
+    next_action: "PRJPB_009V | alinear copy visible de Control Tower con gobernanza CURRENT_STATE/fallback | ready",
+    resume_recommendation: "PRJPB_009V | alinear copy visible de Control Tower con gobernanza CURRENT_STATE/fallback | ready",
     evidence_state: "FRESH",
     evidence_consistency: "CONSISTENT",
     session_status: "closed",
-    generated_local: "2026-06-05 18:09:25 -04:00",
-    generated_utc: "2026-06-05T22:09:25.6608135Z",
+    generated_local: "2026-06-05 18:23:41 -04:00",
+    generated_utc: "2026-06-05T22:23:41.5731865Z",
     resolver_status: "CURRENT_STATE_PRIMARY",
     source: "CURRENT_STATE",
     current_state_source: "CURRENT_STATE",
@@ -46,7 +46,7 @@ window.HIA_REAL_STATE = Object.freeze({
     state_file: "01_UI/web/control-tower-shell/assets/hia.state.js",
     generator_file: "02_TOOLS/HIA_CONTROL_TOWER_STATE_GENERATOR.ps1",
     mode: "read-only generated snapshot",
-    minibattle: "PRJPB_009U"
+    minibattle: "PRJPB_009V"
   }),
   warnings: Object.freeze([
     "Este estado es snapshot visible read-only; no reemplaza CURRENT_STATE, BATON, BACKLOG ni RADAR.",

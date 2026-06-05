@@ -2029,3 +2029,23 @@ STATUS............: DONE
 - TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto.
 - TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
 ==========
+==========
+PRJPB_009U_CENTRALIZE_CURRENT_STATE_AND_FALLBACK_HELPERS_EOF
+==========
+FECHA_LOCAL.......: 2026-06-05 18:35:00 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE
+
+01.00_DONE
+- PRJPB_009U: DONE.
+- Duplicated fallback/current-state helper logic reduced where safe.
+- Shared helper path or retained canonical implementation documented.
+- No public CLI behavior regression.
+
+02.00_NEXT_ACTION
+- PRJPB_009V: READY — alinear copy visible de Control Tower con gobernanza CURRENT_STATE/fallback.
+
+03.00_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
+==========

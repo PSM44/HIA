@@ -1,0 +1,40 @@
+TASK_ID: PRJPB_009U_CENTRALIZE_CURRENT_STATE_AND_FALLBACK_HELPERS
+STATUS: DONE
+DATE_LOCAL: 2026-06-05 18:35:00 -0400
+PROJECT: PRJ_0001_HIA.PRODUCT
+
+DUPLICATION_INVENTORY_BEFORE
+- `Normalize-HIANextActionLine` duplicated in `HIA_PROJECT_ENGINE.ps1` and `HIA_CURRENT_STATE_GENERATOR.ps1`.
+- `Test-HIAOperationalNextActionHeader` duplicated in `HIA_PROJECT_ENGINE.ps1` and `HIA_CURRENT_STATE_GENERATOR.ps1`.
+- `Test-HIAActionableNextActionLine` duplicated in `HIA_PROJECT_ENGINE.ps1` and `HIA_CURRENT_STATE_GENERATOR.ps1`.
+- `Get-HIALatestSectionalNextAction` duplicated in `HIA_PROJECT_ENGINE.ps1` and `HIA_CURRENT_STATE_GENERATOR.ps1`.
+- `Get-HIABatonValueByHeaders` duplicated in `HIA_PROJECT_ENGINE.ps1` and `HIA_CURRENT_STATE_GENERATOR.ps1`.
+- `Get-HIANextReadyBacklogItem` duplicated in `HIA_PROJECT_ENGINE.ps1` and `HIA_CURRENT_STATE_GENERATOR.ps1`.
+
+WHAT_WAS_CENTRALIZED
+- Shared helper file created: `02_TOOLS/HIA_STATE_HELPERS.ps1`.
+- Stable fallback/normalization helpers moved there and dot-sourced by:
+  - `02_TOOLS/HIA_PROJECT_ENGINE.ps1`
+  - `02_TOOLS/HIA_CURRENT_STATE_GENERATOR.ps1`
+
+INTENTIONALLY_NOT_CENTRALIZED
+- `Get-HIACurrentState` stayed in `HIA_PROJECT_ENGINE.ps1` because it is coupled to CLI snapshot shaping and current reader contract.
+- `Get-CurrentStatePayload` in `HIA_CONTROL_TOWER_STATE_GENERATOR.ps1` stayed local because it serves generator-specific validation semantics.
+- Evidence/session/git extraction stayed local to current generator/engine flows to avoid circular or overly broad module growth.
+
+RISK_ASSESSMENT
+- Low-to-medium risk change.
+- Shared only stable text parsing helpers.
+- No public CLI contract changed.
+- No fallback path removed.
+- No generator write semantics from `PRJPB_009T` were altered.
+
+VALIDATION_RESULTS
+- `HIA_CURRENT_STATE_GENERATOR.ps1` still generates `CURRENT_STATE.json` directly, without calling `hia project continue/status`.
+- `hia project continue/status/review` stayed aligned with `CURRENT_STATE`.
+- `HIA_CONTROL_TOWER_STATE_GENERATOR.ps1` still reports `CHECK` no-write by default and `CURRENT_STATE` as source.
+
+REMAINING_DEBT
+- `TD_BATON_APPEND_ONLY_STATE_001/P1` remains open.
+- `TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1` remains open.
+- `PRJPB_009V` remains the next copy/governance alignment task.
