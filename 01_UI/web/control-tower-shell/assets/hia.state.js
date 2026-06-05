@@ -1,7 +1,7 @@
 ﻿// ========== HIA CONTROL TOWER REAL READ-ONLY STATE ==========
 // ID_UNICO..........: PRJPB_009Q_CURRENT_STATE_PRIMARY_CONTROL_TOWER_GENERATOR
-// GENERATED_AT......: 2026-06-05 17:00:50 -04:00
-// GENERATED_UTC.....: 2026-06-05T21:00:50.4423375Z
+// GENERATED_AT......: 2026-06-05 17:06:17 -04:00
+// GENERATED_UTC.....: 2026-06-05T21:06:17.9174752Z
 // SOURCE............: CURRENT_STATE primary with CLI fallback
 // MODE..............: READ_ONLY_SNAPSHOT
 // DO_NOT_USE_AS_CANON: YES
@@ -13,8 +13,8 @@ window.HIA_REAL_STATE = Object.freeze({
     root_wsl: "/mnt/c/01. GitHub/Wings3.0/01_PROJECTS/HIA",
     root_win: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA",
     branch: "feat/20260405-console-v2-phase1-phase2",
-    generated_from_head_before_commit: "c751e54",
-    generated_from_head_message_before_commit: "20260605_HIA_PRJPB_009Q_R_refresh_state_after_verify"
+    generated_from_head_before_commit: "0dacb22",
+    generated_from_head_message_before_commit: "20260605_HIA_PRJPB_009R_current_state_fallback_contract"
   }),
   continuity: Object.freeze({
     next_action: "PRJPB_009S | definir política de versionado de ARTIFACTS/TASKS y evidencia runtime | ready",
@@ -22,8 +22,8 @@ window.HIA_REAL_STATE = Object.freeze({
     evidence_state: "FRESH",
     evidence_consistency: "CONSISTENT",
     session_status: "closed",
-    generated_local: "2026-06-05 17:00:50 -04:00",
-    generated_utc: "2026-06-05T21:00:50.4423375Z",
+    generated_local: "2026-06-05 17:06:17 -04:00",
+    generated_utc: "2026-06-05T21:06:17.9174752Z",
     resolver_status: "CURRENT_STATE_PRIMARY",
     source: "CURRENT_STATE",
     current_state_source: "CURRENT_STATE",
