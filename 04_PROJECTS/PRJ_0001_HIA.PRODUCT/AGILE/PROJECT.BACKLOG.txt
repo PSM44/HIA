@@ -1813,3 +1813,19 @@ NEXT_ACTION: PRJPB_009N-F | reparar resolver NEXT_ACTION vivo y reconciliar Cont
 - TD_NEXT_ACTION_RESOLVER_001/P0.
 - TD_BATON_MACHINE_READABILITY_001/P1.
 ==========
+
+==========
+PRJPB_009N_H4_REFRESH_CONTROL_TOWER_STATE
+==========
+ID_UNICO..........: PRJPB_009N_H4_REFRESH_CONTROL_TOWER_STATE_20260605_154057
+STATUS............: DONE
+PURPOSE...........: Refrescar estado visual Control Tower después de resolver alineación CLI.
+
+01.00_DONE
+- Control Tower state actualizado a PRJPB_009O.
+- Se elimina stale visible PRJPB_009N-F.
+- CLI continue/status/review alineados.
+
+02.00_READY_NOW
+- PRJPB_009O: READY — endurecer generador hia.state.js como tool reutilizable y eliminar patch manual.
+==========
