@@ -2332,3 +2332,27 @@ PURPOSE...........: Corregir rollover de CURRENT_STATE/hia.state.js posterior a 
 - TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
 - TD_CURRENT_STATE_GENERATOR_DIRTY_001/P2 sigue abierto.
 ==========
+
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009W_FIX_ROLLOVER_009X
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009W_FIX_ROLLOVER_009X_20260606_180308
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-06 18:03:16 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Corregir rollover de CURRENT_STATE/hia.state.js posterior a PRJPB_009W.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009W: DONE — validador creado y commiteado en 638a7d8.
+- PRJPB_009W-FIX: DONE — CURRENT_STATE y hia.state.js alineados a PRJPB_009X.
+- Boolean noise del validator corregido.
+- CLI checks del validator ajustados para validar NEXT_ACTION esperado sin exigir texto literal CURRENT_STATE.
+
+02.00_NEXT_ACTION
+- PRJPB_009X | internal release-candidate hardening pass and evidence package | ready
+
+03.00_TECH_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
+- TD_CURRENT_STATE_GENERATOR_DIRTY_001/P2 sigue abierto.
+==========
