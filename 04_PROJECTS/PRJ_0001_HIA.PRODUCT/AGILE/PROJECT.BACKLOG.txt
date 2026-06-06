@@ -2139,3 +2139,19 @@ STATUS............: DONE
 - No debe usar Validate-* como verbo.
 - No debe tocar HUMAN.
 ==========
+
+==========
+PRJPB_009W_FIX_ROLLOVER_009X
+==========
+FECHA_LOCAL.......: 2026-06-05 22:19:19 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE
+
+01.00_DONE
+- PRJPB_009W-FIX: DONE — rollover limpio a PRJPB_009X.
+- CURRENT_STATE.json y hia.state.js contienen PRJPB_009X.
+- Validator corregido para no emitir boolean noise y no depender de texto CLI literal CURRENT_STATE.
+
+02.00_READY_NOW
+- PRJPB_009X: READY — internal release-candidate hardening pass and evidence package.
+==========

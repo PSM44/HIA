@@ -1,0 +1,25 @@
+===============================================================================
+FILE..............: PRJPB_009W-FIX.ROLLOVER_009X.20260605_221912.txt
+PROJECT...........: PRJ_0001_HIA.PRODUCT
+MINIBATTLE........: PRJPB_009W-FIX
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 22:19:19 -0400
+PURPOSE...........: Corregir rollover posterior a PRJPB_009W y alinear CURRENT_STATE/hia.state.js a PRJPB_009X.
+===============================================================================
+
+01.00_ROOT_CAUSE
+- PRJPB_009W creó el validador y quedó commiteado.
+- El primer intento de rollover a PRJPB_009X falló por asumir propiedad next_action.text inexistente.
+- El validador tenía dos problemas:
+  1) imprimía boolean noise por retorno de Test-HIAFileExists.
+  2) exigía que CLI imprimiera literalmente CURRENT_STATE, aunque CURRENT_STATE ya se valida estructuralmente.
+
+02.00_FIX
+- Se descarta intento dirty fallido no commiteado.
+- Se actualiza CURRENT_STATE.json a PRJPB_009X usando Set-OrAdd defensivo.
+- Se regenera hia.state.js desde HIA_CONTROL_TOWER_STATE_GENERATOR.ps1.
+- Se ajusta validador para no emitir boolean noise y validar CLI por NEXT_ACTION esperado.
+
+03.00_NEXT_ACTION
+- PRJPB_009X | internal release-candidate hardening pass and evidence package | ready
+===============================================================================

@@ -6,11 +6,12 @@
     "generator":  "02_TOOLS/HIA_CURRENT_STATE_GENERATOR.ps1",
     "current_objective":  "Implementar estado básico del proyecto desde HIA.",
     "next_action":  {
-                        "id":  "PRJPB_009W",
-                        "title":  "crear validador gobernado de estado/evidencia/snapshot para release-readiness",
-                        "status":  "READY",
+                        "id":  "PRJPB_009X",
+                        "title":  "internal release-candidate hardening pass and evidence package",
+                        "status":  "ready",
                         "raw":  "PRJPB_009W | crear validador gobernado de estado/evidencia/snapshot para release-readiness | ready",
-                        "source":  "CURRENT_STATE"
+                        "source":  "PRJPB_009W rollover after release-readiness validator creation",
+                        "text":  "PRJPB_009X | internal release-candidate hardening pass and evidence package | ready"
                     },
     "evidence":  {
                      "state":  "FRESH",

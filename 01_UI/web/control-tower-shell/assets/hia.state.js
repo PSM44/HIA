@@ -1,8 +1,8 @@
 // ========== HIA CONTROL TOWER REAL READ-ONLY STATE ==========
 // ID_UNICO..........: PRJPB_009Q_CURRENT_STATE_PRIMARY_CONTROL_TOWER_GENERATOR
-// GENERATED_AT......: 2026-06-05 18:42:15 -04:00
-// GENERATED_UTC.....: 2026-06-05T22:42:15.2014958Z
-// SEMANTIC_HASH.....: 6DAF94BD1F1807B5848EBC5EED9B63DEE11D5F537D8F3D82407E697985DF629C
+// GENERATED_AT......: 2026-06-05 22:19:16 -04:00
+// GENERATED_UTC.....: 2026-06-06T02:19:16.8364295Z
+// SEMANTIC_HASH.....: 6022B8D0DF9F2509B1E1FDD36ACF576A49BEE37A8E00D2BBDD48F2C1A55875C9
 // SOURCE............: CURRENT_STATE primary with CLI fallback
 // MODE..............: READ_ONLY_SNAPSHOT
 // WRITE_MODE........: WRITE
@@ -15,8 +15,8 @@ window.HIA_REAL_STATE = Object.freeze({
     root_wsl: "/mnt/c/01. GitHub/Wings3.0/01_PROJECTS/HIA",
     root_win: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA",
     branch: "feat/20260405-console-v2-phase1-phase2",
-    generated_from_head_before_commit: "19f8380",
-    generated_from_head_message_before_commit: "20260605_HIA_PRJPB_009U_centralize_current_state_helpers"
+    generated_from_head_before_commit: "638a7d8",
+    generated_from_head_message_before_commit: "20260605_HIA_PRJPB_009W_release_readiness_validator"
   }),
   continuity: Object.freeze({
     next_action: "PRJPB_009W | crear validador gobernado de estado/evidencia/snapshot para release-readiness | ready",
@@ -24,8 +24,8 @@ window.HIA_REAL_STATE = Object.freeze({
     evidence_state: "FRESH",
     evidence_consistency: "CONSISTENT",
     session_status: "closed",
-    generated_local: "2026-06-05 18:42:15 -04:00",
-    generated_utc: "2026-06-05T22:42:15.2014958Z",
+    generated_local: "2026-06-05 22:19:16 -04:00",
+    generated_utc: "2026-06-06T02:19:16.8364295Z",
     resolver_status: "CURRENT_STATE_PRIMARY",
     source: "CURRENT_STATE",
     current_state_source: "CURRENT_STATE",
@@ -35,18 +35,18 @@ window.HIA_REAL_STATE = Object.freeze({
   }),
   radar: Object.freeze({
     lite_path: "03_ARTIFACTS/RADAR/Radar.Lite.ACTIVE.txt",
-    lite_bytes: 991,
+    lite_bytes: 1162,
     index_path: "03_ARTIFACTS/RADAR/Radar.Index.ACTIVE.txt",
-    index_bytes: 108020,
+    index_bytes: 120836,
     core_path: "03_ARTIFACTS/RADAR/Radar.Core.ACTIVE.txt",
-    core_bytes: 1116339
+    core_bytes: 1160380
   }),
   ui: Object.freeze({
     shell_file: "01_UI/web/control-tower-shell/index.html",
     state_file: "01_UI/web/control-tower-shell/assets/hia.state.js",
     generator_file: "02_TOOLS/HIA_CONTROL_TOWER_STATE_GENERATOR.ps1",
     mode: "read-only generated snapshot",
-    minibattle: "PRJPB_009W"
+    minibattle: "PRJPB_009X"
   }),
   warnings: Object.freeze([
     "Este estado es snapshot visible read-only; no reemplaza CURRENT_STATE, BATON, BACKLOG ni RADAR.",
