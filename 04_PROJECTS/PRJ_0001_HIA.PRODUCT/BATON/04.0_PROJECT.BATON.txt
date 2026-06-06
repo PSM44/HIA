@@ -2356,3 +2356,26 @@ PURPOSE...........: Corregir rollover de CURRENT_STATE/hia.state.js posterior a 
 - TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
 - TD_CURRENT_STATE_GENERATOR_DIRTY_001/P2 sigue abierto.
 ==========
+
+==========
+SESSION_UPDATE_20260606_HIA_PRJPB_009W_HOTFIX_NEXT_ACTION_CONSISTENCY
+==========
+ID_UNICO..........: SESSION_UPDATE_20260606_HIA_PRJPB_009W_HOTFIX_NEXT_ACTION_CONSISTENCY_20260606_180627
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-06 18:06:32 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Corregir inconsistencia NEXT_ACTION raw/id/text y falso PASS del validador.
+
+01.00_DONE_CONFIRMED
+- CURRENT_STATE.next_action.raw/id/text normalizado a PRJPB_009X.
+- Control Tower hia.state.js regenerado.
+- HIA_RELEASE_READINESS_VALIDATOR.ps1 endurecido a v0.2.
+- Falso PASS de PRJPB_009W queda corregido como issue cerrado.
+
+02.00_NEXT_ACTION
+- PRJPB_009X | internal release-candidate hardening pass and evidence package | ready
+
+03.00_TECH_DEBT
+- TD_CURRENT_STATE_RAW_PRECEDENCE_001/P1: revisar si CLI/generator deben preferir text/id sobre raw o eliminar raw como fuente operativa.
+- TD_VALIDATOR_FALSE_PASS_001/P1: observado y mitigado en v0.2; mantener vigilancia.
+==========

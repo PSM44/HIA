@@ -1,8 +1,8 @@
 // ========== HIA CONTROL TOWER REAL READ-ONLY STATE ==========
 // ID_UNICO..........: PRJPB_009Q_CURRENT_STATE_PRIMARY_CONTROL_TOWER_GENERATOR
-// GENERATED_AT......: 2026-06-05 22:19:16 -04:00
-// GENERATED_UTC.....: 2026-06-06T02:19:16.8364295Z
-// SEMANTIC_HASH.....: 6022B8D0DF9F2509B1E1FDD36ACF576A49BEE37A8E00D2BBDD48F2C1A55875C9
+// GENERATED_AT......: 2026-06-06 18:06:30 -04:00
+// GENERATED_UTC.....: 2026-06-06T22:06:30.1449999Z
+// SEMANTIC_HASH.....: 8F7C8837812AB2BE750A8E0795E4085F7315249D343AFC7F1433B3B7612D34CE
 // SOURCE............: CURRENT_STATE primary with CLI fallback
 // MODE..............: READ_ONLY_SNAPSHOT
 // WRITE_MODE........: WRITE
@@ -15,17 +15,17 @@ window.HIA_REAL_STATE = Object.freeze({
     root_wsl: "/mnt/c/01. GitHub/Wings3.0/01_PROJECTS/HIA",
     root_win: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA",
     branch: "feat/20260405-console-v2-phase1-phase2",
-    generated_from_head_before_commit: "638a7d8",
-    generated_from_head_message_before_commit: "20260605_HIA_PRJPB_009W_release_readiness_validator"
+    generated_from_head_before_commit: "05baa81",
+    generated_from_head_message_before_commit: "20260605_HIA_PRJPB_009W_fix_rollover_009X"
   }),
   continuity: Object.freeze({
-    next_action: "PRJPB_009W | crear validador gobernado de estado/evidencia/snapshot para release-readiness | ready",
-    resume_recommendation: "PRJPB_009W | crear validador gobernado de estado/evidencia/snapshot para release-readiness | ready",
+    next_action: "PRJPB_009X | internal release-candidate hardening pass and evidence package | ready",
+    resume_recommendation: "PRJPB_009X | internal release-candidate hardening pass and evidence package | ready",
     evidence_state: "FRESH",
     evidence_consistency: "CONSISTENT",
     session_status: "closed",
-    generated_local: "2026-06-05 22:19:16 -04:00",
-    generated_utc: "2026-06-06T02:19:16.8364295Z",
+    generated_local: "2026-06-06 18:06:30 -04:00",
+    generated_utc: "2026-06-06T22:06:30.1449999Z",
     resolver_status: "CURRENT_STATE_PRIMARY",
     source: "CURRENT_STATE",
     current_state_source: "CURRENT_STATE",

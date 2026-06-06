@@ -1,0 +1,24 @@
+===============================================================================
+FILE..............: PRJPB_009W-HOTFIX.NEXT_ACTION_CONSISTENCY.20260606_180627.txt
+PROJECT...........: PRJ_0001_HIA.PRODUCT
+MINIBATTLE........: PRJPB_009W-HOTFIX
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-06 18:06:32 -0400
+PURPOSE...........: Corregir inconsistencia NEXT_ACTION entre CURRENT_STATE.raw/id/text, CLI, hia.state.js y release-readiness validator.
+===============================================================================
+
+01.00_ROOT_CAUSE
+- CURRENT_STATE.next_action.id/text quedó en PRJPB_009X.
+- CURRENT_STATE.next_action.raw quedó stale en PRJPB_009W.
+- CLI y Control Tower generator siguieron resolviendo NEXT_ACTION desde raw.
+- El validator permitió falso PASS.
+
+02.00_DONE
+- CURRENT_STATE.next_action.raw/id/text/title/status normalizados a PRJPB_009X.
+- hia.state.js regenerado.
+- HIA_RELEASE_READINESS_VALIDATOR.ps1 endurecido a v0.2.
+- Validator ahora falla si id/raw/text, CLI, hia.state.js y generator CHECK no coinciden.
+
+03.00_NEXT_ACTION
+- PRJPB_009X | internal release-candidate hardening pass and evidence package | ready
+===============================================================================
