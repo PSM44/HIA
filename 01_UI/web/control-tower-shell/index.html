@@ -10,6 +10,30 @@
   <title>HIA — Control Tower v0.2</title>
 </head>
 <body>
+
+<!-- HIA_PRJPB_009Z_R_DISCLOSURE_BANNER_START -->
+<section class="hia-rc-disclosure-banner" aria-label="Release candidate governance disclosure">
+  <div class="hia-rc-disclosure-grid">
+    <div class="hia-rc-disclosure-card hia-rc-disclosure-critical">
+      <div class="hia-rc-disclosure-label">FUENTE CANÓNICA</div>
+      <div class="hia-rc-disclosure-title">CURRENT_STATE.json</div>
+      <p>La UI debe leerse desde <b>CURRENT_STATE</b>. BATON/BACKLOG quedan como fallback, auditoría e historial; no son la fuente primaria del estado visible.</p>
+    </div>
+    <div class="hia-rc-disclosure-card hia-rc-disclosure-warning">
+      <div class="hia-rc-disclosure-label">ESTADO DE RELEASE</div>
+      <div class="hia-rc-disclosure-title">Release candidate interno</div>
+      <p>Esto habilita revisión interna controlada. <b>No es release productivo</b> ni paquete gerencial final.</p>
+    </div>
+    <div class="hia-rc-disclosure-card hia-rc-disclosure-debt">
+      <div class="hia-rc-disclosure-label">DEUDA / RIESGO VISIBLE</div>
+      <div class="hia-rc-disclosure-title">No maquillar deuda</div>
+      <p>Deuda activa: fallback BATON append-only, migración de consumidores CURRENT_STATE, vigilancia de dirty diffs y revisión de freshness de evidencia.</p>
+    </div>
+  </div>
+</section>
+<!-- HIA_PRJPB_009Z_R_DISCLOSURE_BANNER_END -->
+
+
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">

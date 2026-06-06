@@ -2260,3 +2260,23 @@ STATUS............: DONE
 - GO/NO_GO explícito.
 - Sesión cerrada documentalmente.
 ==========
+
+==========
+PRJPB_009Z_R_REMEDIATE_GOVERNANCE_DEBT_VISIBILITY
+==========
+FECHA_LOCAL.......: 2026-06-06 18:19:56 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE
+
+01.00_DONE
+- PRJPB_009Z-R: DONE — remediada visibilidad de fuente canónica/fallback y deuda/riesgos.
+- Delivery: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_009Z-R.REMEDIATE_GOVERNANCE_DEBT_VISIBILITY.20260606_181947.txt
+
+02.00_READY_NOW
+- PRJPB_009Z-R2: READY — re-ejecutar demo interna guiada post-remediation y capturar GO/NO_GO humano.
+
+03.00_ACCEPTANCE_CRITERIA
+- Control Tower debe mostrar fuente canónica/fallback de forma entendible.
+- Control Tower debe mostrar deuda/riesgos sin maquillaje.
+- Requiere confirmación humana posterior.
+==========

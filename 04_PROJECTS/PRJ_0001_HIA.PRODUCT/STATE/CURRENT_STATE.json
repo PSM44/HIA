@@ -6,12 +6,12 @@
   "generator": "02_TOOLS/HIA_CURRENT_STATE_GENERATOR.ps1",
   "current_objective": "Implementar estado básico del proyecto desde HIA.",
   "next_action": {
-    "id": "PRJPB_009X",
-    "title": "internal release-candidate hardening pass and evidence package",
+    "id": "PRJPB_009Z-R2",
+    "title": "re-ejecutar demo interna guiada post-remediation y capturar GO/NO_GO humano",
     "status": "ready",
-    "raw": "PRJPB_009X | internal release-candidate hardening pass and evidence package | ready",
-    "source": "PRJPB_009W-HOTFIX normalized next_action raw/id/text after release-readiness validator false PASS",
-    "text": "PRJPB_009X | internal release-candidate hardening pass and evidence package | ready"
+    "raw": "PRJPB_009Z-R2 | re-ejecutar demo interna guiada post-remediation y capturar GO/NO_GO humano | ready",
+    "source": "PRJPB_009Z-R remediation closed; requires human revalidation",
+    "text": "PRJPB_009Z-R2 | re-ejecutar demo interna guiada post-remediation y capturar GO/NO_GO humano | ready"
   },
   "evidence": {
     "state": "FRESH",
