@@ -1,0 +1,30 @@
+===============================================================================
+FILE..............: PRJPB_009W.RELEASE_READINESS_VALIDATOR.20260605_212506.txt
+PROJECT...........: PRJ_0001_HIA.PRODUCT
+MINIBATTLE........: PRJPB_009W
+STATUS............: DONE_PENDING_FINAL_VALIDATION
+FECHA_LOCAL.......: 2026-06-05 21:25:08 -0400
+PURPOSE...........: Crear validador gobernado PASS/FAIL de release-readiness.
+===============================================================================
+
+01.00_DONE
+- Se crea 02_TOOLS/HIA_RELEASE_READINESS_VALIDATOR.ps1.
+- El validador usa Test-* naming, no Validate-*.
+- El validador revisa:
+  1) git clean.
+  2) CURRENT_STATE schema/project/next_action/evidence.
+  3) hia project continue/status/review.
+  4) hia.state.js con CURRENT_STATE_PRIMARY, VALID y SEMANTIC_HASH.
+  5) governance docs.
+  6) RADAR Lite/Index/Core.
+  7) HIA_CONTROL_TOWER_STATE_GENERATOR.ps1 en modo CHECK.
+
+02.00_NEXT_ACTION
+- PRJPB_009X | internal release-candidate hardening pass and evidence package | ready
+
+03.00_NOTES
+- CURRENT_STATE sigue siendo fuente primaria.
+- BATON/BACKLOG quedan como fallback/auditoría.
+- No se toca HUMAN.
+- No se elimina fallback.
+===============================================================================

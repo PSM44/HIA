@@ -2282,3 +2282,29 @@ PURPOSE...........: Cierre documental de sesión posterior a PRJPB_009V y prepar
 - No tocar HUMAN salvo cambio doctrinal explícito.
 - No eliminar BATON/BACKLOG fallback todavía.
 ==========
+
+==========
+SESSION_UPDATE_20260605_HIA_PRJPB_009W_RELEASE_READINESS_VALIDATOR
+==========
+ID_UNICO..........: SESSION_UPDATE_20260605_HIA_PRJPB_009W_RELEASE_READINESS_VALIDATOR_20260605_212506
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-05 21:25:08 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Crear validador gobernado de estado/evidencia/snapshot para release-readiness.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009W: DONE.
+- Tool creado: 02_TOOLS/HIA_RELEASE_READINESS_VALIDATOR.ps1.
+- Validator PASS/FAIL cubre CURRENT_STATE, CLI, hia.state.js, governance, RADAR y git clean.
+- No se toca HUMAN.
+- No se elimina BATON/BACKLOG fallback.
+
+02.00_NEXT_ACTION
+- PRJPB_009X | internal release-candidate hardening pass and evidence package | ready
+
+03.00_TECH_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
+- TD_CURRENT_STATE_GENERATOR_DIRTY_001/P2 sigue abierto.
+- TD_RELEASE_VALIDATION_AUTOMATION_001/P2 mitigado por PRJPB_009W; observar adopción en release path.
+==========

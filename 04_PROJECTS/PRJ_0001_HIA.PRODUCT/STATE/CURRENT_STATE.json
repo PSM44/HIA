@@ -1,8 +1,8 @@
 ﻿{
     "schema":  "HIA_CURRENT_STATE.v1",
     "project_id":  "PRJ_0001_HIA.PRODUCT",
-    "generated_local":  "2026-06-05 18:23:14 -04:00",
-    "generated_utc":  "2026-06-05T22:23:14.8835147Z",
+    "generated_local":  "2026-06-05 21:25:09 -04:00",
+    "generated_utc":  "2026-06-06T01:25:09.4778549Z",
     "generator":  "02_TOOLS/HIA_CURRENT_STATE_GENERATOR.ps1",
     "current_objective":  "Implementar estado básico del proyecto desde HIA.",
     "next_action":  {
@@ -23,8 +23,8 @@
                 },
     "git":  {
                 "branch":  "feat/20260405-console-v2-phase1-phase2",
-                "head_short":  "6232c40",
-                "head_message":  "20260605_HIA_PRJPB_009T_normalize_hia_state_js_regeneration"
+                "head_short":  "d74043b",
+                "head_message":  "20260605_HIA_session_close_after_PRJPB_009V"
             },
     "policy":  {
                    "precedence":  "CURRENT_STATE first; fallback to BATON/BACKLOG only if missing or invalid",

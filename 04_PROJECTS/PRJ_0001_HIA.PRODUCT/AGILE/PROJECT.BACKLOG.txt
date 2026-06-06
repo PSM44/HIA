@@ -2117,3 +2117,25 @@ PRJPB_010C | Delivery pack gerencial | Gerencia | Entregable funcional | BACKLOG
 - DELIVERY/GOVERNANCE/STATE/BATON/BACKLOG son tracked según política de evidencia.
 - ARTIFACTS/TASKS y ARTIFACTS/LOGS permanecen runtime-local salvo promoción explícita.
 ==========
+
+==========
+PRJPB_009W_RELEASE_READINESS_VALIDATOR
+==========
+FECHA_LOCAL.......: 2026-06-05 21:25:08 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE
+
+01.00_DONE
+- PRJPB_009W: DONE — creado validador gobernado de release-readiness.
+- Tool: 02_TOOLS/HIA_RELEASE_READINESS_VALIDATOR.ps1.
+- Delivery: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_009W.RELEASE_READINESS_VALIDATOR.20260605_212506.txt
+
+02.00_READY_NOW
+- PRJPB_009X: READY — internal release-candidate hardening pass and evidence package.
+
+03.00_ACCEPTANCE_CRITERIA
+- Validator debe retornar RESULT=PASS con repo clean.
+- Validator debe comprobar CURRENT_STATE, CLI, hia.state.js, governance docs, RADAR y git clean.
+- No debe usar Validate-* como verbo.
+- No debe tocar HUMAN.
+==========
