@@ -2213,3 +2213,26 @@ STATUS............: DONE
 - Deuda residual explícita.
 - Siguiente acción no ambigua.
 ==========
+
+==========
+PRJPB_009Y_INTERNAL_RC_DEMO_GUIDE
+==========
+FECHA_LOCAL.......: 2026-06-06 18:10:07 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE
+
+01.00_DONE
+- PRJPB_009Y: DONE — demo interna release-candidate guide creada.
+- Delivery: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_009Y.INTERNAL_RC_DEMO_GUIDE_GO_NO_GO.20260606_180957.txt
+- Matriz GO/NO_GO incluida.
+- Validator PASS previo.
+
+02.00_READY_NOW
+- PRJPB_009Z: READY — ejecutar demo interna guiada, capturar GO/NO_GO humano y cerrar sesión.
+
+03.00_ACCEPTANCE_CRITERIA
+- Guion ejecutable por humano.
+- Matriz GO/NO_GO explícita.
+- Deuda visible.
+- No se promete release productivo.
+==========

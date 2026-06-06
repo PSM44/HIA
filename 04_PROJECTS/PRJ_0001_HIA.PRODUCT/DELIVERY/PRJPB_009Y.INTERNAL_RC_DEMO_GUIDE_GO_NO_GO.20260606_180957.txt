@@ -1,0 +1,101 @@
+===============================================================================
+FILE..............: PRJPB_009Y.INTERNAL_RC_DEMO_GUIDE_GO_NO_GO.20260606_180957.txt
+PROJECT...........: PRJ_0001_HIA.PRODUCT
+MINIBATTLE........: PRJPB_009Y
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-06 18:10:07 -0400
+PURPOSE...........: Guion de demo interna release-candidate + matriz GO/NO_GO.
+===============================================================================
+
+01.00_EXECUTIVE_VERDICT
+- DEMO_STATUS: GO_WITH_DISCLOSED_DEBT
+- INTERNAL_RC_BASELINE: b9ba343 20260606_HIA_PRJPB_009X_internal_rc_evidence_package
+- READINESS_VALIDATOR: PASS
+- CURRENT_STATE_SOURCE: CURRENT_STATE
+- CURRENT_STATE_STATUS: VALID
+- SCOPE: Demo interna controlada, no release productivo.
+
+02.00_DEMO_OBJECTIVE
+Demostrar que HIA puede:
+1. Exponer estado operativo real desde CURRENT_STATE.
+2. Mantener continuidad NEXT_ACTION sin depender de heurística BATON append-only.
+3. Mostrar Control Tower alineado con estado canónico.
+4. Probar release-readiness con validador PASS/FAIL.
+5. Explicitar deuda técnica sin esconderla.
+
+03.00_DEMO_SCRIPT_STEP_BY_STEP
+
+03.10 Paso 1 — Confirmar repo y HEAD
+Comando:
+cd "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA"
+git status --short
+git log --oneline -5
+
+Criterio esperado:
+- git status limpio.
+- HEAD igual o posterior a b9ba343 20260606_HIA_PRJPB_009X_internal_rc_evidence_package.
+
+03.20 Paso 2 — Ejecutar validator release-readiness
+Comando:
+.\02_TOOLS\HIA_RELEASE_READINESS_VALIDATOR.ps1 -ProjectId "PRJ_0001_HIA.PRODUCT" -RepoRoot "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA" -ExpectedNextActionId "PRJPB_009X"
+
+Criterio esperado:
+- RESULT: PASS.
+- CURRENT_STATE / CLI / hia.state.js / generator check alineados.
+
+03.30 Paso 3 — Ver continuidad CLI
+Comando:
+.\01_UI\terminal\hia.ps1 project continue PRJ_0001_HIA.PRODUCT
+
+Criterio esperado:
+- NEXT_ACTION_SOURCE: CURRENT_STATE.
+- CURRENT_STATE_STATUS: VALID.
+- NEXT_ACTION: PRJPB_009X.
+
+03.40 Paso 4 — Ver estado del proyecto
+Comando:
+.\01_UI\terminal\hia.ps1 project status PRJ_0001_HIA.PRODUCT
+
+Criterio esperado:
+- NEXT_STEP_SOURCE: CURRENT_STATE.
+- NEXT_STEP_SNAPSHOT: PRJPB_009X.
+- RELEVANT_PATHS OK.
+
+03.50 Paso 5 — Abrir Control Tower
+Comando:
+.\01_UI\launcher\HIA.CONTROL.TOWER.SHELL.LAUNCHER.ps1
+
+Criterio esperado:
+- Shell abre sin error.
+- Copy visible no promete que BATON/BACKLOG sean fuente primaria.
+- Estado visible debe estar alineado con CURRENT_STATE.
+
+04.00_GO_NO_GO_MATRIX
+
+| ID | Control | Expected | Result | Decision |
+|----|---------|----------|--------|----------|
+| GNG_001 | Git clean | clean | PENDING_DEMO_RUN | GO_REQUIRED |
+| GNG_002 | Validator | RESULT PASS | PASS_AT_PACKAGE_CREATION | GO |
+| GNG_003 | CURRENT_STATE | schema valid + PRJPB_009X | PASS_AT_PACKAGE_CREATION | GO |
+| GNG_004 | CLI continue/status/review | PRJPB_009X from CURRENT_STATE | PASS_AT_PACKAGE_CREATION | GO |
+| GNG_005 | Control Tower generator | CHECK valid, no write needed | PASS_AT_PACKAGE_CREATION | GO |
+| GNG_006 | Human visual validation | usuario confirma lectura y navegación | PENDING_HUMAN | GO_REQUIRED |
+| GNG_007 | Evidence anchor freshness | evidencia no ambigua | WARNING | GO_WITH_DISCLOSED_DEBT |
+| GNG_008 | Product readiness | no productivo | NOT_READY_FOR_PROD | NO_PROD_RELEASE |
+
+05.00_DISCLOSED_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1: BATON conserva historia larga; fallback sigue existiendo.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1: migración completa de consumidores pendiente.
+- TD_CURRENT_STATE_GENERATOR_DIRTY_001/P2: seguir vigilando metadata volátil.
+- TD_EVIDENCE_ANCHOR_FRESHNESS_001/P1 CANDIDATE: revisar política de freshness real.
+- TD_DEMO_VISUAL_VALIDATION_001/P1: falta smoke humano guiado del Control Tower.
+- TD_RELEASE_PACKAGE_TO_MANAGEMENT_001/P1: falta traducir release candidate interno a paquete gerencial.
+
+06.00_RECOMMENDATION
+- GO para demo interna controlada.
+- NO_GO para prometer release productivo.
+- Siguiente paso: ejecutar smoke humano guiado y cerrar brechas visuales/narrativas.
+
+07.00_NEXT_ACTION
+- PRJPB_009Z | ejecutar demo interna guiada, capturar GO/NO_GO humano y cerrar sesión | ready
+===============================================================================
