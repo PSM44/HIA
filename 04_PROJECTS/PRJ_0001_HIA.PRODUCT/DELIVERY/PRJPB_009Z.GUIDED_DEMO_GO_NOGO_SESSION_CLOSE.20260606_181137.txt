@@ -1,0 +1,49 @@
+===============================================================================
+FILE..............: PRJPB_009Z.GUIDED_DEMO_GO_NOGO_SESSION_CLOSE.20260606_181137.txt
+PROJECT...........: PRJ_0001_HIA.PRODUCT
+MINIBATTLE........: PRJPB_009Z
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-06 18:16:28 -0400
+PURPOSE...........: Demo interna guiada + GO/NO_GO humano + cierre de sesión.
+===============================================================================
+
+01.00_EXECUTIVE_VERDICT
+- DEMO_DECISION: NO_GO_WITH_REMEDIATION
+- TECHNICAL_VALIDATOR_EXIT: 0
+- CONTROL_TOWER_LAUNCH_EXIT: 0
+- HEAD_AT_DEMO: 9a594eb 20260606_HIA_PRJPB_009Y_internal_rc_demo_guide
+
+02.00_HUMAN_GO_NO_GO_INPUTS
+- VISUAL_OPENED: YES
+- STATE_VISIBLE: YES
+- SOURCE_CLEAR: NO
+- DEBT_VISIBLE: NO
+- DEMO_USABLE: YES
+
+03.00_TECHNICAL_SNAPSHOT
+- NEXT_ACTION_SOURCE: CURRENT_STATE
+- CURRENT_STATE_STATUS: VALID
+- EXPECTED_NEXT_ACTION_AT_DEMO: PRJPB_009X
+- VALIDATOR_RESULT: PASS
+
+04.00_DECISION_LOGIC
+- If all human checks = YES -> GO_WITH_DISCLOSED_DEBT.
+- If any human check = NO -> NO_GO_WITH_REMEDIATION.
+- NO_COUNT: 2
+
+05.00_DISCLOSED_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
+- TD_CURRENT_STATE_GENERATOR_DIRTY_001/P2 sigue abierto.
+- TD_EVIDENCE_ANCHOR_FRESHNESS_001/P1 CANDIDATE.
+- TD_DEMO_VISUAL_VALIDATION_001/P1 queda cerrado si VISUAL_OPENED/STATE_VISIBLE/DEMO_USABLE = YES.
+- TD_RELEASE_PACKAGE_TO_MANAGEMENT_001/P1 sigue abierto si DEMO_DECISION = GO_WITH_DISCLOSED_DEBT.
+
+06.00_NEXT_ACTION
+- PRJPB_009Z-R | corregir brechas detectadas en demo interna antes de paquete gerencial | ready
+
+07.00_SESSION_CLOSE
+- Session closure requested by MiniBattle PRJPB_009Z.
+- Close mode: documental/governed.
+- Repo should be committed and pushed after this artifact.
+===============================================================================

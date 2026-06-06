@@ -2236,3 +2236,27 @@ STATUS............: DONE
 - Deuda visible.
 - No se promete release productivo.
 ==========
+
+==========
+PRJPB_009Z_GUIDED_DEMO_GO_NOGO_SESSION_CLOSE
+==========
+FECHA_LOCAL.......: 2026-06-06 18:16:28 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE
+
+01.00_DONE
+- PRJPB_009Z: DONE — demo interna guiada ejecutada.
+- Human GO/NO_GO captured.
+- Decision: NO_GO_WITH_REMEDIATION
+- Delivery: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_009Z.GUIDED_DEMO_GO_NOGO_SESSION_CLOSE.20260606_181137.txt
+
+02.00_READY_NOW
+- PRJPB_009Z-R: READY — corregir brechas detectadas en demo interna antes de paquete gerencial.
+
+03.00_ACCEPTANCE_CRITERIA
+- Validator PASS antes de demo.
+- Control Tower abierto.
+- Input humano capturado.
+- GO/NO_GO explícito.
+- Sesión cerrada documentalmente.
+==========
