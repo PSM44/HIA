@@ -2379,3 +2379,30 @@ PURPOSE...........: Corregir inconsistencia NEXT_ACTION raw/id/text y falso PASS
 - TD_CURRENT_STATE_RAW_PRECEDENCE_001/P1: revisar si CLI/generator deben preferir text/id sobre raw o eliminar raw como fuente operativa.
 - TD_VALIDATOR_FALSE_PASS_001/P1: observado y mitigado en v0.2; mantener vigilancia.
 ==========
+
+==========
+SESSION_UPDATE_20260606_HIA_PRJPB_009X_INTERNAL_RC_EVIDENCE_PACKAGE
+==========
+ID_UNICO..........: SESSION_UPDATE_20260606_HIA_PRJPB_009X_INTERNAL_RC_EVIDENCE_PACKAGE_20260606_180806
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-06-06 18:08:18 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Crear paquete interno release-candidate post PRJPB_009W PASS.
+
+01.00_DONE_CONFIRMED
+- PRJPB_009X: DONE.
+- Release-readiness validator estricto retorna PASS.
+- CURRENT_STATE / CLI / hia.state.js / generator check alineados en PRJPB_009X.
+- Evidence package creado: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_009X.INTERNAL_RELEASE_CANDIDATE_EVIDENCE_PACKAGE.20260606_180806.txt
+- Repo clean antes de package creation.
+
+02.00_NEXT_ACTION
+- PRJPB_009Y | preparar demo interna release-candidate con script guiado y matriz de GO/NO_GO | ready
+
+03.00_TECH_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
+- TD_CURRENT_STATE_GENERATOR_DIRTY_001/P2 sigue abierto.
+- TD_EVIDENCE_ANCHOR_FRESHNESS_001/P1 CANDIDATE.
+- TD_COMMIT_MESSAGE_DUPLICATE_001/P3 CANDIDATE.
+==========

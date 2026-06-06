@@ -2190,3 +2190,26 @@ STATUS............: DONE
 - TD_CURRENT_STATE_RAW_PRECEDENCE_001/P1: revisar precedencia raw/text/id en CLI/generator.
 - TD_VALIDATOR_FALSE_PASS_001/P1: falso PASS corregido en validator v0.2.
 ==========
+
+==========
+PRJPB_009X_INTERNAL_RELEASE_CANDIDATE_EVIDENCE_PACKAGE
+==========
+FECHA_LOCAL.......: 2026-06-06 18:08:18 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE
+
+01.00_DONE
+- PRJPB_009X: DONE — internal release-candidate evidence package creado.
+- Delivery: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_009X.INTERNAL_RELEASE_CANDIDATE_EVIDENCE_PACKAGE.20260606_180806.txt
+- Validator: PASS.
+- CURRENT_STATE / CLI / Control Tower snapshot alineados.
+
+02.00_READY_NOW
+- PRJPB_009Y: READY — preparar demo interna release-candidate con script guiado y matriz de GO/NO_GO.
+
+03.00_ACCEPTANCE_CRITERIA
+- Evidencia interna versionada.
+- Validator PASS documentado.
+- Deuda residual explícita.
+- Siguiente acción no ambigua.
+==========
