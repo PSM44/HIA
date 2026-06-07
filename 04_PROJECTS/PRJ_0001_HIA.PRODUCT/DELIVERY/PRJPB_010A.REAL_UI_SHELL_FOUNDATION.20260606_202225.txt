@@ -1,0 +1,26 @@
+PRJPB_010A.REAL_UI_SHELL_FOUNDATION
+STATUS............: DONE_CANDIDATE
+CREATED_LOCAL.....: 2026-06-06 20:22:26 -0400
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+
+01.00 PURPOSE
+Crear una UI funcional read-only real para HIA, sin depender de Stitch como fuente operacional.
+
+02.00 FILES_CREATED
+- 01_UI/web/control-tower-shell/index.real.v0.html
+- 01_UI/web/control-tower-shell/assets/hia.real.app.js
+
+03.00 DESIGN DECISION
+No se reemplazó index.html.
+Se creó index.real.v0.html como candidato funcional aislado.
+
+04.00 REALITY CONTRACT
+- hia.state.js se intenta cargar como fuente real.
+- Si no existe variable global reconocible, se usa fallback explícito y rotulado.
+- No hay botones de escritura real.
+- No hay backend prometido.
+- No hay rutas falsas para CURRENT_STATE/BATON/BACKLOG en paneles canónicos.
+
+05.00 NEXT_RECOMMENDATION
+PRJPB_010B:
+Integrar data contract formal hia.ui.contract.js/hia.ui.contract.json y mapear variable real exportada por hia.state.js.

@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HIA Real UI Shell v0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0e0e0e;
+      --surface:#131313;
+      --surface2:#1c1b1b;
+      --surface3:#201f1f;
+      --border:#282828;
+      --text:#e5e2e1;
+      --muted:#a1a1a1;
+      --variant:#bbc9cf;
+      --primary:#a4e6ff;
+      --primary2:#00d1ff;
+      --green:#00e676;
+      --amber:#ffdb9f;
+      --red:#ff4d4d;
+      --sidebar:240px;
+      --header:64px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      overflow:hidden;
+    }
+    .mono{font-family:"JetBrains Mono",monospace}
+    .sidebar{
+      position:fixed;left:0;top:0;bottom:0;width:var(--sidebar);
+      border-right:1px solid var(--border);
+      background:var(--surface);
+      z-index:20;
+      display:flex;flex-direction:column;
+    }
+    .brand{height:var(--header);padding:16px;border-bottom:1px solid var(--border)}
+    .brand-title{font-weight:800;color:var(--primary);font-size:20px}
+    .brand-sub{font-size:11px;text-transform:uppercase;color:var(--muted);letter-spacing:.14em}
+    .nav{padding:12px 8px;display:flex;flex-direction:column;gap:4px}
+    .nav button{
+      width:100%;text-align:left;border:0;background:transparent;color:var(--variant);
+      padding:10px 12px;border-radius:4px;cursor:pointer;font-size:14px;
+      display:flex;gap:10px;align-items:center;
+    }
+    .nav button.active{background:var(--surface3);color:var(--primary);border-right:2px solid var(--primary)}
+    .nav button:hover{background:var(--surface2);color:var(--text)}
+    .user{
+      margin-top:auto;padding:16px;border-top:1px solid var(--border);font-size:12px;color:var(--muted)
+    }
+    .topbar{
+      position:fixed;top:0;left:var(--sidebar);right:0;height:var(--header);
+      border-bottom:1px solid var(--border);background:var(--surface);
+      z-index:10;display:flex;align-items:center;justify-content:space-between;padding:0 24px;
+    }
+    .scope{border:1px solid #244b55;background:#0b2025;color:var(--primary);padding:4px 10px;border-radius:4px;font-size:12px;font-weight:700}
+    .search{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:4px;width:320px}
+    .main{
+      margin-left:var(--sidebar);
+      padding-top:var(--header);
+      height:100vh;
+      overflow:auto;
+    }
+    .canvas{padding:24px;min-width:1100px;padding-bottom:64px}
+    .footer{
+      position:fixed;left:var(--sidebar);right:0;bottom:0;height:32px;
+      background:#0b0b0b;border-top:1px solid var(--border);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 16px;font-size:11px;color:var(--muted);z-index:15;
+    }
+    h1{margin:0 0 6px 0;font-size:32px;letter-spacing:-.02em}
+    h2{margin:0;font-size:20px}
+    h3{margin:0;font-size:16px}
+    p{margin:0;color:var(--variant);line-height:1.45}
+    .grid{display:grid;gap:16px}
+    .kpi-grid{grid-template-columns:repeat(6,1fr)}
+    .two-col{grid-template-columns:minmax(0,1fr) 340px}
+    .three-col{grid-template-columns:repeat(3,1fr)}
+    .card{
+      background:var(--surface2);border:1px solid var(--border);border-radius:4px;
+    }
+    .card-h{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:12px;align-items:center}
+    .card-b{padding:16px}
+    .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+    .value{font-size:22px;font-weight:800}
+    .pill{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;border:1px solid var(--border);white-space:nowrap}
+    .ok{color:var(--green);border-color:#124b2b;background:#071a10}
+    .warn{color:var(--amber);border-color:#5e4100;background:#271900}
+    .bad{color:var(--red);border-color:#690005;background:#250608}
+    .info{color:var(--primary);border-color:#244b55;background:#0b2025}
+    .muted{color:var(--muted)}
+    .red{color:var(--red)}
+    .green{color:var(--green)}
+    .primary{color:var(--primary)}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:12px;border-bottom:1px solid var(--border);font-size:13px;text-align:left;vertical-align:top}
+    th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+    tr:hover td{background:rgba(164,230,255,.04)}
+    .btn{
+      border:1px solid var(--border);background:var(--surface3);color:var(--text);
+      padding:10px 12px;border-radius:4px;font-weight:700;cursor:pointer;
+    }
+    .btn.primary-btn{background:var(--primary);color:#003543;border-color:var(--primary)}
+    .btn:disabled{opacity:.45;cursor:not-allowed}
+    .view{display:none}
+    .view.active{display:block}
+    .pathbox{
+      background:#0f0f0f;border:1px solid var(--border);padding:10px 12px;border-radius:4px;
+      font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--variant);word-break:break-all;
+    }
+    .timeline{display:flex;align-items:flex-start;gap:12px;overflow:auto;padding-bottom:4px}
+    .stage{min-width:110px;text-align:center;color:var(--muted)}
+    .dot{width:32px;height:32px;border-radius:999px;border:1px solid var(--border);display:grid;place-items:center;margin:0 auto 8px;background:var(--surface3)}
+    .stage.done .dot{background:#07391a;border-color:#0b6c34;color:var(--green)}
+    .stage.current .dot{background:#0b2025;border-color:var(--primary);color:var(--primary)}
+    .section-title{margin-bottom:16px}
+    .small{font-size:12px}
+    .notice{border-left:3px solid var(--primary);padding:12px;background:#101c20;color:var(--variant)}
+    .danger-notice{border-left-color:var(--red);background:#21090b}
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-title">HIA</div>
+      <div class="brand-sub">Human Intelligence Amplifier</div>
+    </div>
+    <nav class="nav">
+      <button data-view="control" class="active">▦ Control Tower</button>
+      <button data-view="portfolio">▣ Portfolio</button>
+      <button data-view="project">▤ Project Workspace</button>
+      <button data-view="evidence">▧ Evidence</button>
+      <button data-view="settings">⚙ Settings</button>
+    </nav>
+    <div class="user">
+      <strong>Admin / Human Gate</strong><br>
+      <span>Read-only real shell v0</span>
+    </div>
+  </aside>
+
+  <header class="topbar">
+    <div>
+      <strong>HIA Real UI Shell</strong>
+      <span id="breadcrumb" class="mono muted" style="margin-left:16px">HIA Global > Control Tower</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span id="scopeBadge" class="scope">Scope actual: HIA Global</span>
+      <input class="search" placeholder="Buscar recursos HIA..." />
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="canvas">
+
+      <section id="control" class="view active">
+        <div class="section-title">
+          <h1>HIA Control Tower</h1>
+          <p>Estado global del sistema HIA, gobernanza, release readiness, riesgos, costos y settings globales.</p>
+        </div>
+
+        <div class="grid kpi-grid" style="margin-bottom:16px">
+          <div class="card"><div class="card-b"><div class="label">HIA System</div><div class="value green">Operational</div></div></div>
+          <div class="card"><div class="card-b"><div class="label">Governance</div><div class="value warn">With observations</div></div></div>
+          <div class="card"><div class="card-b"><div class="label">Release</div><div class="value warn">Internal RC</div></div></div>
+          <div class="card"><div class="card-b"><div class="label">Human Gate</div><div id="kpiDecision" class="value red">NO_GO</div></div></div>
+          <div class="card"><div class="card-b"><div class="label">Evidence</div><div id="kpiEvidence" class="value green">FRESH</div></div></div>
+          <div class="card"><div class="card-b"><div class="label">Cost Telemetry</div><div class="value warn">Pending</div></div></div>
+        </div>
+
+        <div class="grid two-col">
+          <div class="grid" style="gap:16px">
+            <div class="card">
+              <div class="card-h">
+                <h2>Global Configuration Matrix</h2>
+                <span class="pill info">READ-ONLY</span>
+              </div>
+              <div class="card-b grid three-col">
+                <div><div class="label">Source Policy</div><p>CURRENT_STATE / PROJECT_CURRENT_STATE como fuente primaria válida.</p></div>
+                <div><div class="label">Evidence Freshness</div><p>La evidencia debe mantenerse fresca antes de gates críticos.</p></div>
+                <div><div class="label">RADAR Policy</div><p>RADAR define cuánto contexto puede razonar la IA de forma segura.</p></div>
+                <div><div class="label">Git / Release</div><p>Commit + push + validator PASS antes de elevar release.</p></div>
+                <div><div class="label">Human Gate</div><p>Human GO requerido antes de paquete gerencial.</p></div>
+                <div><div class="label">Cost Guardrails</div><p>Telemetría pendiente; costos estimados hasta integrar proveedor.</p></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-h"><h2>Alertas ejecutivas HIA</h2><span class="pill bad">VISIBLE DEBT</span></div>
+              <div class="card-b">
+                <table>
+                  <thead><tr><th>Severidad</th><th>Incidencia</th><th>Contexto</th></tr></thead>
+                  <tbody>
+                    <tr><td><span class="pill bad">CRITICAL</span></td><td>Proyecto requiere remediación</td><td>Paquete gerencial bloqueado hasta Human GO.</td></tr>
+                    <tr><td><span class="pill warn">PENDING</span></td><td>Cost telemetry pending</td><td>Costos no deben presentarse como definitivos.</td></tr>
+                    <tr><td><span class="pill warn">WARNING</span></td><td>Evidence freshness watch</td><td>Revalidar antes de gate de release.</td></tr>
+                    <tr><td><span class="pill info">ACTION</span></td><td>Preparar PRJPB_009Z-R3</td><td>Corregir segunda ronda de brechas visuales/narrativas.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <aside class="card">
+            <div class="card-h"><h2>Último proyecto activo</h2><span class="pill ok">ACTIVE</span></div>
+            <div class="card-b">
+              <h2 id="activeProject">PRJ_0001_HIA.PRODUCT</h2>
+              <p>Internal Release Candidate, no productivo.</p>
+              <div style="height:16px"></div>
+              <div class="label">NEXT_ACTION</div>
+              <div id="activeNext" class="mono primary small">Loading...</div>
+              <div style="height:16px"></div>
+              <div class="label">Decision</div>
+              <div id="activeDecision" class="mono red small">NO_GO_WITH_REMEDIATION_2</div>
+              <div style="height:16px"></div>
+              <button class="btn primary-btn" data-view-jump="project" style="width:100%">Open Project Workspace</button>
+              <div style="height:8px"></div>
+              <button class="btn" data-view-jump="portfolio" style="width:100%">View in Portfolio</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="portfolio" class="view">
+        <div class="section-title">
+          <h1>Portfolio de proyectos</h1>
+          <p>Gestión agregada de proyectos, avance hacia cierre, riesgos, costos y evidencia.</p>
+        </div>
+
+        <div class="grid kpi-grid" style="margin-bottom:16px">
+          <div class="card"><div class="card-b"><div class="label">Active</div><div class="value">1</div></div></div>
+          <div class="card"><div class="card-b"><div class="label">Blocked</div><div class="value red">1</div></div></div>
+          <div class="card"><div class="card-b"><div class="label">Near closure</div><div class="value warn">0</div></div></div>
+          <div class="card"><div class="card-b"><div class="label">Stale</div><div class="value warn">Watch</div></div></div>
+          <div class="card"><div class="card-b"><div class="label">Monthly AI cost</div><div class="value warn">Estimated</div></div></div>
+          <div class="card"><div class="card-b"><div class="label">Mgmt package</div><div class="value red">Blocked</div></div></div>
+        </div>
+
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-h"><h2>Projects Master List</h2><span class="pill info">MIXED DATA</span></div>
+            <div class="card-b" style="padding:0">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Project ID</th><th>Status</th><th>NEXT_ACTION</th><th>Last Modified</th><th>DoD</th><th>Evidence</th><th>Risk</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="mono primary">PRJ_0001_HIA.PRODUCT</td>
+                    <td><span class="pill warn">INTERNAL_RC</span></td>
+                    <td id="portfolioNext">Loading...</td>
+                    <td>Available via Git/CLI</td>
+                    <td>Pending Human GO</td>
+                    <td><span class="pill ok">FRESH</span></td>
+                    <td><span class="pill bad">REMEDIATION</span></td>
+                  </tr>
+                  <tr>
+                    <td class="mono muted">MOCK_PRJ_0002_DOCS</td>
+                    <td><span class="pill info">MOCK</span></td>
+                    <td>Define architecture</td>
+                    <td>MOCK DATA</td>
+                    <td>15%</td>
+                    <td>MOCK DATA</td>
+                    <td>Medium</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <aside class="card">
+            <div class="card-h"><h2>Estado del proyecto seleccionado</h2><span class="pill info">READ-ONLY</span></div>
+            <div class="card-b">
+              <div class="label">PROJECT_CURRENT_STATE</div>
+              <div class="pathbox">04_PROJECTS/PRJ_0001_HIA.PRODUCT/STATE/CURRENT_STATE.json</div>
+              <div style="height:12px"></div>
+              <div class="label">BATON fallback/audit</div>
+              <div class="pathbox">04_PROJECTS/PRJ_0001_HIA.PRODUCT/BATON/04.0_PROJECT.BATON.txt</div>
+              <div style="height:12px"></div>
+              <div class="label">BACKLOG fallback/audit</div>
+              <div class="pathbox">04_PROJECTS/PRJ_0001_HIA.PRODUCT/AGILE/PROJECT.BACKLOG.txt</div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="project" class="view">
+        <div class="section-title">
+          <h1>Project Workspace — PRJ_0001_HIA.PRODUCT</h1>
+          <p>Vista operativa read-only del proyecto seleccionado.</p>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-h">
+            <h2>PROJECT_CURRENT_STATE</h2>
+            <span id="projectDecisionPill" class="pill bad">NO_GO_WITH_REMEDIATION_2</span>
+          </div>
+          <div class="card-b">
+            <div class="grid three-col">
+              <div><div class="label">Branch</div><div id="branch" class="mono primary small">Loading...</div></div>
+              <div><div class="label">Evidence</div><div id="evidence" class="mono green small">FRESH</div></div>
+              <div><div class="label">Session</div><div id="session" class="mono muted small">closed</div></div>
+            </div>
+            <div style="height:16px"></div>
+            <div class="label">NEXT_ACTION</div>
+            <div id="projectNext" class="pathbox primary">Loading...</div>
+            <div style="height:16px"></div>
+            <button class="btn primary-btn" disabled>Prepare guided command — pending backend</button>
+            <button class="btn" disabled>Run readiness check — available via CLI</button>
+            <button class="btn" disabled>Prepare MiniBattle draft — pending backend</button>
+          </div>
+        </div>
+
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-h"><h2>Ruta de Desarrollo</h2><span class="pill warn">CURRENT</span></div>
+            <div class="card-b">
+              <div class="timeline">
+                <div class="stage done"><div class="dot">✓</div><div>Epics</div></div>
+                <div class="stage done"><div class="dot">✓</div><div>MiniBattles</div></div>
+                <div class="stage current"><div class="dot">▶</div><div>Backlog</div></div>
+                <div class="stage"><div class="dot">•</div><div>Technical Debt</div></div>
+                <div class="stage"><div class="dot">•</div><div>RADAR</div></div>
+                <div class="stage"><div class="dot">•</div><div>Evidence</div></div>
+                <div class="stage"><div class="dot">•</div><div>Delivery</div></div>
+                <div class="stage"><div class="dot">•</div><div>Release Gates</div></div>
+                <div class="stage"><div class="dot">•</div><div>Management Package</div></div>
+              </div>
+              <div style="height:16px"></div>
+              <div class="notice">PRJPB_009Z-R3 → PRJPB_010A → PRJPB_010B → Management RC Package</div>
+            </div>
+          </div>
+
+          <aside class="card">
+            <div class="card-h"><h2>RADAR / AI Knowledge Sync</h2><span class="pill info">ESTIMATED</span></div>
+            <div class="card-b">
+              <div class="value primary">92%</div>
+              <p>Coverage estimado del contexto disponible para IA.</p>
+              <div style="height:12px"></div>
+              <table>
+                <tbody>
+                  <tr><td>RADAR Lite</td><td><span class="pill ok">AVAILABLE</span></td></tr>
+                  <tr><td>RADAR Index</td><td><span class="pill ok">AVAILABLE</span></td></tr>
+                  <tr><td>RADAR Core</td><td><span class="pill ok">AVAILABLE</span></td></tr>
+                  <tr><td>Knowledge Gap</td><td><span class="pill warn">8%</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="evidence" class="view">
+        <div class="section-title">
+          <h1>Evidence</h1>
+          <p>Auditoría, commits, deliveries, GO/NO_GO y trazabilidad.</p>
+        </div>
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-h"><h2>Validation Stream</h2><span class="pill ok">PASS TECH / NO_GO HUMAN</span></div>
+            <div class="card-b" style="padding:0">
+              <table>
+                <thead><tr><th>Ref</th><th>Tipo</th><th>Descripción</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td class="mono">d062245</td><td>DEMO</td><td>PRJPB_009Z guided demo session</td><td><span class="pill ok">COMMIT</span></td></tr>
+                  <tr><td class="mono">2d94e52</td><td>REMEDIATION</td><td>PRJPB_009Z-R remediation applied</td><td><span class="pill ok">COMMIT</span></td></tr>
+                  <tr><td class="mono">4ccc37b</td><td>HUMAN_VAL</td><td>PRJPB_009Z-R2 manual validation</td><td><span class="pill bad">NO_GO_WITH_REMEDIATION_2</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <aside class="card">
+            <div class="card-h"><h2>Human Validation</h2><span class="pill bad">BLOCKED</span></div>
+            <div class="card-b">
+              <div class="danger-notice">
+                SOURCE_CLEAR = NO<br>
+                DEBT_VISIBLE = YES<br>
+                NEXT = PRJPB_009Z-R3
+              </div>
+              <div style="height:12px"></div>
+              <button class="btn primary-btn" disabled>Preparar remediación R3 — pending backend</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="settings" class="view">
+        <div class="section-title">
+          <h1>Settings</h1>
+          <p>Configuración global HIA. Vista read-only hasta conectar backend/settings writer.</p>
+        </div>
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-h"><h2>Rutas canónicas</h2><span class="pill info">READ-ONLY</span></div>
+            <div class="card-b">
+              <div class="label">Windows root</div>
+              <div class="pathbox">C:\01. GitHub\Wings3.0\01_PROJECTS\HIA</div>
+              <div style="height:12px"></div>
+              <div class="label">WSL root</div>
+              <div class="pathbox">/mnt/c/01. GitHub/Wings3.0/01_PROJECTS/HIA</div>
+              <div style="height:12px"></div>
+              <div class="label">AI execution policy</div>
+              <div class="notice">ADVISORY ONLY — no destructive auto-execution.</div>
+            </div>
+          </div>
+          <aside class="card">
+            <div class="card-h"><h2>Release Gate</h2><span class="pill warn">HUMAN GO REQUIRED</span></div>
+            <div class="card-b">
+              <table>
+                <tbody>
+                  <tr><td>Validator PASS</td><td><span class="pill ok">YES</span></td></tr>
+                  <tr><td>Human GO</td><td><span class="pill bad">NO</span></td></tr>
+                  <tr><td>Evidence Package</td><td><span class="pill ok">AVAILABLE</span></td></tr>
+                  <tr><td>Management Package</td><td><span class="pill bad">BLOCKED</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span class="mono">v0.real-shell | Branch: <span id="footerBranch">available via state</span> | Data: hia.state.js + explicit fallback</span>
+    <span>Read-only · No fake writes · No backend claims</span>
+  </footer>
+
+  <script src="assets/hia.state.js"></script>
+  <script src="assets/hia.real.app.js"></script>
+</body>
+</html>
