@@ -2520,3 +2520,30 @@ PURPOSE...........: Revalidar demo interna post-remediation.
 - TD_CURRENT_STATE_GENERATOR_DIRTY_001/P2 sigue abierto.
 - TD_EVIDENCE_ANCHOR_FRESHNESS_001/P1 CANDIDATE.
 ==========
+
+==========
+SESSION_UPDATE_20260606_HIA_PRJPB_010B_UI_STATE_CONTRACT
+==========
+ID_UNICO..........: SESSION_UPDATE_20260606_HIA_PRJPB_010B_UI_STATE_CONTRACT_20260606_214033
+STATUS............: DONE_CANDIDATE
+FECHA_LOCAL.......: 2026-06-06 21:40:34 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Formalizar contrato UI real entre hia.state.js y hia.real.app.js.
+
+01.00_DONE
+- PRJPB_010B: DONE_CANDIDATE.
+- Creado assets/hia.ui.contract.js.
+- index.real.v0.html carga hia.state.js -> hia.ui.contract.js -> hia.real.app.js.
+- hia.real.app.js consume window.HIA_UI_STATE como contrato primario.
+- window.HIA_REAL_UI_STATE permanece disponible para debug.
+- No se reemplaza index.html productivo.
+- No se agrega backend ni escritura.
+
+02.00_NEXT_ACTION
+- PRJPB_010C | crear launcher read-only para UI real, validar contrato en navegador y decidir convivencia/reemplazo de index.html | ready
+
+03.00_DEBT
+- TD_UI_REAL_SHELL_VISUAL_VALIDATION_001/P1 OPEN.
+- TD_HIA_STATE_EXPORT_CONTRACT_001/P1 MITIGATED_BY_CONTRACT_SHIM.
+- TD_CONTROL_TOWER_INDEX_REPLACEMENT_DECISION_001/P1 OPEN.
+==========

@@ -2,80 +2,65 @@
   "use strict";
 
   const fallback = {
+    contract_version: "HIA_UI_STATE.v0.1",
     project_id: "PRJ_0001_HIA.PRODUCT",
     branch: "feat/20260405-console-v2-phase1-phase2",
     next_action: "PRJPB_009Z-R3 — corregir segunda ronda de brechas visuales/narrativas antes de paquete gerencial",
     decision: "NO_GO_WITH_REMEDIATION_2",
     evidence: "FRESH",
     session: "closed",
-    source: "EXPLICIT_FALLBACK"
+    source: "EXPLICIT_FALLBACK",
+    warnings: ["HIA_UI_STATE was not available when hia.real.app.js loaded"]
   };
 
-  function firstDefined(...values) {
-    for (const value of values) {
+  function firstDefined() {
+    for (const value of arguments) {
       if (value !== undefined && value !== null && String(value).trim() !== "") return value;
     }
     return undefined;
   }
 
-  function discoverState() {
-    const candidates = [
-      window.HIA_STATE,
-      window.hiaState,
-      window.__HIA_STATE__,
-      window.HIA_CONTROL_TOWER_STATE,
-      window.HIA_STATE_SNAPSHOT,
-      window.hia_state,
-      window.HIA
-    ].filter(Boolean);
-
-    const raw = candidates[0] || {};
-    const current = raw.current_state || raw.currentState || raw.state || raw.project || raw;
-
-    const nextObj = current.next_action || current.nextAction || raw.next_action || raw.nextAction || {};
-    const evidenceObj = current.evidence || raw.evidence || {};
-    const sessionObj = current.session || raw.session || {};
-    const gitObj = current.git || raw.git || {};
-
-    const nextText = firstDefined(
-      typeof nextObj === "string" ? nextObj : undefined,
-      nextObj.text,
-      nextObj.raw,
-      nextObj.title && nextObj.id ? `${nextObj.id} — ${nextObj.title}` : undefined,
-      raw.next_action,
-      raw.nextAction,
-      current.next_action,
-      current.nextAction
-    );
-
-    return {
-      project_id: firstDefined(current.project_id, current.projectId, raw.project_id, raw.projectId, fallback.project_id),
-      branch: firstDefined(current.branch, gitObj.branch, raw.branch, fallback.branch),
-      next_action: firstDefined(nextText, fallback.next_action),
-      decision: firstDefined(current.decision, current.human_decision, raw.decision, raw.human_decision, fallback.decision),
-      evidence: firstDefined(evidenceObj.state, current.evidence_state, raw.evidence_state, raw.evidenceState, fallback.evidence),
-      session: firstDefined(sessionObj.status, current.last_session_status, raw.last_session_status, raw.session_status, fallback.session),
-      source: candidates[0] ? "HIA_STATE_JS_DISCOVERED" : fallback.source
-    };
-  }
-
-  const state = discoverState();
-
-  function setText(id, value) {
-    const node = document.getElementById(id);
-    if (node) node.textContent = value || "N/A";
-  }
-
   function normalizeDecision(value) {
     const v = String(value || "").trim();
-    if (!v || v === "NO_GO_REMEDIATION_2" || v === "NO_GO_W_REM_2") return "NO_GO_WITH_REMEDIATION_2";
+    if (!v || v === "NO_GO_REMEDIATION_2" || v === "NO_GO_W_REM_2" || v === "NO_GO_W_REMEDIATION_2") {
+      return "NO_GO_WITH_REMEDIATION_2";
+    }
     return v;
   }
 
   function normalizeNext(value) {
     const v = String(value || "").trim();
-    if (v.includes("PRJPB_009Z-R3")) return v;
-    return fallback.next_action;
+    if (!v) return fallback.next_action;
+    if (v.includes("PRJPB_009Z-R3")) return "PRJPB_009Z-R3 — corregir segunda ronda de brechas visuales/narrativas antes de paquete gerencial";
+    return v;
+  }
+
+  function getState() {
+    const contract = window.HIA_UI_STATE && typeof window.HIA_UI_STATE === "object" ? window.HIA_UI_STATE : null;
+
+    if (!contract) return fallback;
+
+    return {
+      contract_version: firstDefined(contract.contract_version, fallback.contract_version),
+      project_id: firstDefined(contract.project_id, fallback.project_id),
+      branch: firstDefined(contract.branch, fallback.branch),
+      next_action: normalizeNext(firstDefined(contract.next_action, fallback.next_action)),
+      decision: normalizeDecision(firstDefined(contract.decision, fallback.decision)),
+      evidence: firstDefined(contract.evidence, fallback.evidence),
+      session: firstDefined(contract.session, fallback.session),
+      source: firstDefined(contract.source, "HIA_UI_STATE"),
+      resolver_status: firstDefined(contract.resolver_status, "UNKNOWN"),
+      current_state_status: firstDefined(contract.current_state_status, "UNKNOWN"),
+      semantic_hash: firstDefined(contract.semantic_hash, "N/A"),
+      warnings: Array.isArray(contract.warnings) ? contract.warnings : []
+    };
+  }
+
+  const state = getState();
+
+  function setText(id, value) {
+    const node = document.getElementById(id);
+    if (node) node.textContent = value || "N/A";
   }
 
   const next = normalizeNext(state.next_action);

@@ -1,0 +1,35 @@
+PRJPB_010B.UI_STATE_CONTRACT
+STATUS............: DONE_CANDIDATE
+CREATED_LOCAL.....: 2026-06-06 21:40:34 -0400
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+
+01.00 PURPOSE
+Formalizar contrato UI real entre hia.state.js y hia.real.app.js.
+
+02.00 FILES_CHANGED
+- 01_UI/web/control-tower-shell/assets/hia.ui.contract.js
+- 01_UI/web/control-tower-shell/assets/hia.real.app.js
+- 01_UI/web/control-tower-shell/index.real.v0.html
+
+03.00 CONTRACT
+Contrato estable creado:
+- window.HIA_UI_STATE
+- window.HIA_UI_STATE_DEBUG
+- window.HIA_REAL_UI_STATE sigue disponible para debug final de UI.
+
+04.00 SCRIPT_ORDER
+index.real.v0.html carga:
+1) assets/hia.state.js
+2) assets/hia.ui.contract.js
+3) assets/hia.real.app.js
+
+05.00 RULES
+- hia.real.app.js consume primero window.HIA_UI_STATE.
+- hia.ui.contract.js normaliza candidatos provenientes de hia.state.js.
+- Fallback explícito sigue activo.
+- Se normaliza NO_GO_WITH_REMEDIATION_2.
+- Se prioriza PRJPB_009Z-R3 como path funcional actual cuando aparece.
+
+06.00 NEXT_RECOMMENDATION
+PRJPB_010C:
+Crear launcher read-only para index.real.v0.html, validar visualmente contrato en navegador y decidir si reemplaza index.html o convive como real shell candidate.

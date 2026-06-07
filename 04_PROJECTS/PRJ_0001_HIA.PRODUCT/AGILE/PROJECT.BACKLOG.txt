@@ -2302,3 +2302,27 @@ STATUS............: DONE
 - Human GO/NO_GO capturado.
 - Siguiente acción explícita.
 ==========
+
+==========
+PRJPB_010B_UI_STATE_CONTRACT
+==========
+FECHA_LOCAL.......: 2026-06-06 21:40:34 -0400
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+STATUS............: DONE_CANDIDATE
+
+01.00_DONE
+- Formalizado contrato UI real HIA_UI_STATE.
+- Agregado hia.ui.contract.js.
+- hia.real.app.js consume contrato primario.
+- index.real.v0.html actualizado con orden correcto de scripts.
+- Delivery: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/DELIVERY/PRJPB_010B.UI_STATE_CONTRACT.20260606_214033.txt
+
+02.00_READY_NOW
+- PRJPB_010C: READY — crear launcher read-only para UI real, validar contrato en navegador y decidir convivencia/reemplazo de index.html.
+
+03.00_ACCEPTANCE_CRITERIA
+- window.HIA_UI_STATE existe en navegador.
+- window.HIA_REAL_UI_STATE existe en navegador.
+- UI muestra NEXT_ACTION y decision desde contrato o fallback explícito.
+- No hay acciones falsas de escritura.
+==========
