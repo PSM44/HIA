@@ -1,0 +1,85 @@
+batch_id: DEVF-BATCH-0001
+batch_objective: "Create minimum documental-operational base for DeveFact / HIA.AGENTIC_FACTORY."
+status: READY_FOR_HUMAN_REVIEW
+max_tasks: 6
+autonomy_level: L1_DOCS_ONLY
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+tovs_only_mode: true
+tasks:
+  - task_id: DEVF-001
+    title: "Create base folder structure"
+    status: DONE
+    objective: "Create HUMAN, REGISTERS, EXECUTION, TOOLS, RADAR, BATON and VALIDATION folders."
+    scope: "Documentation and operational structure only."
+    no_scope: "No code runtime, API, UI, build, commit or push."
+    files_allowed:
+      - "HUMAN/**"
+      - "REGISTERS/**"
+      - "EXECUTION/**"
+      - "TOOLS/**"
+      - "RADAR/**"
+      - "BATON/**"
+      - "VALIDATION/**"
+    acceptance_criteria:
+      - "All base folders exist."
+      - "No secrets."
+      - "No build executed."
+    validation_required: "git status + existence check"
+    blocker_policy: "Park if target root or git state is unsafe."
+    done_evidence: "TOVS_SUMMARY DEVF-HIA-APPLY-0002"
+
+  - task_id: DEVF-002
+    title: "Create HUMAN canon draft"
+    status: DONE
+    objective: "Create human-functional explanation of DeveFact."
+    scope: "HUMAN docs."
+    no_scope: "No technical architecture expansion beyond v0.1."
+    acceptance_criteria:
+      - "HUMAN explains what, why, who, how it works and no-scope."
+    validation_required: "file existence + human review"
+    blocker_policy: "Park if human intent conflict appears."
+    done_evidence: "HUMAN files created."
+
+  - task_id: DEVF-003
+    title: "Create accumulated registers"
+    status: DONE
+    objective: "Create backlog, tech debt, blockers, conflicts, Q&A, ideas, Skill/GRC opportunities and decisions."
+    acceptance_criteria:
+      - "Registers are separated."
+      - "No mixed backlog/debt/ideas."
+    validation_required: "file existence + register review"
+    blocker_policy: "Park if register taxonomy conflict appears."
+    done_evidence: "REGISTERS files created."
+
+  - task_id: DEVF-004
+    title: "Expand Q001-Q040 and decision trace"
+    status: READY
+    objective: "Expand Q&A register from summarized form to Q001-Q040 with decisions derived."
+    acceptance_criteria:
+      - "Q&A register contains 40 entries."
+      - "Each entry has status and decision derived."
+    validation_required: "count QA-001..QA-040"
+    blocker_policy: "Park if source answer is missing or ambiguous."
+    done_evidence: "This finalize runner."
+
+  - task_id: DEVF-005
+    title: "Create executable batch schema"
+    status: READY
+    objective: "Create BATCH_0001.TASKS.yaml and align READY/DONE policies."
+    acceptance_criteria:
+      - "YAML exists."
+      - "Max 6 tasks."
+      - "Each task has acceptance criteria and blocker policy."
+    validation_required: "file existence + YAML text review"
+    blocker_policy: "Park if batch policy conflict."
+    done_evidence: "This finalize runner."
+
+  - task_id: DEVF-006
+    title: "Prepare next batch candidate"
+    status: TODO
+    objective: "Prepare BATCH-0002 candidates for refining DeveFact after base structure."
+    acceptance_criteria:
+      - "Next batch candidates are registered but not executed."
+    validation_required: "Backlog updated"
+    blocker_policy: "Park until human reviews BATCH-0001."
+    done_evidence: "Future TOVS_SUMMARY"

@@ -1,0 +1,17 @@
+==========
+BATON.STATE
+==========
+PROJECT: DeveFact / HIA.AGENTIC_FACTORY
+STATUS: BATCH_0001_BASE_APPLIED_PENDING_REVIEW
+OUTPUT_TYPE: DELIVERABLE_DONE
+HUMAN_CANON: HUMAN/
+KEY_REGISTERS: REGISTERS/
+EXECUTION_POLICY: EXECUTION/
+TOOLS_POLICY: TOOLS/RADAR.ps1 fixed name when real script is added.
+GPT_UPLOAD_LOCK: ACTIVE
+CURRENT_STATE:
+- Base structure applied under HIA tracked path.
+- Q001-Q040 expanded by finalize runner if applied.
+- BATCH_0001.TASKS.yaml created if finalize runner applied.
+NEXT_ACTION:
+Review git status, inspect files, then decide whether to commit or continue BATCH-0002.
