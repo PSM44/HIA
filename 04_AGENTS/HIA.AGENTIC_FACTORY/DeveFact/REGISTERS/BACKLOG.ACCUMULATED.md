@@ -13,7 +13,10 @@ BL-009 Apply v2 fix target dirs: DONE
 BL-010 Expand Q001-Q040 verbatim: DONE
 BL-011 Create BATCH_0001.TASKS.yaml: DONE
 BL-012 Review git status and commit BATCH-0001: DONE
-BL-013 Start BATCH-0002 operational design layer: READY_OR_DONE_BY_THIS_RUNNER
-BL-014 Verify BATCH-0002: READY_AFTER_APPLY
-BL-015 Commit BATCH-0002 locally: BLOCKED_BY_VERIFY_AND_HUMAN_REVIEW
-BL-016 Prepare BATCH-0003 first runnable/manual workflow: CANDIDATE
+BL-013 Start BATCH-0002 operational design layer: DONE
+BL-014 Verify BATCH-0002: DONE
+BL-015 Commit BATCH-0002 locally: DONE
+BL-016 Start BATCH-0003 first manual/runnable workflow: READY_OR_DONE_BY_THIS_RUNNER
+BL-017 Verify BATCH-0003: READY_AFTER_APPLY
+BL-018 Commit BATCH-0003 locally: BLOCKED_BY_VERIFY_AND_HUMAN_REVIEW
+BL-019 Prepare BATCH-0004 blocker packet generation and validation loops: CANDIDATE

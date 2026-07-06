@@ -1,0 +1,40 @@
+packet_id: "DEVF-PACKET-YYYYMMDD-HHMM"
+source: "IA_ORCHESTRATOR"
+target: "IA_EXECUTOR"
+mode: "GPT_UPLOAD_LOCK"
+product:
+  name: ""
+  purpose: ""
+  user: ""
+  no_scope: []
+constraints:
+  allowed_paths: []
+  forbidden_paths: []
+  secrets_policy: "NO_SECRETS"
+  commit_policy: "NO_COMMIT_UNLESS_EXPLICIT"
+  push_policy: "NO_PUSH_UNLESS_EXPLICIT"
+  build_policy: "NO_BUILD_UNLESS_REQUIRED"
+tasks:
+  - task_id: "TASK-001"
+    title: ""
+    status: "READY"
+    objective: ""
+    scope: []
+    no_scope: []
+    target_files: []
+    acceptance_criteria: []
+    validation_required: []
+    blocker_policy: "PARK_AND_REPORT_WITH_OPTIONS_A_B_C"
+expected_tovs:
+  max_chars: 9000
+  required_fields:
+    - AI_TAIL_SCHEMA
+    - MB_ID
+    - FINAL_STATUS
+    - BLOCKER
+    - DB_MODIFIED
+    - CANON_MODIFIED
+    - COMMIT_PUSH_PERFORMED
+    - BUILD_EXECUTED
+    - KEY_FINDINGS
+    - DECISIONS_NEEDED

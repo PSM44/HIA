@@ -1,0 +1,50 @@
+batch_id: DEVF-BATCH-0003
+batch_objective: "Create the first manual/runnable workflow contract for DeveFact."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_ONLY
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+tovs_only_mode: true
+tasks:
+  - task_id: DEVF-013
+    title: "Create pilot scenario"
+    status: READY
+    objective: "Define first manual pilot scenario."
+    target_files:
+      - "HUMAN/PILOT_SCENARIO.v0.md"
+
+  - task_id: DEVF-014
+    title: "Create manual workflow"
+    status: READY
+    objective: "Define manual runnable workflow."
+    target_files:
+      - "EXECUTION/WORKFLOW_MANUAL.v0.md"
+
+  - task_id: DEVF-015
+    title: "Create task packet template"
+    status: READY
+    objective: "Define task packet schema for Orchestrator to Executor handoff."
+    target_files:
+      - "EXECUTION/TASK_PACKET.TEMPLATE.yaml"
+
+  - task_id: DEVF-016
+    title: "Create TOVS contract"
+    status: READY
+    objective: "Standardize compact execution feedback."
+    target_files:
+      - "EXECUTION/TOVS_CONTRACT.v0.md"
+
+  - task_id: DEVF-017
+    title: "Create register update protocol"
+    status: READY
+    objective: "Define how registers are updated after TOVS."
+    target_files:
+      - "EXECUTION/REGISTER_UPDATE_PROTOCOL.v0.md"
+
+  - task_id: DEVF-018
+    title: "Prepare BATCH-0004 candidate"
+    status: TODO
+    objective: "Prepare next batch candidate for blocker packet generation and validation loops."
+    target_files:
+      - "REGISTERS/BACKLOG.ACCUMULATED.md"
+      - "BATON/BATON.STATE.txt"
