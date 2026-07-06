@@ -2,16 +2,19 @@
 BATON.STATE
 ==========
 PROJECT: DeveFact / HIA.AGENTIC_FACTORY
-STATUS: BATCH_0001_BASE_APPLIED_PENDING_REVIEW
+STATUS: BATCH_0002_STARTED_OR_READY
 OUTPUT_TYPE: DELIVERABLE_DONE
 HUMAN_CANON: HUMAN/
 KEY_REGISTERS: REGISTERS/
 EXECUTION_POLICY: EXECUTION/
-TOOLS_POLICY: TOOLS/RADAR.ps1 fixed name when real script is added.
 GPT_UPLOAD_LOCK: ACTIVE
+LAST_COMMIT_KNOWN: fad1649 20260706.1742_DeveFact_Batch0001_Base
+
 CURRENT_STATE:
-- Base structure applied under HIA tracked path.
-- Q001-Q040 expanded by finalize runner if applied.
-- BATCH_0001.TASKS.yaml created if finalize runner applied.
+- BATCH-0001 committed locally.
+- BATCH-0002 defines operational behavior layer.
+- Development canon lives inside HIA tracked folder.
+- This chat remains Orchestrator/Control Tower until DeveFact can self-orchestrate.
+
 NEXT_ACTION:
-Review git status, inspect files, then decide whether to commit or continue BATCH-0002.
+Apply/verify BATCH-0002, then decide local commit. No push unless explicitly requested.

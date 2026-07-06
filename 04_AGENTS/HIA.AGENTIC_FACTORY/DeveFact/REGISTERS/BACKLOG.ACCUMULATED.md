@@ -10,7 +10,10 @@ BL-006 Dry-run apply v1: FAIL_SOURCE_MISSING
 BL-007 Dry-run apply v2 with rebuilt source: PASS_WITH_REVIEW
 BL-008 Apply v1: FAIL_TARGET_DIR_MISSING
 BL-009 Apply v2 fix target dirs: DONE
-BL-010 Expand Q001-Q040 verbatim: READY_OR_DONE_BY_FINALIZE
-BL-011 Create BATCH_0001.TASKS.yaml: READY_OR_DONE_BY_FINALIZE
-BL-012 Review git status and decide commit: READY_AFTER_FINALIZE
-BL-013 Prepare BATCH-0002: BLOCKED_BY_REVIEW
+BL-010 Expand Q001-Q040 verbatim: DONE
+BL-011 Create BATCH_0001.TASKS.yaml: DONE
+BL-012 Review git status and commit BATCH-0001: DONE
+BL-013 Start BATCH-0002 operational design layer: READY_OR_DONE_BY_THIS_RUNNER
+BL-014 Verify BATCH-0002: READY_AFTER_APPLY
+BL-015 Commit BATCH-0002 locally: BLOCKED_BY_VERIFY_AND_HUMAN_REVIEW
+BL-016 Prepare BATCH-0003 first runnable/manual workflow: CANDIDATE

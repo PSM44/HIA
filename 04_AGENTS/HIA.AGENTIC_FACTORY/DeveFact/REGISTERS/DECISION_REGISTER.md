@@ -15,3 +15,7 @@ DEC-011 Do not use 04_PROJECTS for tracked migration because ignored.
 DEC-012 Do not use 03_ARTIFACTS/context for tracked source because ignored.
 DEC-013 Target tracked path = 04_AGENTS\HIA.AGENTIC_FACTORY\DeveFact.
 DEC-014 Real apply requires human command with -Apply and ConfirmText.
+DEC-015 BATCH-0001 committed locally under HIA.
+DEC-016 No push performed for BATCH-0001.
+DEC-017 DeveFact development continues inside HIA tracked folder; this chat acts as Orchestrator/Control Tower.
+DEC-018 BATCH-0002 objective = operational behavior layer: development path, journey, diagrams, Orchestrator protocol, Executor protocol.

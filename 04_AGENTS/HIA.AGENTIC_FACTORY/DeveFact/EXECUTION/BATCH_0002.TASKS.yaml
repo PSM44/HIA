@@ -1,0 +1,50 @@
+batch_id: DEVF-BATCH-0002
+batch_objective: "Define the operational behavior of DeveFact after the base structure exists."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_ONLY
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+tovs_only_mode: true
+tasks:
+  - task_id: DEVF-007
+    title: "Create development path"
+    status: READY
+    objective: "Explain incremental product path from BATCH-0001 to first real pilot."
+    target_files:
+      - "HUMAN/DEVELOPMENT_PATH.md"
+
+  - task_id: DEVF-008
+    title: "Create user journey"
+    status: READY
+    objective: "Explain how Human, IA Orchestrator and IA Executor interact."
+    target_files:
+      - "HUMAN/USER_JOURNEY.md"
+
+  - task_id: DEVF-009
+    title: "Create diagrams"
+    status: READY
+    objective: "Create basic diagrams for high-level flow, blocker flow and storage model."
+    target_files:
+      - "HUMAN/DIAGRAMS.md"
+
+  - task_id: DEVF-010
+    title: "Create Orchestrator protocol"
+    status: READY
+    objective: "Define Orchestrator inputs, outputs, rules and READY gate."
+    target_files:
+      - "EXECUTION/ORCHESTRATOR_PROTOCOL.v0.md"
+
+  - task_id: DEVF-011
+    title: "Create Executor protocol"
+    status: READY
+    objective: "Define Executor inputs, outputs, rules and TOVS reporting."
+    target_files:
+      - "EXECUTION/EXECUTOR_PROTOCOL.v0.md"
+
+  - task_id: DEVF-012
+    title: "Prepare BATCH-0003 candidate"
+    status: TODO
+    objective: "Prepare next batch candidate for first runnable/manual workflow."
+    target_files:
+      - "REGISTERS/BACKLOG.ACCUMULATED.md"
+      - "BATON/BATON.STATE.txt"
