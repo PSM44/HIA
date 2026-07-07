@@ -37,3 +37,4 @@ DEC-033 BATCH-0009 objective = complete DEVF-RUN-TEST-0001 with discovery answer
 DEC-034 BATCH-0009 committed locally.
 DEC-035 BATCH-0010 objective = create compact continuity/context package.
 DEC-036 Recommended BATCH-0011 direction = HUMAN quickstart before automation hardening.
+DEC-037 BATCH-0011 objective = create human-facing quickstart and operator guide.

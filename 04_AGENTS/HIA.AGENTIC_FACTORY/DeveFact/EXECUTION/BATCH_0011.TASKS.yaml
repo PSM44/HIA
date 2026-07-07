@@ -1,0 +1,32 @@
+batch_id: DEVF-BATCH-0011
+batch_objective: "Create the first human-facing quickstart and operator guide for DeveFact."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_ONLY
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+tasks:
+  - task_id: DEVF-061
+    title: "Create quickstart"
+    status: READY
+    objective: "Create HUMAN/QUICKSTART.md."
+  - task_id: DEVF-062
+    title: "Create operator guide"
+    status: READY
+    objective: "Create HUMAN/OPERATOR_GUIDE.v0.md."
+  - task_id: DEVF-063
+    title: "Create first run playbook"
+    status: READY
+    objective: "Create HUMAN/FIRST_RUN_PLAYBOOK.v0.md."
+  - task_id: DEVF-064
+    title: "Create FAQ"
+    status: READY
+    objective: "Create HUMAN/FAQ.v0.md."
+  - task_id: DEVF-065
+    title: "Update registers and BATON"
+    status: READY
+    objective: "Update backlog, decision register and BATON."
+  - task_id: DEVF-066
+    title: "Prepare BATCH-0012 candidate"
+    status: TODO
+    objective: "Prepare next batch for either generator hardening or context exporter."
