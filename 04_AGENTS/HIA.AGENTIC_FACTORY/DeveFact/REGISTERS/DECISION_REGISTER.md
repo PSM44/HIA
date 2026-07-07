@@ -30,3 +30,5 @@ DEC-026 BATCH-0005 committed locally.
 DEC-027 BATCH-0006 objective = preserve first complete simulated idea-to-task run artifacts.
 DEC-028 BATCH-0006 committed locally.
 DEC-029 BATCH-0007 objective = reusable local run generator with intake template and run folder convention.
+DEC-030 BATCH-0007 committed locally.
+DEC-031 BATCH-0008 objective = test reusable run generator by creating DEVF-RUN-TEST-0001.

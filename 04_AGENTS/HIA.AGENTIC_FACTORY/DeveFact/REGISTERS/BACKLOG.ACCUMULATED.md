@@ -28,7 +28,10 @@ BL-024 Commit BATCH-0005 locally: DONE
 BL-025 Start BATCH-0006 first complete simulated idea-to-task run: DONE
 BL-026 Verify BATCH-0006: DONE
 BL-027 Commit BATCH-0006 locally: DONE
-BL-028 Start BATCH-0007 reusable local run generator: READY_OR_DONE_BY_THIS_RUNNER
-BL-029 Verify BATCH-0007: READY_AFTER_APPLY
-BL-030 Commit BATCH-0007 locally: BLOCKED_BY_VERIFY_AND_HUMAN_REVIEW
-BL-031 Test run generator with DEVF-RUN-TEST-0001: CANDIDATE_FOR_BATCH_0008
+BL-028 Start BATCH-0007 reusable local run generator: DONE
+BL-029 Verify BATCH-0007: DONE
+BL-030 Commit BATCH-0007 locally: DONE
+BL-031 Start BATCH-0008 test generator with DEVF-RUN-TEST-0001: READY_OR_DONE_BY_THIS_RUNNER
+BL-032 Verify BATCH-0008: READY_AFTER_APPLY
+BL-033 Commit BATCH-0008 locally: BLOCKED_BY_VERIFY_AND_HUMAN_REVIEW
+BL-034 Answer discovery questions for generated run: CANDIDATE_FOR_BATCH_0009

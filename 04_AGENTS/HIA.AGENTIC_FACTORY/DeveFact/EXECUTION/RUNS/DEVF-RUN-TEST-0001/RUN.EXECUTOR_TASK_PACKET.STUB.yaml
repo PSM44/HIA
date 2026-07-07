@@ -1,0 +1,7 @@
+packet_id: "DEVF-RUN-TEST-0001-PACKET-STUB"
+run_id: "DEVF-RUN-TEST-0001"
+status: "GENERATED_STUB"
+expected_tovs:
+  final_status: "PASS_WITH_REVIEW"
+  execution_verdict: "OK_TO_VERIFY"
+  safe_to_proceed: "YES"

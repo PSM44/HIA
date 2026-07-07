@@ -1,0 +1,33 @@
+batch_id: DEVF-BATCH-0008
+batch_objective: "Test reusable run generator by creating DEVF-RUN-TEST-0001."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_AND_SAFE_LOCAL_SCRIPT
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+run_id: "DEVF-RUN-TEST-0001"
+tasks:
+  - task_id: DEVF-043
+    title: "Dry-run generator"
+    status: READY
+    objective: "Execute DEVF.NEW_RUN.v0.ps1 dry-run and confirm OK_TO_APPLY."
+  - task_id: DEVF-044
+    title: "Create test run folder"
+    status: READY
+    objective: "Create DEVF-RUN-TEST-0001 with generator."
+  - task_id: DEVF-045
+    title: "Create test run stubs"
+    status: READY
+    objective: "Create orchestrator and executor packet stubs."
+  - task_id: DEVF-046
+    title: "Capture TOVS evidence"
+    status: READY
+    objective: "Capture actual/expected TOVS for generated run."
+  - task_id: DEVF-047
+    title: "Create run validation"
+    status: READY
+    objective: "Create validation file for test run."
+  - task_id: DEVF-048
+    title: "Prepare BATCH-0009 candidate"
+    status: TODO
+    objective: "Prepare next batch for answering discovery questions in generated run."
