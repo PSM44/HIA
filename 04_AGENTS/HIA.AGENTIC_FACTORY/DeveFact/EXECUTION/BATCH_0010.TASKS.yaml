@@ -1,0 +1,32 @@
+batch_id: DEVF-BATCH-0010
+batch_objective: "Prepare compact DeveFact context package after BATCH-0001..0009."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_ONLY
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+tasks:
+  - task_id: DEVF-055
+    title: "Create context package"
+    status: READY
+    objective: "Create CONTEXT/DEVFACT.CONTEXT.PACKAGE.v0.md."
+  - task_id: DEVF-056
+    title: "Create status snapshot"
+    status: READY
+    objective: "Create CONTEXT/DEVFACT.STATUS.SNAPSHOT.v0.md."
+  - task_id: DEVF-057
+    title: "Create commit log"
+    status: READY
+    objective: "Create CONTEXT/DEVFACT.COMMIT.LOG.v0.md."
+  - task_id: DEVF-058
+    title: "Create next steps"
+    status: READY
+    objective: "Create CONTEXT/DEVFACT.NEXT_STEPS.v0.md."
+  - task_id: DEVF-059
+    title: "Update registers and BATON"
+    status: READY
+    objective: "Update backlog, decision register and BATON."
+  - task_id: DEVF-060
+    title: "Prepare BATCH-0011 candidate"
+    status: TODO
+    objective: "Prepare next decision between hardening, quickstart or context exporter."

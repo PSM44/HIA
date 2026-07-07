@@ -34,3 +34,6 @@ DEC-030 BATCH-0007 committed locally.
 DEC-031 BATCH-0008 objective = test generator by creating DEVF-RUN-TEST-0001.
 DEC-032 BATCH-0008 committed locally.
 DEC-033 BATCH-0009 objective = complete DEVF-RUN-TEST-0001 with discovery answers, Orchestrator output and executor packet.
+DEC-034 BATCH-0009 committed locally.
+DEC-035 BATCH-0010 objective = create compact continuity/context package.
+DEC-036 Recommended BATCH-0011 direction = HUMAN quickstart before automation hardening.

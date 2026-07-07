@@ -2,7 +2,7 @@
 BATON.STATE
 ==========
 PROJECT: DeveFact / HIA.AGENTIC_FACTORY
-STATUS: BATCH_0009_STARTED_OR_READY
+STATUS: BATCH_0010_STARTED_OR_READY
 OUTPUT_TYPE: DELIVERABLE_DONE
 HUMAN_CANON: HUMAN/
 KEY_REGISTERS: REGISTERS/
@@ -17,11 +17,14 @@ LAST_COMMIT_KNOWN:
 - 2375e7a 20260707.1109_DeveFact_Batch0006_FirstSimulatedRun
 - 3c4750f 20260707.1140_DeveFact_Batch0007_ReusableRunGenerator
 - bec433c 20260707.1851_DeveFact_Batch0008_TestRunGenerator
+- be0d761 20260707.1858_DeveFact_Batch0009_CompleteTestRun
 
 CURRENT_STATE:
-- BATCH-0001..0008 committed locally.
-- BATCH-0009 completes generated test run with answers and final packet.
+- BATCH-0001..0009 committed locally.
+- BATCH-0010 prepares compact context package for continuity/audit.
 - This chat remains Orchestrator/Control Tower until DeveFact can self-orchestrate.
 
 NEXT_ACTION:
-Apply/verify BATCH-0009, then decide local commit. No push unless explicitly requested.
+Apply/verify BATCH-0010, then decide local commit. No push unless explicitly requested.
+RECOMMENDED_AFTER_B0010:
+BATCH-0011 Option B: create HUMAN/QUICKSTART.md.
