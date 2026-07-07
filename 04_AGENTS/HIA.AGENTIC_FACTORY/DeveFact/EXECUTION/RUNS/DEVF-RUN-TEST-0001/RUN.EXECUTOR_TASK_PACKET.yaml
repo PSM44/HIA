@@ -1,0 +1,53 @@
+packet_id: "DEVF-RUN-TEST-0001-PACKET"
+run_id: "DEVF-RUN-TEST-0001"
+source: "BATCH_0009_ORCHESTRATOR"
+target: "SIMULATED_EXECUTOR"
+status: "READY"
+mode: "HYBRID_TOVS"
+product:
+  name: "OperationalNeedToAITasks"
+  output_type: "DELIVERABLE_DONE"
+scope:
+  included:
+    - "Clarified operational need"
+    - "Executor task packet"
+    - "Validation criteria"
+    - "Blocker policy"
+  excluded:
+    - "UI"
+    - "API"
+    - "Deploy"
+    - "DB changes"
+    - "External AI calls"
+    - "Git push"
+constraints:
+  allowed_paths:
+    - "04_AGENTS/HIA.AGENTIC_FACTORY/DeveFact/EXECUTION/RUNS/DEVF-RUN-TEST-0001"
+  forbidden_paths:
+    - ".env"
+    - "secrets"
+    - "credentials"
+    - "external systems"
+  commit_policy: "NO_COMMIT_UNLESS_EXPLICIT"
+  push_policy: "NO_PUSH_UNLESS_EXPLICIT"
+  build_policy: "NO_BUILD_UNLESS_REQUIRED"
+tasks:
+  - task_id: "RUNTEST-001"
+    title: "Preserve clarified need"
+    status: "READY"
+    acceptance_criteria:
+      - "RUN.DISCOVERY_ANSWERS.md contains A001-A010."
+      - "RUN.ORCHESTRATOR_OUTPUT.md contains ORCHESTRATOR_RECOMMENDATION."
+    blocker_policy: "PARK_AND_REPORT_WITH_OPTIONS_A_B_C"
+  - task_id: "RUNTEST-002"
+    title: "Validate executor packet"
+    status: "READY"
+    acceptance_criteria:
+      - "RUN.EXECUTOR_TASK_PACKET.yaml contains allowed_paths and expected_tovs."
+      - "No-push and no-build policies are explicit."
+    blocker_policy: "PARK_AND_REPORT_WITH_OPTIONS_A_B_C"
+expected_tovs:
+  final_status: "PASS_WITH_REVIEW"
+  execution_verdict: "OK_TO_VERIFY"
+  safe_to_proceed: "YES"
+  human_action_required: "Verify BATCH-0009 before local commit."

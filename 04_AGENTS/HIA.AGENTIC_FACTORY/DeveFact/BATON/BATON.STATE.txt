@@ -2,7 +2,7 @@
 BATON.STATE
 ==========
 PROJECT: DeveFact / HIA.AGENTIC_FACTORY
-STATUS: BATCH_0008_STARTED_OR_READY
+STATUS: BATCH_0009_STARTED_OR_READY
 OUTPUT_TYPE: DELIVERABLE_DONE
 HUMAN_CANON: HUMAN/
 KEY_REGISTERS: REGISTERS/
@@ -16,17 +16,12 @@ LAST_COMMIT_KNOWN:
 - 2706c30 20260707.1054_DeveFact_Batch0005_LocalSimulator
 - 2375e7a 20260707.1109_DeveFact_Batch0006_FirstSimulatedRun
 - 3c4750f 20260707.1140_DeveFact_Batch0007_ReusableRunGenerator
+- bec433c 20260707.1851_DeveFact_Batch0008_TestRunGenerator
 
 CURRENT_STATE:
-- BATCH-0001 committed locally.
-- BATCH-0002 committed locally.
-- BATCH-0003 committed locally.
-- BATCH-0004 committed locally.
-- BATCH-0005 committed locally.
-- BATCH-0006 committed locally.
-- BATCH-0007 committed locally.
-- BATCH-0008 tests reusable run generator by creating DEVF-RUN-TEST-0001.
+- BATCH-0001..0008 committed locally.
+- BATCH-0009 completes generated test run with answers and final packet.
 - This chat remains Orchestrator/Control Tower until DeveFact can self-orchestrate.
 
 NEXT_ACTION:
-Apply/verify BATCH-0008, then decide local commit. No push unless explicitly requested.
+Apply/verify BATCH-0009, then decide local commit. No push unless explicitly requested.

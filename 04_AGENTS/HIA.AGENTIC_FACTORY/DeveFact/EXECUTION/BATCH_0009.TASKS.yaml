@@ -1,0 +1,33 @@
+batch_id: DEVF-BATCH-0009
+batch_objective: "Complete DEVF-RUN-TEST-0001 with answered discovery, orchestrator output and executor packet."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_AND_SAFE_LOCAL_SCRIPT
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+run_id: "DEVF-RUN-TEST-0001"
+tasks:
+  - task_id: DEVF-049
+    title: "Answer discovery questions"
+    status: READY
+    objective: "Create RUN.DISCOVERY_ANSWERS.md with A001-A010."
+  - task_id: DEVF-050
+    title: "Create orchestrator output"
+    status: READY
+    objective: "Create RUN.ORCHESTRATOR_OUTPUT.md."
+  - task_id: DEVF-051
+    title: "Create final executor packet"
+    status: READY
+    objective: "Create RUN.EXECUTOR_TASK_PACKET.yaml."
+  - task_id: DEVF-052
+    title: "Update run validation"
+    status: READY
+    objective: "Update RUN.VALIDATION.md."
+  - task_id: DEVF-053
+    title: "Update registers and BATON"
+    status: READY
+    objective: "Update backlog, decision register and BATON."
+  - task_id: DEVF-054
+    title: "Prepare BATCH-0010 candidate"
+    status: TODO
+    objective: "Prepare next batch for packaging current DeveFact context."

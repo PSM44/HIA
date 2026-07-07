@@ -18,17 +18,19 @@ DEC-014 Real apply requires human command with -Apply and ConfirmText.
 DEC-015 BATCH-0001 committed locally under HIA.
 DEC-016 No push performed for BATCH-0001.
 DEC-017 DeveFact development continues inside HIA tracked folder; this chat acts as Orchestrator/Control Tower.
-DEC-018 BATCH-0002 objective = operational behavior layer: development path, journey, diagrams, Orchestrator protocol, Executor protocol.
+DEC-018 BATCH-0002 objective = operational behavior layer.
 DEC-019 BATCH-0002 committed locally.
-DEC-020 BATCH-0003 objective = first manual/runnable workflow: pilot scenario, workflow, task packet, TOVS contract, register update protocol.
+DEC-020 BATCH-0003 objective = first manual/runnable workflow.
 DEC-021 BATCH-0003 committed locally.
-DEC-022 Methodology reactivated as HYBRID: TOVS remains control signal; uploads allowed when useful for deeper review.
-DEC-023 BATCH-0004 objective = blocker packet, human decision packet, validation loop and retry policy.
+DEC-022 Methodology reactivated as HYBRID.
+DEC-023 BATCH-0004 objective = blocker packet, decision packet, validation loop and retry policy.
 DEC-024 BATCH-0004 committed locally.
-DEC-025 BATCH-0005 objective = minimal local orchestration simulator with sample idea, discovery questions, sample task packet and safe local TOVS script.
+DEC-025 BATCH-0005 objective = local orchestration simulator.
 DEC-026 BATCH-0005 committed locally.
-DEC-027 BATCH-0006 objective = preserve first complete simulated idea-to-task run artifacts.
+DEC-027 BATCH-0006 objective = preserve first complete simulated idea-to-task run.
 DEC-028 BATCH-0006 committed locally.
-DEC-029 BATCH-0007 objective = reusable local run generator with intake template and run folder convention.
+DEC-029 BATCH-0007 objective = reusable local run generator.
 DEC-030 BATCH-0007 committed locally.
-DEC-031 BATCH-0008 objective = test reusable run generator by creating DEVF-RUN-TEST-0001.
+DEC-031 BATCH-0008 objective = test generator by creating DEVF-RUN-TEST-0001.
+DEC-032 BATCH-0008 committed locally.
+DEC-033 BATCH-0009 objective = complete DEVF-RUN-TEST-0001 with discovery answers, Orchestrator output and executor packet.
