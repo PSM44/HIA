@@ -2,7 +2,7 @@
 BATON.STATE
 ==========
 PROJECT: DeveFact / HIA.AGENTIC_FACTORY
-STATUS: BATCH_0004_STARTED_OR_READY
+STATUS: BATCH_0005_STARTED_OR_READY
 OUTPUT_TYPE: DELIVERABLE_DONE
 HUMAN_CANON: HUMAN/
 KEY_REGISTERS: REGISTERS/
@@ -12,13 +12,15 @@ LAST_COMMIT_KNOWN:
 - fad1649 20260706.1742_DeveFact_Batch0001_Base
 - 3a24f4b 20260706.1816_DeveFact_Batch0002_OperationalLayer
 - 67ba7c2 20260706.1841_DeveFact_Batch0003_ManualWorkflow
+- 9216239 20260707.1041_DeveFact_Batch0004_BlockerValidationLoop
 
 CURRENT_STATE:
 - BATCH-0001 committed locally.
 - BATCH-0002 committed locally.
 - BATCH-0003 committed locally.
-- BATCH-0004 creates blocker packet, human decision packet, validation loop and retry policy.
+- BATCH-0004 committed locally.
+- BATCH-0005 creates first minimal local orchestration simulator.
 - This chat remains Orchestrator/Control Tower until DeveFact can self-orchestrate.
 
 NEXT_ACTION:
-Apply/verify BATCH-0004, then decide local commit. No push unless explicitly requested.
+Apply/verify BATCH-0005, run simulator, then decide local commit. No push unless explicitly requested.

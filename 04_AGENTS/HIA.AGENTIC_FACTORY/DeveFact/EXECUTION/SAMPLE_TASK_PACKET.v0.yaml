@@ -1,0 +1,40 @@
+packet_id: "DEVF-SIM-PACKET-0001"
+run_id: "DEVF-SIM-RUN-0001"
+source: "SIMULATED_ORCHESTRATOR"
+target: "SIMULATED_EXECUTOR"
+mode: "HYBRID_TOVS"
+product:
+  name: "IdeaToTaskPacket"
+  purpose: "Convert rough human idea into AI-executable task packet."
+  user: "Pablo / future non-technical user"
+  output_type: "DELIVERABLE_DONE"
+constraints:
+  allowed_paths:
+    - "04_AGENTS/HIA.AGENTIC_FACTORY/DeveFact"
+  forbidden_paths:
+    - ".env"
+    - "secrets"
+    - "external systems"
+  secrets_policy: "NO_SECRETS"
+  commit_policy: "NO_COMMIT_UNLESS_EXPLICIT"
+  push_policy: "NO_PUSH_UNLESS_EXPLICIT"
+  build_policy: "NO_BUILD_UNLESS_REQUIRED"
+tasks:
+  - task_id: "SIM-001"
+    title: "Create human product draft"
+    status: "READY"
+    objective: "Create a short HUMAN-facing product draft."
+    acceptance_criteria:
+      - "Problem, user, input, output and no-scope are explicit."
+    blocker_policy: "PARK_AND_REPORT_WITH_OPTIONS_A_B_C"
+  - task_id: "SIM-002"
+    title: "Create executor task packet"
+    status: "READY"
+    objective: "Create a bounded task packet for executor."
+    acceptance_criteria:
+      - "Task packet includes allowed paths, forbidden paths and validation."
+    blocker_policy: "PARK_AND_REPORT_WITH_OPTIONS_A_B_C"
+expected_tovs:
+  execution_verdict: "OK_TO_VERIFY"
+  safe_to_proceed: "YES"
+  human_action_required: "Review simulator output."

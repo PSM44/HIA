@@ -19,7 +19,10 @@ BL-015 Commit BATCH-0002 locally: DONE
 BL-016 Start BATCH-0003 first manual/runnable workflow: DONE
 BL-017 Verify BATCH-0003: DONE
 BL-018 Commit BATCH-0003 locally: DONE
-BL-019 Start BATCH-0004 blocker packet and validation loop: READY_OR_DONE_BY_THIS_RUNNER
-BL-020 Verify BATCH-0004: READY_AFTER_APPLY
-BL-021 Commit BATCH-0004 locally: BLOCKED_BY_VERIFY_AND_HUMAN_REVIEW
-BL-022 Prepare BATCH-0005 minimal local runner/orchestration simulator: CANDIDATE
+BL-019 Start BATCH-0004 blocker packet and validation loop: DONE
+BL-020 Verify BATCH-0004: DONE
+BL-021 Commit BATCH-0004 locally: DONE
+BL-022 Start BATCH-0005 minimal local runner/orchestration simulator: READY_OR_DONE_BY_THIS_RUNNER
+BL-023 Verify BATCH-0005: READY_AFTER_APPLY
+BL-024 Commit BATCH-0005 locally: BLOCKED_BY_VERIFY_AND_HUMAN_REVIEW
+BL-025 Run first real simulated idea-to-task cycle: CANDIDATE_FOR_BATCH_0006

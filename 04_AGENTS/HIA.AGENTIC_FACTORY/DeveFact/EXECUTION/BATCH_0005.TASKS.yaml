@@ -1,0 +1,50 @@
+batch_id: DEVF-BATCH-0005
+batch_objective: "Create a minimal local orchestration simulator for DeveFact."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_AND_SAFE_LOCAL_SCRIPT
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+tasks:
+  - task_id: DEVF-025
+    title: "Create simulator contract"
+    status: READY
+    objective: "Define what the local simulator does and does not do."
+    target_files:
+      - "EXECUTION/SIMULATOR_CONTRACT.v0.md"
+
+  - task_id: DEVF-026
+    title: "Create sample idea"
+    status: READY
+    objective: "Create sample rough human idea for simulation."
+    target_files:
+      - "EXECUTION/SAMPLE_IDEA.v0.md"
+
+  - task_id: DEVF-027
+    title: "Create sample discovery questions"
+    status: READY
+    objective: "Create question set for transforming a rough idea into specification."
+    target_files:
+      - "EXECUTION/SAMPLE_DISCOVERY_QUESTIONS.v0.md"
+
+  - task_id: DEVF-028
+    title: "Create sample task packet"
+    status: READY
+    objective: "Create sample Orchestrator-to-Executor packet."
+    target_files:
+      - "EXECUTION/SAMPLE_TASK_PACKET.v0.yaml"
+
+  - task_id: DEVF-029
+    title: "Create safe local simulator"
+    status: READY
+    objective: "Create a read-only PowerShell simulator that emits TOVS."
+    target_files:
+      - "TOOLS/DEVF.SIMULATE_ORCHESTRATION.v0.ps1"
+
+  - task_id: DEVF-030
+    title: "Prepare BATCH-0006 candidate"
+    status: TODO
+    objective: "Prepare next batch candidate for running the first real simulated idea-to-task cycle."
+    target_files:
+      - "REGISTERS/BACKLOG.ACCUMULATED.md"
+      - "BATON/BATON.STATE.txt"
