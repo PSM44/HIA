@@ -1,0 +1,51 @@
+batch_id: DEVF-BATCH-0006
+batch_objective: "Run first complete simulated idea-to-task cycle and preserve run artifacts."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_AND_SAFE_LOCAL_SCRIPT
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+run_id: "DEVF-SIM-RUN-0001"
+tasks:
+  - task_id: DEVF-031
+    title: "Create run intake"
+    status: READY
+    objective: "Preserve raw idea and intake interpretation."
+    target_files:
+      - "EXECUTION/RUNS/DEVF-SIM-RUN-0001/RUN.INTAKE.md"
+
+  - task_id: DEVF-032
+    title: "Create discovery answers"
+    status: READY
+    objective: "Create simulated answers to discovery questions."
+    target_files:
+      - "EXECUTION/RUNS/DEVF-SIM-RUN-0001/RUN.DISCOVERY_ANSWERS.md"
+
+  - task_id: DEVF-033
+    title: "Create orchestrator output"
+    status: READY
+    objective: "Create simulated orchestrator output for the pilot."
+    target_files:
+      - "EXECUTION/RUNS/DEVF-SIM-RUN-0001/RUN.ORCHESTRATOR_OUTPUT.md"
+
+  - task_id: DEVF-034
+    title: "Create run task packet"
+    status: READY
+    objective: "Create concrete executor task packet for the simulated run."
+    target_files:
+      - "EXECUTION/RUNS/DEVF-SIM-RUN-0001/RUN.EXECUTOR_TASK_PACKET.yaml"
+
+  - task_id: DEVF-035
+    title: "Create expected simulator TOVS"
+    status: READY
+    objective: "Preserve expected simulator TOVS evidence."
+    target_files:
+      - "EXECUTION/RUNS/DEVF-SIM-RUN-0001/RUN.SIMULATOR_TOVS.EXPECTED.txt"
+
+  - task_id: DEVF-036
+    title: "Prepare BATCH-0007 candidate"
+    status: TODO
+    objective: "Prepare next batch candidate for converting simulator into reusable run generator."
+    target_files:
+      - "REGISTERS/BACKLOG.ACCUMULATED.md"
+      - "BATON/BATON.STATE.txt"

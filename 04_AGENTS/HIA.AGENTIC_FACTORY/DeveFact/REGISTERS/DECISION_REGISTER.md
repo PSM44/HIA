@@ -26,3 +26,5 @@ DEC-022 Methodology reactivated as HYBRID: TOVS remains control signal; uploads 
 DEC-023 BATCH-0004 objective = blocker packet, human decision packet, validation loop and retry policy.
 DEC-024 BATCH-0004 committed locally.
 DEC-025 BATCH-0005 objective = minimal local orchestration simulator with sample idea, discovery questions, sample task packet and safe local TOVS script.
+DEC-026 BATCH-0005 committed locally.
+DEC-027 BATCH-0006 objective = preserve first complete simulated idea-to-task run artifacts.

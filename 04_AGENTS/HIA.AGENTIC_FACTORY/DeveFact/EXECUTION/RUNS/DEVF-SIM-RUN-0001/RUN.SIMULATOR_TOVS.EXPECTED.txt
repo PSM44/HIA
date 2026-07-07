@@ -1,0 +1,29 @@
+TOVS_SUMMARY_START
+AI_TAIL_SCHEMA=v1
+MB_ID=DEVF-SIMULATE-ORCHESTRATION-V0
+FINAL_STATUS=PASS_WITH_REVIEW
+EXECUTION_VERDICT=OK_TO_VERIFY
+SAFE_TO_PROCEED=YES
+HUMAN_ACTION_REQUIRED=Review simulator result; next step is BATCH-0006 verification.
+BLOCKER=NONE
+PROJECT_ROOT=C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
+TEMP_PATH=C:\Users\aazcl\Downloads\Temp.DeveFactory\<dynamic>
+TOVS_ONLY_MODE=HYBRID
+MAX_PASTE_CHARS=9000
+DB_MODIFIED=NO
+CANON_MODIFIED=NO
+COMMIT_PUSH_PERFORMED=NO
+BUILD_EXECUTED=NO
+WARNINGS=NONE
+KEY_FINDINGS:
+* Run ID: DEVF-SIM-RUN-0001
+* Required simulator inputs: 8
+* Missing simulator inputs: 0
+* Simulated discovery status: READY_FOR_HUMAN_ANSWERS
+* Simulated task packet status: READY_SAMPLE_ONLY
+* Simulated blocker status: NONE
+* Simulated validation state: DRYRUN_PASS
+DECISIONS_NEEDED:
+* NONE
+NEXT_ACTION=Review simulator result; next step is BATCH-0006 verification.
+TOVS_SUMMARY_END

@@ -1,0 +1,58 @@
+packet_id: "DEVF-RUN-0001-PACKET"
+run_id: "DEVF-SIM-RUN-0001"
+source: "SIMULATED_ORCHESTRATOR"
+target: "SIMULATED_EXECUTOR"
+mode: "HYBRID_TOVS"
+product:
+  name: "IdeaToTaskPacket"
+  purpose: "Convert rough human idea into an AI-executable task packet."
+  first_user: "Pablo"
+  future_user: "Any user with minimum computer literacy"
+  output_type: "DELIVERABLE_DONE"
+scope:
+  included:
+    - "Human-readable product draft"
+    - "Discovery Q&A"
+    - "Executor task packet"
+    - "Validation criteria"
+    - "Blocker policy"
+  excluded:
+    - "UI"
+    - "API"
+    - "Deploy"
+    - "External AI call"
+    - "DB changes"
+    - "Push"
+constraints:
+  allowed_paths:
+    - "04_AGENTS/HIA.AGENTIC_FACTORY/DeveFact"
+  forbidden_paths:
+    - ".env"
+    - "secrets"
+    - "credentials"
+    - "external systems"
+  commit_policy: "NO_COMMIT_UNLESS_EXPLICIT"
+  push_policy: "NO_PUSH_UNLESS_EXPLICIT"
+  build_policy: "NO_BUILD_UNLESS_REQUIRED"
+tasks:
+  - task_id: "RUN-001"
+    title: "Validate idea intake"
+    status: "READY"
+    acceptance_criteria:
+      - "RAW_HUMAN_IDEA is preserved."
+      - "Problem, first user and no-scope are explicit."
+    blocker_policy: "PARK_AND_REPORT_WITH_OPTIONS_A_B_C"
+
+  - task_id: "RUN-002"
+    title: "Validate task packet"
+    status: "READY"
+    acceptance_criteria:
+      - "Allowed paths and forbidden paths are explicit."
+      - "Expected TOVS fields are present."
+    blocker_policy: "PARK_AND_REPORT_WITH_OPTIONS_A_B_C"
+
+expected_tovs:
+  final_status: "PASS_WITH_REVIEW"
+  execution_verdict: "OK_TO_VERIFY"
+  safe_to_proceed: "YES"
+  human_action_required: "Review run artifacts and verify BATCH-0006."

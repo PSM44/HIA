@@ -22,7 +22,10 @@ BL-018 Commit BATCH-0003 locally: DONE
 BL-019 Start BATCH-0004 blocker packet and validation loop: DONE
 BL-020 Verify BATCH-0004: DONE
 BL-021 Commit BATCH-0004 locally: DONE
-BL-022 Start BATCH-0005 minimal local runner/orchestration simulator: READY_OR_DONE_BY_THIS_RUNNER
-BL-023 Verify BATCH-0005: READY_AFTER_APPLY
-BL-024 Commit BATCH-0005 locally: BLOCKED_BY_VERIFY_AND_HUMAN_REVIEW
-BL-025 Run first real simulated idea-to-task cycle: CANDIDATE_FOR_BATCH_0006
+BL-022 Start BATCH-0005 minimal local runner/orchestration simulator: DONE
+BL-023 Verify BATCH-0005: DONE
+BL-024 Commit BATCH-0005 locally: DONE
+BL-025 Start BATCH-0006 first complete simulated idea-to-task run: READY_OR_DONE_BY_THIS_RUNNER
+BL-026 Verify BATCH-0006: READY_AFTER_APPLY
+BL-027 Commit BATCH-0006 locally: BLOCKED_BY_VERIFY_AND_HUMAN_REVIEW
+BL-028 Convert simulator into reusable run generator: CANDIDATE_FOR_BATCH_0007
