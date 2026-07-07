@@ -25,7 +25,10 @@ BL-021 Commit BATCH-0004 locally: DONE
 BL-022 Start BATCH-0005 minimal local runner/orchestration simulator: DONE
 BL-023 Verify BATCH-0005: DONE
 BL-024 Commit BATCH-0005 locally: DONE
-BL-025 Start BATCH-0006 first complete simulated idea-to-task run: READY_OR_DONE_BY_THIS_RUNNER
-BL-026 Verify BATCH-0006: READY_AFTER_APPLY
-BL-027 Commit BATCH-0006 locally: BLOCKED_BY_VERIFY_AND_HUMAN_REVIEW
-BL-028 Convert simulator into reusable run generator: CANDIDATE_FOR_BATCH_0007
+BL-025 Start BATCH-0006 first complete simulated idea-to-task run: DONE
+BL-026 Verify BATCH-0006: DONE
+BL-027 Commit BATCH-0006 locally: DONE
+BL-028 Start BATCH-0007 reusable local run generator: READY_OR_DONE_BY_THIS_RUNNER
+BL-029 Verify BATCH-0007: READY_AFTER_APPLY
+BL-030 Commit BATCH-0007 locally: BLOCKED_BY_VERIFY_AND_HUMAN_REVIEW
+BL-031 Test run generator with DEVF-RUN-TEST-0001: CANDIDATE_FOR_BATCH_0008

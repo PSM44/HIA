@@ -1,0 +1,50 @@
+batch_id: DEVF-BATCH-0007
+batch_objective: "Convert the static simulator/run structure into a reusable local run generator."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_AND_SAFE_LOCAL_SCRIPT
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+tasks:
+  - task_id: DEVF-037
+    title: "Create run generator contract"
+    status: READY
+    objective: "Define purpose, inputs, outputs and safety limits for reusable run generation."
+    target_files:
+      - "EXECUTION/RUN_GENERATOR_CONTRACT.v0.md"
+
+  - task_id: DEVF-038
+    title: "Create idea intake template"
+    status: READY
+    objective: "Define reusable YAML intake structure."
+    target_files:
+      - "EXECUTION/IDEA_INTAKE_TEMPLATE.v0.yaml"
+
+  - task_id: DEVF-039
+    title: "Create run folder convention"
+    status: READY
+    objective: "Define standard folder and file names for future runs."
+    target_files:
+      - "EXECUTION/RUN_FOLDER_CONVENTION.v0.md"
+
+  - task_id: DEVF-040
+    title: "Create safe new-run generator"
+    status: READY
+    objective: "Create a local PowerShell generator that creates run stubs."
+    target_files:
+      - "TOOLS/DEVF.NEW_RUN.v0.ps1"
+
+  - task_id: DEVF-041
+    title: "Create run generator validation contract"
+    status: READY
+    objective: "Define how to validate the generator."
+    target_files:
+      - "VALIDATION/RUN_GENERATOR_VALIDATION.v0.md"
+
+  - task_id: DEVF-042
+    title: "Prepare BATCH-0008 candidate"
+    status: TODO
+    objective: "Prepare next batch candidate for testing generator with a new run."
+    target_files:
+      - "REGISTERS/BACKLOG.ACCUMULATED.md"
+      - "BATON/BATON.STATE.txt"

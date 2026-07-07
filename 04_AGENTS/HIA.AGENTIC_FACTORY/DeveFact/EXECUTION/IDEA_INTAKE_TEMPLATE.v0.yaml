@@ -1,0 +1,23 @@
+template_id: "DEVF-IDEA-INTAKE-v0"
+run_id: "DEVF-RUN-YYYYMMDD-HHMM"
+raw_human_idea: ""
+first_user: ""
+future_user: "Any user with minimum computer literacy"
+output_type: "DELIVERABLE_DONE"
+known:
+  - ""
+unknown:
+  - ""
+no_scope:
+  - "No UI unless explicitly approved"
+  - "No API unless explicitly approved"
+  - "No deploy"
+  - "No external AI call"
+  - "No DB changes"
+  - "No push"
+constraints:
+  allowed_root: "04_AGENTS/HIA.AGENTIC_FACTORY/DeveFact"
+  secrets_policy: "NO_SECRETS"
+  commit_policy: "NO_COMMIT_UNLESS_EXPLICIT"
+  push_policy: "NO_PUSH_UNLESS_EXPLICIT"
+expected_next_step: "Generate discovery questions and review with human."
