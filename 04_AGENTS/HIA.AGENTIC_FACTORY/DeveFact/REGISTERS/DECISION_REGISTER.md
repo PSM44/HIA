@@ -21,3 +21,6 @@ DEC-017 DeveFact development continues inside HIA tracked folder; this chat acts
 DEC-018 BATCH-0002 objective = operational behavior layer: development path, journey, diagrams, Orchestrator protocol, Executor protocol.
 DEC-019 BATCH-0002 committed locally.
 DEC-020 BATCH-0003 objective = first manual/runnable workflow: pilot scenario, workflow, task packet, TOVS contract, register update protocol.
+DEC-021 BATCH-0003 committed locally.
+DEC-022 Methodology reactivated as HYBRID: TOVS remains control signal; uploads allowed when useful for deeper review.
+DEC-023 BATCH-0004 objective = blocker packet, human decision packet, validation loop and retry policy.

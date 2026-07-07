@@ -1,0 +1,50 @@
+batch_id: DEVF-BATCH-0004
+batch_objective: "Create blocker packet, human decision packet, retry policy and validation loop for DeveFact."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_ONLY
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+tasks:
+  - task_id: DEVF-019
+    title: "Create blocker handling model"
+    status: READY
+    objective: "Explain human-readable blocker model."
+    target_files:
+      - "HUMAN/BLOCKER_HANDLING_MODEL.md"
+
+  - task_id: DEVF-020
+    title: "Create blocker packet template"
+    status: READY
+    objective: "Define structured blocker packet with options A/B/C and recommendation."
+    target_files:
+      - "EXECUTION/BLOCKER_PACKET.TEMPLATE.yaml"
+
+  - task_id: DEVF-021
+    title: "Create human decision packet"
+    status: READY
+    objective: "Define compact decision packet for human approval."
+    target_files:
+      - "EXECUTION/HUMAN_DECISION_PACKET.v0.md"
+
+  - task_id: DEVF-022
+    title: "Create validation loop"
+    status: READY
+    objective: "Define dry-run/apply/verify/commit loop and blocked-state behavior."
+    target_files:
+      - "EXECUTION/VALIDATION_LOOP.v0.md"
+
+  - task_id: DEVF-023
+    title: "Create retry policy"
+    status: READY
+    objective: "Define retry/park/escalate rules."
+    target_files:
+      - "EXECUTION/RETRY_POLICY.v0.md"
+
+  - task_id: DEVF-024
+    title: "Prepare BATCH-0005 candidate"
+    status: TODO
+    objective: "Prepare next batch candidate for a minimal local runner/orchestration simulator."
+    target_files:
+      - "REGISTERS/BACKLOG.ACCUMULATED.md"
+      - "BATON/BATON.STATE.txt"

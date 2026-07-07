@@ -1,0 +1,63 @@
+blocker_id: "BLK-YYYYMMDD-HHMM-001"
+source_task_id: ""
+status: "OPEN"
+detected_by: "IA_EXECUTOR"
+detected_at: ""
+severity: "LOW|MEDIUM|HIGH|CRITICAL"
+blocker_type:
+  - "business"
+  - "architecture"
+  - "filesystem"
+  - "security"
+  - "cost"
+  - "dependency"
+  - "human_criteria"
+  - "validation"
+  - "scope_creep"
+  - "tool_limitation"
+  - "prompt_ambiguity"
+  - "repo_state"
+  - "canon_contradiction"
+summary: ""
+evidence:
+  files: []
+  commands: []
+  tovs_excerpt: ""
+impact:
+  blocked_tasks: []
+  risk_if_ignored: ""
+  delay_or_cost: ""
+options:
+  option_a:
+    label: "Conservative"
+    action: ""
+    pros: []
+    cons: []
+    risk: "LOW"
+  option_b:
+    label: "Balanced"
+    action: ""
+    pros: []
+    cons: []
+    risk: "MEDIUM"
+  option_c:
+    label: "Aggressive"
+    action: ""
+    pros: []
+    cons: []
+    risk: "HIGH"
+recommendation:
+  preferred_option: "A|B|C|PARK"
+  rationale: ""
+human_decision:
+  required: true
+  decision: ""
+  decided_by: ""
+  decided_at: ""
+next_action: ""
+register_updates_required:
+  - "BLOCKERS.ACCUMULATED"
+  - "CONFLICTS.ACCUMULATED"
+  - "DECISION_REGISTER"
+  - "BACKLOG.ACCUMULATED"
+  - "TECH_DEBT.ACCUMULATED"
