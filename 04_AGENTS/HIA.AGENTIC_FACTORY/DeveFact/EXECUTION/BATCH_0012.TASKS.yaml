@@ -1,0 +1,32 @@
+batch_id: DEVF-BATCH-0012
+batch_objective: "Create reusable context exporter for upload/migration/audit packages."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_AND_SAFE_LOCAL_SCRIPT
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+tasks:
+  - task_id: DEVF-067
+    title: "Create context exporter"
+    status: READY
+    objective: "Create TOOLS/DEVF.EXPORT_CONTEXT.v0.ps1."
+  - task_id: DEVF-068
+    title: "Create exporter contract"
+    status: READY
+    objective: "Create EXECUTION/CONTEXT_EXPORTER_CONTRACT.v0.md."
+  - task_id: DEVF-069
+    title: "Create export manifest"
+    status: READY
+    objective: "Create EXECUTION/CONTEXT_EXPORT_MANIFEST.v0.yaml."
+  - task_id: DEVF-070
+    title: "Create exporter validation"
+    status: READY
+    objective: "Create VALIDATION/CONTEXT_EXPORT_VALIDATION.v0.md."
+  - task_id: DEVF-071
+    title: "Update registers and BATON"
+    status: READY
+    objective: "Update backlog, decision register and BATON."
+  - task_id: DEVF-072
+    title: "Prepare BATCH-0013 candidate"
+    status: TODO
+    objective: "Prepare next batch to test exporter with a real context package."

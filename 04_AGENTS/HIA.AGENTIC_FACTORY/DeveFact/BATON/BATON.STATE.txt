@@ -2,30 +2,22 @@
 BATON.STATE
 ==========
 PROJECT: DeveFact / HIA.AGENTIC_FACTORY
-STATUS: BATCH_0011_STARTED_OR_READY
+STATUS: BATCH_0012_STARTED_OR_READY
 OUTPUT_TYPE: DELIVERABLE_DONE
 HUMAN_CANON: HUMAN/
 KEY_REGISTERS: REGISTERS/
 EXECUTION_POLICY: EXECUTION/
 MODE: HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED
 LAST_COMMIT_KNOWN:
-- fad1649 20260706.1742_DeveFact_Batch0001_Base
-- 3a24f4b 20260706.1816_DeveFact_Batch0002_OperationalLayer
-- 67ba7c2 20260706.1841_DeveFact_Batch0003_ManualWorkflow
-- 9216239 20260707.1041_DeveFact_Batch0004_BlockerValidationLoop
-- 2706c30 20260707.1054_DeveFact_Batch0005_LocalSimulator
-- 2375e7a 20260707.1109_DeveFact_Batch0006_FirstSimulatedRun
-- 3c4750f 20260707.1140_DeveFact_Batch0007_ReusableRunGenerator
-- bec433c 20260707.1851_DeveFact_Batch0008_TestRunGenerator
-- be0d761 20260707.1858_DeveFact_Batch0009_CompleteTestRun
 - fdd7cbc 20260707.1910_DeveFact_Batch0010_ContextPackage
+- c2987ea 20260707.1920_DeveFact_Batch0011_HumanQuickstart
 
 CURRENT_STATE:
-- BATCH-0001..0010 committed locally.
-- BATCH-0011 creates the human quickstart/operator guide layer.
+- BATCH-0001..0011 committed locally.
+- BATCH-0012 creates the context exporter.
 - This chat remains Orchestrator/Control Tower until DeveFact can self-orchestrate.
 
 NEXT_ACTION:
-Apply/verify BATCH-0011, then decide local commit. No push unless explicitly requested.
-RECOMMENDED_AFTER_B0011:
-Choose BATCH-0012 Option A generator hardening or Option C context exporter.
+Apply/verify BATCH-0012, then decide local commit. No push unless explicitly requested.
+RECOMMENDED_AFTER_B0012:
+BATCH-0013: test context exporter with a real export package.

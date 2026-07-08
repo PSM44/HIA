@@ -1,0 +1,29 @@
+manifest_id: DEVF-CONTEXT-EXPORT-MANIFEST-v0
+exporter: TOOLS/DEVF.EXPORT_CONTEXT.v0.ps1
+output_root: C:\Users\aazcl\Downloads\Temp.DeveFactory
+include:
+  - HUMAN
+  - CONTEXT
+  - BATON
+  - REGISTERS
+  - EXECUTION/BATCH_0010.TASKS.yaml
+  - EXECUTION/BATCH_0011.TASKS.yaml
+  - EXECUTION/BATCH_0012.TASKS.yaml
+  - EXECUTION/CONTEXT_EXPORTER_CONTRACT.v0.md
+  - EXECUTION/CONTEXT_EXPORT_MANIFEST.v0.yaml
+  - VALIDATION/BATCH_0010.ACCEPTANCE.md
+  - VALIDATION/BATCH_0011.ACCEPTANCE.md
+  - VALIDATION/BATCH_0012.ACCEPTANCE.md
+  - TOOLS/DEVF.NEW_RUN.v0.ps1
+  - TOOLS/DEVF.EXPORT_CONTEXT.v0.ps1
+exclude:
+  - .env
+  - secrets
+  - credentials
+  - node_modules
+  - .git
+policy:
+  db_modified: NO
+  push_performed: NO
+  build_executed: NO
+  output_repo_modified: NO

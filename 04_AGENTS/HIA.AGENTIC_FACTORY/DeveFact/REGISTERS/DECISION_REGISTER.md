@@ -15,26 +15,8 @@ DEC-011 Do not use 04_PROJECTS for tracked migration because ignored.
 DEC-012 Do not use 03_ARTIFACTS/context for tracked source because ignored.
 DEC-013 Target tracked path = 04_AGENTS\HIA.AGENTIC_FACTORY\DeveFact.
 DEC-014 Real apply requires human command with -Apply and ConfirmText.
-DEC-015 BATCH-0001 committed locally under HIA.
-DEC-016 No push performed for BATCH-0001.
-DEC-017 DeveFact development continues inside HIA tracked folder; this chat acts as Orchestrator/Control Tower.
-DEC-018 BATCH-0002 objective = operational behavior layer.
-DEC-019 BATCH-0002 committed locally.
-DEC-020 BATCH-0003 objective = first manual/runnable workflow.
-DEC-021 BATCH-0003 committed locally.
-DEC-022 Methodology reactivated as HYBRID.
-DEC-023 BATCH-0004 objective = blocker packet, decision packet, validation loop and retry policy.
-DEC-024 BATCH-0004 committed locally.
-DEC-025 BATCH-0005 objective = local orchestration simulator.
-DEC-026 BATCH-0005 committed locally.
-DEC-027 BATCH-0006 objective = preserve first complete simulated idea-to-task run.
-DEC-028 BATCH-0006 committed locally.
-DEC-029 BATCH-0007 objective = reusable local run generator.
-DEC-030 BATCH-0007 committed locally.
-DEC-031 BATCH-0008 objective = test generator by creating DEVF-RUN-TEST-0001.
-DEC-032 BATCH-0008 committed locally.
-DEC-033 BATCH-0009 objective = complete DEVF-RUN-TEST-0001 with discovery answers, Orchestrator output and executor packet.
-DEC-034 BATCH-0009 committed locally.
 DEC-035 BATCH-0010 objective = create compact continuity/context package.
 DEC-036 Recommended BATCH-0011 direction = HUMAN quickstart before automation hardening.
 DEC-037 BATCH-0011 objective = create human-facing quickstart and operator guide.
+DEC-038 BATCH-0011 committed locally.
+DEC-039 BATCH-0012 objective = create reusable context exporter for upload/migration/audit.
