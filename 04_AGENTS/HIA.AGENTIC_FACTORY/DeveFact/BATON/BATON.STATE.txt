@@ -2,21 +2,21 @@
 BATON.STATE
 ==========
 PROJECT: DeveFact / HIA.AGENTIC_FACTORY
-STATUS: BATCH_0014_STARTED_OR_READY
+STATUS: BATCH_0015_STARTED_OR_READY
 OUTPUT_TYPE: DELIVERABLE_DONE
 HUMAN_CANON: HUMAN/
 KEY_REGISTERS: REGISTERS/
 EXECUTION_POLICY: EXECUTION/
 MODE: HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED
 LAST_COMMIT_KNOWN:
-- 8e5fafa 20260708.1036_DeveFact_Batch0013_TestContextExporter
+- 87b3025 20260709.1138_DeveFact_Batch0014_RunGeneratorHardening
 
 CURRENT_STATE:
-- BATCH-0001..0013 committed locally.
-- BATCH-0014 hardens the run generator by creating v1 side-by-side.
+- BATCH-0001..0014 committed locally.
+- BATCH-0015 tests DEVF.NEW_RUN.v1.ps1 with a real generated run and duplicate protection.
 - This chat remains Orchestrator/Control Tower until DeveFact can self-orchestrate.
 
 NEXT_ACTION:
-Apply/verify BATCH-0014, then decide local commit. No push unless explicitly requested.
-RECOMMENDED_AFTER_B0014:
-BATCH-0015: test DEVF.NEW_RUN.v1.ps1 with a real generated run.
+Apply/verify BATCH-0015, then decide local commit. No push unless explicitly requested.
+RECOMMENDED_AFTER_B0015:
+Decide between push or BATCH-0016 .gitattributes line-ending policy.

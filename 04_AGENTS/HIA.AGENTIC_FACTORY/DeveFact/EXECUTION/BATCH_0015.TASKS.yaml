@@ -1,0 +1,32 @@
+batch_id: DEVF-BATCH-0015
+batch_objective: "Test DEVF.NEW_RUN.v1.ps1 with a real generated run and duplicate protection."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_SAFE_LOCAL_SCRIPT_TEST
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+tasks:
+  - task_id: DEVF-085
+    title: "Run generator v1 dry-run"
+    status: READY
+    objective: "Confirm DEVF.NEW_RUN.v1.ps1 dry-run returns OK_TO_APPLY."
+  - task_id: DEVF-086
+    title: "Run generator v1 apply"
+    status: READY
+    objective: "Create DEVF-RUN-TEST-V1-0015."
+  - task_id: DEVF-087
+    title: "Validate generated run files"
+    status: READY
+    objective: "Confirm required run artifacts exist."
+  - task_id: DEVF-088
+    title: "Test duplicate protection"
+    status: READY
+    objective: "Confirm duplicate run fails safely without overwrite."
+  - task_id: DEVF-089
+    title: "Update registers and BATON"
+    status: READY
+    objective: "Update backlog, decision register and BATON."
+  - task_id: DEVF-090
+    title: "Prepare BATCH-0016 candidate"
+    status: TODO
+    objective: "Prepare .gitattributes line-ending policy or push decision."

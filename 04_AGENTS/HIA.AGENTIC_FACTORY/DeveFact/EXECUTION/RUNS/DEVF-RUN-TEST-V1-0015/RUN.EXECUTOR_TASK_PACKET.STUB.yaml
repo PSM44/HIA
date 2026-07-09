@@ -1,0 +1,9 @@
+packet_id: GENERATED_STUB
+status: NEEDS_ORCHESTRATOR_OUTPUT
+expected_tovs:
+  execution_verdict: OK_TO_REVIEW
+  safe_to_proceed: YES
+policy:
+  no_push: true
+  no_build: true
+  no_db_modification: true
