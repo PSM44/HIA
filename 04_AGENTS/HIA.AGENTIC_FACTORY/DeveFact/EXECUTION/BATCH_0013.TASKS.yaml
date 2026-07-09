@@ -1,0 +1,32 @@
+batch_id: DEVF-BATCH-0013
+batch_objective: "Test DEVF.EXPORT_CONTEXT.v0.ps1 with a real context package."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_SAFE_LOCAL_SCRIPT_TEST
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+tasks:
+  - task_id: DEVF-073
+    title: "Run exporter dry-run"
+    status: READY
+    objective: "Confirm exporter dry-run returns OK_TO_APPLY."
+  - task_id: DEVF-074
+    title: "Run exporter apply"
+    status: READY
+    objective: "Create real context package under Temp.DeveFactory."
+  - task_id: DEVF-075
+    title: "Validate exported package"
+    status: READY
+    objective: "Confirm EXPORT.MANIFEST.txt and core folders exist."
+  - task_id: DEVF-076
+    title: "Record export test"
+    status: READY
+    objective: "Create VALIDATION/CONTEXT_EXPORT_TEST.v0.md."
+  - task_id: DEVF-077
+    title: "Update registers and BATON"
+    status: READY
+    objective: "Update backlog, decision register and BATON."
+  - task_id: DEVF-078
+    title: "Prepare BATCH-0014 candidate"
+    status: TODO
+    objective: "Prepare next batch for generator hardening or push decision."
