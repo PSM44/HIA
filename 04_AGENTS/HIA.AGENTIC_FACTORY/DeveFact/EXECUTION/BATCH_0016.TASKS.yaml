@@ -1,0 +1,32 @@
+batch_id: DEVF-BATCH-0016
+batch_objective: "Create scoped DeveFact .gitattributes line-ending policy."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_AND_SAFE_REPO_POLICY
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+tasks:
+  - task_id: DEVF-091
+    title: "Create scoped .gitattributes"
+    status: READY
+    objective: "Create DeveFact-local .gitattributes without touching repo root."
+  - task_id: DEVF-092
+    title: "Document line-ending policy"
+    status: READY
+    objective: "Create EXECUTION/LINE_ENDING_POLICY.v1.md."
+  - task_id: DEVF-093
+    title: "Create validation contract"
+    status: READY
+    objective: "Create VALIDATION/LINE_ENDING_POLICY_VALIDATION.v1.md."
+  - task_id: DEVF-094
+    title: "Record batch acceptance"
+    status: READY
+    objective: "Create VALIDATION/BATCH_0016.ACCEPTANCE.md."
+  - task_id: DEVF-095
+    title: "Update registers and BATON"
+    status: READY
+    objective: "Update backlog, decision register, tech debt and BATON."
+  - task_id: DEVF-096
+    title: "Prepare BATCH-0017 candidate"
+    status: TODO
+    objective: "Prepare post-policy status check or push decision."

@@ -12,7 +12,7 @@ DEC-008 FREE_FIRST tooling.
 DEC-009 No secrets in repo/RADAR/logs/BATON/HUMAN.
 DEC-013 Target tracked path = 04_AGENTS\HIA.AGENTIC_FACTORY\DeveFact.
 DEC-022 Methodology reactivated as HYBRID.
-DEC-043 BATCH-0014 objective = create side-by-side hardened DEVF.NEW_RUN.v1.ps1.
-DEC-044 Do not overwrite DEVF.NEW_RUN.v0.ps1 in BATCH-0014.
-DEC-045 BATCH-0014 committed locally.
 DEC-046 BATCH-0015 objective = test DEVF.NEW_RUN.v1.ps1 with real run and duplicate protection.
+DEC-047 BATCH-0015 committed locally.
+DEC-048 BATCH-0016 objective = create scoped DeveFact .gitattributes line-ending policy.
+DEC-049 BATCH-0016 must not create or modify repo-root .gitattributes.

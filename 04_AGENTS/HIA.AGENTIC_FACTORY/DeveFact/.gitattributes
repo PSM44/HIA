@@ -1,0 +1,20 @@
+# DeveFact scoped line-ending policy.
+# Applies only to files under 04_AGENTS/HIA.AGENTIC_FACTORY/DeveFact.
+
+* text=auto
+
+*.md   text eol=lf
+*.txt  text eol=lf
+*.yaml text eol=lf
+*.yml  text eol=lf
+*.json text eol=lf
+*.ps1  text eol=crlf
+
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.pdf  binary
+*.xlsx binary
+*.xlsm binary
+*.zip  binary

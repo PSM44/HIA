@@ -2,21 +2,21 @@
 BATON.STATE
 ==========
 PROJECT: DeveFact / HIA.AGENTIC_FACTORY
-STATUS: BATCH_0015_STARTED_OR_READY
+STATUS: BATCH_0016_STARTED_OR_READY
 OUTPUT_TYPE: DELIVERABLE_DONE
 HUMAN_CANON: HUMAN/
 KEY_REGISTERS: REGISTERS/
 EXECUTION_POLICY: EXECUTION/
 MODE: HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED
 LAST_COMMIT_KNOWN:
-- 87b3025 20260709.1138_DeveFact_Batch0014_RunGeneratorHardening
+- 3ff15a5 20260709.1212_DeveFact_Batch0015_TestRunGeneratorV1
 
 CURRENT_STATE:
-- BATCH-0001..0014 committed locally.
-- BATCH-0015 tests DEVF.NEW_RUN.v1.ps1 with a real generated run and duplicate protection.
+- BATCH-0001..0015 committed locally.
+- BATCH-0016 creates a scoped DeveFact .gitattributes policy.
 - This chat remains Orchestrator/Control Tower until DeveFact can self-orchestrate.
 
 NEXT_ACTION:
-Apply/verify BATCH-0015, then decide local commit. No push unless explicitly requested.
-RECOMMENDED_AFTER_B0015:
-Decide between push or BATCH-0016 .gitattributes line-ending policy.
+Apply/verify BATCH-0016, then decide local commit. No push unless explicitly requested.
+RECOMMENDED_AFTER_B0016:
+Either push committed batches or run BATCH-0017 status/export readiness check.
