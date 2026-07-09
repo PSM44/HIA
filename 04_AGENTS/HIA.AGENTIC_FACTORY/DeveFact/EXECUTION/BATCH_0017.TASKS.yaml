@@ -1,0 +1,32 @@
+batch_id: DEVF-BATCH-0017
+batch_objective: "Register integrity repair phase 1: policy and Git-derived recovery ledgers."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_AND_READONLY_GIT_AUDIT
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+tasks:
+  - task_id: DEVF-097
+    title: "Create register integrity policy"
+    status: READY
+    objective: "Define hard rule that accumulated registers are never summarized."
+  - task_id: DEVF-098
+    title: "Create backlog recovery ledger"
+    status: READY
+    objective: "Extract historical BL IDs and lines from Git."
+  - task_id: DEVF-099
+    title: "Create decision recovery ledger"
+    status: READY
+    objective: "Extract historical DEC IDs and lines from Git."
+  - task_id: DEVF-100
+    title: "Create tech debt recovery ledger"
+    status: READY
+    objective: "Extract historical TD IDs and lines from Git."
+  - task_id: DEVF-101
+    title: "Create audit report"
+    status: READY
+    objective: "Compare current counts to recovery ledger counts."
+  - task_id: DEVF-102
+    title: "Prepare phase 2 repair"
+    status: TODO
+    objective: "Use recovery ledgers to repair accumulated registers without summaries."
