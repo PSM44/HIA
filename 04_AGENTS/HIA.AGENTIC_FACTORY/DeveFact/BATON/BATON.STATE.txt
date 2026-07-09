@@ -2,21 +2,21 @@
 BATON.STATE
 ==========
 PROJECT: DeveFact / HIA.AGENTIC_FACTORY
-STATUS: BATCH_0017_STARTED_OR_READY
+STATUS: BATCH_0018_STARTED_OR_READY
 OUTPUT_TYPE: DELIVERABLE_DONE
 HUMAN_CANON: HUMAN/
 KEY_REGISTERS: REGISTERS/
 EXECUTION_POLICY: EXECUTION/
 MODE: HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED
 LAST_COMMIT_KNOWN:
-- 5d2b791 20260709.1233_DeveFact_Batch0016_ScopedLineEndingPolicy
+- d864c7c 20260709.1847_DeveFact_Batch0017_RegisterIntegrityRecovery
 
 CURRENT_STATE:
-- BATCH-0001..0016 committed locally.
-- BATCH-0017 creates register integrity policy and recovery ledgers from Git history.
+- BATCH-0001..0017 committed locally.
+- BATCH-0018 appends missing register IDs from recovery ledgers into accumulated registers.
 - Accumulated registers must never be summarized or replaced by summaries.
 
 NEXT_ACTION:
-Apply/verify BATCH-0017, then decide local commit. No push unless explicitly requested.
-RECOMMENDED_AFTER_B0017:
-BATCH-0018: repair accumulated registers from recovery ledgers, preserving full detail.
+Apply/verify BATCH-0018, then decide local commit. No push unless explicitly requested.
+RECOMMENDED_AFTER_B0018:
+BATCH-0019: Product Definition v0.1 reflecting Development Control System for AI-assisted delivery, HIA module boundary, multi-agent controlled tool policy, and functionality-led roadmap.

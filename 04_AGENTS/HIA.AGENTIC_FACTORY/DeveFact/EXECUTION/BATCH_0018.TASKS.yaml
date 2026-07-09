@@ -1,0 +1,32 @@
+batch_id: DEVF-BATCH-0018
+batch_objective: "Accumulated register repair phase 2: append missing historical IDs from recovery ledgers."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_APPEND_ONLY_REPAIR
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+tasks:
+  - task_id: DEVF-103
+    title: "Repair backlog accumulated register"
+    status: READY
+    objective: "Append missing BL IDs from recovery ledger."
+  - task_id: DEVF-104
+    title: "Repair decision register"
+    status: READY
+    objective: "Append missing DEC IDs from recovery ledger."
+  - task_id: DEVF-105
+    title: "Repair tech debt register"
+    status: READY
+    objective: "Append missing TD IDs from recovery ledger."
+  - task_id: DEVF-106
+    title: "Create repair audit"
+    status: READY
+    objective: "Record ledger/existing/missing counts."
+  - task_id: DEVF-107
+    title: "Create batch acceptance"
+    status: READY
+    objective: "Record acceptance criteria for append-only repair."
+  - task_id: DEVF-108
+    title: "Prepare product definition batch"
+    status: TODO
+    objective: "Prepare BATCH-0019 Product Definition v0.1."
