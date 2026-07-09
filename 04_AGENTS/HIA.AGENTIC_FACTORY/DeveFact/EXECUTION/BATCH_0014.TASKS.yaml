@@ -1,0 +1,32 @@
+batch_id: DEVF-BATCH-0014
+batch_objective: "Harden DEVF.NEW_RUN by creating side-by-side v1 generator."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_AND_SAFE_LOCAL_SCRIPT
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+tasks:
+  - task_id: DEVF-079
+    title: "Create generator v1"
+    status: READY
+    objective: "Create TOOLS/DEVF.NEW_RUN.v1.ps1 side-by-side."
+  - task_id: DEVF-080
+    title: "Create hardening contract"
+    status: READY
+    objective: "Create EXECUTION/RUN_GENERATOR_HARDENING_CONTRACT.v1.md."
+  - task_id: DEVF-081
+    title: "Create hardening validation"
+    status: READY
+    objective: "Create VALIDATION/RUN_GENERATOR_HARDENING_VALIDATION.v1.md."
+  - task_id: DEVF-082
+    title: "Record batch acceptance"
+    status: READY
+    objective: "Create VALIDATION/BATCH_0014.ACCEPTANCE.md."
+  - task_id: DEVF-083
+    title: "Update registers and BATON"
+    status: READY
+    objective: "Update backlog, decision register, tech debt and BATON."
+  - task_id: DEVF-084
+    title: "Prepare BATCH-0015 candidate"
+    status: TODO
+    objective: "Prepare test of DEVF.NEW_RUN.v1.ps1."

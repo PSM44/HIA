@@ -12,6 +12,7 @@ DEC-008 FREE_FIRST tooling.
 DEC-009 No secrets in repo/RADAR/logs/BATON/HUMAN.
 DEC-013 Target tracked path = 04_AGENTS\HIA.AGENTIC_FACTORY\DeveFact.
 DEC-022 Methodology reactivated as HYBRID.
-DEC-039 BATCH-0012 objective = create reusable context exporter for upload/migration/audit.
-DEC-040 BATCH-0012 committed locally.
 DEC-041 BATCH-0013 objective = test reusable context exporter with a real Temp.DeveFactory package.
+DEC-042 BATCH-0013 committed locally.
+DEC-043 BATCH-0014 objective = create side-by-side hardened DEVF.NEW_RUN.v1.ps1.
+DEC-044 Do not overwrite DEVF.NEW_RUN.v0.ps1 in BATCH-0014.
