@@ -1,0 +1,25 @@
+batch_id: DEVF-BATCH-0022
+batch_objective: "Fresh minimal case execution through the visible demo path."
+status: READY_FOR_VERIFY
+max_tasks: 6
+autonomy_level: L1_LOCAL_CONTROLLED_CASE
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+tasks:
+  - task_id: DEVF-127
+    title: "Capture raw idea"
+    status: DONE
+  - task_id: DEVF-128
+    title: "Create discovery questions"
+    status: DONE
+  - task_id: DEVF-129
+    title: "Capture discovery answers"
+    status: DONE
+  - task_id: DEVF-130
+    title: "Create task packet"
+    status: DONE
+  - task_id: DEVF-131
+    title: "Create execution evidence and validation"
+    status: DONE
+  - task_id: DEVF-132
+    title: "Create management interpretation and scorecard update"
+    status: DONE

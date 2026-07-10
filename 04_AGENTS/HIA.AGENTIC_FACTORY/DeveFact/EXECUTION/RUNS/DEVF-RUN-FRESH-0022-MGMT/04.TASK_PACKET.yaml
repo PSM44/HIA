@@ -1,0 +1,33 @@
+run_id: DEVF-RUN-FRESH-0022-MGMT
+objective: "Create a fresh controlled run package for management demo."
+status: EXECUTED_AS_LOCAL_CONTROLLED_CASE
+tasks:
+  - task_id: FRESH-001
+    objective: "Capture raw idea."
+    output: "01.RAW_IDEA.md"
+    status: DONE
+  - task_id: FRESH-002
+    objective: "Ask discovery questions."
+    output: "02.DISCOVERY_QUESTIONS.md"
+    status: DONE
+  - task_id: FRESH-003
+    objective: "Capture discovery answers."
+    output: "03.DISCOVERY_ANSWERS.md"
+    status: DONE
+  - task_id: FRESH-004
+    objective: "Create task packet."
+    output: "04.TASK_PACKET.yaml"
+    status: DONE
+  - task_id: FRESH-005
+    objective: "Create execution evidence."
+    output: "05.EXECUTION_EVIDENCE.md"
+    status: DONE
+  - task_id: FRESH-006
+    objective: "Create validation and management interpretation."
+    output: "06.VALIDATION.md and 07.MANAGEMENT_INTERPRETATION.md"
+    status: DONE
+constraints:
+  no_db: true
+  no_push: true
+  no_build: true
+  no_deploy: true
