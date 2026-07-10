@@ -45,4 +45,23 @@ RECOVERY_NOTE: latest_line is Git-derived evidence, not an invented summary.
 - latest_seen_subject: 20260706.1742_DeveFact_Batch0001_Base
 - restored_line: TD-008 Finalize runner writes expanded Q&A based on chat memory, not original uploaded bundle; review required.
 
+==========
+SESSION_CLOSE_20260709_TECH_DEBT_APPEND
+==========
+## TD-009
+- status: OPEN
+- type: CONTINUITY_VALIDATION
+- priority: P1
+- title: Formal close readiness not executed inside local repo by assistant.
+- cause: assistant cannot directly access local repo runtime; closure relies on user-run TOVS.
+- impact: closure is operationally updated but strict clean-close depends on local readiness/RADAR execution.
+- next_action: run local readiness/RADAR or accept WARN.
 
+## TD-010
+- status: OPEN
+- type: PRODUCTIZATION
+- priority: P1
+- title: Management demo is documentation-first, not yet a single runnable/visible demo surface.
+- cause: BATCH-0020 created demo layer documents; no unified entrypoint/UI/launcher yet.
+- impact: gerencia can read the demo, but it is not yet a polished visible product demo.
+- next_action: BATCH-0021 should create the visible demo entrypoint.

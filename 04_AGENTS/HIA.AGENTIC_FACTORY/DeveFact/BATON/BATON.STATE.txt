@@ -2,23 +2,34 @@
 BATON.STATE
 ==========
 PROJECT: DeveFact / HIA.AGENTIC_FACTORY
-STATUS: BATCH_0020_STARTED_OR_READY
+STATUS: SESSION_CLOSED_PENDING_NEXT_SESSION
 OUTPUT_TYPE: DELIVERABLE_DONE
-HUMAN_CANON: HUMAN/
-KEY_REGISTERS: REGISTERS/
-EXECUTION_POLICY: EXECUTION/
-MODE: HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED
+LOCAL_TIME_AT_CLOSE: 2026-07-09 20:32 CLT
+PROJECT_ROOT: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
+MODULE_ROOT: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_AGENTS\HIA.AGENTIC_FACTORY\DeveFact
+TEMP_PATH: C:\Users\aazcl\Downloads\Temp.DeveFactory
+BRANCH: feat/20260405-console-v2-phase1-phase2
 LAST_COMMIT_KNOWN:
-- 808f6b4 20260709.2005_DeveFact_Batch0019_ProductDefinitionV01
+- 326a325 20260709.2029_DeveFact_Batch0020_ManagementDemoLayer
 
 CURRENT_STATE:
-- BATCH-0001..0019 committed locally.
-- DeveFact is defined as Development Control System for AI-assisted delivery.
-- Product definition, boundary, multi-agent policy, functional roadmap and success metrics exist.
-- BATCH-0020 prepares management demo layer for first functionality demonstration.
+- BATCH-0001..0020 committed locally.
+- BATCH-0020 created the Management Demo Layer / F01 Run Creation demonstration package.
+- No push was performed in this session.
+- No build was executed in this session.
+- DB was not modified.
+
+ACTIVE_REGISTERS:
+- REGISTERS/BACKLOG.ACCUMULATED.md
+- REGISTERS/TECH_DEBT.ACCUMULATED.md
+- REGISTERS/IDEAS.RELATED.ACCUMULATED.md
+- REGISTERS/SKILL_GRC_OPPORTUNITIES.ACCUMULATED.md
+
+PRODUCT_DEFINITION:
+DeveFact is a Development Control System for AI-assisted delivery.
 
 NEXT_ACTION:
-Apply/verify BATCH-0020, then decide local commit. No push unless explicitly requested.
+Start BATCH-0021: make the management demo visible and runnable/readable as a single demo entrypoint.
 
-RECOMMENDED_AFTER_B0020:
-BATCH-0021: choose and implement next functionality demonstration.
+SINGULAR_NEXT_ACTION:
+Run BATCH-0021 planning/preflight from clean git. Do not push unless explicitly requested.

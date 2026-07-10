@@ -431,4 +431,29 @@ RECOVERY_NOTE: latest_line is Git-derived evidence, not an invented summary.
 - latest_seen_subject: 20260709.1212_DeveFact_Batch0015_TestRunGeneratorV1
 - restored_line: BL-053 Verify BATCH-0015: READY_AFTER_APPLY
 
+==========
+SESSION_CLOSE_20260709_BACKLOG_APPEND
+==========
+## BL-060
+- status: OPEN
+- type: FUNCTIONAL
+- priority: P0
+- title: Create visible management demo entrypoint.
+- evidence: BATCH-0020 committed as management demo layer.
+- next_action: BATCH-0021 should produce one visible/readable entrypoint for management.
 
+## BL-061
+- status: OPEN
+- type: OPERATIONAL
+- priority: P1
+- title: Decide push policy for local commits BATCH-0001..0020.
+- evidence: latest TOVS indicates PUSH_PERFORMED=NO.
+- next_action: human decides whether to push branch feat/20260405-console-v2-phase1-phase2.
+
+## BL-062
+- status: OPEN
+- type: VALIDATION
+- priority: P1
+- title: Generate or upload fresh RADAR/readiness evidence after close.
+- evidence: formal close rules require RADAR/readiness evidence when filesystem changed.
+- next_action: run project RADAR/readiness if available, or accept closure with declared evidence gap.

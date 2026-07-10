@@ -17,3 +17,11 @@ SGO-013 GRC.NO_UPLOAD_CONTINUITY_MODE
 
 RULE:
 Candidates only. Do not create canon automatically.
+
+==========
+SESSION_CLOSE_20260709_SKILL_GRC_OPPORTUNITIES_APPEND
+==========
+- CANDIDATE: Promote accumulated register integrity rule into reusable Skill/GRC if not already canonical enough.
+- CANDIDATE: Add DeveFact-specific RADAR profile or project-local RADAR.ps1 to align with RADAR v1.4.
+- CANDIDATE: Add Management Demo Layer skill/pattern for transforming technical evidence into executive demo artifacts.
+- CANDIDATE: Strengthen AI code agent sequential workflow for DeveFact BATCH execution with human-owned commits.
