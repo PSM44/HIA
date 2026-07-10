@@ -1,0 +1,25 @@
+batch_id: DEVF-BATCH-0027
+batch_objective: "Context Intake Checklist."
+status: READY_FOR_VERIFY
+max_tasks: 6
+autonomy_level: L1_LOCAL_DOCS_ONLY
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+tasks:
+  - task_id: DEVF-157
+    title: "Create context intake checklist"
+    status: DONE
+  - task_id: DEVF-158
+    title: "Create context intake acceptance"
+    status: DONE
+  - task_id: DEVF-159
+    title: "Create context intake decision matrix"
+    status: DONE
+  - task_id: DEVF-160
+    title: "Update BATON for next decision"
+    status: DONE
+  - task_id: DEVF-161
+    title: "Prepare verification"
+    status: DONE
+  - task_id: DEVF-162
+    title: "Prepare next candidate decision"
+    status: TODO

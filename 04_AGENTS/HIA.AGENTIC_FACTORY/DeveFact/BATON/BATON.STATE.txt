@@ -2,23 +2,26 @@
 BATON.STATE
 ==========
 PROJECT: DeveFact / HIA.AGENTIC_FACTORY
-STATUS: BATCH_0026_STARTED_OR_READY_FOR_VERIFY
+STATUS: BATCH_0027_STARTED_OR_READY_FOR_VERIFY
 OUTPUT_TYPE: DELIVERABLE_DONE
 PROJECT_ROOT: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
 MODULE_ROOT: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_AGENTS\HIA.AGENTIC_FACTORY\DeveFact
 TEMP_PATH: C:\Users\aazcl\Downloads\Temp.DeveFactory
 
 CURRENT_STATE:
-- BATCH-0025 committed locally as 91776b5 20260710.1513_DeveFact_Batch0025_RealPilotContract.
-- BATCH-0026 executes PILOT-DEVF-HIA-001 as L1 planning-only pilot.
-- Pilot output is candidate BATCH-0027: Context Intake Checklist.
+- BATCH-0026 committed locally as 65b567c 20260710.1534_DeveFact_Batch0026_ExecutePilotNextBatchCandidate.
+- BATCH-0027 creates Context Intake Checklist.
+- This batch does not execute RADAR/readiness/upload.
 - No push unless explicitly requested.
 
 ACTIVE_DELIVERABLE:
-Pilot execution output and next-batch candidate.
+Context Intake Checklist.
 
 NEXT_ACTION:
-Verify BATCH-0026 before local commit. No push.
+Verify BATCH-0027 before local commit. No push.
 
-RECOMMENDED_AFTER_B0026:
-Human decision: approve, revise or reject BATCH-0027 candidate.
+RECOMMENDED_AFTER_B0027:
+Decide next: run strict readiness/RADAR, push, close session, or select next functionality.
+POST_BATCH_0027_DECISION:
+- Marker: post-BATCH-0027
+- Human decision required after BATCH-0027: run strict readiness/RADAR, push, close session, or select next functionality.
