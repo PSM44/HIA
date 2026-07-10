@@ -1,0 +1,25 @@
+batch_id: DEVF-BATCH-0024
+batch_objective: "Management review bundle."
+status: READY_FOR_VERIFY
+max_tasks: 6
+autonomy_level: L1_LOCAL_MANAGEMENT_BUNDLE
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+tasks:
+  - task_id: DEVF-139
+    title: "Create management bundle start file"
+    status: DONE
+  - task_id: DEVF-140
+    title: "Create executive brief and walkthrough"
+    status: DONE
+  - task_id: DEVF-141
+    title: "Create evidence map"
+    status: DONE
+  - task_id: DEVF-142
+    title: "Create value scorecard"
+    status: DONE
+  - task_id: DEVF-143
+    title: "Create decision request"
+    status: DONE
+  - task_id: DEVF-144
+    title: "Create limitations and next steps"
+    status: DONE

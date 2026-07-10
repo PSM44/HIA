@@ -1,0 +1,14 @@
+==========
+DEMO.MANAGEMENT_BUNDLE_INDEX.v0.1
+==========
+PURPOSE:
+Pointer to the management review bundle.
+
+BUNDLE_LOCATION:
+HUMAN/MANAGEMENT_REVIEW_BUNDLE_0024/
+
+START_FILE:
+HUMAN/MANAGEMENT_REVIEW_BUNDLE_0024/00.START_HERE.md
+
+RECOMMENDED_DECISION:
+Proceed to a real pilot case with narrow scope.
