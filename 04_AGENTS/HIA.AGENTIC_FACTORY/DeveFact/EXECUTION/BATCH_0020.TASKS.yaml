@@ -1,0 +1,32 @@
+batch_id: DEVF-BATCH-0020
+batch_objective: "Management Demo Layer / First Functionality Demonstration Package."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_MANAGEMENT_LAYER
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+tasks:
+  - task_id: DEVF-115
+    title: "Create management overview"
+    status: READY
+    objective: "Create HUMAN/DEMO_MANAGEMENT_OVERVIEW.v0.1.md."
+  - task_id: DEVF-116
+    title: "Create 10-minute demo script"
+    status: READY
+    objective: "Create HUMAN/DEMO_SCRIPT_10_MIN.v0.1.md."
+  - task_id: DEVF-117
+    title: "Create F01 demo document"
+    status: READY
+    objective: "Create HUMAN/DEMO_FUNCTIONALITY_F01_RUN_CREATION.v0.1.md."
+  - task_id: DEVF-118
+    title: "Create value proposition"
+    status: READY
+    objective: "Create HUMAN/DEMO_VALUE_PROPOSITION.v0.1.md."
+  - task_id: DEVF-119
+    title: "Create management acceptance"
+    status: READY
+    objective: "Create VALIDATION/DEMO_MANAGEMENT_ACCEPTANCE.v0.1.md."
+  - task_id: DEVF-120
+    title: "Prepare next functionality"
+    status: TODO
+    objective: "Prepare BATCH-0021 for next functionality demonstration."
