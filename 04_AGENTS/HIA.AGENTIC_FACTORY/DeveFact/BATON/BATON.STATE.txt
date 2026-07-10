@@ -2,24 +2,23 @@
 BATON.STATE
 ==========
 PROJECT: DeveFact / HIA.AGENTIC_FACTORY
-STATUS: BATCH_0025_STARTED_OR_READY_FOR_VERIFY
+STATUS: BATCH_0026_STARTED_OR_READY_FOR_VERIFY
 OUTPUT_TYPE: DELIVERABLE_DONE
 PROJECT_ROOT: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
 MODULE_ROOT: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_AGENTS\HIA.AGENTIC_FACTORY\DeveFact
 TEMP_PATH: C:\Users\aazcl\Downloads\Temp.DeveFactory
 
 CURRENT_STATE:
-- BATCH-0024 committed locally as 16b5b27 20260710.1455_DeveFact_Batch0024_ManagementReviewBundle.
-- BATCH-0025 selects Option A: internal DeveFact/HIA pilot.
-- Pilot ID: PILOT-DEVF-HIA-001.
-- Pilot execution is not performed in BATCH-0025.
+- BATCH-0025 committed locally as 91776b5 20260710.1513_DeveFact_Batch0025_RealPilotContract.
+- BATCH-0026 executes PILOT-DEVF-HIA-001 as L1 planning-only pilot.
+- Pilot output is candidate BATCH-0027: Context Intake Checklist.
 - No push unless explicitly requested.
 
 ACTIVE_DELIVERABLE:
-Real Pilot Case Selection and Pilot Contract.
+Pilot execution output and next-batch candidate.
 
 NEXT_ACTION:
-Verify BATCH-0025 before local commit. No push.
+Verify BATCH-0026 before local commit. No push.
 
-RECOMMENDED_AFTER_B0025:
-BATCH-0026: execute PILOT-DEVF-HIA-001 under the pilot contract.
+RECOMMENDED_AFTER_B0026:
+Human decision: approve, revise or reject BATCH-0027 candidate.

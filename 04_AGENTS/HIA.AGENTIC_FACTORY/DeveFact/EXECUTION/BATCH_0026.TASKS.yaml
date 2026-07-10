@@ -1,0 +1,26 @@
+batch_id: DEVF-BATCH-0026
+batch_objective: "Execute PILOT-DEVF-HIA-001 and produce next-batch candidate."
+status: READY_FOR_VERIFY
+max_tasks: 6
+autonomy_level: L1_PLANNING_ONLY
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+pilot_id: "PILOT-DEVF-HIA-001"
+tasks:
+  - task_id: DEVF-151
+    title: "Read pilot contract and execution plan"
+    status: DONE
+  - task_id: DEVF-152
+    title: "Select candidate next functionality"
+    status: DONE
+  - task_id: DEVF-153
+    title: "Write next-batch candidate"
+    status: DONE
+  - task_id: DEVF-154
+    title: "Write pilot acceptance"
+    status: DONE
+  - task_id: DEVF-155
+    title: "Write pilot evidence map"
+    status: DONE
+  - task_id: DEVF-156
+    title: "Write management readout"
+    status: DONE
