@@ -1,0 +1,32 @@
+batch_id: DEVF-BATCH-0019
+batch_objective: "Product Definition v0.1 for DeveFact as Development Control System for AI-assisted delivery."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_PRODUCT_DEFINITION
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+tasks:
+  - task_id: DEVF-109
+    title: "Define product"
+    status: READY
+    objective: "Create HUMAN/PRODUCT_DEFINITION.v0.1.md."
+  - task_id: DEVF-110
+    title: "Define product boundary"
+    status: READY
+    objective: "Create HUMAN/PRODUCT_BOUNDARY.v0.1.md."
+  - task_id: DEVF-111
+    title: "Define multi-agent tool policy"
+    status: READY
+    objective: "Create EXECUTION/TOOL_POLICY.MULTI_AGENT_CONTROLLED.v0.1.md."
+  - task_id: DEVF-112
+    title: "Define functional roadmap"
+    status: READY
+    objective: "Create HUMAN/FUNCTIONAL_ROADMAP.v0.1.md."
+  - task_id: DEVF-113
+    title: "Define success metrics"
+    status: READY
+    objective: "Create HUMAN/SUCCESS_METRICS.v0.1.md."
+  - task_id: DEVF-114
+    title: "Prepare management demo batch"
+    status: TODO
+    objective: "Prepare BATCH-0020 Management Demo Layer."

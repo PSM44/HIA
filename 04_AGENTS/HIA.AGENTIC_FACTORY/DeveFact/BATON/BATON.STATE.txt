@@ -2,21 +2,24 @@
 BATON.STATE
 ==========
 PROJECT: DeveFact / HIA.AGENTIC_FACTORY
-STATUS: BATCH_0018_STARTED_OR_READY
+STATUS: BATCH_0019_STARTED_OR_READY
 OUTPUT_TYPE: DELIVERABLE_DONE
 HUMAN_CANON: HUMAN/
 KEY_REGISTERS: REGISTERS/
 EXECUTION_POLICY: EXECUTION/
 MODE: HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED
 LAST_COMMIT_KNOWN:
-- d864c7c 20260709.1847_DeveFact_Batch0017_RegisterIntegrityRecovery
+- a72f004 20260709.1945_DeveFact_Batch0018_AccumulatedRegisterRepair
 
 CURRENT_STATE:
-- BATCH-0001..0017 committed locally.
-- BATCH-0018 appends missing register IDs from recovery ledgers into accumulated registers.
-- Accumulated registers must never be summarized or replaced by summaries.
+- BATCH-0001..0018 committed locally.
+- Accumulated register integrity repaired by BATCH-0017/BATCH-0018.
+- BATCH-0019 defines DeveFact Product Definition v0.1.
+- DeveFact is a Development Control System for AI-assisted delivery.
+- DeveFact evolves by functionalities demonstrated through controlled use cases.
 
 NEXT_ACTION:
-Apply/verify BATCH-0018, then decide local commit. No push unless explicitly requested.
-RECOMMENDED_AFTER_B0018:
-BATCH-0019: Product Definition v0.1 reflecting Development Control System for AI-assisted delivery, HIA module boundary, multi-agent controlled tool policy, and functionality-led roadmap.
+Apply/verify BATCH-0019, then decide local commit. No push unless explicitly requested.
+
+RECOMMENDED_AFTER_B0019:
+BATCH-0020: Management Demo Layer / first functionality demonstration package.
