@@ -1,0 +1,25 @@
+batch_id: DEVF-BATCH-0023
+batch_objective: "Value measurement after fresh minimal case."
+status: READY_FOR_VERIFY
+max_tasks: 6
+autonomy_level: L1_LOCAL_MEASUREMENT
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+tasks:
+  - task_id: DEVF-133
+    title: "Create value measurement human document"
+    status: DONE
+  - task_id: DEVF-134
+    title: "Create value metrics validation"
+    status: DONE
+  - task_id: DEVF-135
+    title: "Update management scorecard v0.3"
+    status: DONE
+  - task_id: DEVF-136
+    title: "Update demo readiness v0.2"
+    status: DONE
+  - task_id: DEVF-137
+    title: "Update BATON for BATCH-0024"
+    status: DONE
+  - task_id: DEVF-138
+    title: "Prepare management review or real pilot decision"
+    status: TODO

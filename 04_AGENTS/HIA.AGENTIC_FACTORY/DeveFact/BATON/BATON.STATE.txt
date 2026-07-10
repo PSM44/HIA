@@ -2,7 +2,7 @@
 BATON.STATE
 ==========
 PROJECT: DeveFact / HIA.AGENTIC_FACTORY
-STATUS: BATCH_0022_STARTED_OR_READY_FOR_VERIFY
+STATUS: BATCH_0023_STARTED_OR_READY_FOR_VERIFY
 OUTPUT_TYPE: DELIVERABLE_DONE
 PROJECT_ROOT: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
 MODULE_ROOT: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_AGENTS\HIA.AGENTIC_FACTORY\DeveFact
@@ -10,15 +10,15 @@ TEMP_PATH: C:\Users\aazcl\Downloads\Temp.DeveFactory
 
 CURRENT_STATE:
 - BATCH-0021 committed locally as ca94d27 20260710.1357_DeveFact_Batch0021_VisibleManagementDemoEntryPoint.
-- BATCH-0022 prepares/executes a fresh minimal controlled case.
-- Run ID: DEVF-RUN-FRESH-0022-MGMT.
+- BATCH-0022 committed locally as a6c26fa 20260710.1408_DeveFact_Batch0022_FreshMinimalCase.
+- BATCH-0023 measures demo value using speed, evidence completeness, decision clarity, control and continuity.
 - No push unless explicitly requested.
 
 ACTIVE_DELIVERABLE:
-Fresh minimal case execution for management demo.
+Value measurement for management demo.
 
 NEXT_ACTION:
-Verify BATCH-0022 before local commit. No push.
+Verify BATCH-0023 before local commit. No push.
 
-RECOMMENDED_AFTER_B0022:
-BATCH-0023: measure value using time, evidence completeness, decision clarity and control.
+RECOMMENDED_AFTER_B0023:
+BATCH-0024: package the management review bundle or select a real pilot case.
