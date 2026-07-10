@@ -1,0 +1,32 @@
+batch_id: DEVF-BATCH-0021
+batch_objective: "Visible Management Demo EntryPoint."
+status: READY_FOR_DRYRUN
+max_tasks: 6
+autonomy_level: L1_DOCS_MANAGEMENT_ENTRYPOINT
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+mode: "HYBRID_TOVS_UPLOADS_ALLOWED_WHEN_NEEDED"
+tasks:
+  - task_id: DEVF-121
+    title: "Create demo start here"
+    status: READY
+    objective: "Create HUMAN/DEMO.START.HERE.v0.1.md as the single management entrypoint."
+  - task_id: DEVF-122
+    title: "Create one-page executive summary"
+    status: READY
+    objective: "Create HUMAN/DEMO.ONE_PAGE_EXECUTIVE_SUMMARY.v0.1.md."
+  - task_id: DEVF-123
+    title: "Create management scorecard"
+    status: READY
+    objective: "Create HUMAN/DEMO.MANAGEMENT_SCORECARD.v0.1.md."
+  - task_id: DEVF-124
+    title: "Create demo readiness checklist"
+    status: READY
+    objective: "Create VALIDATION/DEMO.READINESS.v0.1.md."
+  - task_id: DEVF-125
+    title: "Update BATON"
+    status: READY
+    objective: "Update BATON with BATCH-0021 state and BATCH-0022 next action."
+  - task_id: DEVF-126
+    title: "Prepare next fresh functional proof"
+    status: TODO
+    objective: "Prepare BATCH-0022 fresh minimal case execution."

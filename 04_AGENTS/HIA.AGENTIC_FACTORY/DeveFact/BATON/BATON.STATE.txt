@@ -2,34 +2,24 @@
 BATON.STATE
 ==========
 PROJECT: DeveFact / HIA.AGENTIC_FACTORY
-STATUS: SESSION_CLOSED_PENDING_NEXT_SESSION
+STATUS: BATCH_0021_STARTED_OR_READY
 OUTPUT_TYPE: DELIVERABLE_DONE
-LOCAL_TIME_AT_CLOSE: 2026-07-09 20:32 CLT
 PROJECT_ROOT: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
 MODULE_ROOT: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_AGENTS\HIA.AGENTIC_FACTORY\DeveFact
 TEMP_PATH: C:\Users\aazcl\Downloads\Temp.DeveFactory
-BRANCH: feat/20260405-console-v2-phase1-phase2
-LAST_COMMIT_KNOWN:
-- c84f4c7 20260709.2032_DeveFact_SessionClose
 
 CURRENT_STATE:
 - BATCH-0001..0020 committed locally.
-- BATCH-0020 created the Management Demo Layer / F01 Run Creation demonstration package.
-- No push was performed in this session.
-- No build was executed in this session.
-- DB was not modified.
+- Session close committed locally as f9b7fb4 20260709.2032_DeveFact_SessionClose.
+- BATCH-0020 created the Management Demo Layer.
+- BATCH-0021 prepares a single visible management demo entrypoint.
+- No push unless explicitly requested.
 
-ACTIVE_REGISTERS:
-- REGISTERS/BACKLOG.ACCUMULATED.md
-- REGISTERS/TECH_DEBT.ACCUMULATED.md
-- REGISTERS/IDEAS.RELATED.ACCUMULATED.md
-- REGISTERS/SKILL_GRC_OPPORTUNITIES.ACCUMULATED.md
-
-PRODUCT_DEFINITION:
-DeveFact is a Development Control System for AI-assisted delivery.
+ACTIVE_DELIVERABLE:
+Visible Management Demo EntryPoint.
 
 NEXT_ACTION:
-Start BATCH-0021: make the management demo visible and runnable/readable as a single demo entrypoint.
+Apply/verify BATCH-0021, then commit locally. No push.
 
-SINGULAR_NEXT_ACTION:
-Run BATCH-0021 planning/preflight from clean git. Do not push unless explicitly requested.
+RECOMMENDED_AFTER_B0021:
+BATCH-0022: execute a fresh minimal case end-to-end through the visible demo path and measure value.
