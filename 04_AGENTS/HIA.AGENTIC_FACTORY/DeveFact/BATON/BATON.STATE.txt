@@ -1,27 +1,36 @@
 ==========
 BATON.STATE
 ==========
-PROJECT: DeveFact / HIA.AGENTIC_FACTORY
-STATUS: BATCH_0027_STARTED_OR_READY_FOR_VERIFY
-OUTPUT_TYPE: DELIVERABLE_DONE
+PROJECT: DeveFact / PS.DeveFactory
+STATUS: SESSION_CLOSED_WITH_RADAR_TOOL_WARNING
+UPDATED_LOCAL: 2026-07-10 18:53 CLT
 PROJECT_ROOT: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
 MODULE_ROOT: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_AGENTS\HIA.AGENTIC_FACTORY\DeveFact
 TEMP_PATH: C:\Users\aazcl\Downloads\Temp.DeveFactory
 
-CURRENT_STATE:
-- BATCH-0026 committed locally as 65b567c 20260710.1534_DeveFact_Batch0026_ExecutePilotNextBatchCandidate.
-- BATCH-0027 creates Context Intake Checklist.
-- This batch does not execute RADAR/readiness/upload.
-- No push unless explicitly requested.
+CURRENT_CONFIRMED_STATE:
+- Branch: feat/20260405-console-v2-phase1-phase2
+- Last confirmed pushed commit: 8cfd954 20260710.1554_DeveFact_Batch0027_ContextIntakeChecklist
+- Remote push confirmed to https://github.com/PSM44/HIA.git
+- Git was clean before session close update.
+- Internal readiness/RADAR-style checkpoint passed.
+- Dedicated DeveFact RADAR.ps1 was not found.
 
-ACTIVE_DELIVERABLE:
-Context Intake Checklist.
+COMPLETED_THIS_SESSION:
+- BATCH-0021 Visible Management Demo EntryPoint.
+- BATCH-0022 Fresh Minimal Case.
+- BATCH-0023 Value Measurement.
+- BATCH-0024 Management Review Bundle.
+- BATCH-0025 Real Pilot Contract.
+- BATCH-0026 Execute Pilot / Next Batch Candidate.
+- BATCH-0027 Context Intake Checklist.
+- Push completed to remote branch.
 
-NEXT_ACTION:
-Verify BATCH-0027 before local commit. No push.
+ACTIVE_PRODUCT_STATE:
+DeveFact is a docs-first Development Control System prototype with a visible management demo path, internal pilot, value measurement and reusable context intake checklist. It is not yet a UI/SaaS/deployable platform.
 
-RECOMMENDED_AFTER_B0027:
-Decide next: run strict readiness/RADAR, push, close session, or select next functionality.
-POST_BATCH_0027_DECISION:
-- Marker: post-BATCH-0027
-- Human decision required after BATCH-0027: run strict readiness/RADAR, push, close session, or select next functionality.
+OPEN_WARNING:
+No dedicated DeveFact RADAR.ps1 exists yet. Strict RADAR v1.4 close is not fully available for this module.
+
+NEXT_RECOMMENDED_ACTION:
+BATCH-0028: create dedicated DeveFact RADAR.ps1 aligned with RADAR v1.4.

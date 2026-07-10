@@ -65,3 +65,30 @@ SESSION_CLOSE_20260709_TECH_DEBT_APPEND
 - cause: BATCH-0020 created demo layer documents; no unified entrypoint/UI/launcher yet.
 - impact: gerencia can read the demo, but it is not yet a polished visible product demo.
 - next_action: BATCH-0021 should create the visible demo entrypoint.
+
+==========
+SESSION_CLOSE_20260710_1853 TECH_DEBT_APPEND
+==========
+## TD-DEVF-20260710-001
+- status: OPEN
+- type: RADAR_GAP
+- priority: P1
+- title: No dedicated DeveFact RADAR.ps1.
+- cause: BATCH-0027 checkpoint used internal RADAR-style scan because no executable RADAR candidate was found.
+- impact: strict RADAR v1.4 evidence and six-output contract are not available for DeveFact module.
+- next_action: BATCH-0028 dedicated RADAR.ps1.
+
+## TD-DEVF-20260710-002
+- status: OPEN
+- type: PRODUCTIZATION
+- priority: P1
+- title: Management deliverable remains documentation-first.
+- impact: useful for controlled development, less persuasive for executive adoption.
+- next_action: package management bundle into visible HTML/PDF/PPT.
+
+## TD-DEVF-20260710-003
+- status: OPEN
+- type: VALIDATION_RIGOR
+- priority: P2
+- title: Validation is custom per batch, not yet centralized.
+- next_action: create reusable DeveFact validation harness.

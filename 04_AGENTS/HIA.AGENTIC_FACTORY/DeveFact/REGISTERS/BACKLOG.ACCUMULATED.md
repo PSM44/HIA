@@ -457,3 +457,30 @@ SESSION_CLOSE_20260709_BACKLOG_APPEND
 - title: Generate or upload fresh RADAR/readiness evidence after close.
 - evidence: formal close rules require RADAR/readiness evidence when filesystem changed.
 - next_action: run project RADAR/readiness if available, or accept closure with declared evidence gap.
+
+==========
+SESSION_CLOSE_20260710_1853 BACKLOG_APPEND
+==========
+## BL-DEVF-20260710-001
+- status: OPEN
+- type: CONTINUITY_TOOLING
+- priority: P1
+- title: Create dedicated DeveFact RADAR.ps1.
+- evidence: checkpoint post-BATCH-0027 passed internally but reported RADAR candidates found: 0.
+- next_action: BATCH-0028 candidate.
+
+## BL-DEVF-20260710-002
+- status: OPEN
+- type: MANAGEMENT_DELIVERABLE
+- priority: P1
+- title: Convert management bundle into one visible deliverable.
+- evidence: BATCH-0021..0024 created documentation and bundle, but no single rendered HTML/PDF/slide/demo surface exists.
+- next_action: create one-page HTML/PDF/PPT-ready package.
+
+## BL-DEVF-20260710-003
+- status: OPEN
+- type: PRODUCT_FUNCTIONALITY
+- priority: P1
+- title: Implement functional loop beyond docs-first control.
+- evidence: current state controls planning/evidence/checklists but does not yet execute external agents automatically.
+- next_action: select next functionality after RADAR.

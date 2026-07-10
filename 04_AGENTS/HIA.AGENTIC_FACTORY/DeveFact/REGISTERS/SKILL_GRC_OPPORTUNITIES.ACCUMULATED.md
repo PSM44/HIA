@@ -25,3 +25,33 @@ SESSION_CLOSE_20260709_SKILL_GRC_OPPORTUNITIES_APPEND
 - CANDIDATE: Add DeveFact-specific RADAR profile or project-local RADAR.ps1 to align with RADAR v1.4.
 - CANDIDATE: Add Management Demo Layer skill/pattern for transforming technical evidence into executive demo artifacts.
 - CANDIDATE: Strengthen AI code agent sequential workflow for DeveFact BATCH execution with human-owned commits.
+
+==========
+SESSION_CLOSE_20260710_1853 SKILL_GRC_OPPORTUNITIES_APPEND
+==========
+NEW_GRC_CANDIDATES:
+- GRC.DEVEFACT_RADAR_PROFILE.
+- GRC.MANAGEMENT_DEMO_DELIVERABLE_GATE.
+- GRC.LOOP_ENGINEERING_HUMAN_GATE.
+
+GRC_IMPROVEMENT_CANDIDATES:
+- Improve GRC.AI_CODE_AGENT_SEQUENTIAL_WORKFLOW with DeveFact batch/pilot pattern.
+- Improve GRC.UNKNOWN_WORKTREE_STATE_HARD_STOP with TOVS dirty-set whitelist examples.
+- Improve GRC.DRAGONFLYFOCUS with management-deliverable vs governance-progress distinction.
+
+SKILL_IMPROVEMENT_CANDIDATES:
+- Management Demo Packaging.
+- Context Intake / Context Sufficiency.
+- Loop Engineering / agent loop control.
+
+OPERATIONAL_RULES_TO_CANONIZE:
+- Accumulated registers append-only; never replace with summaries.
+- After batch chains, checkpoint and explicitly report RADAR gaps.
+- Management deliverable must be visible and functional, not only traceable.
+
+DO_NOT_CANONIZE:
+- Do not canonize project-specific paths as global defaults.
+- Do not canonize current markdown artifacts as final product UI.
+
+CANDIDATES_REGISTER_UPDATED: YES
+NEXT_GRC_OR_SKILL_ACTION: Create BATCH-0028 dedicated DeveFact RADAR.ps1.
