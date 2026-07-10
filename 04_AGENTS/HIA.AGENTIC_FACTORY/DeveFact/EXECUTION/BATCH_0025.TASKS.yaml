@@ -1,0 +1,26 @@
+batch_id: DEVF-BATCH-0025
+batch_objective: "Real Pilot Case Selection and Pilot Contract."
+status: READY_FOR_VERIFY
+max_tasks: 6
+autonomy_level: L1_PILOT_CONTRACT_ONLY
+target_root: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact"
+selected_option: "A_INTERNAL_DEVEFACT_HIA"
+tasks:
+  - task_id: DEVF-145
+    title: "Select first real pilot case"
+    status: DONE
+  - task_id: DEVF-146
+    title: "Create pilot contract"
+    status: DONE
+  - task_id: DEVF-147
+    title: "Create pilot acceptance"
+    status: DONE
+  - task_id: DEVF-148
+    title: "Create evidence requirements"
+    status: DONE
+  - task_id: DEVF-149
+    title: "Create risk register"
+    status: DONE
+  - task_id: DEVF-150
+    title: "Prepare BATCH-0026 execution plan"
+    status: DONE
