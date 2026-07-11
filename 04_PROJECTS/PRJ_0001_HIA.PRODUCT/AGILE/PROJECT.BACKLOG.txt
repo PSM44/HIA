@@ -2386,3 +2386,13 @@ OBJETIVO..........: Actualizar CURRENT_STATE y RADAR despues de PRJPB_010F-R4, d
 BLOCKED_BY.........: BROWSER_VALIDATION_AFTER_010F_R4
 DONE_WHEN.........: CURRENT_STATE apunta al siguiente slice funcional, RADAR runtime esta fresco, Git clean.
 ==========
+
+==========
+PRJPB_010H_CONTROL_TOWER_PORTFOLIO_NAVIGATION_SLICE
+==========
+STATUS............: READY
+PRIORIDAD.........: P0
+OBJETIVO..........: Integrar navegacion real Control Tower Portfolio y preparar slice multi-proyecto sin mock narrativo.
+BLOCKED_BY.........: NONE_AFTER_010G_IF_GIT_CLEAN
+DONE_WHEN.........: Control Tower y Portfolio permiten navegacion read-only coherente, ambos consumen HIA_UI_STATE, y no hay datos fake.
+==========

@@ -1,0 +1,28 @@
+PRJPB_010G.REFRESH_STATE_RADAR_POST_PORTFOLIO
+STATUS............: DONE_CANDIDATE
+CREATED_LOCAL.....: 2026-07-11 12:45:31 -04:00
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+
+01.00 PURPOSE
+Refresh CURRENT_STATE, hia.state.js and RADAR runtime after validated Portfolio real minimum.
+
+02.00 INPUT_VALIDATION
+- Git clean precheck: PASS.
+- Portfolio file exists.
+- Portfolio JS exposes window.HIA_PORTFOLIO_REAL_MINIMUM.
+- Portfolio banner expected: PASS - Portfolio is consuming real HIA state through HIA_UI_STATE.
+- Browser validation provided by human: PASS.
+
+03.00 REFRESH_DONE
+- CURRENT_STATE refreshed.
+- hia.state.js refreshed.
+- RADAR runtime refreshed under 03_ARTIFACTS/RADAR.
+- BATON updated.
+- BACKLOG updated.
+
+04.00 VERSIONING_POLICY
+- CURRENT_STATE, hia.state.js, BATON, BACKLOG and DELIVERY are versioned.
+- RADAR remains runtime evidence because 03_ARTIFACTS is ignored by repo policy.
+
+05.00 NEXT_RECOMMENDATION
+PRJPB_010H | integrar navegacion real Control Tower Portfolio y preparar slice multi-proyecto | ready

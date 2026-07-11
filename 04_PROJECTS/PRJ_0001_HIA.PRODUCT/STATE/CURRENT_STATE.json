@@ -1,43 +1,45 @@
-﻿{
+{
     "schema":  "HIA_CURRENT_STATE.v1",
     "project_id":  "PRJ_0001_HIA.PRODUCT",
-    "generated_local":  "2026-07-11 01:14:30 -04:00",
-    "generated_utc":  "2026-07-11T05:14:30.9521852Z",
-    "generator":  "manual-script:PRJPB_010D_REFRESH_CURRENT_STATE_RADAR_CLEAN_CLOSE",
-    "current_objective":  "Perfeccionar cierre de sesiÃ³n HIA y dejar continuidad real posterior a UI real shell.",
+    "generated_local":  "2026-07-11 12:45:31 -04:00",
+    "generated_utc":  "2026-07-11T16:45:31.2453763Z",
+    "generator":  "manual-script:PRJPB_010G_REFRESH_STATE_RADAR_POST_PORTFOLIO",
+    "current_objective":  "Refresh continuity after validated Portfolio real minimum.",
     "next_action":  {
-                        "id":  "PRJPB_010E",
-                        "title":  "implementar Portfolio mÃ­nimo real desde HIA_UI_STATE/data contract",
+                        "id":  "PRJPB_010H",
+                        "title":  "integrar navegacion real Control Tower Portfolio y preparar slice multi-proyecto",
                         "status":  "ready",
-                        "raw":  "PRJPB_010E | implementar Portfolio mÃ­nimo real desde HIA_UI_STATE/data contract | ready",
-                        "source":  "PRJPB_010C closed; UI real source validated; next functional slice is Portfolio real minimum",
-                        "text":  "PRJPB_010E | implementar Portfolio mÃ­nimo real desde HIA_UI_STATE/data contract | ready"
+                        "raw":  "PRJPB_010H | integrar navegacion real Control Tower Portfolio y preparar slice multi-proyecto | ready",
+                        "source":  "PRJPB_010F-R4 closed; Portfolio real minimum browser validation passed",
+                        "text":  "PRJPB_010H | integrar navegacion real Control Tower Portfolio y preparar slice multi-proyecto | ready"
                     },
     "evidence":  {
                      "state":  "FRESH",
                      "consistency":  "CONSISTENT",
-                     "captured_utc":  "2026-07-11T05:14:30.9521852Z"
+                     "captured_utc":  "2026-07-11T16:45:31.2453763Z"
                  },
     "session":  {
-                    "status":  "closed",
-                    "last_session_id":  "SESSION_CLOSE_20260711_HIA_PRJPB_010D"
+                    "status":  "active",
+                    "last_session_id":  "SESSION_CONTINUE_20260711_HIA_PRJPB_010G"
                 },
     "git":  {
                 "branch":  "feat/20260405-console-v2-phase1-phase2",
-                "head_short":  "8bb4ef9",
-                "head_message":  "20260711_HIA_PRJPB_010C_real_ui_browser_validation_launcher",
-                "head_before_commit":  "8bb4ef9 20260711_HIA_PRJPB_010C_real_ui_browser_validation_launcher"
+                "head_short":  "029dd26",
+                "head_message":  "20260711_HIA_PRJPB_010F_R4_rewrite_portfolio_ascii_clean",
+                "head_before_commit":  "029dd26 20260711_HIA_PRJPB_010F_R4_rewrite_portfolio_ascii_clean"
             },
     "policy":  {
                    "precedence":  "CURRENT_STATE first; fallback to BATON/BACKLOG only if missing or invalid",
                    "fallback_allowed":  true
                },
     "ui_validation":  {
-                          "status":  "PASS",
-                          "source":  "hia.state.js:HIA_REAL_STATE",
-                          "candidate_name":  "HIA_REAL_STATE",
-                          "contract_version":  "HIA_UI_STATE.v0.2",
+                          "control_tower_source":  "hia.state.js:HIA_REAL_STATE",
+                          "control_tower_candidate_name":  "HIA_REAL_STATE",
+                          "portfolio_status":  "PASS",
+                          "portfolio_source":  "hia.state.js:HIA_REAL_STATE",
+                          "portfolio_candidate_name":  "HIA_REAL_STATE",
+                          "portfolio_expected_banner":  "PASS - Portfolio is consuming real HIA state through HIA_UI_STATE.",
                           "validated_by_human":  true,
-                          "validated_local":  "2026-07-11 00:xx -04:00"
+                          "validated_local":  "2026-07-11 12:xx -04:00"
                       }
 }
