@@ -2547,3 +2547,22 @@ PURPOSE...........: Formalizar contrato UI real entre hia.state.js y hia.real.ap
 - TD_HIA_STATE_EXPORT_CONTRACT_001/P1 MITIGATED_BY_CONTRACT_SHIM.
 - TD_CONTROL_TOWER_INDEX_REPLACEMENT_DECISION_001/P1 OPEN.
 ==========
+
+==========
+SESSION_UPDATE_20260711_HIA_PRJPB_010B_R2_UI_CONTRACT_HIA_REAL_STATE
+==========
+STATUS............: DONE_CANDIDATE
+FECHA_LOCAL.......: 2026-07-11 00:26:47 -04:00
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Agregar HIA_REAL_STATE como candidato primario del contrato UI mediante patch robusto.
+
+01.00_DONE_CONFIRMED
+- hia.state.js exporta window.HIA_REAL_STATE.
+- hia.ui.contract.js ahora prioriza HIA_REAL_STATE.
+- HIA_UI_STATE sube a v0.2.
+- Se conserva compatibilidad con candidatos legacy.
+- Queda pendiente browser validation.
+
+02.00_NEXT_ACTION
+- PRJPB_010C | crear launcher read-only y browser validation para index.real.v0.html | ready
+==========

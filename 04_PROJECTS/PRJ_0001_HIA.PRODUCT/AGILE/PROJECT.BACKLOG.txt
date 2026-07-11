@@ -2326,3 +2326,13 @@ STATUS............: DONE_CANDIDATE
 - UI muestra NEXT_ACTION y decision desde contrato o fallback explícito.
 - No hay acciones falsas de escritura.
 ==========
+
+==========
+PRJPB_010C_REAL_UI_LAUNCHER_BROWSER_VALIDATION
+==========
+STATUS............: READY
+PRIORIDAD.........: P0
+OBJETIVO..........: Crear launcher read-only y validar en navegador que HIA_UI_STATE consume HIA_REAL_STATE.
+BLOCKED_BY.........: NONE_AFTER_010B_R2_IF_GIT_CLEAN
+DONE_WHEN.........: window.HIA_UI_STATE.source = hia.state.js:HIA_REAL_STATE y candidate_name = HIA_REAL_STATE.
+==========

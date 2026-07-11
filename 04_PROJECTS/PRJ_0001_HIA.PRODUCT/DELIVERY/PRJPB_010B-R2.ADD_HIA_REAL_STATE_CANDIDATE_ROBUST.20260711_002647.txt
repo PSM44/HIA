@@ -1,0 +1,33 @@
+﻿PRJPB_010B-R2.ADD_HIA_REAL_STATE_CANDIDATE_ROBUST
+STATUS............: DONE_CANDIDATE
+CREATED_LOCAL.....: 2026-07-11 00:26:47 -04:00
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+
+01.00 PURPOSE
+Agregar window.HIA_REAL_STATE como candidato primario del contrato UI real usando patch robusto.
+
+02.00 FILES_CHANGED
+- 01_UI\web\control-tower-shell\assets\hia.ui.contract.js
+
+03.00 CONFIRMED_SOURCE
+- hia.state.js exporta window.HIA_REAL_STATE.
+- hia.ui.contract.js ahora busca HIA_REAL_STATE primero.
+- HIA_UI_STATE contract_version sube a v0.2.
+- El contrato reconoce forma raw.project/raw.continuity de HIA_REAL_STATE.
+
+04.00 EXPECTED_BROWSER_CHECK
+Abrir:
+- 01_UI/web/control-tower-shell/index.real.v0.html
+
+DevTools:
+- window.HIA_UI_STATE.source debe ser "hia.state.js:HIA_REAL_STATE"
+- window.HIA_UI_STATE_DEBUG.candidate_name debe ser "HIA_REAL_STATE"
+
+05.00 KNOWN_REMAINING_DEBT
+- CURRENT_STATE puede seguir requiriendo refresh si apunta a PRJPB_009Z-R2.
+- RADAR debe regenerarse despues del commit final si se requiere cierre limpio.
+- Browser validation no se puede certificar desde script local sin ejecucion en navegador.
+
+06.00 NEXT_RECOMMENDATION
+PRJPB_010C:
+Crear launcher read-only y browser validation para index.real.v0.html.

@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===============================================================================
 FILE..............: hia.ui.contract.js
 PROJECT...........: PRJ_0001_HIA.PRODUCT
@@ -13,7 +13,7 @@ RULE..............: hia.real.app.js must consume HIA_UI_STATE first, not guess d
   "use strict";
 
   const FALLBACK = {
-    contract_version: "HIA_UI_STATE.v0.1",
+    contract_version: "HIA_UI_STATE.v0.2",
     project_id: "PRJ_0001_HIA.PRODUCT",
     branch: "feat/20260405-console-v2-phase1-phase2",
     next_action: "PRJPB_009Z-R3 — corregir segunda ronda de brechas visuales/narrativas antes de paquete gerencial",
@@ -64,6 +64,7 @@ RULE..............: hia.real.app.js must consume HIA_UI_STATE first, not guess d
 
   function extractCandidate() {
     const candidates = [
+      ["HIA_REAL_STATE", window.HIA_REAL_STATE],
       ["HIA_STATE", window.HIA_STATE],
       ["hiaState", window.hiaState],
       ["__HIA_STATE__", window.__HIA_STATE__],
@@ -82,14 +83,17 @@ RULE..............: hia.real.app.js must consume HIA_UI_STATE first, not guess d
 
   function pickStateRoot(raw) {
     if (!isObject(raw)) return {};
+    if (raw.project || raw.continuity || raw.git || raw.radar || raw.ui) return raw;
     return raw.current_state || raw.currentState || raw.state || raw.project || raw;
   }
 
   function normalize(candidate) {
     const raw = candidate.raw || {};
     const root = pickStateRoot(raw);
+    const projectObj = isObject(raw.project) ? raw.project : {};
+    const continuityObj = isObject(raw.continuity) ? raw.continuity : {};
 
-    const nextObj = firstDefined(root.next_action, root.nextAction, raw.next_action, raw.nextAction);
+    const nextObj = firstDefined(root.next_action, root.nextAction, raw.next_action, raw.nextAction, continuityObj.next_action);
     const evidenceObj = firstDefined(root.evidence, raw.evidence, {});
     const sessionObj = firstDefined(root.session, raw.session, {});
     const gitObj = firstDefined(root.git, raw.git, {});
@@ -116,12 +120,13 @@ RULE..............: hia.real.app.js must consume HIA_UI_STATE first, not guess d
     );
 
     const normalized = {
-      contract_version: "HIA_UI_STATE.v0.1",
-      project_id: firstDefined(root.project_id, root.projectId, raw.project_id, raw.projectId, FALLBACK.project_id),
-      branch: firstDefined(root.branch, gitObj.branch, raw.branch, FALLBACK.branch),
+      contract_version: "HIA_UI_STATE.v0.2",
+      project_id: firstDefined(projectObj.id, root.project_id, root.projectId, raw.project_id, raw.projectId, FALLBACK.project_id),
+      branch: firstDefined(projectObj.branch, root.branch, gitObj.branch, raw.branch, FALLBACK.branch),
       next_action: normalizeNextAction(firstDefined(nextActionText, FALLBACK.next_action)),
       decision: normalizeNoGo(decision),
       evidence: firstDefined(
+        continuityObj.evidence_state,
         evidenceObj.state,
         root.evidence_state,
         root.evidenceState,
@@ -130,6 +135,7 @@ RULE..............: hia.real.app.js must consume HIA_UI_STATE first, not guess d
         FALLBACK.evidence
       ),
       session: firstDefined(
+        continuityObj.session_status,
         sessionObj.status,
         root.last_session_status,
         root.session_status,
@@ -137,8 +143,8 @@ RULE..............: hia.real.app.js must consume HIA_UI_STATE first, not guess d
         raw.session_status,
         FALLBACK.session
       ),
-      resolver_status: firstDefined(root.resolver_status, raw.resolver_status, root.resolverStatus, raw.resolverStatus, "UNKNOWN"),
-      current_state_status: firstDefined(root.current_state_status, raw.current_state_status, root.currentStateStatus, raw.currentStateStatus, "UNKNOWN"),
+      resolver_status: firstDefined(continuityObj.resolver_status, root.resolver_status, raw.resolver_status, root.resolverStatus, raw.resolverStatus, "UNKNOWN"),
+      current_state_status: firstDefined(continuityObj.current_state_status, root.current_state_status, raw.current_state_status, root.currentStateStatus, raw.currentStateStatus, "UNKNOWN"),
       semantic_hash: firstDefined(root.semantic_hash, raw.semantic_hash, root.SEMANTIC_HASH, raw.SEMANTIC_HASH, "N/A"),
       source: candidate.name ? `hia.state.js:${candidate.name}` : FALLBACK.source,
       warnings: []
@@ -161,3 +167,4 @@ RULE..............: hia.real.app.js must consume HIA_UI_STATE first, not guess d
     contract: window.HIA_UI_STATE
   };
 })();
+
