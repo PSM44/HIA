@@ -1,0 +1,21 @@
+@echo off
+setlocal
+set "HIA_UI_DIR=%~dp0"
+set "HIA_UI_FILE=%HIA_UI_DIR%index.real.v0.html"
+
+echo ============================================================
+echo HIA Real UI Read-Only Launcher
+echo ============================================================
+echo Mode: READ_ONLY
+echo File: %HIA_UI_FILE%
+echo.
+echo Expected DevTools checks:
+echo   window.HIA_UI_STATE.source
+echo   window.HIA_UI_STATE_DEBUG.candidate_name
+echo.
+echo Expected values:
+echo   hia.state.js:HIA_REAL_STATE
+echo   HIA_REAL_STATE
+echo.
+start "" "%HIA_UI_FILE%"
+endlocal

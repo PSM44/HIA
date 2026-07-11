@@ -2336,3 +2336,13 @@ OBJETIVO..........: Crear launcher read-only y validar en navegador que HIA_UI_S
 BLOCKED_BY.........: NONE_AFTER_010B_R2_IF_GIT_CLEAN
 DONE_WHEN.........: window.HIA_UI_STATE.source = hia.state.js:HIA_REAL_STATE y candidate_name = HIA_REAL_STATE.
 ==========
+
+==========
+PRJPB_010D_REFRESH_CURRENT_STATE_RADAR_CLEAN_CLOSE
+==========
+STATUS............: READY
+PRIORIDAD.........: P0
+OBJETIVO..........: Refrescar CURRENT_STATE y RADAR contra HEAD actual, luego generar paquete T_HIA final para cierre limpio.
+BLOCKED_BY.........: NONE_AFTER_010C_IF_GIT_CLEAN
+DONE_WHEN.........: CURRENT_STATE no apunta a PRJPB_009Z-R2, RADAR es posterior al HEAD actual, git status clean y paquete T_HIA final valida CLEAN_CLOSE.
+==========

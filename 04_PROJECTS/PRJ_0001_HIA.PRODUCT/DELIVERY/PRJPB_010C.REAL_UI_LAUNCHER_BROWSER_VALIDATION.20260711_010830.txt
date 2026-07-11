@@ -1,0 +1,39 @@
+﻿PRJPB_010C.REAL_UI_LAUNCHER_BROWSER_VALIDATION
+STATUS............: DONE_CANDIDATE
+CREATED_LOCAL.....: 2026-07-11 01:08:30 -04:00
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+
+01.00 PURPOSE
+Formalizar la validacion manual de navegador posterior a PRJPB_010B-R2 y crear launcher read-only para index.real.v0.html.
+
+02.00 BROWSER_VALIDATION_CONFIRMED_BY_HUMAN
+DevTools Console:
+- window.HIA_UI_STATE.source = hia.state.js:HIA_REAL_STATE
+- window.HIA_UI_STATE_DEBUG.candidate_name = HIA_REAL_STATE
+- window.HIA_UI_STATE.contract_version = HIA_UI_STATE.v0.2
+- window.HIA_UI_STATE.current_state_status = VALID
+- window.HIA_UI_STATE.resolver_status = CURRENT_STATE_PRIMARY
+
+03.00 FILES_CREATED
+- 01_UI\web\control-tower-shell\OPEN_REAL_UI_READONLY.cmd
+- 01_UI\web\control-tower-shell\OPEN_REAL_UI_READONLY.ps1
+
+04.00 FILES_REFERENCED
+- 01_UI\web\control-tower-shell\index.real.v0.html
+- 01_UI/web/control-tower-shell/assets/hia.state.js
+- 01_UI/web/control-tower-shell/assets/hia.ui.contract.js
+- 01_UI/web/control-tower-shell/assets/hia.real.app.js
+
+05.00 RESULT
+- UI_CONTRACT_REAL_SOURCE_GATE: PASS.
+- La UI real shell ya no depende de EXPLICIT_FALLBACK.
+- La fuente activa es HIA_REAL_STATE desde hia.state.js.
+
+06.00 WARNINGS
+- CURRENT_STATE sigue arrastrando NEXT_ACTION PRJPB_009Z-R2.
+- La validacion del navegador confirma source real, pero tambien confirma CURRENT_STATE stale operacionalmente.
+- RADAR debe regenerarse despues del HEAD actual si se requiere cierre limpio.
+
+07.00 NEXT_RECOMMENDATION
+PRJPB_010D:
+Refresh CURRENT_STATE + RADAR + paquete T_HIA final para cierre limpio.

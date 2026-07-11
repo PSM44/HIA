@@ -2566,3 +2566,29 @@ PURPOSE...........: Agregar HIA_REAL_STATE como candidato primario del contrato 
 02.00_NEXT_ACTION
 - PRJPB_010C | crear launcher read-only y browser validation para index.real.v0.html | ready
 ==========
+
+==========
+SESSION_UPDATE_20260711_HIA_PRJPB_010C_REAL_UI_BROWSER_VALIDATION
+==========
+STATUS............: DONE_CANDIDATE
+FECHA_LOCAL.......: 2026-07-11 01:08:30 -04:00
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Formalizar browser validation de HIA_REAL_STATE y crear launcher read-only.
+
+01.00_DONE_CONFIRMED
+- Browser validation manual PASS.
+- window.HIA_UI_STATE.source = hia.state.js:HIA_REAL_STATE.
+- window.HIA_UI_STATE_DEBUG.candidate_name = HIA_REAL_STATE.
+- contract_version = HIA_UI_STATE.v0.2.
+- UI_CONTRACT_REAL_SOURCE_GATE: PASS.
+- Launchers read-only creados:
+  - 01_UI\web\control-tower-shell\OPEN_REAL_UI_READONLY.cmd
+  - 01_UI\web\control-tower-shell\OPEN_REAL_UI_READONLY.ps1
+
+02.00_WARNINGS
+- CURRENT_STATE sigue apuntando a PRJPB_009Z-R2.
+- RADAR requiere refresh post HEAD actual para cierre limpio.
+
+03.00_NEXT_ACTION
+- PRJPB_010D | refresh CURRENT_STATE + RADAR + paquete final T_HIA para cierre limpio | ready
+==========
