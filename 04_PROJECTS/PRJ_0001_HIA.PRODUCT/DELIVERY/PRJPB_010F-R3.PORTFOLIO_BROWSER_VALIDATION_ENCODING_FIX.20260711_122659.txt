@@ -1,0 +1,29 @@
+PRJPB_010F-R3.PORTFOLIO_BROWSER_VALIDATION_ENCODING_FIX
+STATUS............: DONE_CANDIDATE
+CREATED_LOCAL.....: 2026-07-11 12:26:59 -04:00
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+
+01.00 PURPOSE
+Formalize Portfolio browser PASS and fix visible mojibake with ASCII-only script and ASCII-only visible copy.
+
+02.00 HUMAN_BROWSER_VALIDATION
+DevTools Console:
+- window.HIA_PORTFOLIO_REAL_MINIMUM.gate = PASS
+- window.HIA_PORTFOLIO_REAL_MINIMUM.source = hia.state.js:HIA_REAL_STATE
+- window.HIA_UI_STATE_DEBUG.candidate_name = HIA_REAL_STATE
+
+03.00 BUG_DETECTED
+Visible UI showed mojibake in the PASS banner because a non-ASCII separator rendered incorrectly.
+
+04.00 FIX_DONE
+- Converted portfolio visible files to ASCII-safe text.
+- Normalized gate banner separator to ASCII hyphen.
+- Kept Portfolio read-only behavior unchanged.
+- Kept source contract unchanged.
+- Kept validation global unchanged: window.HIA_PORTFOLIO_REAL_MINIMUM.
+
+05.00 EXPECTED_BROWSER_TEXT
+PASS - Portfolio is consuming real HIA state through HIA_UI_STATE.
+
+06.00 NEXT_RECOMMENDATION
+PRJPB_010G | actualizar CURRENT_STATE/RADAR post Portfolio y preparar siguiente slice funcional | ready

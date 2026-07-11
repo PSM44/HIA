@@ -2629,3 +2629,23 @@ PURPOSE...........: Implementar Portfolio mÃ­nimo real consumiendo HIA_UI_STAT
 02.00_NEXT_ACTION
 - PRJPB_010F | validar Portfolio real mÃ­nimo en navegador y cerrar loop de UI | ready
 ==========
+
+==========
+SESSION_UPDATE_20260711_HIA_PRJPB_010F_R3_PORTFOLIO_BROWSER_VALIDATION_ENCODING_FIX
+==========
+STATUS............: DONE_CANDIDATE
+FECHA_LOCAL.......: 2026-07-11 12:26:59 -04:00
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Formalizar browser validation PASS de Portfolio y corregir mojibake visible.
+
+01.00_DONE_CONFIRMED
+- Browser validation Portfolio: PASS.
+- window.HIA_PORTFOLIO_REAL_MINIMUM.gate = PASS.
+- window.HIA_PORTFOLIO_REAL_MINIMUM.source = hia.state.js:HIA_REAL_STATE.
+- window.HIA_UI_STATE_DEBUG.candidate_name = HIA_REAL_STATE.
+- Mojibake visible detectado en texto PASS.
+- Copy visible de Portfolio convertido a ASCII-safe.
+
+02.00_NEXT_ACTION
+- PRJPB_010G | actualizar CURRENT_STATE/RADAR post Portfolio y preparar siguiente slice funcional | ready
+==========

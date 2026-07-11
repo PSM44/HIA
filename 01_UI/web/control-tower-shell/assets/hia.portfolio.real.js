@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
   "use strict";
 
   function byId(id) {
@@ -8,7 +8,7 @@
   function text(id, value) {
     const el = byId(id);
     if (!el) return;
-    el.textContent = value === undefined || value === null || value === "" ? "â€”" : String(value);
+    el.textContent = value === undefined || value === null || value === "" ? "a"" : String(value);
   }
 
   function chip(label, value, mode) {
@@ -79,7 +79,7 @@
     const gate = classifyGate(state, debug);
     const banner = byId("gateBanner");
     if (banner) {
-      banner.textContent = gate.status + " â€” " + gate.text;
+      banner.textContent = gate.status + " a" " + gate.text;
       banner.style.borderColor = gate.mode === "ok" ? "rgba(134,239,172,.45)" : "rgba(253,230,138,.45)";
       banner.style.color = gate.mode === "ok" ? "#bbf7d0" : "#fde68a";
     }
