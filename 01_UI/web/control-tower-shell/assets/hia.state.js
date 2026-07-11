@@ -1,56 +1,57 @@
-// ========== HIA CONTROL TOWER REAL READ-ONLY STATE ==========
-// ID_UNICO..........: PRJPB_009Q_CURRENT_STATE_PRIMARY_CONTROL_TOWER_GENERATOR
-// GENERATED_AT......: 2026-06-06 18:19:56 -04:00
-// GENERATED_UTC.....: 2026-06-06T22:19:56.3382227Z
-// SEMANTIC_HASH.....: 5B52268067AFC02D66E4251B750C6C5372D3BE74C06728677A8AE3198283201C
-// SOURCE............: CURRENT_STATE primary with CLI fallback
+﻿// ========== HIA CONTROL TOWER REAL READ-ONLY STATE ==========
+// ID_UNICO..........: PRJPB_010D_REFRESH_CURRENT_STATE_RADAR_CLEAN_CLOSE
+// GENERATED_AT......: 2026-07-11 01:14:30 -04:00
+// GENERATED_UTC.....: 2026-07-11T05:14:30.9521852Z
+// SOURCE............: CURRENT_STATE refreshed after PRJPB_010C browser validation
 // MODE..............: READ_ONLY_SNAPSHOT
-// WRITE_MODE........: WRITE
+// WRITE_MODE........: READ_ONLY
 // DO_NOT_USE_AS_CANON: YES
 // ==============================================
 
 window.HIA_REAL_STATE = Object.freeze({
-  project: Object.freeze({
-    id: "PRJ_0001_HIA.PRODUCT",
-    root_wsl: "/mnt/c/01. GitHub/Wings3.0/01_PROJECTS/HIA",
-    root_win: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA",
-    branch: "feat/20260405-console-v2-phase1-phase2",
-    generated_from_head_before_commit: "d062245",
-    generated_from_head_message_before_commit: "20260606_HIA_PRJPB_009Z_guided_demo_go_nogo_session_close"
-  }),
-  continuity: Object.freeze({
-    next_action: "PRJPB_009Z-R2 | re-ejecutar demo interna guiada post-remediation y capturar GO/NO_GO humano | ready",
-    resume_recommendation: "PRJPB_009Z-R2 | re-ejecutar demo interna guiada post-remediation y capturar GO/NO_GO humano | ready",
-    evidence_state: "FRESH",
-    evidence_consistency: "CONSISTENT",
-    session_status: "closed",
-    generated_local: "2026-06-06 18:19:56 -04:00",
-    generated_utc: "2026-06-06T22:19:56.3382227Z",
-    resolver_status: "CURRENT_STATE_PRIMARY",
-    source: "CURRENT_STATE",
-    current_state_source: "CURRENT_STATE",
-    current_state_status: "VALID",
-    current_state_path: "04_PROJECTS/PRJ_0001_HIA.PRODUCT/STATE/CURRENT_STATE.json",
-    fallback_warning: "N/A"
-  }),
-  radar: Object.freeze({
-    lite_path: "03_ARTIFACTS/RADAR/Radar.Lite.ACTIVE.txt",
-    lite_bytes: 1162,
-    index_path: "03_ARTIFACTS/RADAR/Radar.Index.ACTIVE.txt",
-    index_bytes: 120836,
-    core_path: "03_ARTIFACTS/RADAR/Radar.Core.ACTIVE.txt",
-    core_bytes: 1160380
-  }),
-  ui: Object.freeze({
-    shell_file: "01_UI/web/control-tower-shell/index.html",
-    state_file: "01_UI/web/control-tower-shell/assets/hia.state.js",
-    generator_file: "02_TOOLS/HIA_CONTROL_TOWER_STATE_GENERATOR.ps1",
-    mode: "read-only generated snapshot",
-    minibattle: "PRJPB_009Z-R2"
-  }),
-  warnings: Object.freeze([
-    "Este estado es snapshot visible read-only; no reemplaza CURRENT_STATE, BATON, BACKLOG ni RADAR.",
-    "Si hay conflicto, manda CURRENT_STATE valido; si no existe, manda fallback CLI/BATON/BACKLOG.",
-    "TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto mientras exista fallback heuristico."
-  ])
+    "project":  {
+                    "id":  "PRJ_0001_HIA.PRODUCT",
+                    "root_wsl":  "/mnt/c/01. GitHub/Wings3.0/01_PROJECTS/HIA",
+                    "root_win":  "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA",
+                    "branch":  "feat/20260405-console-v2-phase1-phase2",
+                    "generated_from_head_before_commit":  "8bb4ef9",
+                    "generated_from_head_message_before_commit":  "20260711_HIA_PRJPB_010C_real_ui_browser_validation_launcher"
+                },
+    "continuity":  {
+                       "next_action":  "PRJPB_010E | implementar Portfolio mÃ­nimo real desde HIA_UI_STATE/data contract | ready",
+                       "resume_recommendation":  "PRJPB_010E | implementar Portfolio mÃ­nimo real desde HIA_UI_STATE/data contract | ready",
+                       "evidence_state":  "FRESH",
+                       "evidence_consistency":  "CONSISTENT",
+                       "session_status":  "closed",
+                       "generated_local":  "2026-07-11 01:14:30 -04:00",
+                       "generated_utc":  "2026-07-11T05:14:30.9521852Z",
+                       "resolver_status":  "CURRENT_STATE_PRIMARY",
+                       "source":  "CURRENT_STATE",
+                       "current_state_source":  "CURRENT_STATE",
+                       "current_state_status":  "VALID",
+                       "current_state_path":  "04_PROJECTS/PRJ_0001_HIA.PRODUCT/STATE/CURRENT_STATE.json",
+                       "fallback_warning":  "N/A"
+                   },
+    "radar":  {
+                  "lite_path":  "03_ARTIFACTS/RADAR/Radar.Lite.ACTIVE.txt",
+                  "lite_bytes":  863,
+                  "index_path":  "03_ARTIFACTS/RADAR/Radar.Index.ACTIVE.txt",
+                  "index_bytes":  420082,
+                  "core_path":  "03_ARTIFACTS/RADAR/Radar.Core.ACTIVE.txt",
+                  "core_bytes":  73031
+              },
+    "ui":  {
+               "shell_file":  "01_UI/web/control-tower-shell/index.real.v0.html",
+               "state_file":  "01_UI/web/control-tower-shell/assets/hia.state.js",
+               "generator_file":  "manual-script:PRJPB_010D_REFRESH_CURRENT_STATE_RADAR_CLEAN_CLOSE",
+               "mode":  "read-only generated snapshot",
+               "minibattle":  "PRJPB_010D",
+               "browser_validation":  "PASS",
+               "ui_source":  "hia.state.js:HIA_REAL_STATE"
+           },
+    "warnings":  [
+                     "Este estado es snapshot visible read-only; no reemplaza CURRENT_STATE, BATON, BACKLOG ni RADAR.",
+                     "Si hay conflicto, manda CURRENT_STATE valido; si no existe, manda fallback CLI/BATON/BACKLOG.",
+                     "PRJPB_010E queda como siguiente incremento funcional; no abrir gerencia hasta completar slice mÃ­nimo Portfolio."
+                 ]
 });

@@ -2346,3 +2346,13 @@ OBJETIVO..........: Refrescar CURRENT_STATE y RADAR contra HEAD actual, luego ge
 BLOCKED_BY.........: NONE_AFTER_010C_IF_GIT_CLEAN
 DONE_WHEN.........: CURRENT_STATE no apunta a PRJPB_009Z-R2, RADAR es posterior al HEAD actual, git status clean y paquete T_HIA final valida CLEAN_CLOSE.
 ==========
+
+==========
+PRJPB_010E_PORTFOLIO_REAL_MINIMUM
+==========
+STATUS............: READY
+PRIORIDAD.........: P1
+OBJETIVO..........: Implementar Portfolio mÃ­nimo real consumiendo HIA_UI_STATE/data contract sin mock narrativo.
+BLOCKED_BY.........: NONE_AFTER_CLEAN_CLOSE
+DONE_WHEN.........: Portfolio muestra PRJ_0001_HIA.PRODUCT con estado real mÃ­nimo, next_action, evidencia, source labels y warnings.
+==========
