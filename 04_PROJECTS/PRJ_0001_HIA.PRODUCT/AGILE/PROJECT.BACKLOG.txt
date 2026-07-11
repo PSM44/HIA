@@ -2396,3 +2396,13 @@ OBJETIVO..........: Integrar navegacion real Control Tower Portfolio y preparar 
 BLOCKED_BY.........: NONE_AFTER_010G_IF_GIT_CLEAN
 DONE_WHEN.........: Control Tower y Portfolio permiten navegacion read-only coherente, ambos consumen HIA_UI_STATE, y no hay datos fake.
 ==========
+
+==========
+PRJPB_010I_BROWSER_VALIDATE_NAVIGATION_AND_CLOSE_UI_LOOP
+==========
+STATUS............: READY
+PRIORIDAD.........: P0
+OBJETIVO..........: Validar navegacion Control Tower Portfolio en navegador y capturar cierre funcional del loop UI read-only.
+BLOCKED_BY.........: NONE_AFTER_010H_IF_GIT_CLEAN
+DONE_WHEN.........: Links Control Tower Portfolio funcionan, window.HIA_NAVIGATION_STATE existe, Portfolio gate PASS, Git clean.
+==========

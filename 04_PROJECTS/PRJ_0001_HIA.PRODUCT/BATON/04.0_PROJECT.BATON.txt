@@ -2686,3 +2686,22 @@ PURPOSE...........: Refresh continuity after validated Portfolio real minimum.
 02.00_NEXT_ACTION
 - PRJPB_010H | integrar navegacion real Control Tower Portfolio y preparar slice multi-proyecto | ready
 ==========
+
+==========
+SESSION_UPDATE_20260711_HIA_PRJPB_010H_CONTROL_TOWER_PORTFOLIO_NAVIGATION
+==========
+STATUS............: DONE_CANDIDATE
+FECHA_LOCAL.......: 2026-07-11 13:31:37 -04:00
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Integrar navegacion read-only entre Control Tower y Portfolio.
+
+01.00_DONE_CONFIRMED
+- Navegacion read-only agregada a Control Tower real shell.
+- Navegacion read-only agregada a Portfolio real minimum.
+- Ambas pantallas preservan HIA_UI_STATE como contrato compartido.
+- Se expone window.HIA_NAVIGATION_STATE para validacion navegador.
+- No se crea lista fake multi-proyecto.
+
+02.00_NEXT_ACTION
+- PRJPB_010I | validar navegacion Control Tower Portfolio en navegador y capturar cierre funcional | ready
+==========

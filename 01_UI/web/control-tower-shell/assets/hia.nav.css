@@ -1,0 +1,53 @@
+.hia-nav-shell {
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 16px;
+  background: rgba(2, 6, 23, .92);
+  border-bottom: 1px solid rgba(148, 163, 184, .28);
+  color: #e5e7eb;
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  backdrop-filter: blur(10px);
+}
+
+.hia-nav-shell a,
+.hia-nav-shell button {
+  border: 1px solid rgba(148, 163, 184, .38);
+  background: rgba(30, 41, 59, .86);
+  color: #e5e7eb;
+  border-radius: 999px;
+  padding: 7px 11px;
+  text-decoration: none;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.hia-nav-shell a:hover,
+.hia-nav-shell button:hover {
+  background: rgba(51, 65, 85, .96);
+}
+
+.hia-nav-title {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.hia-nav-title strong {
+  color: #e5e7eb;
+}
+
+.hia-nav-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hia-nav-badge {
+  font-family: Consolas, ui-monospace, monospace;
+  font-size: 11px;
+  color: #86efac;
+}

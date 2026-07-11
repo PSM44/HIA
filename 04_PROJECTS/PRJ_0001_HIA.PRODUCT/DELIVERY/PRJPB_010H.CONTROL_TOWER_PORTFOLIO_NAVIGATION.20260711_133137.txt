@@ -1,0 +1,39 @@
+PRJPB_010H.CONTROL_TOWER_PORTFOLIO_NAVIGATION
+STATUS............: DONE_CANDIDATE
+CREATED_LOCAL.....: 2026-07-11 13:31:37 -04:00
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+
+01.00 PURPOSE
+Integrate read-only navigation between Control Tower real shell and Portfolio real minimum.
+
+02.00 FILES_CREATED
+- 01_UI/web/control-tower-shell/assets/hia.nav.css
+- 01_UI/web/control-tower-shell/assets/hia.nav.js
+
+03.00 FILES_CHANGED
+- 01_UI/web/control-tower-shell/index.real.v0.html
+- 01_UI/web/control-tower-shell/portfolio.real.v0.html
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/BATON/04.0_PROJECT.BATON.txt
+- 04_PROJECTS/PRJ_0001_HIA.PRODUCT/AGILE/PROJECT.BACKLOG.txt
+
+04.00 CONTRACT
+- Navigation is read-only.
+- No fake project list.
+- No write action.
+- Both screens keep consuming the same HIA_UI_STATE contract.
+- Browser exposes window.HIA_NAVIGATION_STATE.
+
+05.00 EXPECTED_BROWSER_VALIDATION
+Control Tower:
+- Top nav visible.
+- Open Portfolio link works.
+- window.HIA_NAVIGATION_STATE.write_mode = READ_ONLY.
+
+Portfolio:
+- Top nav visible.
+- Open Control Tower link works.
+- window.HIA_PORTFOLIO_REAL_MINIMUM.gate = PASS.
+- window.HIA_NAVIGATION_STATE.source = hia.state.js:HIA_REAL_STATE.
+
+06.00 NEXT_RECOMMENDATION
+PRJPB_010I | validar navegacion Control Tower Portfolio en navegador y capturar cierre funcional | ready
