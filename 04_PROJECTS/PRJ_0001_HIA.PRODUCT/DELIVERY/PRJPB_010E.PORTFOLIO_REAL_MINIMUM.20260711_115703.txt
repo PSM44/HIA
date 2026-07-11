@@ -1,0 +1,31 @@
+﻿PRJPB_010E.PORTFOLIO_REAL_MINIMUM
+STATUS............: DONE_CANDIDATE
+CREATED_LOCAL.....: 2026-07-11 11:57:03 -04:00
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+
+01.00 PURPOSE
+Implementar Portfolio minimo real, read-only, consumiendo HIA_UI_STATE/data contract sin mock narrativo.
+
+02.00 FILES_CREATED
+- 01_UI\web\control-tower-shell\portfolio.real.v0.html
+- 01_UI\web\control-tower-shell\assets\hia.portfolio.real.js
+- 01_UI\web\control-tower-shell\OPEN_REAL_PORTFOLIO_READONLY.cmd
+- 01_UI\web\control-tower-shell\OPEN_REAL_PORTFOLIO_READONLY.ps1
+
+03.00 CONTRACT
+- Carga hia.state.js.
+- Carga hia.ui.contract.js.
+- Consume window.HIA_UI_STATE.
+- Expone window.HIA_PORTFOLIO_REAL_MINIMUM para validacion navegador.
+- No escribe estado.
+- No inventa proyectos.
+- No declara management-ready.
+
+04.00 EXPECTED_BROWSER_VALIDATION
+DevTools Console:
+- window.HIA_PORTFOLIO_REAL_MINIMUM.gate debe ser PASS.
+- window.HIA_PORTFOLIO_REAL_MINIMUM.source debe ser hia.state.js:HIA_REAL_STATE.
+- window.HIA_UI_STATE_DEBUG.candidate_name debe ser HIA_REAL_STATE.
+
+05.00 NEXT_RECOMMENDATION
+PRJPB_010F | validar Portfolio real mÃ­nimo en navegador y cerrar loop de UI | ready

@@ -2356,3 +2356,13 @@ OBJETIVO..........: Implementar Portfolio mÃ­nimo real consumiendo HIA_UI_STAT
 BLOCKED_BY.........: NONE_AFTER_CLEAN_CLOSE
 DONE_WHEN.........: Portfolio muestra PRJ_0001_HIA.PRODUCT con estado real mÃ­nimo, next_action, evidencia, source labels y warnings.
 ==========
+
+==========
+PRJPB_010F_PORTFOLIO_BROWSER_VALIDATION_UI_LOOP_CLOSE
+==========
+STATUS............: READY
+PRIORIDAD.........: P0
+OBJETIVO..........: Validar Portfolio real mÃ­nimo en navegador, confirmar source real y cerrar loop Control Tower/Portfolio.
+BLOCKED_BY.........: NONE_AFTER_010E_IF_GIT_CLEAN
+DONE_WHEN.........: window.HIA_PORTFOLIO_REAL_MINIMUM.gate = PASS, source = hia.state.js:HIA_REAL_STATE, candidate_name = HIA_REAL_STATE, Git clean.
+==========
