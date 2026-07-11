@@ -2649,3 +2649,21 @@ PURPOSE...........: Formalizar browser validation PASS de Portfolio y corregir m
 02.00_NEXT_ACTION
 - PRJPB_010G | actualizar CURRENT_STATE/RADAR post Portfolio y preparar siguiente slice funcional | ready
 ==========
+
+==========
+SESSION_UPDATE_20260711_HIA_PRJPB_010F_R4_REWRITE_PORTFOLIO_ASCII_CLEAN
+==========
+STATUS............: DONE_CANDIDATE
+FECHA_LOCAL.......: 2026-07-11 12:37:21 -04:00
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Reparar regresion de PRJPB_010F-R3 reescribiendo Portfolio desde fuente ASCII limpia.
+
+01.00_DONE_CONFIRMED
+- Regresion visual/funcional detectada despues de R3.
+- Portfolio reescrito desde cero con HTML/JS ASCII clean.
+- Contracto funcional preservado: HIA_UI_STATE + HIA_PORTFOLIO_REAL_MINIMUM.
+- Proxima validacion debe confirmar banner PASS y objeto global PASS.
+
+02.00_NEXT_ACTION
+- PRJPB_010G | actualizar CURRENT_STATE/RADAR post Portfolio y preparar siguiente slice funcional | ready
+==========

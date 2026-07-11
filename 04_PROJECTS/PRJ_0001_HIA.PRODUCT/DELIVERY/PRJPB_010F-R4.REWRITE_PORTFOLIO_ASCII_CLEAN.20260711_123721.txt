@@ -1,0 +1,32 @@
+PRJPB_010F-R4.REWRITE_PORTFOLIO_ASCII_CLEAN
+STATUS............: DONE_CANDIDATE
+CREATED_LOCAL.....: 2026-07-11 12:37:21 -04:00
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+
+01.00 PURPOSE
+Repair PRJPB_010F-R3 regression by rewriting Portfolio files from clean ASCII source.
+
+02.00 REGRESSION OBSERVED
+- Browser showed Source: loading...
+- Gate stayed Loading HIA_UI_STATE...
+- Visible placeholders showed corrupted text.
+- Meaning: portfolio render did not consume HIA_UI_STATE after R3 cleanup.
+
+03.00 FIX_DONE
+- Rewrote portfolio.real.v0.html from clean ASCII source.
+- Rewrote hia.portfolio.real.js from clean ASCII source.
+- Rewrote read-only launchers from clean ASCII source.
+- Preserved source contract:
+  - window.HIA_REAL_STATE
+  - window.HIA_UI_STATE
+  - window.HIA_UI_STATE_DEBUG
+  - window.HIA_PORTFOLIO_REAL_MINIMUM
+
+04.00 EXPECTED_BROWSER_VALIDATION
+- Banner: PASS - Portfolio is consuming real HIA state through HIA_UI_STATE.
+- window.HIA_PORTFOLIO_REAL_MINIMUM.gate = PASS
+- window.HIA_PORTFOLIO_REAL_MINIMUM.source = hia.state.js:HIA_REAL_STATE
+- window.HIA_UI_STATE_DEBUG.candidate_name = HIA_REAL_STATE
+
+05.00 NEXT_RECOMMENDATION
+PRJPB_010G | actualizar CURRENT_STATE/RADAR post Portfolio y preparar siguiente slice funcional | ready

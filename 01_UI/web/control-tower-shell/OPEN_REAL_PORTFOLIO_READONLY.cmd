@@ -15,6 +15,7 @@ echo   window.HIA_UI_STATE.source
 echo   window.HIA_UI_STATE_DEBUG.candidate_name
 echo.
 echo Expected values:
+echo   gate: PASS
 echo   source: hia.state.js:HIA_REAL_STATE
 echo   candidate_name: HIA_REAL_STATE
 echo.

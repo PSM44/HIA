@@ -2376,3 +2376,13 @@ OBJETIVO..........: Actualizar CURRENT_STATE y RADAR despues de PRJPB_010F-R3, d
 BLOCKED_BY.........: NONE_AFTER_010F_R3_IF_GIT_CLEAN
 DONE_WHEN.........: CURRENT_STATE apunta al siguiente slice funcional, RADAR runtime esta fresco, Git clean.
 ==========
+
+==========
+PRJPB_010G_REFRESH_STATE_RADAR_POST_PORTFOLIO
+==========
+STATUS............: READY
+PRIORIDAD.........: P0
+OBJETIVO..........: Actualizar CURRENT_STATE y RADAR despues de PRJPB_010F-R4, dejando next_action funcional siguiente y paquete de continuidad limpio.
+BLOCKED_BY.........: BROWSER_VALIDATION_AFTER_010F_R4
+DONE_WHEN.........: CURRENT_STATE apunta al siguiente slice funcional, RADAR runtime esta fresco, Git clean.
+==========
