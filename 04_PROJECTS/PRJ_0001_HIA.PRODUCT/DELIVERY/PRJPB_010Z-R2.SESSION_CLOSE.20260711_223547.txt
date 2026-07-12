@@ -1,0 +1,192 @@
+PRJPB_010Z-R2.SESSION_CLOSE
+STATUS............: DONE_CANDIDATE
+CREATED_LOCAL.....: 2026-07-11 22:35:47 -04:00
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+BRANCH............: feat/20260405-console-v2-phase1-phase2
+HEAD_BEFORE.......: 8030de6 20260711_HIA_PRJPB_010M_define_next_functional_slice
+
+01.00 USECASE
+USECASE_DETECTED..: 02.SESSION_CLOSE
+TRIGGER...........: user requested "cierra sesion"
+
+02.00 ESTADO_ACTUAL_CORROBORADO
+- HEAD before close: 8030de6 20260711_HIA_PRJPB_010M_define_next_functional_slice.
+- Branch: feat/20260405-console-v2-phase1-phase2.
+- Git status before close: clean.
+- Last validated next action from PRJPB_010M: PRJPB_010N | implementar Project Workspace real minimum read-only desde evidencia del proyecto | ready.
+- Current product state: Control Tower, Portfolio, navigation and real project registry are implemented and browser validated.
+- Current registry count: 1 real project.
+- Current no-fake-data policy: active.
+
+03.00 DEUDA_TECNICA_ACUMULADA
+TD-010Z-001 | ACCEPTED_WITH_CONTROL | RADAR runtime no esta versionado bajo Git por politica de 03_ARTIFACTS; debe regenerarse despues de cambios relevantes y reportarse como evidencia runtime.
+TD-010Z-002 | OPEN | Scripts historicos 010G/010H/010I/010J/010K limpiaban T_HIA root; desde 010L/010M se corrigio patron usando subcarpeta RunDir. Falta canonizar como regla reusable para HIA.
+TD-010Z-003 | OPEN | No existe readiness validator especifico HIA equivalente a SessionCloseReadiness completo; cierre depende de Git clean + evidencias de scripts.
+TD-010Z-004 | OPEN | Project Workspace aun no existe; la UI tiene entrada lateral, pero falta pantalla real respaldada por evidencia.
+TD-010Z-005 | OPEN | Multi-proyecto esta en registry real minimo con 1 proyecto; falta seleccion/interaccion de proyecto y escalamiento a multiples proyectos reales.
+
+04.00 BACKLOG_ACUMULADO
+BL-010N | READY | Implementar Project Workspace real minimum read-only desde evidencia real del proyecto.
+BL-010O | READY_AFTER_010N | Validar Project Workspace en navegador y formalizar cierre de loop.
+BL-010P | PLANNED | Conectar boton Open Project Workspace del Control Tower con la nueva pantalla real.
+BL-010Q | PLANNED | Definir modelo de Project Workspace para BATON/BACKLOG/DELIVERY sin duplicar HUMAN.
+BL-010R | PLANNED | Crear readiness validator HIA para cierre local equivalente a session close hardened.
+BL-010S | PLANNED | Convertir aprendizajes de Temp/RunDir y dirty whitelist en candidato Skill/GRC reusable.
+
+05.00 IDEAS_Y_OPORTUNIDADES_ACUMULADAS
+IDEA-001 | Productizar HIA como work operating system humano-IA: Control Tower, Portfolio, Project Workspace, Evidence, Settings.
+IDEA-002 | Separar producto visible de gobierno interno: primero demo funcional read-only, luego automatizacion write-mode con gates.
+IDEA-003 | Registry real como base para multiproyecto: filesystem first, no fake data.
+IDEA-004 | HIA deberia tener readiness propio: Git, UI source, state contract, browser globals, RADAR runtime, BATON/BACKLOG.
+IDEA-005 | Usar Project Workspace como puente a gerencia: estado, evidencia, riesgo, siguiente decision, no solo backlog tecnico.
+
+06.00 QUE_HEMOS_HECHO
+PRJPB_010F-R4 | DONE | Portfolio real minimum reparado desde ASCII limpio; browser PASS.
+PRJPB_010G | DONE | CURRENT_STATE, hia.state.js y RADAR runtime refrescados post Portfolio.
+PRJPB_010H | DONE | Navegacion read-only Control Tower <-> Portfolio implementada.
+PRJPB_010I | DONE | Browser validation de navegacion formalizada.
+PRJPB_010J | DONE | Scope multi-proyecto real definido sin mocks.
+PRJPB_010K-R3 | DONE | Registry real window.HIA_PROJECTS_REAL implementado desde 04_PROJECTS.
+PRJPB_010L | DONE | Registry real validado en navegador.
+PRJPB_010M | DONE | Siguiente slice funcional definido: Project Workspace real minimum.
+
+07.00 QUE_FALTA
+Project Workspace real minimum no implementado.
+Boton Open Project Workspace del Control Tower aun no navega a pantalla real dedicada.
+No hay demo gerencial completa; hay base UI read-only y registry real.
+No hay write actions ni workflow de aprobacion real.
+No hay readiness validator HIA completo.
+RADAR posterior al commit de cierre queda como runtime pendiente si se exige fresh against final HEAD.
+
+08.00 EN_QUE_ESTAMOS
+Estamos en un punto limpio posterior a PRJPB_010M:
+- base UI real read-only cerrada;
+- Portfolio real con registry real validado;
+- siguiente paso exacto PRJPB_010N;
+- no hay fake data;
+- no se debe avanzar a write-mode hasta tener Project Workspace real y readiness HIA.
+
+09.00 PATH_MINIBATTLES_BATTLES_ENTREGABLE_FUNCIONAL_A_GERENCIA
+MINIBATTLE | OBJETIVO | OUTPUT | BATTLE | ENTREGABLE_GERENCIA | ESTADO
+PRJPB_010N | Implementar Project Workspace real minimum | project.workspace.real.v0.html + hia.project.workspace.real.js | Battle UI Workspace | Demo gerencial: estado proyecto real desde evidencia | READY
+PRJPB_010O | Validar Project Workspace en navegador | browser globals PASS + delivery | Battle UI Workspace | Demo gerencial confiable read-only | PLANNED
+PRJPB_010P | Conectar navegacion Control Tower -> Workspace | boton funcional + nav state | Battle Navegacion Producto | Demo navegable por gerente | PLANNED
+PRJPB_010Q | Vista gerencial minima | resumen ejecutivo, riesgos, decisiones, siguiente accion | Battle Gerencial | Entregable visible funcional a gerencia v0.1 | PLANNED
+PRJPB_010R | Readiness HIA | validator cierre/demo | Battle Release Readiness | Paquete demo con evidencia objetiva | PLANNED
+
+10.00 FEEDBACK_PUNTUAL
+- Se avanzo correctamente de "UI bonita" a "UI respaldada por estado real".
+- El mayor acierto fue cortar mocks y forzar HIA_UI_STATE/HIA_REAL_STATE.
+- El mayor riesgo es confundir progreso documental con producto visible.
+- El siguiente paso debe ser Project Workspace real, no mas infraestructura abstracta.
+
+11.00 FEEDBACK_GLOBAL
+HIA ya tiene forma de producto: Control Tower, Portfolio, registry, navegacion y continuidad.
+Aun no es entregable gerencial porque falta una vista de proyecto seleccionable que explique estado, evidencia, riesgo y decision requerida en lenguaje ejecutivo.
+
+12.00 OPCIONES
+A | Continuar 010N | Mejor opcion si se quiere producto visible.
+B | Cerrar y preparar demo | Bueno si se quiere pausa segura.
+C | Construir readiness HIA antes de Workspace | Mas seguro, pero retrasa valor visible.
+D | Saltar a gerencia sin Workspace | No recomendado; demo aun se veria incompleta.
+
+13.00 RECOMENDACION
+Continuar con PRJPB_010N en la proxima sesion.
+Criterio experto: cerrar primero el loop "proyecto seleccionado -> evidencia real -> decision accionable" antes de agregar automatizacion write-mode.
+
+14.00 INDUSTRY_VIEW
+Practicas alineadas:
+- state contract explicito;
+- read-only first;
+- no fake data;
+- browser validation;
+- atomic commits;
+- evidence-driven delivery.
+
+Brechas vs industria madura:
+- falta testing automatizado UI/state;
+- falta release readiness propio;
+- falta arquitectura de datos persistente;
+- falta separacion clara entre product UI y internal governance;
+- falta pipeline CI.
+
+15.00 SKILLS_UTILIDAD_RECOMENDADA
+Subidos y utiles:
+- WBS, FILE_CONTENT, RADAR, BATON, HUMAN_README, DRAG_AND_DROP, OPERATIONAL_ARTIFACTS_POLICY, PROJECT_LIFECYCLE_POLICY, WHOAMI_POLICY.
+
+Adicionales utiles para la proxima sesion:
+- SKILL_POWERSHELL_INTERACTIVE_SAFETY.
+- SKILL_REPO_TEMP_ARTIFACT_MANAGEMENT.
+- SKILL_LOGGING_AUDIT.
+- SKILL_CHECKPOINT_ROLLBACK.
+- SKILL_GIT_STRUCTURAL_CHANGE_GOVERNANCE.
+- GRC.UNKNOWN_WORKTREE_STATE_HARD_STOP.
+- GRC.SCRIPT_EXECUTION_STAGING.
+- GRC.AI_CODE_AGENT_SEQUENTIAL_WORKFLOW.
+
+16.00 SKILL_GRC_LEARNING_REVIEW
+NEW_GRC_CANDIDATES:
+- GRC.HIA_READINESS_CLOSE_GATE: readiness especifico para HIA UI/state/browser/RADAR/Git.
+- GRC.UI_REAL_STATE_NO_FAKE_DATA_GATE: bloquear pantallas que muestren datos inventados en productos IA internos.
+
+GRC_IMPROVEMENT_CANDIDATES:
+- Mejorar ScriptExecutionStaging con regla DO_NOT_CLEAN_TEMP_ROOT_WHEN_SCRIPT_MAY_LIVE_THERE.
+- Mejorar SessionClose con patron de cierre por proyecto no-SkillsMachine con RADAR runtime ignored.
+
+SKILL_IMPROVEMENT_CANDIDATES:
+- Agregar a PowerShell/Temp skill la regla RunDir bajo TempRoot, no limpieza root.
+- Agregar a FILE_CONTENT una plantilla de delivery para browser validation.
+
+OPERATIONAL_RULES_TO_CANONIZE:
+- Para HIA: toda pantalla visible debe exponer un window.* validation global.
+- Para HIA: no se declara demo gerencial hasta que una pantalla muestre estado de proyecto + evidencia + decision requerida.
+- Para scripts de proyecto: usar subcarpeta RunDir y no limpiar TempRoot.
+
+DO_NOT_CANONIZE:
+- No canonizar los nombres PRJPB_010F..010Z; son historial de este proyecto.
+- No canonizar los textos exactos de UI; son implementacion mutable.
+- No canonizar 90.USECASE generado; si hay mejora, va a fuente Skills/GRC.
+
+CANDIDATES_REGISTER_UPDATED:
+- YES, registrados en PROJECT.BACKLOG y en este delivery de cierre.
+
+NEXT_GRC_OR_SKILL_ACTION:
+- Crear candidato GRC.HIA_READINESS_CLOSE_GATE despues de implementar PRJPB_010N.
+
+17.00 DRAGONFLYFOCUS_DECISION
+OBJECTIVE_ACTIVE:
+- Cerrar sesion HIA con continuidad consistente y no avanzar a 010N.
+
+CURRENT_STEP:
+- Formal close after PRJPB_010M.
+
+NEW_IDEAS_CAPTURED:
+- Project Workspace como siguiente slice.
+- HIA readiness propio.
+- GRC no-fake-data para UI.
+
+DRIFT_RISK:
+- MEDIUM. El proyecto tienta seguir implementando, pero el humano pidio cierre.
+
+DECISION:
+- Cerrar sesion. No ejecutar 010N ahora.
+
+NEXT_ACTION:
+- PRJPB_010N | implementar Project Workspace real minimum read-only desde evidencia del proyecto | ready
+
+18.00 HUMAN_UPDATE
+HUMAN_UPDATE_REQUIRED: NO
+RATIONALE: Los cambios fueron operativos/producto; no cambiaron doctrina raiz ni intencion humana.
+
+19.00 WHOAMI_UPDATE
+WHOAMI_FILE_DETECTED: NO
+WHOAMI_PATH: N/A
+ACTION: No actualizado porque no se detecto archivo WHOAMI HIA.
+
+20.00 CLOSE_STATE
+LOCAL_WRITTEN......: YES
+STAGED.............: pending during script
+COMMITTED..........: pending during script
+PUSHED.............: pending during script
+READINESS_CLEAN....: Git clean final gate required
+RADAR_FRESH........: runtime RADAR not regenerated as versioned evidence; WARN if strict RADAR freshness against final HEAD is required.

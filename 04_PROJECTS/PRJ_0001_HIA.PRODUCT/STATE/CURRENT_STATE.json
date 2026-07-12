@@ -1,50 +1,54 @@
 {
     "schema":  "HIA_CURRENT_STATE.v1",
     "project_id":  "PRJ_0001_HIA.PRODUCT",
-    "generated_local":  "2026-07-11 22:04:58 -04:00",
-    "generated_utc":  "2026-07-12T02:04:58.2169522Z",
-    "generator":  "manual-script:PRJPB_010M_DEFINE_NEXT_FUNCTIONAL_SLICE",
-    "current_objective":  "Define next functional slice after real project registry validation.",
+    "generated_local":  "2026-07-11 22:35:47 -04:00",
+    "generated_utc":  "2026-07-12T02:35:47.5137712Z",
+    "generator":  "manual-script:PRJPB_010Z_R2_SESSION_CLOSE",
+    "current_objective":  "Session closed after PRJPB_010M. Next slice is Project Workspace real minimum.",
     "next_action":  {
                         "id":  "PRJPB_010N",
                         "title":  "implementar Project Workspace real minimum read-only desde evidencia del proyecto",
                         "status":  "ready",
                         "raw":  "PRJPB_010N | implementar Project Workspace real minimum read-only desde evidencia del proyecto | ready",
-                        "source":  "PRJPB_010M decision",
+                        "source":  "PRJPB_010Z-R2 session close",
                         "text":  "PRJPB_010N | implementar Project Workspace real minimum read-only desde evidencia del proyecto | ready"
                     },
     "evidence":  {
                      "state":  "FRESH",
                      "consistency":  "CONSISTENT",
-                     "captured_utc":  "2026-07-12T02:04:58.2169522Z"
+                     "captured_utc":  "2026-07-12T02:35:47.5137712Z"
                  },
     "session":  {
-                    "status":  "active",
-                    "last_session_id":  "SESSION_CONTINUE_20260711_HIA_PRJPB_010M"
+                    "status":  "closed",
+                    "closed_local":  "2026-07-11 22:35:47 -04:00",
+                    "close_task":  "PRJPB_010Z_R2"
                 },
     "git":  {
                 "branch":  "feat/20260405-console-v2-phase1-phase2",
-                "head_short":  "5d59502",
-                "head_message":  "20260711_HIA_PRJPB_010L_formalize_real_project_registry_validation",
-                "head_before_commit":  "5d59502 20260711_HIA_PRJPB_010L_formalize_real_project_registry_validation"
+                "head_short":  "8030de6",
+                "head_message":  "20260711_HIA_PRJPB_010M_define_next_functional_slice",
+                "head_before_commit":  "8030de6 20260711_HIA_PRJPB_010M_define_next_functional_slice"
             },
     "policy":  {
                    "no_fake_data":  true,
                    "fallback_allowed":  true,
                    "write_mode":  "READ_ONLY"
                },
-    "multiproject":  {
-                         "status":  "BROWSER_VALIDATED",
-                         "source":  "filesystem:04_PROJECTS",
-                         "real_project_count":  1,
-                         "no_fake_data":  true
-                     },
-    "next_slice":  {
-                       "id":  "PRJPB_010N",
-                       "type":  "PROJECT_WORKSPACE_REAL_MINIMUM",
-                       "source":  "real project evidence files",
-                       "target_global":  "window.HIA_PROJECT_WORKSPACE_REAL",
-                       "mode":  "READ_ONLY",
-                       "no_fake_data":  true
-                   }
+    "product_state":  {
+                          "control_tower":  "DONE",
+                          "portfolio":  "DONE",
+                          "navigation":  "DONE",
+                          "real_project_registry":  "DONE_BROWSER_VALIDATED",
+                          "project_workspace":  "NEXT",
+                          "management_demo":  "NOT_READY_UNTIL_PROJECT_WORKSPACE"
+                      },
+    "close":  {
+                  "status":  "DONE_CANDIDATE",
+                  "technical_debt_count":  5,
+                  "backlog_count":  6,
+                  "ideas_count":  5,
+                  "human_update_required":  false,
+                  "whoami_detected":  false,
+                  "radar_freshness":  "WARN_IF_STRICT_FINAL_HEAD_REQUIRED"
+              }
 }
