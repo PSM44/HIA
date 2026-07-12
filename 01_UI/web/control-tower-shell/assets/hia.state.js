@@ -1,8 +1,8 @@
 // ========== HIA CONTROL TOWER REAL READ-ONLY STATE ==========
-// ID_UNICO..........: PRJPB_010G_REFRESH_STATE_RADAR_POST_PORTFOLIO
-// GENERATED_AT......: 2026-07-11 12:45:31 -04:00
-// GENERATED_UTC.....: 2026-07-11T16:45:31.2453763Z
-// SOURCE............: CURRENT_STATE refreshed after Portfolio browser validation
+// ID_UNICO..........: PRJPB_010J_DEFINE_REAL_MULTIPROJECT_SLICE
+// GENERATED_AT......: 2026-07-11 21:21:53 -04:00
+// GENERATED_UTC.....: 2026-07-12T01:21:53.8132278Z
+// SOURCE............: CURRENT_STATE refreshed after navigation validation
 // MODE..............: READ_ONLY_SNAPSHOT
 // WRITE_MODE........: READ_ONLY
 // DO_NOT_USE_AS_CANON: YES
@@ -14,17 +14,17 @@ window.HIA_REAL_STATE = Object.freeze({
                     "root_win":  "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA",
                     "root_wsl":  "/mnt/c/01. GitHub/Wings3.0/01_PROJECTS/HIA",
                     "branch":  "feat/20260405-console-v2-phase1-phase2",
-                    "generated_from_head_before_commit":  "029dd26",
-                    "generated_from_head_message_before_commit":  "20260711_HIA_PRJPB_010F_R4_rewrite_portfolio_ascii_clean"
+                    "generated_from_head_before_commit":  "bb767d7",
+                    "generated_from_head_message_before_commit":  "20260711_HIA_PRJPB_010I_formalize_nav_browser_validation"
                 },
     "continuity":  {
-                       "next_action":  "PRJPB_010H | integrar navegacion real Control Tower Portfolio y preparar slice multi-proyecto | ready",
-                       "resume_recommendation":  "PRJPB_010H | integrar navegacion real Control Tower Portfolio y preparar slice multi-proyecto | ready",
+                       "next_action":  "PRJPB_010K | implementar registry real de proyectos desde 04_PROJECTS sin mocks | ready",
+                       "resume_recommendation":  "PRJPB_010K | implementar registry real de proyectos desde 04_PROJECTS sin mocks | ready",
                        "evidence_state":  "FRESH",
                        "evidence_consistency":  "CONSISTENT",
                        "session_status":  "active",
-                       "generated_local":  "2026-07-11 12:45:31 -04:00",
-                       "generated_utc":  "2026-07-11T16:45:31.2453763Z",
+                       "generated_local":  "2026-07-11 21:21:53 -04:00",
+                       "generated_utc":  "2026-07-12T01:21:53.8132278Z",
                        "resolver_status":  "CURRENT_STATE_PRIMARY",
                        "source":  "CURRENT_STATE",
                        "current_state_source":  "CURRENT_STATE",
@@ -32,25 +32,23 @@ window.HIA_REAL_STATE = Object.freeze({
                        "current_state_path":  "04_PROJECTS/PRJ_0001_HIA.PRODUCT/STATE/CURRENT_STATE.json",
                        "fallback_warning":  "N/A"
                    },
-    "radar":  {
-                  "lite_path":  "03_ARTIFACTS/RADAR/Radar.Lite.ACTIVE.txt",
-                  "index_path":  "03_ARTIFACTS/RADAR/Radar.Index.ACTIVE.txt",
-                  "core_path":  "03_ARTIFACTS/RADAR/Radar.Core.ACTIVE.txt",
-                  "registry_path":  "03_ARTIFACTS/RADAR/Radar.Registry.ACTIVE.txt"
-              },
+    "multiproject":  {
+                         "status":  "DEFINED_SCOPE",
+                         "source":  "filesystem:04_PROJECTS",
+                         "real_project_count":  1,
+                         "registry_global_candidate":  "window.HIA_PROJECTS_REAL",
+                         "registry_file_candidate":  "01_UI/web/control-tower-shell/assets/hia.projects.real.js",
+                         "no_fake_data":  true
+                     },
     "ui":  {
-               "shell_file":  "01_UI/web/control-tower-shell/index.real.v0.html",
-               "portfolio_file":  "01_UI/web/control-tower-shell/portfolio.real.v0.html",
-               "state_file":  "01_UI/web/control-tower-shell/assets/hia.state.js",
-               "portfolio_js":  "01_UI/web/control-tower-shell/assets/hia.portfolio.real.js",
-               "mode":  "read-only generated snapshot",
-               "minibattle":  "PRJPB_010G",
-               "control_tower_browser_validation":  "PASS",
-               "portfolio_browser_validation":  "PASS",
-               "ui_source":  "hia.state.js:HIA_REAL_STATE"
+               "control_tower_portfolio_navigation":  "PASS",
+               "source":  "hia.state.js:HIA_REAL_STATE",
+               "write_mode":  "READ_ONLY",
+               "functional_ui_loop":  "CLOSED"
            },
     "warnings":  [
-                     "This state is a read-only visible snapshot; CURRENT_STATE remains canonical.",
-                     "PRJPB_010H is the next functional slice after Portfolio real minimum."
+                     "Multi-project view is not implemented yet.",
+                     "Only real 04_PROJECTS directories may be listed in PRJPB_010K.",
+                     "No fake project data is allowed."
                  ]
 });

@@ -1,45 +1,51 @@
 {
     "schema":  "HIA_CURRENT_STATE.v1",
     "project_id":  "PRJ_0001_HIA.PRODUCT",
-    "generated_local":  "2026-07-11 12:45:31 -04:00",
-    "generated_utc":  "2026-07-11T16:45:31.2453763Z",
-    "generator":  "manual-script:PRJPB_010G_REFRESH_STATE_RADAR_POST_PORTFOLIO",
-    "current_objective":  "Refresh continuity after validated Portfolio real minimum.",
+    "generated_local":  "2026-07-11 21:21:53 -04:00",
+    "generated_utc":  "2026-07-12T01:21:53.8132278Z",
+    "generator":  "manual-script:PRJPB_010J_DEFINE_REAL_MULTIPROJECT_SLICE",
+    "current_objective":  "Define real multi-project slice without mocks after read-only UI loop closure.",
     "next_action":  {
-                        "id":  "PRJPB_010H",
-                        "title":  "integrar navegacion real Control Tower Portfolio y preparar slice multi-proyecto",
+                        "id":  "PRJPB_010K",
+                        "title":  "implementar registry real de proyectos desde 04_PROJECTS sin mocks",
                         "status":  "ready",
-                        "raw":  "PRJPB_010H | integrar navegacion real Control Tower Portfolio y preparar slice multi-proyecto | ready",
-                        "source":  "PRJPB_010F-R4 closed; Portfolio real minimum browser validation passed",
-                        "text":  "PRJPB_010H | integrar navegacion real Control Tower Portfolio y preparar slice multi-proyecto | ready"
+                        "raw":  "PRJPB_010K | implementar registry real de proyectos desde 04_PROJECTS sin mocks | ready",
+                        "source":  "PRJPB_010I closed; next step is real project registry from 04_PROJECTS",
+                        "text":  "PRJPB_010K | implementar registry real de proyectos desde 04_PROJECTS sin mocks | ready"
                     },
     "evidence":  {
                      "state":  "FRESH",
                      "consistency":  "CONSISTENT",
-                     "captured_utc":  "2026-07-11T16:45:31.2453763Z"
+                     "captured_utc":  "2026-07-12T01:21:53.8132278Z"
                  },
     "session":  {
                     "status":  "active",
-                    "last_session_id":  "SESSION_CONTINUE_20260711_HIA_PRJPB_010G"
+                    "last_session_id":  "SESSION_CONTINUE_20260711_HIA_PRJPB_010J"
                 },
     "git":  {
                 "branch":  "feat/20260405-console-v2-phase1-phase2",
-                "head_short":  "029dd26",
-                "head_message":  "20260711_HIA_PRJPB_010F_R4_rewrite_portfolio_ascii_clean",
-                "head_before_commit":  "029dd26 20260711_HIA_PRJPB_010F_R4_rewrite_portfolio_ascii_clean"
+                "head_short":  "bb767d7",
+                "head_message":  "20260711_HIA_PRJPB_010I_formalize_nav_browser_validation",
+                "head_before_commit":  "bb767d7 20260711_HIA_PRJPB_010I_formalize_nav_browser_validation"
             },
     "policy":  {
                    "precedence":  "CURRENT_STATE first; fallback to BATON/BACKLOG only if missing or invalid",
-                   "fallback_allowed":  true
+                   "fallback_allowed":  true,
+                   "no_fake_data":  true
                },
+    "multiproject":  {
+                         "status":  "DEFINED_SCOPE",
+                         "source":  "filesystem:04_PROJECTS",
+                         "real_project_count":  1,
+                         "registry_global_candidate":  "window.HIA_PROJECTS_REAL",
+                         "registry_file_candidate":  "01_UI/web/control-tower-shell/assets/hia.projects.real.js",
+                         "mode":  "READ_ONLY",
+                         "no_fake_data":  true
+                     },
     "ui_validation":  {
-                          "control_tower_source":  "hia.state.js:HIA_REAL_STATE",
-                          "control_tower_candidate_name":  "HIA_REAL_STATE",
-                          "portfolio_status":  "PASS",
-                          "portfolio_source":  "hia.state.js:HIA_REAL_STATE",
-                          "portfolio_candidate_name":  "HIA_REAL_STATE",
-                          "portfolio_expected_banner":  "PASS - Portfolio is consuming real HIA state through HIA_UI_STATE.",
-                          "validated_by_human":  true,
-                          "validated_local":  "2026-07-11 12:xx -04:00"
+                          "control_tower_portfolio_navigation":  "PASS",
+                          "source":  "hia.state.js:HIA_REAL_STATE",
+                          "write_mode":  "READ_ONLY",
+                          "functional_ui_loop":  "CLOSED"
                       }
 }

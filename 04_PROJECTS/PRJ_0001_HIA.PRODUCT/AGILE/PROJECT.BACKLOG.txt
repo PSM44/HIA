@@ -2416,3 +2416,13 @@ OBJETIVO..........: Definir siguiente slice multi-proyecto real sin mocks, con a
 BLOCKED_BY.........: NONE_AFTER_010I_IF_GIT_CLEAN
 DONE_WHEN.........: Scope PRJPB_010J queda definido con input sources, expected files, no-fake-data policy y next implementation minibattle.
 ==========
+
+==========
+PRJPB_010K_IMPLEMENT_REAL_PROJECT_REGISTRY
+==========
+STATUS............: READY
+PRIORIDAD.........: P0
+OBJETIVO..........: Implementar registry real de proyectos desde 04_PROJECTS sin mocks y exponerlo al Portfolio read-only.
+BLOCKED_BY.........: NONE_AFTER_010J_IF_GIT_CLEAN
+DONE_WHEN.........: window.HIA_PROJECTS_REAL contiene solo proyectos reales descubiertos, Portfolio puede consumirlo, y no hay datos inventados.
+==========

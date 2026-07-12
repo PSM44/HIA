@@ -1,0 +1,46 @@
+PRJPB_010J.DEFINE_REAL_MULTIPROJECT_SLICE
+STATUS............: DONE_CANDIDATE
+CREATED_LOCAL.....: 2026-07-11 21:21:53 -04:00
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+
+01.00 PURPOSE
+Define the next real multi-project slice without mocks and update continuity.
+
+02.00 CURRENT_REAL_PROJECT_INVENTORY
+SOURCE............: filesystem:04_PROJECTS
+REAL_PROJECT_COUNT: 1
+
+- PRJ_0001_HIA.PRODUCT | state=True | baton=True | backlog=True
+
+03.00 NO_FAKE_DATA_POLICY
+- Do not invent project IDs.
+- Do not invent project names.
+- Do not create demo projects.
+- Do not show multi-project totals unless derived from real 04_PROJECTS entries.
+- If a field is missing, show UNKNOWN or MISSING, not synthetic data.
+- Portfolio may list only discovered project folders that pass minimum shape checks.
+
+04.00 MINIMUM_REAL_PROJECT_SHAPE
+A discovered project can enter the real registry if:
+- Path lives under 04_PROJECTS.
+- Folder name starts with PRJ_.
+- It has at least one of STATE, BATON, AGILE or DELIVERY evidence.
+
+05.00 NEXT_IMPLEMENTATION_TARGET
+- File candidate: 01_UI/web/control-tower-shell/assets/hia.projects.real.js
+- Global candidate: window.HIA_PROJECTS_REAL
+- Source: filesystem:04_PROJECTS
+- Consumer: Portfolio real minimum
+- Mode: READ_ONLY
+- No write actions.
+
+06.00 ACCEPTANCE_CRITERIA_FOR_PRJPB_010K
+- Generated registry contains only real discovered project folders.
+- Registry exposes project_id, path, evidence shape and source.
+- Portfolio consumes registry if present.
+- Portfolio does not invent projects if registry is absent.
+- Browser exposes validation global.
+- Git clean final.
+
+07.00 NEXT_RECOMMENDATION
+PRJPB_010K | implementar registry real de proyectos desde 04_PROJECTS sin mocks | ready
