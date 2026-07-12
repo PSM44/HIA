@@ -2446,3 +2446,13 @@ OBJETIVO..........: Definir proximo slice funcional post registry real y prepara
 BLOCKED_BY.........: NONE_AFTER_010L_IF_GIT_CLEAN
 DONE_WHEN.........: Siguiente minibattle queda definido o se ejecuta cierre de sesion con CURRENT_STATE/RADAR/BATON actualizados.
 ==========
+
+==========
+PRJPB_010N_IMPLEMENT_PROJECT_WORKSPACE_REAL_MINIMUM
+==========
+STATUS............: READY
+PRIORIDAD.........: P0
+OBJETIVO..........: Implementar Project Workspace real minimum read-only desde evidencia real del proyecto.
+BLOCKED_BY.........: NONE_AFTER_010M_IF_GIT_CLEAN
+DONE_WHEN.........: Workspace page and JS expose window.HIA_PROJECT_WORKSPACE_REAL, consume real project evidence, show missing data honestly, and Git clean.
+==========

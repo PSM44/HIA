@@ -1,0 +1,58 @@
+PRJPB_010M.DEFINE_NEXT_FUNCTIONAL_SLICE
+STATUS............: DONE_CANDIDATE
+CREATED_LOCAL.....: 2026-07-11 22:04:58 -04:00
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+
+01.00 PURPOSE
+Define the next functional slice after Control Tower, Portfolio and real project registry are browser validated.
+
+02.00 CURRENT_BASELINE
+- Control Tower read-only shell: implemented.
+- Portfolio real minimum: implemented.
+- Control Tower <-> Portfolio navigation: implemented and validated.
+- Real project registry: implemented and browser validated.
+- Registry source: filesystem:04_PROJECTS.
+- Real project count: 1.
+- No fake data policy: active.
+
+03.00 NEXT_SLICE_DECISION
+Selected next slice:
+PRJPB_010N | implementar Project Workspace real minimum read-only desde evidencia del proyecto | ready
+
+04.00 RATIONALE
+The UI already has a Project Workspace entry, but it is not yet backed by a dedicated real workspace contract.
+After registry validation, the next natural layer is selected-project evidence:
+- CURRENT_STATE
+- BATON
+- BACKLOG
+- DELIVERY summaries
+No management demo claim yet.
+
+05.00 TARGET_FOR_PRJPB_010N
+Implement Project Workspace real minimum:
+- File candidate: 01_UI/web/control-tower-shell/project.workspace.real.v0.html
+- JS candidate: 01_UI/web/control-tower-shell/assets/hia.project.workspace.real.js
+- Launcher candidate: OPEN_REAL_PROJECT_WORKSPACE_READONLY.ps1 / .cmd
+- Global candidate: window.HIA_PROJECT_WORKSPACE_REAL
+- Source: PRJ_0001_HIA.PRODUCT real files
+- Mode: READ_ONLY
+- No write actions
+- No fake tasks
+- No fake costs
+- No fake milestones
+
+06.00 ACCEPTANCE_CRITERIA_FOR_PRJPB_010N
+- Git clean precheck.
+- Workspace page renders selected project ID.
+- Workspace consumes hia.state.js/HIA_UI_STATE and/or real project evidence.
+- Workspace exposes window.HIA_PROJECT_WORKSPACE_REAL.
+- It shows current state, next action and evidence status from real files.
+- If BATON/BACKLOG parsing is incomplete, show available/missing status, not invented content.
+- Browser validation can prove READ_ONLY and real source.
+- Git clean final.
+
+07.00 SESSION_CLOSE_NOTE
+This is also a safe checkpoint for session close if requested. If closing, run close workflow after updating CURRENT_STATE/RADAR/BATON.
+
+08.00 NEXT_RECOMMENDATION
+PRJPB_010N | implementar Project Workspace real minimum read-only desde evidencia del proyecto | ready

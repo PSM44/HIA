@@ -2786,3 +2786,22 @@ PURPOSE...........: Formalizar validacion browser del registry real de proyectos
 02.00_NEXT_ACTION
 - PRJPB_010M | definir proximo slice funcional post registry real y preparar cierre de sesion si corresponde | ready
 ==========
+
+==========
+SESSION_UPDATE_20260711_HIA_PRJPB_010M_DEFINE_NEXT_FUNCTIONAL_SLICE
+==========
+STATUS............: DONE_CANDIDATE
+FECHA_LOCAL.......: 2026-07-11 22:04:58 -04:00
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Definir proximo slice funcional post registry real.
+
+01.00_DONE_CONFIRMED
+- Registry real browser validated queda como baseline.
+- Siguiente slice seleccionado: Project Workspace real minimum.
+- Target global futuro: window.HIA_PROJECT_WORKSPACE_REAL.
+- Politica no-fake-data preservada.
+- Safe checkpoint for session close if requested.
+
+02.00_NEXT_ACTION
+- PRJPB_010N | implementar Project Workspace real minimum read-only desde evidencia del proyecto | ready
+==========
