@@ -2705,3 +2705,24 @@ PURPOSE...........: Integrar navegacion read-only entre Control Tower y Portfoli
 02.00_NEXT_ACTION
 - PRJPB_010I | validar navegacion Control Tower Portfolio en navegador y capturar cierre funcional | ready
 ==========
+
+==========
+SESSION_UPDATE_20260711_HIA_PRJPB_010I_FORMALIZE_NAV_BROWSER_VALIDATION
+==========
+STATUS............: DONE_CANDIDATE
+FECHA_LOCAL.......: 2026-07-11 21:18:00 -04:00
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Formalizar browser validation de navegacion Control Tower Portfolio.
+
+01.00_DONE_CONFIRMED
+- Navigation browser validation: PASS.
+- Control Tower nav visible and source real.
+- Portfolio nav visible and PASS banner confirmed.
+- window.HIA_NAVIGATION_STATE.write_mode = READ_ONLY.
+- window.HIA_NAVIGATION_STATE.source = hia.state.js:HIA_REAL_STATE.
+- window.HIA_PORTFOLIO_REAL_MINIMUM.gate undefined in Control Tower is expected; object is scoped to Portfolio.
+- UI read-only loop Control Tower Portfolio is functionally closed.
+
+02.00_NEXT_ACTION
+- PRJPB_010J | definir siguiente slice multi-proyecto real sin mocks y actualizar continuidad | ready
+==========

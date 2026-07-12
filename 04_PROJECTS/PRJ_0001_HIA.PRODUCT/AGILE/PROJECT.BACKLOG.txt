@@ -2406,3 +2406,13 @@ OBJETIVO..........: Validar navegacion Control Tower Portfolio en navegador y ca
 BLOCKED_BY.........: NONE_AFTER_010H_IF_GIT_CLEAN
 DONE_WHEN.........: Links Control Tower Portfolio funcionan, window.HIA_NAVIGATION_STATE existe, Portfolio gate PASS, Git clean.
 ==========
+
+==========
+PRJPB_010J_DEFINE_REAL_MULTIPROJECT_SLICE
+==========
+STATUS............: READY
+PRIORIDAD.........: P0
+OBJETIVO..........: Definir siguiente slice multi-proyecto real sin mocks, con alcance minimo, fuentes reales y criterio de no inventar datos.
+BLOCKED_BY.........: NONE_AFTER_010I_IF_GIT_CLEAN
+DONE_WHEN.........: Scope PRJPB_010J queda definido con input sources, expected files, no-fake-data policy y next implementation minibattle.
+==========

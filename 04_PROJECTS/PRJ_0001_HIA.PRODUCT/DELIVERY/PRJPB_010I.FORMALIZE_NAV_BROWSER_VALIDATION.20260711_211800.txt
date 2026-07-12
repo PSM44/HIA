@@ -1,0 +1,41 @@
+PRJPB_010I.FORMALIZE_NAV_BROWSER_VALIDATION
+STATUS............: DONE_CANDIDATE
+CREATED_LOCAL.....: 2026-07-11 21:18:00 -04:00
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+
+01.00 PURPOSE
+Formalize browser validation for read-only navigation between Control Tower and Portfolio.
+
+02.00 HUMAN_BROWSER_VALIDATION
+Control Tower page:
+- Top navigation visible.
+- Open Portfolio link visible and usable.
+- window.HIA_NAVIGATION_STATE.write_mode = READ_ONLY.
+- window.HIA_NAVIGATION_STATE.source = hia.state.js:HIA_REAL_STATE.
+
+Portfolio page:
+- Top navigation visible.
+- Open Control Tower link visible and usable.
+- Banner visible: PASS - Portfolio is consuming real HIA state through HIA_UI_STATE.
+- Portfolio source visible: hia.state.js:HIA_REAL_STATE.
+- Portfolio evidence visible: FRESH.
+- Portfolio resolver visible: CURRENT_STATE_PRIMARY.
+
+03.00 CONSOLE_RESULTS_PROVIDED_BY_HUMAN
+- window.HIA_NAVIGATION_STATE returned page Control Tower, source hia.state.js:HIA_REAL_STATE, project_id PRJ_0001_HIA.PRODUCT.
+- window.HIA_NAVIGATION_STATE.write_mode returned READ_ONLY.
+- window.HIA_NAVIGATION_STATE.source returned hia.state.js:HIA_REAL_STATE.
+- window.HIA_PORTFOLIO_REAL_MINIMUM.gate returned undefined when executed from Control Tower; this is expected because the object exists only on Portfolio.
+- Visual Portfolio validation confirmed PASS.
+
+04.00 STATIC_FILE_VALIDATION
+- Control Tower includes hia.nav.css and hia.nav.js.
+- Portfolio includes hia.nav.css and hia.nav.js.
+- hia.nav.js exposes window.HIA_NAVIGATION_STATE.
+- hia.portfolio.real.js exposes window.HIA_PORTFOLIO_REAL_MINIMUM.
+
+05.00 DECISION
+PRJPB_010I browser validation PASS. Navigation loop is functionally closed for read-only Control Tower and Portfolio.
+
+06.00 NEXT_RECOMMENDATION
+PRJPB_010J | definir siguiente slice multi-proyecto real sin mocks y actualizar continuidad | ready
