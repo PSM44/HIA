@@ -5,151 +5,55 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>HIA Portfolio - Real Minimum</title>
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #0f172a;
-      --panel: #111827;
-      --panel2: #172033;
-      --line: #334155;
-      --text: #e5e7eb;
-      --muted: #94a3b8;
-      --ok: #86efac;
-      --warn: #fde68a;
-      --bad: #fca5a5;
-      --chip: #1e293b;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-      background: radial-gradient(circle at top left, #1e293b 0, #0f172a 45%, #020617 100%);
-      color: var(--text);
-    }
-    header {
-      padding: 28px 32px 20px;
-      border-bottom: 1px solid var(--line);
-      background: rgba(15,23,42,.88);
-      position: sticky;
-      top: 0;
-      backdrop-filter: blur(10px);
-      z-index: 2;
-    }
-    h1 { margin: 0 0 8px; font-size: 24px; letter-spacing: .2px; }
-    .subtitle { color: var(--muted); font-size: 14px; }
-    main { padding: 24px 32px 48px; max-width: 1240px; margin: 0 auto; }
-    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
-    .card {
-      background: linear-gradient(180deg, rgba(23,32,51,.98), rgba(17,24,39,.98));
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 18px;
-      box-shadow: 0 16px 36px rgba(0,0,0,.24);
-    }
-    .span-12 { grid-column: span 12; }
-    .span-8 { grid-column: span 8; }
-    .span-6 { grid-column: span 6; }
-    .span-4 { grid-column: span 4; }
-    h2 { margin: 0 0 12px; font-size: 15px; color: #cbd5e1; text-transform: uppercase; letter-spacing: .08em; }
-    .value { font-size: 18px; line-height: 1.35; overflow-wrap: anywhere; }
-    .muted { color: var(--muted); }
-    .mono { font-family: Consolas, "SFMono-Regular", ui-monospace, monospace; }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-    .chip {
-      padding: 6px 9px;
-      border-radius: 999px;
-      background: var(--chip);
-      border: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 12px;
-    }
-    .chip.ok { color: var(--ok); border-color: rgba(134,239,172,.45); }
-    .chip.warn { color: var(--warn); border-color: rgba(253,230,138,.45); }
-    .chip.bad { color: var(--bad); border-color: rgba(252,165,165,.45); }
-    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
-    td { border-top: 1px solid rgba(148,163,184,.18); padding: 10px 0; vertical-align: top; }
-    td:first-child { color: var(--muted); width: 210px; padding-right: 18px; }
-    ul { margin: 8px 0 0 18px; padding: 0; }
-    li { margin: 7px 0; color: #cbd5e1; }
-    .banner {
-      border: 1px solid rgba(147,197,253,.45);
-      background: rgba(30,64,175,.16);
-      border-radius: 12px;
-      padding: 12px 14px;
-      color: #bfdbfe;
-    }
-    @media (max-width: 900px) {
-      .span-8, .span-6, .span-4 { grid-column: span 12; }
-      header, main { padding-left: 18px; padding-right: 18px; }
-    }
-  </style>
   <link rel="stylesheet" href="assets/hia.nav.css">
+  <style>
+    :root { color-scheme: dark; --bg:#0f172a; --panel:#111827; --line:#334155; --text:#e5e7eb; --muted:#94a3b8; --ok:#86efac; --warn:#fde68a; --bad:#fca5a5; --chip:#1e293b; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:"Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,Arial,sans-serif; background:radial-gradient(circle at top left,#1e293b 0,#0f172a 45%,#020617 100%); color:var(--text); }
+    header { padding:28px 32px 20px; border-bottom:1px solid var(--line); background:rgba(15,23,42,.88); }
+    h1 { margin:0 0 8px; font-size:24px; letter-spacing:.2px; }
+    .subtitle { color:var(--muted); font-size:14px; }
+    main { padding:24px 32px 48px; max-width:1240px; margin:0 auto; }
+    .grid { display:grid; grid-template-columns:repeat(12,1fr); gap:16px; }
+    .card { background:linear-gradient(180deg,rgba(23,32,51,.98),rgba(17,24,39,.98)); border:1px solid var(--line); border-radius:14px; padding:18px; box-shadow:0 16px 36px rgba(0,0,0,.24); }
+    .span-12 { grid-column:span 12; } .span-8 { grid-column:span 8; } .span-6 { grid-column:span 6; } .span-4 { grid-column:span 4; }
+    h2 { margin:0 0 12px; font-size:15px; color:#cbd5e1; text-transform:uppercase; letter-spacing:.08em; }
+    .value { font-size:18px; line-height:1.35; overflow-wrap:anywhere; }
+    .muted { color:var(--muted); }
+    .mono { font-family:Consolas,"SFMono-Regular",ui-monospace,monospace; }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+    .chip { padding:6px 9px; border-radius:999px; background:var(--chip); border:1px solid var(--line); color:var(--muted); font-size:12px; }
+    .chip.ok { color:var(--ok); border-color:rgba(134,239,172,.45); }
+    .chip.warn { color:var(--warn); border-color:rgba(253,230,138,.45); }
+    .chip.bad { color:var(--bad); border-color:rgba(252,165,165,.45); }
+    table { width:100%; border-collapse:collapse; margin-top:8px; }
+    td { border-top:1px solid rgba(148,163,184,.18); padding:10px 0; vertical-align:top; }
+    td:first-child { color:var(--muted); width:210px; padding-right:18px; }
+    ul { margin:8px 0 0 18px; padding:0; }
+    li { margin:7px 0; color:#cbd5e1; }
+    .banner { border:1px solid rgba(147,197,253,.45); background:rgba(30,64,175,.16); border-radius:12px; padding:12px 14px; color:#bfdbfe; }
+    @media (max-width:900px) { .span-8,.span-6,.span-4 { grid-column:span 12; } header,main { padding-left:18px; padding-right:18px; } }
+  </style>
 </head>
 <body>
   <header>
     <h1>HIA Portfolio - Real Minimum</h1>
-    <div class="subtitle">
-      Read-only portfolio slice. Source: <span class="mono" id="sourceLabel">loading...</span>
-    </div>
+    <div class="subtitle">Read-only portfolio slice. Source: <span class="mono" id="sourceLabel">loading...</span></div>
   </header>
-
   <main>
     <div class="grid">
-      <section class="card span-12">
-        <h2>Gate</h2>
-        <div id="gateBanner" class="banner">Loading HIA_UI_STATE...</div>
-        <div class="chips" id="gateChips"></div>
-      </section>
-
-      <section class="card span-8">
-        <h2>Active project</h2>
-        <div class="value mono" id="projectId">-</div>
-        <table>
-          <tr><td>Branch</td><td class="mono" id="branch">-</td></tr>
-          <tr><td>Next action</td><td id="nextAction">-</td></tr>
-          <tr><td>Decision</td><td id="decision">-</td></tr>
-          <tr><td>Session</td><td id="session">-</td></tr>
-        </table>
-      </section>
-
-      <section class="card span-4">
-        <h2>Evidence</h2>
-        <div class="value" id="evidence">-</div>
-        <div class="chips">
-          <span class="chip" id="currentStateStatus">current_state_status</span>
-          <span class="chip" id="resolverStatus">resolver_status</span>
-        </div>
-      </section>
-
-      <section class="card span-6">
-        <h2>Source contract</h2>
-        <table>
-          <tr><td>Contract version</td><td class="mono" id="contractVersion">-</td></tr>
-          <tr><td>Source</td><td class="mono" id="source">-</td></tr>
-          <tr><td>Candidate</td><td class="mono" id="candidate">-</td></tr>
-          <tr><td>Semantic hash</td><td class="mono" id="semanticHash">-</td></tr>
-        </table>
-      </section>
-
-      <section class="card span-6">
-        <h2>Rules</h2>
-        <ul>
-          <li>No write actions in this screen.</li>
-          <li>No mock project list.</li>
-          <li>No management demo claim yet.</li>
-          <li>If source is fallback, treat as warning.</li>
-        </ul>
-      </section>
-
-      <section class="card span-12">
-        <h2>Warnings</h2>
-        <ul id="warnings"></ul>
-      </section>
+      <section class="card span-12"><h2>Gate</h2><div id="gateBanner" class="banner">Loading HIA_UI_STATE...</div><div class="chips" id="gateChips"></div></section>
+      <section class="card span-8"><h2>Active project</h2><div class="value mono" id="projectId">-</div><table><tr><td>Branch</td><td class="mono" id="branch">-</td></tr><tr><td>Next action</td><td id="nextAction">-</td></tr><tr><td>Decision</td><td id="decision">-</td></tr><tr><td>Session</td><td id="session">-</td></tr></table></section>
+      <section class="card span-4"><h2>Evidence</h2><div class="value" id="evidence">-</div><div class="chips"><span class="chip" id="currentStateStatus">current_state_status</span><span class="chip" id="resolverStatus">resolver_status</span></div></section>
+      <section class="card span-6"><h2>Source contract</h2><table><tr><td>Contract version</td><td class="mono" id="contractVersion">-</td></tr><tr><td>Source</td><td class="mono" id="source">-</td></tr><tr><td>Candidate</td><td class="mono" id="candidate">-</td></tr><tr><td>Semantic hash</td><td class="mono" id="semanticHash">-</td></tr></table></section>
+      <section class="card span-6"><h2>Rules</h2><ul><li>No write actions in this screen.</li><li>No mock project list.</li><li>No management demo claim yet.</li><li>If source is fallback, treat as warning.</li></ul></section>
+      <section class="card span-12"><h2>Real project registry</h2><div id="realProjectsRegistry" class="muted">Loading real project registry...</div></section>
+      <section class="card span-12"><h2>Warnings</h2><ul id="warnings"></ul></section>
     </div>
   </main>
-
   <script src="assets/hia.state.js"></script>
   <script src="assets/hia.ui.contract.js"></script>
+  <script src="assets/hia.projects.real.js"></script>
   <script src="assets/hia.portfolio.real.js"></script>
   <script src="assets/hia.nav.js"></script>
 </body>

@@ -1,8 +1,8 @@
 // ========== HIA CONTROL TOWER REAL READ-ONLY STATE ==========
-// ID_UNICO..........: PRJPB_010J_DEFINE_REAL_MULTIPROJECT_SLICE
-// GENERATED_AT......: 2026-07-11 21:21:53 -04:00
-// GENERATED_UTC.....: 2026-07-12T01:21:53.8132278Z
-// SOURCE............: CURRENT_STATE refreshed after navigation validation
+// ID_UNICO..........: PRJPB_010K_R3_IMPLEMENT_REAL_PROJECT_REGISTRY
+// GENERATED_AT......: 2026-07-11 21:44:12 -04:00
+// GENERATED_UTC.....: 2026-07-12T01:44:12.5610307Z
+// SOURCE............: CURRENT_STATE refreshed after real project registry implementation
 // MODE..............: READ_ONLY_SNAPSHOT
 // WRITE_MODE........: READ_ONLY
 // DO_NOT_USE_AS_CANON: YES
@@ -12,43 +12,35 @@ window.HIA_REAL_STATE = Object.freeze({
     "project":  {
                     "id":  "PRJ_0001_HIA.PRODUCT",
                     "root_win":  "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA",
-                    "root_wsl":  "/mnt/c/01. GitHub/Wings3.0/01_PROJECTS/HIA",
                     "branch":  "feat/20260405-console-v2-phase1-phase2",
-                    "generated_from_head_before_commit":  "bb767d7",
-                    "generated_from_head_message_before_commit":  "20260711_HIA_PRJPB_010I_formalize_nav_browser_validation"
+                    "generated_from_head_before_commit":  "6f448a4"
                 },
     "continuity":  {
-                       "next_action":  "PRJPB_010K | implementar registry real de proyectos desde 04_PROJECTS sin mocks | ready",
-                       "resume_recommendation":  "PRJPB_010K | implementar registry real de proyectos desde 04_PROJECTS sin mocks | ready",
+                       "next_action":  "PRJPB_010L | validar registry real de proyectos en navegador y refrescar continuidad | ready",
                        "evidence_state":  "FRESH",
                        "evidence_consistency":  "CONSISTENT",
                        "session_status":  "active",
-                       "generated_local":  "2026-07-11 21:21:53 -04:00",
-                       "generated_utc":  "2026-07-12T01:21:53.8132278Z",
+                       "generated_local":  "2026-07-11 21:44:12 -04:00",
+                       "generated_utc":  "2026-07-12T01:44:12.5610307Z",
                        "resolver_status":  "CURRENT_STATE_PRIMARY",
                        "source":  "CURRENT_STATE",
-                       "current_state_source":  "CURRENT_STATE",
                        "current_state_status":  "VALID",
-                       "current_state_path":  "04_PROJECTS/PRJ_0001_HIA.PRODUCT/STATE/CURRENT_STATE.json",
-                       "fallback_warning":  "N/A"
+                       "current_state_path":  "04_PROJECTS/PRJ_0001_HIA.PRODUCT/STATE/CURRENT_STATE.json"
                    },
     "multiproject":  {
-                         "status":  "DEFINED_SCOPE",
+                         "status":  "IMPLEMENTED_CANDIDATE",
                          "source":  "filesystem:04_PROJECTS",
+                         "registry_global":  "window.HIA_PROJECTS_REAL",
+                         "registry_file":  "01_UI/web/control-tower-shell/assets/hia.projects.real.js",
                          "real_project_count":  1,
-                         "registry_global_candidate":  "window.HIA_PROJECTS_REAL",
-                         "registry_file_candidate":  "01_UI/web/control-tower-shell/assets/hia.projects.real.js",
                          "no_fake_data":  true
                      },
     "ui":  {
-               "control_tower_portfolio_navigation":  "PASS",
+               "portfolio_registry":  "IMPLEMENTED_CANDIDATE",
                "source":  "hia.state.js:HIA_REAL_STATE",
-               "write_mode":  "READ_ONLY",
-               "functional_ui_loop":  "CLOSED"
+               "write_mode":  "READ_ONLY"
            },
     "warnings":  [
-                     "Multi-project view is not implemented yet.",
-                     "Only real 04_PROJECTS directories may be listed in PRJPB_010K.",
-                     "No fake project data is allowed."
+                     "Validate registry in browser before treating it as closed."
                  ]
 });

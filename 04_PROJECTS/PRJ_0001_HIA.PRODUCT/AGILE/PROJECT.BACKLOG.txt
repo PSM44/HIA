@@ -2426,3 +2426,13 @@ OBJETIVO..........: Implementar registry real de proyectos desde 04_PROJECTS sin
 BLOCKED_BY.........: NONE_AFTER_010J_IF_GIT_CLEAN
 DONE_WHEN.........: window.HIA_PROJECTS_REAL contiene solo proyectos reales descubiertos, Portfolio puede consumirlo, y no hay datos inventados.
 ==========
+
+==========
+PRJPB_010L_VALIDATE_REAL_PROJECT_REGISTRY_BROWSER
+==========
+STATUS............: READY
+PRIORIDAD.........: P0
+OBJETIVO..........: Validar registry real de proyectos en navegador y refrescar continuidad.
+BLOCKED_BY.........: NONE_AFTER_010K_R2_IF_GIT_CLEAN
+DONE_WHEN.........: window.HIA_PROJECTS_REAL and window.HIA_PROJECTS_REAL_VIEW pass, Portfolio gate remains PASS, Git clean.
+==========

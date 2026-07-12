@@ -1,0 +1,34 @@
+PRJPB_010K-R3.IMPLEMENT_REAL_PROJECT_REGISTRY
+STATUS............: DONE_CANDIDATE
+CREATED_LOCAL.....: 2026-07-11 21:44:12 -04:00
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+
+01.00 PURPOSE
+Repair failed PRJPB_010K/R2 and implement real project registry from 04_PROJECTS without mocks.
+
+02.00 REGISTRY
+FILE..............: 01_UI/web/control-tower-shell/assets/hia.projects.real.js
+GLOBAL............: window.HIA_PROJECTS_REAL
+SOURCE............: filesystem:04_PROJECTS
+MODE..............: READ_ONLY
+NO_FAKE_DATA......: YES
+PROJECT_COUNT.....: 1
+
+03.00 PROJECTS_DISCOVERED
+- PRJ_0001_HIA.PRODUCT | evidence=FRESH | session=active | source=STATE/CURRENT_STATE.json
+
+04.00 PORTFOLIO_INTEGRATION
+- Portfolio loads assets/hia.projects.real.js before hia.portfolio.real.js.
+- Portfolio renders Real project registry section.
+- Browser exposes window.HIA_PROJECTS_REAL_VIEW.
+- If registry is missing, Portfolio shows missing registry and does not invent projects.
+
+05.00 EXPECTED_BROWSER_VALIDATION
+- window.HIA_PROJECTS_REAL.project_count = 1
+- window.HIA_PROJECTS_REAL.no_fake_data = true
+- window.HIA_PROJECTS_REAL_VIEW.status = PASS
+- window.HIA_PROJECTS_REAL_VIEW.no_fake_data = true
+- window.HIA_PORTFOLIO_REAL_MINIMUM.gate = PASS
+
+06.00 NEXT_RECOMMENDATION
+PRJPB_010L | validar registry real de proyectos en navegador y refrescar continuidad | ready
