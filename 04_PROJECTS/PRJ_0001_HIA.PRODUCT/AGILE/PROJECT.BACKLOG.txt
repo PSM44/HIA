@@ -2436,3 +2436,13 @@ OBJETIVO..........: Validar registry real de proyectos en navegador y refrescar 
 BLOCKED_BY.........: NONE_AFTER_010K_R2_IF_GIT_CLEAN
 DONE_WHEN.........: window.HIA_PROJECTS_REAL and window.HIA_PROJECTS_REAL_VIEW pass, Portfolio gate remains PASS, Git clean.
 ==========
+
+==========
+PRJPB_010M_DEFINE_NEXT_FUNCTIONAL_SLICE_OR_SESSION_CLOSE
+==========
+STATUS............: READY
+PRIORIDAD.........: P0
+OBJETIVO..........: Definir proximo slice funcional post registry real y preparar cierre de sesion si corresponde.
+BLOCKED_BY.........: NONE_AFTER_010L_IF_GIT_CLEAN
+DONE_WHEN.........: Siguiente minibattle queda definido o se ejecuta cierre de sesion con CURRENT_STATE/RADAR/BATON actualizados.
+==========

@@ -1,43 +1,51 @@
 {
     "schema":  "HIA_CURRENT_STATE.v1",
     "project_id":  "PRJ_0001_HIA.PRODUCT",
-    "generated_local":  "2026-07-11 21:44:12 -04:00",
-    "generated_utc":  "2026-07-12T01:44:12.5610307Z",
-    "generator":  "manual-script:PRJPB_010K_R3_IMPLEMENT_REAL_PROJECT_REGISTRY",
-    "current_objective":  "Implement real project registry from 04_PROJECTS without mocks.",
+    "generated_local":  "2026-07-11 21:53:43 -04:00",
+    "generated_utc":  "2026-07-12T01:53:43.1771457Z",
+    "generator":  "manual-script:PRJPB_010L_FORMALIZE_REAL_PROJECT_REGISTRY_VALIDATION",
+    "current_objective":  "Formalize browser validation for real project registry.",
     "next_action":  {
-                        "id":  "PRJPB_010L",
-                        "title":  "validar registry real de proyectos en navegador y refrescar continuidad",
+                        "id":  "PRJPB_010M",
+                        "title":  "definir proximo slice funcional post registry real y preparar cierre de sesion si corresponde",
                         "status":  "ready",
-                        "raw":  "PRJPB_010L | validar registry real de proyectos en navegador y refrescar continuidad | ready",
-                        "source":  "PRJPB_010K-R3 done candidate",
-                        "text":  "PRJPB_010L | validar registry real de proyectos en navegador y refrescar continuidad | ready"
+                        "raw":  "PRJPB_010M | definir proximo slice funcional post registry real y preparar cierre de sesion si corresponde | ready",
+                        "source":  "PRJPB_010L browser validation PASS",
+                        "text":  "PRJPB_010M | definir proximo slice funcional post registry real y preparar cierre de sesion si corresponde | ready"
                     },
     "evidence":  {
                      "state":  "FRESH",
                      "consistency":  "CONSISTENT",
-                     "captured_utc":  "2026-07-12T01:44:12.5610307Z"
+                     "captured_utc":  "2026-07-12T01:53:43.1771457Z"
                  },
     "session":  {
                     "status":  "active",
-                    "last_session_id":  "SESSION_CONTINUE_20260711_HIA_PRJPB_010K_R3"
+                    "last_session_id":  "SESSION_CONTINUE_20260711_HIA_PRJPB_010L"
                 },
     "git":  {
                 "branch":  "feat/20260405-console-v2-phase1-phase2",
-                "head_short":  "6f448a4",
-                "head_message":  "20260711_HIA_PRJPB_010J_define_real_multiproject_slice",
-                "head_before_commit":  "6f448a4 20260711_HIA_PRJPB_010J_define_real_multiproject_slice"
+                "head_short":  "751f105",
+                "head_message":  "20260711_HIA_PRJPB_010K_R3_implement_real_project_registry",
+                "head_before_commit":  "751f105 20260711_HIA_PRJPB_010K_R3_implement_real_project_registry"
             },
     "policy":  {
                    "no_fake_data":  true,
                    "fallback_allowed":  true
                },
     "multiproject":  {
-                         "status":  "IMPLEMENTED_CANDIDATE",
+                         "status":  "BROWSER_VALIDATED",
                          "source":  "filesystem:04_PROJECTS",
                          "registry_global":  "window.HIA_PROJECTS_REAL",
+                         "registry_view_global":  "window.HIA_PROJECTS_REAL_VIEW",
                          "registry_file":  "01_UI/web/control-tower-shell/assets/hia.projects.real.js",
                          "real_project_count":  1,
-                         "no_fake_data":  true
-                     }
+                         "no_fake_data":  true,
+                         "browser_validation":  "PASS"
+                     },
+    "ui_validation":  {
+                          "portfolio_gate":  "PASS",
+                          "projects_registry_view":  "PASS",
+                          "source":  "hia.state.js:HIA_REAL_STATE",
+                          "write_mode":  "READ_ONLY"
+                      }
 }

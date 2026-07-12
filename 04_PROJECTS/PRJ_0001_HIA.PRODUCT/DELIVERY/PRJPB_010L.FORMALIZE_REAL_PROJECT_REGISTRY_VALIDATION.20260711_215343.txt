@@ -1,0 +1,36 @@
+PRJPB_010L.FORMALIZE_REAL_PROJECT_REGISTRY_VALIDATION
+STATUS............: DONE_CANDIDATE
+CREATED_LOCAL.....: 2026-07-11 21:53:43 -04:00
+PROJECT_ID........: PRJ_0001_HIA.PRODUCT
+
+01.00 PURPOSE
+Formalize browser validation for the real project registry and refresh continuity.
+
+02.00 HUMAN_BROWSER_VALIDATION
+Visual validation:
+- Real project registry section visible.
+- Shows 1 real project from filesystem:04_PROJECTS.
+- Shows PRJ_0001_HIA.PRODUCT.
+- Shows Source: STATE/CURRENT_STATE.json.
+- Portfolio gate remains PASS.
+
+Console validation:
+- window.HIA_PROJECTS_REAL.project_count = 1.
+- window.HIA_PROJECTS_REAL.no_fake_data = true.
+- window.HIA_PROJECTS_REAL_VIEW.status = PASS.
+- window.HIA_PROJECTS_REAL_VIEW.no_fake_data = true.
+- window.HIA_PORTFOLIO_REAL_MINIMUM.gate = PASS.
+
+03.00 STATIC_VALIDATION
+- hia.projects.real.js exposes window.HIA_PROJECTS_REAL.
+- Registry source is filesystem:04_PROJECTS.
+- Registry no_fake_data is true.
+- Portfolio JS exposes window.HIA_PROJECTS_REAL_VIEW.
+- Portfolio HTML loads hia.projects.real.js.
+- Portfolio HTML includes realProjectsRegistry section.
+
+04.00 DECISION
+PRJPB_010L validation PASS. Real project registry is functionally validated in browser.
+
+05.00 NEXT_RECOMMENDATION
+PRJPB_010M | definir proximo slice funcional post registry real y preparar cierre de sesion si corresponde | ready
