@@ -268,3 +268,23 @@ eview to terminate with exit code 4 before projecting the canonical next action.
 Never access optional deserialized JSON properties directly under Set-StrictMode. First confirm the parent object and property metadata exist.
 
 Promotion status: proposed, not canonical.
+
+---
+
+## 2026-07-13 — Release gates must validate every active projection layer
+
+### Confirmed pattern
+
+A canonical state can be valid while user-facing CLI projections still fail because of an adapter defect.
+
+### Reusable gate
+
+Before closing a state-transition minibattle:
+1. validate the canonical JSON state;
+2. validate generated web state;
+3. validate all active CLI projections;
+4. validate the canonical generator in CHECK mode;
+5. execute the strict validator with the expected next-action ID passed explicitly;
+6. claim production readiness only through a separate production gate.
+
+Promotion status: proposed, not canonical.

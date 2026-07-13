@@ -1,17 +1,17 @@
 {
   "schema": "HIA_CURRENT_STATE.v1",
   "project_id": "PRJ_0001_HIA.PRODUCT",
-  "generated_local": "2026-07-13 16:18:44 -04:00",
-  "generated_utc": "2026-07-13T20:18:44.8480510Z",
-  "generator": "manual-script:PRJPB_010T_V_FORMALIZE_FOUR_SCREEN_NAV_PASS_R1",
-  "current_objective": "Four-screen HIA navigation is browser validated. Next: consolidate management-demo readiness and refresh strict RADAR.",
+  "generated_local": "2026-07-13 19:49:08 -04:00",
+  "generated_utc": "2026-07-13T23:49:08.7060793Z",
+  "generator": "manual-script:PRJPB_010U_CLOSE_PHASE_B_TO_010V_R14",
+  "current_objective": "Execute the final release-candidate gate for the browser-validated read-only management demo.",
   "next_action": {
-    "id": "PRJPB_010U",
-    "title": "consolidar readiness demo gerencial y refrescar RADAR estricto",
+    "id": "PRJPB_010V",
+    "title": "ejecutar gate final de release candidate para demo gerencial",
     "status": "ready",
-    "raw": "PRJPB_010U | consolidar readiness demo gerencial y refrescar RADAR estricto | ready",
-    "source": "PRJPB_010T-V human browser validation",
-    "text": "PRJPB_010U | consolidar readiness demo gerencial y refrescar RADAR estricto | ready"
+    "raw": "PRJPB_010V | ejecutar gate final de release candidate para demo gerencial | ready",
+    "source": "PRJPB_010U canonical RADAR, canonical state, CLI projections, and strict validator PASS",
+    "text": "PRJPB_010V | ejecutar gate final de release candidate para demo gerencial | ready"
   },
   "evidence": {
     "state": "FRESH",
@@ -25,9 +25,9 @@
   },
   "git": {
     "branch": "feat/20260405-console-v2-phase1-phase2",
-    "head_short": "54f0196",
-    "head_message": "pre-commit state for PRJPB_010T-V",
-    "head_before_commit": "54f0196 pre-commit PRJPB_010T-V"
+    "head_short": "29f2a53",
+    "head_message": "pre-close state for PRJPB_010U",
+    "head_before_commit": "29f2a53 pre-close PRJPB_010U"
   },
   "policy": {
     "no_fake_data": true,
@@ -40,10 +40,13 @@
     "navigation": "FOUR_SCREEN_BROWSER_VALIDATED",
     "real_project_registry": "DONE_BROWSER_VALIDATED",
     "project_workspace": "DONE_MODEL_BROWSER_VALIDATED",
-    "management_demo": "END_TO_END_READ_ONLY_BROWSER_VALIDATED"
+    "management_demo": "END_TO_END_READ_ONLY_BROWSER_VALIDATED_RADAR_REFRESHED",
+    "radar": "CANONICAL_REFRESH_PASS",
+    "cli_projection": "CONTINUE_STATUS_REVIEW_PASS",
+    "release_readiness_validator": "PASS_EXPECTED_PRJPB_010U"
   },
   "close": {
-    "status": "OPEN_FOUR_SCREEN_BROWSER_VALIDATED",
+    "status": "OPEN_RC_GATE_PENDING",
     "technical_debt_count": 5,
     "backlog_count": 6,
     "ideas_count": 5,
