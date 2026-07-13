@@ -1,17 +1,17 @@
 {
   "schema": "HIA_CURRENT_STATE.v1",
   "project_id": "PRJ_0001_HIA.PRODUCT",
-  "generated_local": "2026-07-13 13:12:00 -04:00",
-  "generated_utc": "2026-07-13T17:12:00.3826526Z",
-  "generator": "manual-script:PRJPB_010P_V_FORMALIZE_NAV_VALIDATION_R1",
-  "current_objective": "Three-screen navigation validated. Next: define Project Workspace evidence model without duplicating HUMAN sources.",
+  "generated_local": "2026-07-13 13:16:09 -04:00",
+  "generated_utc": "2026-07-13T17:16:09.4668341Z",
+  "generator": "manual-script:PRJPB_010Q_DEFINE_WORKSPACE_EVIDENCE_MODEL_REPAIR_R2",
+  "current_objective": "Project Workspace evidence model defined without duplicating HUMAN authority. Browser validation is next.",
   "next_action": {
-    "id": "PRJPB_010Q",
-    "title": "definir modelo Project Workspace para BATON BACKLOG DELIVERY sin duplicar HUMAN",
+    "id": "PRJPB_010Q-V",
+    "title": "validar modelo Project Workspace en navegador",
     "status": "ready",
-    "raw": "PRJPB_010Q | definir modelo Project Workspace para BATON BACKLOG DELIVERY sin duplicar HUMAN | ready",
-    "source": "PRJPB_010P-V human navigation validation",
-    "text": "PRJPB_010Q | definir modelo Project Workspace para BATON BACKLOG DELIVERY sin duplicar HUMAN | ready"
+    "raw": "PRJPB_010Q-V | validar modelo Project Workspace en navegador | ready",
+    "source": "PRJPB_010Q evidence model definition",
+    "text": "PRJPB_010Q-V | validar modelo Project Workspace en navegador | ready"
   },
   "evidence": {
     "state": "FRESH",
@@ -25,9 +25,9 @@
   },
   "git": {
     "branch": "feat/20260405-console-v2-phase1-phase2",
-    "head_short": "425836c",
-    "head_message": "pre-commit state for PRJPB_010P-V",
-    "head_before_commit": "425836c pre-commit PRJPB_010P-V"
+    "head_short": "39272fc",
+    "head_message": "pre-commit state for PRJPB_010Q repair",
+    "head_before_commit": "39272fc pre-commit PRJPB_010Q repair"
   },
   "policy": {
     "no_fake_data": true,
@@ -39,11 +39,11 @@
     "portfolio": "DONE",
     "navigation": "DONE_BROWSER_VALIDATED",
     "real_project_registry": "DONE_BROWSER_VALIDATED",
-    "project_workspace": "DONE_BROWSER_VALIDATED",
-    "management_demo": "READY_WITH_UX_OBSERVATION"
+    "project_workspace": "DONE_MODEL_STATIC_VALIDATION",
+    "management_demo": "READY_AFTER_MODEL_BROWSER_VALIDATION"
   },
   "close": {
-    "status": "OPEN_NAV_VALIDATED",
+    "status": "OPEN_MODEL_DEFINED",
     "technical_debt_count": 5,
     "backlog_count": 6,
     "ideas_count": 5,

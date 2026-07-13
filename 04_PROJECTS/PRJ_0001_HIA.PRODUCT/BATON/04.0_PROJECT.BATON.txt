@@ -2985,3 +2985,28 @@ PROYECTO..........: PRJ_0001_HIA.PRODUCT
 03.00_NEXT_ACTION
 - PRJPB_010Q | definir modelo Project Workspace para BATON BACKLOG DELIVERY sin duplicar HUMAN | ready
 ===============================================================================
+
+===============================================================================
+SESSION_UPDATE_20260713_HIA_PRJPB_010Q_DEFINE_WORKSPACE_EVIDENCE_MODEL
+===============================================================================
+STATUS............: DONE_STATIC_VALIDATION
+FECHA_LOCAL.......: 2026-07-13 13:16:09 -04:00
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+
+01.00_DONE
+- window.HIA_PROJECT_WORKSPACE_MODEL created.
+- CURRENT_STATE is primary visible state.
+- HUMAN is external authority.
+- HUMAN copy or inference prohibited.
+- BATON, BACKLOG, DELIVERY and Git roles defined.
+- Static checks: 9 PASS.
+- Node check: PASS.
+
+02.00_REPAIR_NOTE
+- Original validation used an exact JSON spacing match for write_mode.
+- Repaired validation uses semantic regex whitespace tolerance.
+- Model content itself was valid.
+
+03.00_NEXT_ACTION
+- PRJPB_010Q-V | validar modelo Project Workspace en navegador | ready
+===============================================================================

@@ -225,3 +225,10 @@ window.HIA_PROJECT_WORKSPACE_REAL = Object.freeze({
 
   render();
 })();
+window.HIA_PROJECT_WORKSPACE_MODEL_VIEW = Object.freeze({
+  status: window.HIA_PROJECT_WORKSPACE_MODEL?.validation?.gate || "UNKNOWN",
+  schema: window.HIA_PROJECT_WORKSPACE_MODEL?.schema || "UNKNOWN",
+  current_state_primary: window.HIA_PROJECT_WORKSPACE_MODEL?.validation?.current_state_primary === true,
+  human_not_duplicated: window.HIA_PROJECT_WORKSPACE_MODEL?.validation?.human_not_duplicated === true,
+  write_mode: window.HIA_PROJECT_WORKSPACE_MODEL?.validation?.write_mode || "UNKNOWN"
+});

@@ -1,0 +1,15 @@
+===============================================================================
+DELIVERY...........: PRJPB_010Q DEFINE WORKSPACE EVIDENCE MODEL REPAIR R2
+PROJECT............: PRJ_0001_HIA.PRODUCT
+GENERATED_LOCAL....: 2026-07-13 13:16:09 -04:00
+HEAD_BEFORE........: 39272fc00fe85f6680d38e1ae76a52ac99dec5e1
+===============================================================================
+RESULT.............: PASS
+STATIC_CHECKS......: 9
+STATIC_FAILED......: 0
+NODE_CHECK.........: PASS
+REPAIR.............: Semantic whitespace-tolerant read_only validation.
+MODEL_GLOBAL.......: window.HIA_PROJECT_WORKSPACE_MODEL
+VIEW_GLOBAL........: window.HIA_PROJECT_WORKSPACE_MODEL_VIEW
+NEXT_ACTION........: PRJPB_010Q-V
+===============================================================================
