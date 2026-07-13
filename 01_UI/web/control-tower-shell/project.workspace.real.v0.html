@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HIA Project Workspace - Real Minimum</title>
+  <link rel="stylesheet" href="assets/hia.nav.css">
+  <style>
+    :root { color-scheme:dark; --bg:#020617; --panel:#111827; --panel2:#172033; --line:#334155; --text:#e5e7eb; --muted:#94a3b8; --ok:#86efac; --warn:#fde68a; --bad:#fca5a5; --chip:#1e293b; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:"Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,Arial,sans-serif; background:radial-gradient(circle at top left,#1e293b 0,#0f172a 42%,#020617 100%); color:var(--text); }
+    header { padding:26px 32px 18px; border-bottom:1px solid var(--line); background:rgba(15,23,42,.9); }
+    h1 { margin:0 0 7px; font-size:25px; }
+    .subtitle,.muted { color:var(--muted); }
+    main { max-width:1280px; margin:0 auto; padding:24px 32px 48px; }
+    .grid { display:grid; grid-template-columns:repeat(12,1fr); gap:16px; }
+    .card { background:linear-gradient(180deg,rgba(23,32,51,.98),rgba(17,24,39,.98)); border:1px solid var(--line); border-radius:15px; padding:18px; box-shadow:0 16px 36px rgba(0,0,0,.24); }
+    .span-12 { grid-column:span 12; } .span-8 { grid-column:span 8; } .span-6 { grid-column:span 6; } .span-4 { grid-column:span 4; } .span-3 { grid-column:span 3; }
+    h2 { margin:0 0 12px; font-size:14px; text-transform:uppercase; letter-spacing:.08em; color:#cbd5e1; }
+    .value { font-size:18px; line-height:1.4; overflow-wrap:anywhere; }
+    .mono { font-family:Consolas,"SFMono-Regular",ui-monospace,monospace; }
+    .banner { padding:12px 14px; border-radius:12px; border:1px solid rgba(253,230,138,.45); background:rgba(161,98,7,.13); color:var(--warn); }
+    .banner.pass { border-color:rgba(134,239,172,.45); background:rgba(22,101,52,.15); color:var(--ok); }
+    .metric { font-size:30px; font-weight:800; }
+    .metric-label { margin-top:4px; color:var(--muted); font-size:12px; }
+    table { width:100%; border-collapse:collapse; }
+    th,td { text-align:left; vertical-align:top; border-top:1px solid rgba(148,163,184,.18); padding:10px 8px; }
+    th { color:#cbd5e1; font-size:12px; }
+    td { font-size:13px; }
+    td:first-child { width:190px; color:var(--muted); }
+    ul { margin:8px 0 0 18px; padding:0; }
+    li { margin:8px 0; line-height:1.4; }
+    .source { display:inline-flex; padding:5px 8px; border-radius:999px; border:1px solid var(--line); background:var(--chip); color:var(--muted); font-size:12px; }
+    @media(max-width:900px){ .span-8,.span-6,.span-4,.span-3{grid-column:span 12;} header,main{padding-left:18px;padding-right:18px;} }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>HIA Project Workspace - Real Minimum</h1>
+    <div class="subtitle">Read-only project evidence surface. No write actions. No invented project data.</div>
+  </header>
+  <main>
+    <div class="grid">
+      <section class="card span-12">
+        <h2>Implementation gate</h2>
+        <div id="gateBanner" class="banner">Loading real Project Workspace contract...</div>
+      </section>
+
+      <section class="card span-8">
+        <h2>Project continuity</h2>
+        <div id="projectId" class="value mono">-</div>
+        <table>
+          <tr><td>Current objective</td><td id="objective">-</td></tr>
+          <tr><td>Next action</td><td id="nextAction">-</td></tr>
+          <tr><td>Evidence</td><td id="evidence">-</td></tr>
+          <tr><td>Session</td><td id="session">-</td></tr>
+          <tr><td>Write mode</td><td id="writeMode">-</td></tr>
+        </table>
+      </section>
+
+      <section class="card span-4">
+        <h2>Repository</h2>
+        <table>
+          <tr><td>Branch</td><td id="branch" class="mono">-</td></tr>
+          <tr><td>HEAD</td><td id="head" class="mono">-</td></tr>
+          <tr><td>Primary source</td><td id="sourcePrimary" class="mono">-</td></tr>
+          <tr><td>Generated</td><td id="generated">-</td></tr>
+        </table>
+      </section>
+
+      <section class="card span-3"><div id="debtCount" class="metric">-</div><div class="metric-label">Technical debt records</div></section>
+      <section class="card span-3"><div id="backlogCount" class="metric">-</div><div class="metric-label">Functional backlog records</div></section>
+      <section class="card span-3"><div id="ideaCount" class="metric">-</div><div class="metric-label">Ideas and opportunities</div></section>
+      <section class="card span-3"><div id="deliveryCount" class="metric">-</div><div class="metric-label">Latest deliveries shown</div></section>
+
+      <section class="card span-6">
+        <h2>Technical debt</h2>
+        <ul id="debtList"><li class="muted">Loading...</li></ul>
+      </section>
+
+      <section class="card span-6">
+        <h2>Functional backlog</h2>
+        <ul id="backlogList"><li class="muted">Loading...</li></ul>
+      </section>
+
+      <section class="card span-12">
+        <h2>Latest delivery evidence</h2>
+        <div style="overflow:auto">
+          <table>
+            <thead><tr><th>File</th><th>Modified</th><th>Bytes</th></tr></thead>
+            <tbody id="deliveryRows"><tr><td colspan="3" class="muted">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card span-12">
+        <h2>Missing or not integrated</h2>
+        <ul id="missingList"><li class="muted">Loading...</li></ul>
+      </section>
+
+      <section class="card span-12">
+        <span class="source">CURRENT_STATE primary</span>
+        <span class="source">BATON supporting</span>
+        <span class="source">BACKLOG supporting</span>
+        <span class="source">DELIVERY supporting</span>
+        <span class="source">Git supporting</span>
+      </section>
+    </div>
+  </main>
+
+  <script src="assets/hia.project.workspace.real.js"></script>
+</body>
+</html>

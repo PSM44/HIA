@@ -2853,3 +2853,31 @@ IDEA-005 | Usar Project Workspace como puente a gerencia: estado, evidencia, rie
 - WHOAMI detected: NO.
 - Strict RADAR freshness may require runtime RADAR after final close commit.
 ==========
+
+===============================================================================
+SESSION_UPDATE_20260711_HIA_PRJPB_010N_IMPLEMENT_PROJECT_WORKSPACE_REAL_MINIMUM
+===============================================================================
+STATUS............: DONE_STATIC_VALIDATION
+FECHA_LOCAL.......: 2026-07-12 22:37:24 -04:00
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Implementar Project Workspace real minimum read-only desde evidencia real.
+
+01.00_DONE_CONFIRMED
+- Creado: 01_UI/web/control-tower-shell/project.workspace.real.v0.html.
+- Creado: 01_UI/web/control-tower-shell/assets/hia.project.workspace.real.js.
+- Global expuesto: window.HIA_PROJECT_WORKSPACE_REAL.
+- Global de vista preparado: window.HIA_PROJECT_WORKSPACE_REAL_VIEW.
+- Fuentes: CURRENT_STATE, BATON, BACKLOG, DELIVERY y Git.
+- No-fake-data preservado.
+- Write actions expuestas: NO.
+- Validacion estatica: PASS.
+- Node syntax check: PASS.
+
+02.00_NOT_DONE
+- Browser validation pendiente.
+- Navegacion desde Control Tower pendiente; corresponde a PRJPB_010P.
+- RADAR post-commit pendiente de refresh runtime.
+
+03.00_NEXT_ACTION
+- PRJPB_010O | validar Project Workspace real minimum en navegador y formalizar cierre de loop | ready
+===============================================================================

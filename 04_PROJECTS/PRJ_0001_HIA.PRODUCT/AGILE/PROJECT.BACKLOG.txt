@@ -2488,3 +2488,18 @@ IDEA-005 | Usar Project Workspace como puente a gerencia: estado, evidencia, rie
 04.00_NEXT_READY
 - PRJPB_010N | implementar Project Workspace real minimum read-only desde evidencia del proyecto | ready
 ==========
+
+===============================================================================
+PRJPB_010N_IMPLEMENT_PROJECT_WORKSPACE_REAL_MINIMUM_RESULT
+===============================================================================
+STATUS............: DONE_STATIC_VALIDATION
+PRIORIDAD.........: P0
+OBJETIVO..........: Implementar Project Workspace real minimum read-only desde evidencia real.
+DONE_WHEN.........: Workspace page and JS expose window.HIA_PROJECT_WORKSPACE_REAL, consume real project evidence, show missing data honestly, and Git clean.
+RESULT.............: STATIC_IMPLEMENTATION_PASS
+FILES..............:
+- 01_UI/web/control-tower-shell/project.workspace.real.v0.html
+- 01_UI/web/control-tower-shell/assets/hia.project.workspace.real.js
+NEXT...............:
+- PRJPB_010O | validar Project Workspace real minimum en navegador y formalizar cierre de loop | ready
+===============================================================================
