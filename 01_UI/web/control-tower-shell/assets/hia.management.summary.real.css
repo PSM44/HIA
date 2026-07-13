@@ -1,0 +1,115 @@
+:root{
+  color-scheme:dark;
+  --bg:#0b1118;
+  --panel:#111923;
+  --panel-2:#17212d;
+  --border:#2a394a;
+  --text:#e8eef7;
+  --muted:#9fb0c3;
+  --good:#70d495;
+  --warn:#efc46b;
+  --accent:#75a7ff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+}
+.shell{max-width:1180px;margin:0 auto;padding:28px}
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start;
+  margin-bottom:22px;
+}
+.eyebrow{
+  color:var(--accent);
+  font-size:12px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  margin:0 0 8px;
+}
+h1{margin:0;font-size:32px;line-height:1.1}
+.subtitle{color:var(--muted);margin:8px 0 0;max-width:760px}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:12px;
+  white-space:nowrap;
+}
+.badge.good{color:var(--good);border-color:#356b49}
+.badge.warn{color:var(--warn);border-color:#6f5930}
+.nav{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:0 0 20px;
+}
+.nav a{
+  text-decoration:none;
+  color:var(--text);
+  border:1px solid var(--border);
+  background:var(--panel);
+  padding:8px 11px;
+  border-radius:999px;
+  font-size:12px;
+}
+.nav a[aria-current="page"]{
+  color:var(--good);
+  border-color:#356b49;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:16px;
+}
+.card{
+  grid-column:span 6;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:18px;
+}
+.card.wide{grid-column:span 12}
+.card.third{grid-column:span 4}
+.card h2{
+  margin:0 0 12px;
+  font-size:15px;
+}
+.value{
+  font-size:22px;
+  font-weight:700;
+  margin:0 0 6px;
+}
+.meta,.muted{color:var(--muted)}
+dl{display:grid;grid-template-columns:170px 1fr;gap:8px 14px;margin:0}
+dt{color:var(--muted)}
+dd{margin:0}
+ul{margin:0;padding-left:18px}
+li+li{margin-top:7px}
+.gate{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  padding:10px 0;
+  border-top:1px solid var(--border);
+}
+.gate:first-child{border-top:0;padding-top:0}
+.status-pass{color:var(--good)}
+.status-pending{color:var(--warn)}
+.footer{
+  margin-top:18px;
+  color:var(--muted);
+  font-size:12px;
+}
+@media(max-width:800px){
+  .card,.card.third,.card.wide{grid-column:span 12}
+  .topbar{flex-direction:column}
+  dl{grid-template-columns:1fr}
+}
