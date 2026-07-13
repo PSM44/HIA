@@ -2527,3 +2527,15 @@ FILES..............:
 NEXT...............:
 - PRJPB_010P-V | validar navegacion Control Tower Portfolio Project Workspace en navegador | ready
 ===============================================================================
+
+===============================================================================
+PRJPB_010P_ACCUMULATE_SKILLS_GRC_LEARNING
+===============================================================================
+STATUS............: DONE
+PURPOSE...........: Preserve browser-validation, PowerShell, diagnostics, retry-budget, temp-policy and upload-minimization lessons.
+ACCUMULATED_FILE..: 04_PROJECTS/PRJ_0001_HIA.PRODUCT/AGILE/PROPOSED_SKILLS_GRC.ACCUMULATED.md
+CANDIDATES........: 4 Skill candidates + 5 GRC candidates
+PROMOTION_STATUS..: PROPOSED_NOT_CANONICAL
+NEXT...............:
+- PRJPB_010P-V | validar navegacion Control Tower Portfolio Project Workspace en navegador | ready
+===============================================================================
