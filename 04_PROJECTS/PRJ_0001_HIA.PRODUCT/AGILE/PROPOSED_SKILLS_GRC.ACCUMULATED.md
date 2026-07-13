@@ -247,3 +247,24 @@ equired_final_state are separate contracts.
 - Repair scripts must be idempotency-aware and avoid duplicating append-only records.
 
 Promotion status: proposed, not canonical.
+
+---
+
+## 2026-07-13 — Optional JSON properties must be guarded under PowerShell StrictMode
+
+### Incident
+
+HIA_PROJECT_ENGINE.ps1 accessed payload.session.last_session_id directly. The property is optional and was absent in the current payload. Under Set-StrictMode, this caused continue, status, and
+eview to terminate with exit code 4 before projecting the canonical next action.
+
+### Resolution
+
+- Guard optional properties through PSObject.Properties.
+- Normalize absent or blank optional values to N/A.
+- Validate all shared consumers after repairing a common adapter.
+
+### Proposed reusable rule
+
+Never access optional deserialized JSON properties directly under Set-StrictMode. First confirm the parent object and property metadata exist.
+
+Promotion status: proposed, not canonical.

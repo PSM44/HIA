@@ -2415,7 +2415,22 @@ function Get-HIACurrentState {
     $result.NEXT_ACTION_ID = if ([string]::IsNullOrWhiteSpace([string]$payload.next_action.id)) { "N/A" } else { [string]$payload.next_action.id }
     $result.NEXT_ACTION_STATUS = if ([string]::IsNullOrWhiteSpace([string]$payload.next_action.status)) { "N/A" } else { [string]$payload.next_action.status }
     $result.SESSION_STATUS = if ([string]::IsNullOrWhiteSpace([string]$payload.session.status)) { "N/A" } else { [string]$payload.session.status }
-    $result.LAST_SESSION_ID = if ([string]::IsNullOrWhiteSpace([string]$payload.session.last_session_id)) { "N/A" } else { [string]$payload.session.last_session_id }
+        $lastSessionIdValue = $null
+    if (
+        $null -ne $payload.session -and
+        $null -ne $payload.session.PSObject.Properties["last_session_id"]
+    ) {
+        $lastSessionIdValue = [string]$payload.session.last_session_id
+    }
+
+    $result.LAST_SESSION_ID = if (
+        [string]::IsNullOrWhiteSpace($lastSessionIdValue)
+    ) {
+        "N/A"
+    }
+    else {
+        $lastSessionIdValue
+    }
     $result.EVIDENCE_STATE = if ([string]::IsNullOrWhiteSpace([string]$payload.evidence.state)) { "N/A" } else { [string]$payload.evidence.state }
     $result.EVIDENCE_CONSISTENCY = if ([string]::IsNullOrWhiteSpace([string]$payload.evidence.consistency)) { "N/A" } else { [string]$payload.evidence.consistency }
     $result.EVIDENCE_CAPTURED_UTC = if ([string]::IsNullOrWhiteSpace([string]$payload.evidence.captured_utc)) { "N/A" } else { [string]$payload.evidence.captured_utc }
