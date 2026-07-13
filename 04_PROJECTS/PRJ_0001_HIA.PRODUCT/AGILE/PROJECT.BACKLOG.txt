@@ -2620,3 +2620,15 @@ PRODUCTION_READY...: NOT_CLAIMED
 NEXT...............:
 - PRJPB_010T | conectar Management Summary en navegacion primaria | ready
 ===============================================================================
+
+===============================================================================
+PRJPB_010T_CONNECT_MANAGEMENT_SUMMARY_NAVIGATION_RESULT
+===============================================================================
+STATUS............: DONE_STATIC_VALIDATION
+RESULT.............: PASS
+SCREENS............: Control Tower; Portfolio; Project Workspace; Management Summary
+STATIC_CHECKS......: 8
+STATIC_FAILED......: 0
+NEXT...............:
+- PRJPB_010T-V | validar navegacion completa de cuatro pantallas en navegador | ready
+===============================================================================
