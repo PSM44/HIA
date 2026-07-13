@@ -217,3 +217,33 @@ Expose the field from the canonical source in the state contract. Do not hardcod
 - Browser validation must check both expected real value presence and fallback absence.
 
 Promotion status: proposed, not canonical.
+
+---
+
+## 2026-07-13 — Repair scripts must validate final state, not require every allowed file to be dirty
+
+### Observed failure
+
+A repair script required management.summary.real.v0.html to appear in the dirty set even though the file already contained the correct navigation and therefore did not need modification.
+
+### Root cause
+
+The repair conflated:
+- files allowed to be dirty;
+- files required to be dirty;
+- files required to be correct in the final state.
+
+### Resolution
+
+Accept the valid dirty subset, reject unexpected paths, and validate the final content of every required artifact regardless of whether each artifact changed.
+
+### Proposed reusable rule
+
+- llowed_dirty and
+equired_final_state are separate contracts.
+- Do not require an unchanged correct file to appear in Git status.
+- Stage only actual dirty paths plus explicitly generated evidence.
+- Validate final semantic content across all relevant artifacts.
+- Repair scripts must be idempotency-aware and avoid duplicating append-only records.
+
+Promotion status: proposed, not canonical.

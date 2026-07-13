@@ -1,17 +1,17 @@
 {
   "schema": "HIA_CURRENT_STATE.v1",
   "project_id": "PRJ_0001_HIA.PRODUCT",
-  "generated_local": "2026-07-13 15:18:41 -04:00",
-  "generated_utc": "2026-07-13T19:18:41.8272229Z",
-  "generator": "manual-script:PRJPB_010T_CONNECT_MANAGEMENT_SUMMARY_NAVIGATION_R1",
-  "current_objective": "Management Summary is integrated into primary navigation. Full four-screen browser validation is next.",
+  "generated_local": "2026-07-13 16:18:44 -04:00",
+  "generated_utc": "2026-07-13T20:18:44.8480510Z",
+  "generator": "manual-script:PRJPB_010T_V_FORMALIZE_FOUR_SCREEN_NAV_PASS_R1",
+  "current_objective": "Four-screen HIA navigation is browser validated. Next: consolidate management-demo readiness and refresh strict RADAR.",
   "next_action": {
-    "id": "PRJPB_010T-V",
-    "title": "validar navegacion completa de cuatro pantallas en navegador",
+    "id": "PRJPB_010U",
+    "title": "consolidar readiness demo gerencial y refrescar RADAR estricto",
     "status": "ready",
-    "raw": "PRJPB_010T-V | validar navegacion completa de cuatro pantallas en navegador | ready",
-    "source": "PRJPB_010T navigation integration",
-    "text": "PRJPB_010T-V | validar navegacion completa de cuatro pantallas en navegador | ready"
+    "raw": "PRJPB_010U | consolidar readiness demo gerencial y refrescar RADAR estricto | ready",
+    "source": "PRJPB_010T-V human browser validation",
+    "text": "PRJPB_010U | consolidar readiness demo gerencial y refrescar RADAR estricto | ready"
   },
   "evidence": {
     "state": "FRESH",
@@ -25,9 +25,9 @@
   },
   "git": {
     "branch": "feat/20260405-console-v2-phase1-phase2",
-    "head_short": "775ac77",
-    "head_message": "pre-commit state for PRJPB_010T",
-    "head_before_commit": "775ac77 pre-commit PRJPB_010T"
+    "head_short": "54f0196",
+    "head_message": "pre-commit state for PRJPB_010T-V",
+    "head_before_commit": "54f0196 pre-commit PRJPB_010T-V"
   },
   "policy": {
     "no_fake_data": true,
@@ -37,13 +37,13 @@
   "product_state": {
     "control_tower": "DONE",
     "portfolio": "DONE",
-    "navigation": "FOUR_SCREEN_STATIC_VALIDATION_PASS",
+    "navigation": "FOUR_SCREEN_BROWSER_VALIDATED",
     "real_project_registry": "DONE_BROWSER_VALIDATED",
     "project_workspace": "DONE_MODEL_BROWSER_VALIDATED",
-    "management_demo": "SUMMARY_BROWSER_VALIDATED_NAV_PENDING"
+    "management_demo": "END_TO_END_READ_ONLY_BROWSER_VALIDATED"
   },
   "close": {
-    "status": "OPEN_FOUR_SCREEN_NAV_IMPLEMENTED",
+    "status": "OPEN_FOUR_SCREEN_BROWSER_VALIDATED",
     "technical_debt_count": 5,
     "backlog_count": 6,
     "ideas_count": 5,
