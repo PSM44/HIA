@@ -177,3 +177,17 @@ Controls:
 ### Promotion status
 
 All entries above are proposals only. They must be reviewed through the SkillsMachine update/support workflow before becoming canonical Skills or GRCs.
+
+---
+
+## 2026-07-13 — Semantic validator rule
+
+A validator falsely failed because it matched exact serialized JSON whitespace instead of semantic content.
+
+Resolution:
+- validate parsed values, schema, object shape, or whitespace-tolerant semantic patterns;
+- do not make incidental serialization formatting an acceptance criterion;
+- distinguish invalid artifact content from a defective assertion;
+- repair from the expected dirty state without regenerating or duplicating content.
+
+Promotion status: proposed, not canonical.
