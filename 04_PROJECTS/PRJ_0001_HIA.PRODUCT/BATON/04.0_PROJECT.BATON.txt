@@ -3057,3 +3057,30 @@ STATIC_FAILED......: 0
 NODE_CHECK.........: PASS
 NEXT_ACTION........: PRJPB_010S-V | validar Management Summary real en navegador | ready
 ===============================================================================
+
+===============================================================================
+SESSION_UPDATE_20260713_HIA_PRJPB_010S_REPAIR_CURRENT_OBJECTIVE_CONTRACT
+===============================================================================
+STATUS............: DONE_STATIC_VALIDATION
+FECHA_LOCAL.......: 2026-07-13 14:47:46 -04:00
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+
+01.00_FAILURE
+- Management Summary rendered correctly.
+- Current objective showed fallback instead of the real objective.
+- Browser checks failed: actual_objective_visible and no_objective_fallback.
+
+02.00_ROOT_CAUSE
+- CURRENT_STATE.json contained current_objective.
+- hia.state.js omitted continuity.current_objective.
+- Summary UI correctly consumed the contract and therefore used its explicit fallback.
+
+03.00_REPAIR
+- Added continuity.current_objective to HIA_REAL_STATE.
+- Source remains CURRENT_STATE.
+- No hardcoded objective added to the UI.
+- Read-only and no-fake-data controls preserved.
+
+04.00_NEXT_ACTION
+- PRJPB_010S-V | revalidar Management Summary real en navegador | ready
+===============================================================================

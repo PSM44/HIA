@@ -2596,3 +2596,14 @@ PRODUCTION_READY...: NOT_CLAIMED
 NEXT...............:
 - PRJPB_010S-V | validar Management Summary real en navegador | ready
 ===============================================================================
+
+===============================================================================
+PRJPB_010S_CURRENT_OBJECTIVE_CONTRACT_REPAIR
+===============================================================================
+STATUS............: DONE_STATIC_VALIDATION
+RESULT.............: PASS
+ROOT_CAUSE.........: STATE_CONTRACT_OMITTED_CURRENT_OBJECTIVE
+REPAIR.............: EXPOSE_CURRENT_OBJECTIVE_FROM_CURRENT_STATE
+NEXT...............:
+- PRJPB_010S-V | revalidar Management Summary real en navegador | ready
+===============================================================================

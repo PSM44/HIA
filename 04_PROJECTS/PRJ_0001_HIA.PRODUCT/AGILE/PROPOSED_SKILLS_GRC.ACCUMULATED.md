@@ -191,3 +191,29 @@ Resolution:
 - repair from the expected dirty state without regenerating or duplicating content.
 
 Promotion status: proposed, not canonical.
+
+---
+
+## 2026-07-13 — Consumer fallback exposed an incomplete state contract
+
+### Observed failure
+
+The Management Summary rendered, but displayed the explicit fallback See CURRENT_STATE source. instead of the real current objective.
+
+### Root cause
+
+CURRENT_STATE.json contained current_objective, but the generated window.HIA_REAL_STATE contract omitted continuity.current_objective. The UI consumer was correct; the producer contract was incomplete.
+
+### Resolution
+
+Expose the field from the canonical source in the state contract. Do not hardcode the expected text in the UI and do not weaken the browser assertion.
+
+### Proposed reusable rule
+
+- Validate producer-to-consumer field coverage, not only source-file existence.
+- A fallback appearing in a supposedly complete real-data view is a contract warning.
+- Repair the upstream contract when the source has the data.
+- Preserve explicit fallbacks for genuinely missing data.
+- Browser validation must check both expected real value presence and fallback absence.
+
+Promotion status: proposed, not canonical.
