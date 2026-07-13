@@ -1,17 +1,17 @@
 {
   "schema": "HIA_CURRENT_STATE.v1",
   "project_id": "PRJ_0001_HIA.PRODUCT",
-  "generated_local": "2026-07-13 14:41:08 -04:00",
-  "generated_utc": "2026-07-13T18:41:08.6788204Z",
-  "generator": "manual-script:PRJPB_010S_IMPLEMENT_MANAGEMENT_SUMMARY_R1",
-  "current_objective": "Management Summary real read-only implemented. Browser validation is next.",
+  "generated_local": "2026-07-13 15:15:56 -04:00",
+  "generated_utc": "2026-07-13T19:15:56.4871645Z",
+  "generator": "manual-script:PRJPB_010S_V_FORMALIZE_MANAGEMENT_SUMMARY_PASS_R1",
+  "current_objective": "Management Summary real read-only is browser validated. Next: connect the summary into all primary navigation surfaces.",
   "next_action": {
-    "id": "PRJPB_010S-V",
-    "title": "validar Management Summary real en navegador",
+    "id": "PRJPB_010T",
+    "title": "conectar Management Summary en navegacion primaria",
     "status": "ready",
-    "raw": "PRJPB_010S-V | validar Management Summary real en navegador | ready",
-    "source": "PRJPB_010S management summary implementation",
-    "text": "PRJPB_010S-V | validar Management Summary real en navegador | ready"
+    "raw": "PRJPB_010T | conectar Management Summary en navegacion primaria | ready",
+    "source": "PRJPB_010S-V human browser validation",
+    "text": "PRJPB_010T | conectar Management Summary en navegacion primaria | ready"
   },
   "evidence": {
     "state": "FRESH",
@@ -25,9 +25,9 @@
   },
   "git": {
     "branch": "feat/20260405-console-v2-phase1-phase2",
-    "head_short": "4d69c7e",
-    "head_message": "pre-commit state for PRJPB_010S",
-    "head_before_commit": "4d69c7e pre-commit PRJPB_010S"
+    "head_short": "4e533cd",
+    "head_message": "pre-commit state for PRJPB_010S-V",
+    "head_before_commit": "4e533cd pre-commit PRJPB_010S-V"
   },
   "policy": {
     "no_fake_data": true,
@@ -40,10 +40,10 @@
     "navigation": "DONE_BROWSER_VALIDATED",
     "real_project_registry": "DONE_BROWSER_VALIDATED",
     "project_workspace": "DONE_MODEL_BROWSER_VALIDATED",
-    "management_demo": "SUMMARY_IMPLEMENTED_STATIC_VALIDATION"
+    "management_demo": "SUMMARY_BROWSER_VALIDATED"
   },
   "close": {
-    "status": "OPEN_SUMMARY_IMPLEMENTED",
+    "status": "OPEN_SUMMARY_BROWSER_VALIDATED",
     "technical_debt_count": 5,
     "backlog_count": 6,
     "ideas_count": 5,

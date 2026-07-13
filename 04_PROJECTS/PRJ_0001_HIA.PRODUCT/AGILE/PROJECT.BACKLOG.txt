@@ -2607,3 +2607,16 @@ REPAIR.............: EXPOSE_CURRENT_OBJECTIVE_FROM_CURRENT_STATE
 NEXT...............:
 - PRJPB_010S-V | revalidar Management Summary real en navegador | ready
 ===============================================================================
+
+===============================================================================
+PRJPB_010S_V_MANAGEMENT_SUMMARY_BROWSER_RESULT
+===============================================================================
+STATUS............: DONE_BROWSER_VALIDATED
+RESULT.............: PASS
+CHECKS_TOTAL.......: 15
+CHECKS_FAILED......: 0
+MANAGEMENT_DEMO....: CONDITIONALLY_READY
+PRODUCTION_READY...: NOT_CLAIMED
+NEXT...............:
+- PRJPB_010T | conectar Management Summary en navegacion primaria | ready
+===============================================================================
