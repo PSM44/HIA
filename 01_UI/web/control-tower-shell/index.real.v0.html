@@ -126,6 +126,12 @@
     .danger-notice{border-left-color:var(--red);background:#21090b}
   </style>
   <link rel="stylesheet" href="assets/hia.nav.css">
+<style id="hia-prjpb-010p-nav-style">
+  .hia-screen-nav{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 16px}
+  .hia-screen-nav a{display:inline-flex;align-items:center;padding:8px 11px;border:1px solid #334155;border-radius:999px;background:#111923;color:#dbe4f1;text-decoration:none;font-size:12px}
+  .hia-screen-nav a:hover{border-color:#4d8dff;background:#152033}
+  .hia-screen-nav a[aria-current="page"]{border-color:#58bf82;color:#8ee2a8}
+</style>
 </head>
 <body>
   <aside class="sidebar">
@@ -158,6 +164,11 @@
   </header>
 
   <main class="main">
+<nav class="hia-screen-nav" id="hia-prjpb-010p-nav" aria-label="HIA screen navigation">
+  <a href="index.real.v0.html" aria-current="page">Control Tower</a>
+  <a href="portfolio.real.v0.html">Portfolio</a>
+  <a href="project.workspace.real.v0.html">Project Workspace</a>
+</nav>
     <div class="canvas">
 
       <section id="control" class="view active">
@@ -220,7 +231,7 @@
               <div class="label">Decision</div>
               <div id="activeDecision" class="mono red small">NO_GO_WITH_REMEDIATION_2</div>
               <div style="height:16px"></div>
-              <button class="btn primary-btn" data-view-jump="project" style="width:100%">Open Project Workspace</button>
+              <button class="btn primary-btn" data-view-jump="project" style="width:100%" onclick="window.location.href='project.workspace.real.v0.html'">Open Project Workspace</button>
               <div style="height:8px"></div>
               <button class="btn" data-view-jump="portfolio" style="width:100%">View in Portfolio</button>
             </div>

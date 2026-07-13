@@ -2514,3 +2514,16 @@ SOURCE.............: Human browser console verification
 NEXT...............:
 - PRJPB_010P | conectar Control Tower y Portfolio con Project Workspace real | ready
 ===============================================================================
+
+===============================================================================
+PRJPB_010P_CONNECT_WORKSPACE_NAVIGATION_RESULT
+===============================================================================
+STATUS............: DONE_STATIC_VALIDATION
+RESULT.............: PASS
+FILES..............:
+- 01_UI/web/control-tower-shell/index.real.v0.html
+- 01_UI/web/control-tower-shell/portfolio.real.v0.html
+- 01_UI/web/control-tower-shell/project.workspace.real.v0.html
+NEXT...............:
+- PRJPB_010P-V | validar navegacion Control Tower Portfolio Project Workspace en navegador | ready
+===============================================================================

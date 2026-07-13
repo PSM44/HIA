@@ -34,6 +34,12 @@
     .source { display:inline-flex; padding:5px 8px; border-radius:999px; border:1px solid var(--line); background:var(--chip); color:var(--muted); font-size:12px; }
     @media(max-width:900px){ .span-8,.span-6,.span-4,.span-3{grid-column:span 12;} header,main{padding-left:18px;padding-right:18px;} }
   </style>
+<style id="hia-prjpb-010p-nav-style">
+  .hia-screen-nav{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 16px}
+  .hia-screen-nav a{display:inline-flex;align-items:center;padding:8px 11px;border:1px solid #334155;border-radius:999px;background:#111923;color:#dbe4f1;text-decoration:none;font-size:12px}
+  .hia-screen-nav a:hover{border-color:#4d8dff;background:#152033}
+  .hia-screen-nav a[aria-current="page"]{border-color:#58bf82;color:#8ee2a8}
+</style>
 </head>
 <body>
   <header>
@@ -41,6 +47,11 @@
     <div class="subtitle">Read-only project evidence surface. No write actions. No invented project data.</div>
   </header>
   <main>
+<nav class="hia-screen-nav" id="hia-prjpb-010p-nav" aria-label="HIA screen navigation">
+  <a href="index.real.v0.html">Control Tower</a>
+  <a href="portfolio.real.v0.html">Portfolio</a>
+  <a href="project.workspace.real.v0.html" aria-current="page">Project Workspace</a>
+</nav>
     <div class="grid">
       <section class="card span-12">
         <h2>Implementation gate</h2>
