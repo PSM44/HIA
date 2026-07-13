@@ -1,17 +1,17 @@
 {
   "schema": "HIA_CURRENT_STATE.v1",
   "project_id": "PRJ_0001_HIA.PRODUCT",
-  "generated_local": "2026-07-12 22:37:24 -04:00",
-  "generated_utc": "2026-07-13T02:37:24.4782289Z",
-  "generator": "manual-script:PRJPB_010N_IMPLEMENT_PROJECT_WORKSPACE_R1",
-  "current_objective": "Project Workspace real minimum implemented. Browser validation is next.",
+  "generated_local": "2026-07-13 11:13:45 -04:00",
+  "generated_utc": "2026-07-13T15:13:45.7582850Z",
+  "generator": "manual-script:PRJPB_010O_FORMALIZE_BROWSER_PASS_R1",
+  "current_objective": "Project Workspace real minimum browser validated. Navigation integration is next.",
   "next_action": {
-    "id": "PRJPB_010O",
-    "title": "validar Project Workspace real minimum en navegador y formalizar cierre de loop",
+    "id": "PRJPB_010P",
+    "title": "conectar Control Tower y Portfolio con Project Workspace real",
     "status": "ready",
-    "raw": "PRJPB_010O | validar Project Workspace real minimum en navegador y formalizar cierre de loop | ready",
-    "source": "PRJPB_010N implementation",
-    "text": "PRJPB_010O | validar Project Workspace real minimum en navegador y formalizar cierre de loop | ready"
+    "raw": "PRJPB_010P | conectar Control Tower y Portfolio con Project Workspace real | ready",
+    "source": "PRJPB_010O human browser validation",
+    "text": "PRJPB_010P | conectar Control Tower y Portfolio con Project Workspace real | ready"
   },
   "evidence": {
     "state": "FRESH",
@@ -25,9 +25,9 @@
   },
   "git": {
     "branch": "feat/20260405-console-v2-phase1-phase2",
-    "head_short": "396bb44",
-    "head_message": "pre-commit state for PRJPB_010N",
-    "head_before_commit": "396bb44 pre-commit PRJPB_010N"
+    "head_short": "3031a35",
+    "head_message": "pre-commit state for PRJPB_010O formalization",
+    "head_before_commit": "3031a35 pre-commit PRJPB_010O formalization"
   },
   "policy": {
     "no_fake_data": true,
@@ -39,11 +39,11 @@
     "portfolio": "DONE",
     "navigation": "DONE",
     "real_project_registry": "DONE_BROWSER_VALIDATED",
-    "project_workspace": "DONE_STATIC_VALIDATION",
-    "management_demo": "NOT_READY_UNTIL_BROWSER_VALIDATION"
+    "project_workspace": "DONE_BROWSER_VALIDATED",
+    "management_demo": "READY_FOR_NAVIGATION_INTEGRATION"
   },
   "close": {
-    "status": "OPEN_IMPLEMENTATION_COMPLETE",
+    "status": "OPEN_BROWSER_VALIDATED",
     "technical_debt_count": 5,
     "backlog_count": 6,
     "ideas_count": 5,
