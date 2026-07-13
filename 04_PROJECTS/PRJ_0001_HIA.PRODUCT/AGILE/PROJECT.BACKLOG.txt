@@ -2539,3 +2539,14 @@ PROMOTION_STATUS..: PROPOSED_NOT_CANONICAL
 NEXT...............:
 - PRJPB_010P-V | validar navegacion Control Tower Portfolio Project Workspace en navegador | ready
 ===============================================================================
+
+===============================================================================
+PRJPB_010P_V_NAV_VALIDATION_RESULT
+===============================================================================
+STATUS............: PASS_WITH_OBSERVATION
+RESULT.............: MAIN_NAVIGATION_PASS
+OBSERVATION........: Legacy Open Project Workspace button not found visually.
+UX_DEBT............: Clarify, expose, or remove legacy button acceptance criterion.
+NEXT...............:
+- PRJPB_010Q | definir modelo Project Workspace para BATON BACKLOG DELIVERY sin duplicar HUMAN | ready
+===============================================================================

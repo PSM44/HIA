@@ -2958,3 +2958,30 @@ PROYECTO..........: PRJ_0001_HIA.PRODUCT
 02.00_NEXT_ACTION
 - PRJPB_010P-V | validar navegacion Control Tower Portfolio Project Workspace en navegador | ready
 ===============================================================================
+
+===============================================================================
+SESSION_UPDATE_20260713_HIA_PRJPB_010P_V_NAV_VALIDATION
+===============================================================================
+STATUS............: PASS_WITH_OBSERVATION
+FECHA_LOCAL.......: 2026-07-13 13:12:00 -04:00
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+
+01.00_VALIDATED
+- Control Tower -> Portfolio: PASS.
+- Control Tower -> Project Workspace: PASS.
+- Portfolio -> Control Tower: PASS.
+- Portfolio -> Project Workspace: PASS.
+- Project Workspace -> Control Tower: PASS.
+- Project Workspace -> Portfolio: PASS.
+- Current page marker: PASS.
+- Real project visible: PASS.
+- Write actions absent: PASS.
+
+02.00_OBSERVATION
+- Legacy button 'Open Project Workspace': NOT_FOUND visually.
+- Main navigation is functional and not blocked.
+- Record as UX observation, not navigation failure.
+
+03.00_NEXT_ACTION
+- PRJPB_010Q | definir modelo Project Workspace para BATON BACKLOG DELIVERY sin duplicar HUMAN | ready
+===============================================================================
