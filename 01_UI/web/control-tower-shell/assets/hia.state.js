@@ -1,52 +1,56 @@
 // ========== HIA CONTROL TOWER REAL READ-ONLY STATE ==========
-// ID_UNICO..........: PRJPB_010T_V_FORMALIZE_FOUR_SCREEN_NAV_PASS
-// GENERATED_AT......: 2026-07-13 16:18:44 -04:00
-// GENERATED_UTC.....: 2026-07-13T20:18:44.8480510Z
-// SOURCE............: CURRENT_STATE refreshed after four-screen browser validation
+// ID_UNICO..........: PRJPB_009Q_CURRENT_STATE_PRIMARY_CONTROL_TOWER_GENERATOR
+// GENERATED_AT......: 2026-07-13 19:00:26 -04:00
+// GENERATED_UTC.....: 2026-07-13T23:00:26.3204864Z
+// SEMANTIC_HASH.....: DB33DB050FC35B8214E881ACF0E8800DF2CAF07E6CF6062EB0468BF5E18EB260
+// SOURCE............: CURRENT_STATE primary with CLI fallback
 // MODE..............: READ_ONLY_SNAPSHOT
-// WRITE_MODE........: READ_ONLY
+// WRITE_MODE........: WRITE
 // DO_NOT_USE_AS_CANON: YES
+// ==============================================
 
 window.HIA_REAL_STATE = Object.freeze({
-  "project": {
-    "id": "PRJ_0001_HIA.PRODUCT",
-    "root_win": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA",
-    "branch": "feat/20260405-console-v2-phase1-phase2",
-    "generated_from_head_before_commit": "54f0196"
-  },
-  "continuity": {
-    "current_objective": "Four-screen HIA navigation is browser validated. Next: consolidate management-demo readiness and refresh strict RADAR.",
-    "next_action": "PRJPB_010U | consolidar readiness demo gerencial y refrescar RADAR estricto | ready",
-    "evidence_state": "FRESH",
-    "evidence_consistency": "CONSISTENT",
-    "session_status": "closed",
-    "generated_local": "2026-07-13 16:18:44 -04:00",
-    "generated_utc": "2026-07-13T20:18:44.8480510Z",
-    "resolver_status": "CURRENT_STATE_PRIMARY",
-    "source": "CURRENT_STATE",
-    "current_state_status": "VALID",
-    "current_state_path": "04_PROJECTS/PRJ_0001_HIA.PRODUCT/STATE/CURRENT_STATE.json"
-  },
-  "product_state": {
-    "control_tower": "DONE",
-    "portfolio": "DONE",
-    "navigation": "FOUR_SCREEN_BROWSER_VALIDATED",
-    "real_project_registry": "DONE_BROWSER_VALIDATED",
-    "project_workspace": "DONE_MODEL_BROWSER_VALIDATED",
-    "management_demo": "END_TO_END_READ_ONLY_BROWSER_VALIDATED"
-  },
-  "next_slice": {
-    "id": "PRJPB_010U",
-    "target": "Management-demo readiness consolidation and strict RADAR refresh",
-    "target_global": "window.HIA_MANAGEMENT_READINESS_VIEW",
-    "mode": "READ_ONLY",
-    "no_fake_data": true
-  },
-  "warnings": [
-    "Four-screen navigation browser validation PASS: 14 of 14 checks.",
-    "Management demo is end-to-end browser validated in read-only mode.",
-    "Production readiness is not claimed.",
-    "Legacy Open Project Workspace button observation remains non-blocking.",
-    "Strict RADAR freshness against post-commit HEAD remains pending PRJPB_010U."
-  ]
+  project: Object.freeze({
+    id: "PRJ_0001_HIA.PRODUCT",
+    root_wsl: "/mnt/c/01. GitHub/Wings3.0/01_PROJECTS/HIA",
+    root_win: "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA",
+    branch: "feat/20260405-console-v2-phase1-phase2",
+    generated_from_head_before_commit: "70c3a43",
+    generated_from_head_message_before_commit: "20260713_HIA_PRJPB_010T_V_formalize_four_screen_navigation_pass"
+  }),
+  continuity: Object.freeze({
+    next_action: "PRJPB_010U | consolidar readiness demo gerencial y refrescar RADAR estricto | ready",
+    resume_recommendation: "PRJPB_010U | consolidar readiness demo gerencial y refrescar RADAR estricto | ready",
+    evidence_state: "FRESH",
+    evidence_consistency: "CONSISTENT",
+    session_status: "closed",
+    generated_local: "2026-07-13 19:00:26 -04:00",
+    generated_utc: "2026-07-13T23:00:26.3204864Z",
+    resolver_status: "CURRENT_STATE_PRIMARY",
+    source: "CURRENT_STATE",
+    current_state_source: "CURRENT_STATE",
+    current_state_status: "VALID",
+    current_state_path: "04_PROJECTS/PRJ_0001_HIA.PRODUCT/STATE/CURRENT_STATE.json",
+    fallback_warning: "N/A"
+  }),
+  radar: Object.freeze({
+    lite_path: "03_ARTIFACTS/RADAR/Radar.Lite.ACTIVE.txt",
+    lite_bytes: 72366,
+    index_path: "03_ARTIFACTS/RADAR/Radar.Index.ACTIVE.txt",
+    index_bytes: 174719,
+    core_path: "03_ARTIFACTS/RADAR/Radar.Core.ACTIVE.txt",
+    core_bytes: 1215871
+  }),
+  ui: Object.freeze({
+    shell_file: "01_UI/web/control-tower-shell/index.html",
+    state_file: "01_UI/web/control-tower-shell/assets/hia.state.js",
+    generator_file: "02_TOOLS/HIA_CONTROL_TOWER_STATE_GENERATOR.ps1",
+    mode: "read-only generated snapshot",
+    minibattle: "PRJPB_010U"
+  }),
+  warnings: Object.freeze([
+    "Este estado es snapshot visible read-only; no reemplaza CURRENT_STATE, BATON, BACKLOG ni RADAR.",
+    "Si hay conflicto, manda CURRENT_STATE valido; si no existe, manda fallback CLI/BATON/BACKLOG.",
+    "TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto mientras exista fallback heuristico."
+  ])
 });
