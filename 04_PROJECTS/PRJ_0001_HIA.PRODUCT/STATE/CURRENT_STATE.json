@@ -1,17 +1,17 @@
 {
   "schema": "HIA_CURRENT_STATE.v1",
   "project_id": "PRJ_0001_HIA.PRODUCT",
-  "generated_local": "2026-07-13 14:18:35 -04:00",
-  "generated_utc": "2026-07-13T18:18:35.0811097Z",
-  "generator": "manual-script:PRJPB_010Q_V_FORMALIZE_MODEL_VALIDATION_R1",
-  "current_objective": "Project Workspace, navigation and evidence model are browser validated. Next: define readiness and the next management-facing slice.",
+  "generated_local": "2026-07-13 14:36:02 -04:00",
+  "generated_utc": "2026-07-13T18:36:02.8066528Z",
+  "generator": "manual-script:PRJPB_010R_DEFINE_MANAGEMENT_READINESS_R1",
+  "current_objective": "Management readiness defined as conditionally ready. Next: implement a real read-only Management Summary.",
   "next_action": {
-    "id": "PRJPB_010R",
-    "title": "definir readiness y siguiente slice gerencial HIA post Workspace",
+    "id": "PRJPB_010S",
+    "title": "implementar Management Summary real read-only",
     "status": "ready",
-    "raw": "PRJPB_010R | definir readiness y siguiente slice gerencial HIA post Workspace | ready",
-    "source": "PRJPB_010Q-V human browser validation",
-    "text": "PRJPB_010R | definir readiness y siguiente slice gerencial HIA post Workspace | ready"
+    "raw": "PRJPB_010S | implementar Management Summary real read-only | ready",
+    "source": "PRJPB_010R management readiness definition",
+    "text": "PRJPB_010S | implementar Management Summary real read-only | ready"
   },
   "evidence": {
     "state": "FRESH",
@@ -25,9 +25,9 @@
   },
   "git": {
     "branch": "feat/20260405-console-v2-phase1-phase2",
-    "head_short": "ee0d735",
-    "head_message": "pre-commit state for PRJPB_010Q-V",
-    "head_before_commit": "ee0d735 pre-commit PRJPB_010Q-V"
+    "head_short": "1e097b4",
+    "head_message": "pre-commit state for PRJPB_010R",
+    "head_before_commit": "1e097b4 pre-commit PRJPB_010R"
   },
   "policy": {
     "no_fake_data": true,
@@ -40,10 +40,10 @@
     "navigation": "DONE_BROWSER_VALIDATED",
     "real_project_registry": "DONE_BROWSER_VALIDATED",
     "project_workspace": "DONE_MODEL_BROWSER_VALIDATED",
-    "management_demo": "READY_FOR_READINESS_DEFINITION"
+    "management_demo": "CONDITIONALLY_READY"
   },
   "close": {
-    "status": "OPEN_MODEL_BROWSER_VALIDATED",
+    "status": "OPEN_READINESS_DEFINED",
     "technical_debt_count": 5,
     "backlog_count": 6,
     "ideas_count": 5,
