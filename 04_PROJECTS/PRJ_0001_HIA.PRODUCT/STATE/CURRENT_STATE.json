@@ -1,22 +1,22 @@
 {
   "schema": "HIA_CURRENT_STATE.v1",
   "project_id": "PRJ_0001_HIA.PRODUCT",
-  "generated_local": "2026-07-14 11:26:53 -04:00",
-  "generated_utc": "2026-07-14T15:26:53.2645779Z",
-  "generator": "manual-script:PRJPB_010V_CLOSE_TO_010W_R6",
-  "current_objective": "Package the validated read-only management demo release candidate and prepare its governed presentation runbook.",
+  "generated_local": "2026-07-14 14:18:46 -04:00",
+  "generated_utc": "2026-07-14T18:18:46.0905513Z",
+  "generator": "manual-script:PRJPB_010W_C_SYNC_R1",
+  "current_objective": "Complete internal stabilization after structural hygiene while preserving the validated read-only management release candidate.",
   "next_action": {
-    "id": "PRJPB_010W",
-    "title": "formalizar paquete release candidate y runbook de demo gerencial",
+    "id": "PRJPB_010X",
+    "title": "ejecutar verificacion interna post-hygiene y decidir preparacion del paquete RC gerencial",
     "status": "ready",
-    "raw": "PRJPB_010W | formalizar paquete release candidate y runbook de demo gerencial | ready",
-    "source": "PRJPB_010V technical preflight 37/37 PASS plus human browser gate 12/12 PASS",
-    "text": "PRJPB_010W | formalizar paquete release candidate y runbook de demo gerencial | ready"
+    "raw": "PRJPB_010X | ejecutar verificacion interna post-hygiene y decidir preparacion del paquete RC gerencial | ready",
+    "source": "PRJPB_010W-A audit PASS and PRJPB_010W-B reversible structure hygiene commit 764446c",
+    "text": "PRJPB_010X | ejecutar verificacion interna post-hygiene y decidir preparacion del paquete RC gerencial | ready"
   },
   "evidence": {
     "state": "FRESH",
     "consistency": "CONSISTENT",
-    "captured_utc": "2026-07-12T02:35:47.5137712Z"
+    "captured_utc": "2026-07-14T18:18:46.0905513Z"
   },
   "session": {
     "status": "closed",
@@ -25,9 +25,9 @@
   },
   "git": {
     "branch": "feat/20260405-console-v2-phase1-phase2",
-    "head_short": "afe21c2",
-    "head_message": "pre-close state for PRJPB_010U",
-    "head_before_commit": "afe21c2 pre-close PRJPB_010V"
+    "head_short": "764446c",
+    "head_message": "20260714.1407_PRJPB_010W-B_StructureHygiene",
+    "head_before_commit": "764446c pre-commit PRJPB_010W-C"
   },
   "policy": {
     "no_fake_data": true,
@@ -48,15 +48,20 @@
     "technical_preflight": "PASS_37_OF_37",
     "human_browser_gate": "PASS_12_OF_12",
     "refresh_scope": "HIA_REFRESH_CONTROL_ONLY_ON_CONTROL_TOWER_BROWSER_RELOAD_AVAILABLE_ALL_SCREENS",
-    "production_ready": "NOT_CLAIMED"
+    "production_ready": "NOT_CLAIMED",
+    "structure_hygiene_audit": "PASS_140_ITEMS_31_CANDIDATES",
+    "structure_hygiene_move": "DONE_31_FILES_TO_DEADHISTORY",
+    "structure_hygiene_commit": "764446c",
+    "management_handoff": "NOT_STARTED"
   },
   "close": {
-    "status": "OPEN_RC_PACKAGE_AND_RUNBOOK_PENDING",
+    "status": "STRUCTURE_HYGIENE_COMPLETE_INTERNAL_STABILIZATION_PENDING",
     "technical_debt_count": 5,
     "backlog_count": 6,
     "ideas_count": 5,
     "human_update_required": false,
     "whoami_detected": false,
-    "radar_freshness": "WARN_IF_STRICT_FINAL_HEAD_REQUIRED"
+    "radar_freshness": "WARN_IF_STRICT_FINAL_HEAD_REQUIRED",
+    "last_completed": "PRJPB_010W-C"
   }
 }

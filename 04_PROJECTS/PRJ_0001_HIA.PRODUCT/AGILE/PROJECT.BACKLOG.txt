@@ -1,4 +1,4 @@
-﻿ID | TYPE | PRIORITY | TITLE | VALUE | EFFORT | STATUS
+ID | TYPE | PRIORITY | TITLE | VALUE | EFFORT | STATUS
 PRJPB_001 | minibattle | P0 | abrir proyecto específico desde HIA | habilita navegación real por proyecto | S | done
 PRJPB_002 | minibattle | P0 | continuar desarrollo del proyecto desde HIA | habilita recomendación operativa desde backlog | S | done
 PRJPB_003 | minibattle | P0 | mostrar estado básico del proyecto | permite continuidad operativa visible | S | done
@@ -2693,4 +2693,28 @@ PROYECTO..........: PRJ_0001_HIA.PRODUCT
 
 04.00_NEXT_ACTION
 - PRJPB_010W | formalizar paquete release candidate y runbook de demo gerencial | ready
+===============================================================================
+===============================================================================
+PRJPB_010W_STRUCTURE_HYGIENE_CLOSE_20260714_141846
+===============================================================================
+STATUS: DONE
+- PRJPB_010W-A | auditar estructura, naming, referencias y candidatos Legacy sin mover archivos | DONE
+- PRJPB_010W-A2 | refinar referencias operacionales excluyendo evidencia historica | DONE
+- PRJPB_010W-B | mover 31 candidatos a DeadHistory con hashes preservados | DONE
+- PRJPB_010W-C | sincronizar CURRENT_STATE, BATON, BACKLOG, hia.state.js y RADAR | DONE
+
+VALIDATION:
+- HEAD base: 764446c
+- Worktree pre-sync: CLEAN
+- Management handoff: NOT_STARTED
+- Production ready: NOT_CLAIMED
+
+OPEN_TECH_DEBT:
+- TD_BATON_APPEND_ONLY_STATE_001/P1
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1
+- TD_STRUCTURAL_ONESHOT_RECOVERY_001/P1
+- TD_GENERATED_STATE_SNAPSHOT_DIRTY_001/P2
+
+NEXT_ACTION:
+- PRJPB_010X | ejecutar verificacion interna post-hygiene y decidir preparacion del paquete RC gerencial | ready
 ===============================================================================

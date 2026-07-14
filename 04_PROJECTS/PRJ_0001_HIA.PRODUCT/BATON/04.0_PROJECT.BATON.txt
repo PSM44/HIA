@@ -1,4 +1,4 @@
-﻿===============================================================================
+===============================================================================
 FILE: 04.0_PROJECT.BATON.txt
 PROJECT: PRJ_0001_HIA.PRODUCT
 TYPE: PROJECT BATON
@@ -3217,3 +3217,37 @@ PROYECTO..........: PRJ_0001_HIA.PRODUCT
 04.00_NEXT_ACTION
 - PRJPB_010W | formalizar paquete release candidate y runbook de demo gerencial | ready
 ===============================================================================
+==========
+SESSION_UPDATE_20260714_HIA_PRJPB_010W_C_STATE_SYNC
+==========
+ID_UNICO..........: SESSION_UPDATE_20260714_HIA_PRJPB_010W_C_STATE_SYNC_20260714_141846
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-07-14 14:18:46 -04:00
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+PURPOSE...........: Sincronizar estado canonico posterior a auditoria y limpieza estructural reversible.
+
+01.00_DONE_CONFIRMED
+- PRJPB_010W-A: DONE — auditoria read-only de estructura, naming, referencias y candidatos Legacy.
+- PRJPB_010W-A2: DONE — 31 candidatos sin referencias operacionales ejecutables ni documentales.
+- PRJPB_010W-B: DONE — 31 archivos movidos a 03_ARTIFACTS/DeadHistory/PRJPB_010W_B.
+- Commit de higiene estructural: 764446c.
+- Hashes preservados, PowerShell activo parseable, canon critico presente y worktree limpio.
+- No hubo push.
+
+02.00_DECISIONS
+- No se elimina evidencia; Legacy se conserva en DeadHistory.
+- DELIVERY y ARTIFACTS operacionales no se reorganizan sin politica de retencion especifica.
+- El release candidate gerencial read-only sigue validado, pero no se entrega aun a gerencia.
+- HUMAN no se modifica porque no existe cambio doctrinal.
+
+03.00_TECH_DEBT_AND_LEARNING
+- TD_BATON_APPEND_ONLY_STATE_001/P1 sigue abierto.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001/P1 sigue abierto.
+- TD_STRUCTURAL_ONESHOT_RECOVERY_001/P1: formalizar preflight de staging, .gitignore y recovery idempotente.
+- LEARNING: scripts one-shot deben usar nombres cortos y probar cero/uno/muchos resultados.
+
+04.00_NEXT_ACTION
+- PRJPB_010X | ejecutar verificacion interna post-hygiene y decidir preparacion del paquete RC gerencial | ready
+
+NEXT_ACTION: PRJPB_010X | ejecutar verificacion interna post-hygiene y decidir preparacion del paquete RC gerencial | ready
+==========
