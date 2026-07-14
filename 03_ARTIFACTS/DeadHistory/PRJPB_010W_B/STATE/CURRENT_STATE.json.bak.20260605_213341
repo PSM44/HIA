@@ -1,0 +1,33 @@
+﻿{
+    "schema":  "HIA_CURRENT_STATE.v1",
+    "project_id":  "PRJ_0001_HIA.PRODUCT",
+    "generated_local":  "2026-06-05 21:25:09 -04:00",
+    "generated_utc":  "2026-06-06T01:25:09.4778549Z",
+    "generator":  "02_TOOLS/HIA_CURRENT_STATE_GENERATOR.ps1",
+    "current_objective":  "Implementar estado básico del proyecto desde HIA.",
+    "next_action":  {
+                        "id":  "PRJPB_009W",
+                        "title":  "crear validador gobernado de estado/evidencia/snapshot para release-readiness",
+                        "status":  "READY",
+                        "raw":  "PRJPB_009W | crear validador gobernado de estado/evidencia/snapshot para release-readiness | ready",
+                        "source":  "CURRENT_STATE"
+                    },
+    "evidence":  {
+                     "state":  "FRESH",
+                     "consistency":  "CONSISTENT",
+                     "captured_utc":  "2026-06-04T14:49:06.4519243Z"
+                 },
+    "session":  {
+                    "status":  "closed",
+                    "last_session_id":  "1009fe23-fccc-4ea9-a466-3ee2b21bf1dd"
+                },
+    "git":  {
+                "branch":  "feat/20260405-console-v2-phase1-phase2",
+                "head_short":  "d74043b",
+                "head_message":  "20260605_HIA_session_close_after_PRJPB_009V"
+            },
+    "policy":  {
+                   "precedence":  "CURRENT_STATE first; fallback to BATON/BACKLOG only if missing or invalid",
+                   "fallback_allowed":  true
+               }
+}
