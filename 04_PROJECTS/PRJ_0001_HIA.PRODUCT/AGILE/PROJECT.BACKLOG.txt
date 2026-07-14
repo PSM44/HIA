@@ -2746,3 +2746,51 @@ STATUS: DONE
 NEXT_ACTION:
 - PRJPB_010Y | ejecutar revision humana del RC gerencial read-only y decidir handoff | ready
 ===============================================================================
+===============================================================================
+FORMAL_SESSION_CLOSE_20260714_20260714_173421
+===============================================================================
+STATUS: SESSION_CLOSE_UPDATE
+HEAD_BEFORE_CLOSE: 714e765
+
+ACCUMULATED_TECHNICAL_DEBT
+- TD_STRUCTURAL_ONESHOT_RECOVERY_001 | P1 | OPEN | One-shot mutation scripts need bounded idempotent recovery after partial execution.
+- TD_BATON_APPEND_ONLY_STATE_001 | P1 | OPEN | Append-only BATON history can compete with canonical state consumers.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001 | P1 | OPEN | All consumers must converge on CURRENT_STATE as the primary operational source.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001 | P1 | OPEN | Runtime semantic evidence TASK/LOG governance and retention remain implicit.
+- TD_EVIDENCE_ANCHOR_FRESHNESS_001 | P1 | OPEN | Evidence freshness uses a fixed 72-hour TTL and requires manual refresh.
+- TD_POWERSHELL_OPTIONAL_PROPERTY_STRICTMODE_001 | P1 | NEW | Scripts twice failed by directly reading optional JSON properties under Set-StrictMode.
+- TD_RELEASE_VALIDATOR_DEFAULT_NEXT_001 | P1 | NEW | Release validator defaulted to historical PRJPB_009X and created eight false negatives.
+- TD_AI_TAIL_SERIALIZATION_001 | P2 | NEW | PowerShell interpolation corrupted MANAGEMENT_HANDOFF in one AI tail.
+- TD_MINIBATTLE_FAILURE_BUDGET_001 | P1 | NEW | The minibattle exceeded the intended failure budget before switching to a safer recovery pattern.
+- TD_GENERATED_STATE_SNAPSHOT_DIRTY_001 | P2 | OPEN | Generated hia.state.js remains a tracked derivative that can create synchronization churn.
+
+ACCUMULATED_BACKLOG
+- BL_010Y_HUMAN_REVIEW | P0 | READY | Run human review of the prepared read-only management RC and decide handoff.
+- BL_MANAGEMENT_DEMO_RUNBOOK | P0 | OPEN | Create a one-command local demo/runbook for management review surfaces.
+- BL_MANAGEMENT_FEEDBACK_CAPTURE | P0 | OPEN | Define structured capture of management feedback, decisions, gaps and acceptance.
+- BL_VALIDATOR_PARAMETER_HARDENING | P1 | OPEN | Remove or reject stale default ExpectedNextActionId; require explicit expected state.
+- BL_CURRENT_STATE_SCHEMA_VALIDATION | P1 | OPEN | Add schema-safe optional-property handling and validation before mutation.
+- BL_EVIDENCE_REFRESH_AUTOMATION | P1 | OPEN | Automate semantic evidence refresh and freshness transition without ad hoc scripts.
+- BL_SINGLE_OUTPUT_STANDARD | P1 | ADOPTED | Every HIA minibattle must produce one consolidated upload file unless technically impossible.
+- BL_PRODUCTION_READINESS_DEFINITION | P1 | OPEN | Define explicit production-readiness criteria separately from management-demo readiness.
+- BL_PUSH_RELEASE_POLICY | P2 | OPEN | Define branch/tag/push policy for management RCs and formal releases.
+
+ACCUMULATED_IDEAS
+- IDEA_MANAGEMENT_DEMO_LAUNCHER | BACKLOG | Local launcher that opens the validated management surfaces in a controlled sequence.
+- IDEA_EVIDENCE_TTL_BADGE | BACKLOG | Show evidence age and TTL visually in Control Tower rather than only in CLI.
+- IDEA_RC_ACCEPTANCE_CHECKLIST | BACKLOG | Human checklist with approve/reject/defer and mandatory observation capture.
+- IDEA_STATE_SCHEMA_CONTRACT | BACKLOG | Formal JSON schema for CURRENT_STATE with required and optional fields.
+- IDEA_RELEASE_MANIFEST | BACKLOG | Machine-readable RC manifest tying HEAD, UI hashes, evidence anchor and validator result.
+- IDEA_PRODUCT_ANALYTICS_LATER | DEFERRED | Usage analytics and telemetry only after management validates product value and privacy boundaries.
+
+DEVELOPMENT_PATH
+- PRJPB_010Y | Human review of RC | feedback + handoff decision | MANAGEMENT_RC_REVIEW | Visible local read-only demo | READY
+- PRJPB_011A | Capture feedback and gaps | structured decision record | MANAGEMENT_RC_REVIEW | Accepted/rejected RC decision | PENDING
+- PRJPB_011B | Repair blockers from review | validated fixes | MANAGEMENT_RC_HARDENING | Review-ready RC v2 | PENDING
+- PRJPB_011C | Demo launcher and runbook | one-command local demo | MANAGEMENT_HANDOFF | Repeatable management demonstration | PENDING
+- PRJPB_011D | Formal handoff gate | signed acceptance record | MANAGEMENT_HANDOFF | Deliverable visible and functional to management | PENDING
+- PRJPB_012A+ | Define production criteria | production readiness contract | PRODUCTIZATION | Production candidate, not yet authorized | FUTURE
+
+NEXT_ACTION:
+- PRJPB_010Y | ejecutar revision humana del RC gerencial read-only y decidir handoff | ready
+===============================================================================

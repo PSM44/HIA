@@ -3288,3 +3288,45 @@ DONE
 
 NEXT_ACTION: PRJPB_010Y | ejecutar revision humana del RC gerencial read-only y decidir handoff | ready
 ==========
+==========
+SESSION_UPDATE_20260714_HIA_FORMAL_CLOSE_20260714_173421
+==========
+ID_UNICO..........: SESSION_UPDATE_20260714_HIA_FORMAL_CLOSE_20260714_173421
+STATUS............: CLOSED
+FECHA_LOCAL.......: 2026-07-14 17:34:21 -04:00
+HEAD_BEFORE_CLOSE.: 714e765
+
+CURRENT_STATE
+- Read-only management RC prepared.
+- Evidence: FRESH / CONSISTENT.
+- Release validator: PASS.
+- Management handoff: NOT_STARTED.
+- Production ready: NOT_CLAIMED.
+
+COMPLETED_THIS_SESSION
+- Built and validated real project registry and portfolio navigation.
+- Implemented Control Tower, Project Workspace and Management Summary read-only surfaces.
+- Completed browser validation of the four-screen navigation path.
+- Defined management readiness and repaired the current-objective contract.
+- Performed structural hygiene audit and moved 31 legacy candidates into DeadHistory.
+- Synchronized CURRENT_STATE, BATON, backlog and generated web state.
+- Created fresh, consistent semantic evidence recognized by HIA_PROJECT_ENGINE.
+- Passed release-readiness validation with explicit expected next action.
+- Passed PRJPB_010X-C GO/NO-GO with 17 checks and zero failures.
+- Prepared the bounded read-only management RC at commit 714e765.
+- Adopted one consolidated upload output per minibattle.
+
+OPEN_TECHNICAL_DEBT
+- TD_STRUCTURAL_ONESHOT_RECOVERY_001 | P1 | OPEN | One-shot mutation scripts need bounded idempotent recovery after partial execution.
+- TD_BATON_APPEND_ONLY_STATE_001 | P1 | OPEN | Append-only BATON history can compete with canonical state consumers.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001 | P1 | OPEN | All consumers must converge on CURRENT_STATE as the primary operational source.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001 | P1 | OPEN | Runtime semantic evidence TASK/LOG governance and retention remain implicit.
+- TD_EVIDENCE_ANCHOR_FRESHNESS_001 | P1 | OPEN | Evidence freshness uses a fixed 72-hour TTL and requires manual refresh.
+- TD_POWERSHELL_OPTIONAL_PROPERTY_STRICTMODE_001 | P1 | NEW | Scripts twice failed by directly reading optional JSON properties under Set-StrictMode.
+- TD_RELEASE_VALIDATOR_DEFAULT_NEXT_001 | P1 | NEW | Release validator defaulted to historical PRJPB_009X and created eight false negatives.
+- TD_AI_TAIL_SERIALIZATION_001 | P2 | NEW | PowerShell interpolation corrupted MANAGEMENT_HANDOFF in one AI tail.
+- TD_MINIBATTLE_FAILURE_BUDGET_001 | P1 | NEW | The minibattle exceeded the intended failure budget before switching to a safer recovery pattern.
+- TD_GENERATED_STATE_SNAPSHOT_DIRTY_001 | P2 | OPEN | Generated hia.state.js remains a tracked derivative that can create synchronization churn.
+
+NEXT_ACTION: PRJPB_010Y | ejecutar revision humana del RC gerencial read-only y decidir handoff | ready
+==========

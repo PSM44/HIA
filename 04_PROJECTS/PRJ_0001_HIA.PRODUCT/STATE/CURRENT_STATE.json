@@ -4,7 +4,7 @@
   "generated_local": "2026-07-14 16:37:39 -04:00",
   "generated_utc": "2026-07-14T20:37:39.2958918Z",
   "generator": "02_TOOLS/HIA_CURRENT_STATE_GENERATOR.ps1",
-  "current_objective": "Conduct human review of the bounded read-only management RC before any handoff decision.",
+  "current_objective": "Run human review of the prepared read-only management RC and decide whether to authorize management handoff.",
   "next_action": {
     "id": "PRJPB_010Y",
     "title": "ejecutar revision humana del RC gerencial read-only y decidir handoff",
@@ -32,8 +32,9 @@
     "fallback_allowed": true
   },
   "close": {
-    "status": "READ_ONLY_MANAGEMENT_RC_PREPARED_HUMAN_REVIEW_PENDING",
-    "last_completed": "PRJPB_010X-D"
+    "status": "SESSION_CLOSED_CONTINUITY_READY",
+    "last_completed": "PRJPB_010X-D",
+    "closed_local": "2026-07-14 17:34:21 -04:00"
   },
   "product_state": {
     "management_rc": "PREPARED",
