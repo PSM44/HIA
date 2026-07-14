@@ -4,14 +4,14 @@
   "generated_local": "2026-07-14 16:37:39 -04:00",
   "generated_utc": "2026-07-14T20:37:39.2958918Z",
   "generator": "02_TOOLS/HIA_CURRENT_STATE_GENERATOR.ps1",
-  "current_objective": "Evaluate management release-candidate preparation using fresh, consistent semantic evidence.",
+  "current_objective": "Conduct human review of the bounded read-only management RC before any handoff decision.",
   "next_action": {
-    "id": "PRJPB_010X-C",
-    "title": "decidir GO/NO-GO para preparar paquete RC gerencial usando evidencia fresca",
+    "id": "PRJPB_010Y",
+    "title": "ejecutar revision humana del RC gerencial read-only y decidir handoff",
     "status": "ready",
-    "raw": "PRJPB_010X-C | decidir GO/NO-GO para preparar paquete RC gerencial usando evidencia fresca | ready",
+    "raw": "PRJPB_010Y | ejecutar revision humana del RC gerencial read-only y decidir handoff | ready",
     "source": "CURRENT_STATE",
-    "text": "PRJPB_010X-C | decidir GO/NO-GO para preparar paquete RC gerencial usando evidencia fresca | ready"
+    "text": "PRJPB_010Y | ejecutar revision humana del RC gerencial read-only y decidir handoff | ready"
   },
   "evidence": {
     "state": "FRESH",
@@ -32,7 +32,12 @@
     "fallback_allowed": true
   },
   "close": {
-    "status": "EVIDENCE_REFRESH_COMPLETE_RC_DECISION_PENDING",
-    "last_completed": "PRJPB_010X-B"
+    "status": "READ_ONLY_MANAGEMENT_RC_PREPARED_HUMAN_REVIEW_PENDING",
+    "last_completed": "PRJPB_010X-D"
+  },
+  "product_state": {
+    "management_rc": "PREPARED",
+    "management_handoff": "NOT_STARTED",
+    "production_ready": "NOT_CLAIMED"
   }
 }
