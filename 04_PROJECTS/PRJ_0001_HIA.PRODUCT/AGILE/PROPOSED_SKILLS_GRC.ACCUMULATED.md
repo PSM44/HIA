@@ -288,3 +288,18 @@ Before closing a state-transition minibattle:
 6. claim production readiness only through a separate production gate.
 
 Promotion status: proposed, not canonical.
+
+---
+
+## 2026-07-14 — Browser reload and application refresh are distinct UX operations
+
+### Distinction
+
+- Browser reload reinitializes the full document and reloads local assets.
+- Application refresh should re-read or reproject canonical data without necessarily restarting the full UI.
+
+### Current HIA decision
+
+For the validated read-only RC, the HIA-specific Refresh control is required only in Control Tower. Browser reload is available on every screen. Replicating the application control across Portfolio, Project Workspace, and Management Summary is a non-blocking UX backlog item.
+
+Promotion status: proposed, not canonical.

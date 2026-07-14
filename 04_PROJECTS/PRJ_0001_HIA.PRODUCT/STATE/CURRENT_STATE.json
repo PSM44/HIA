@@ -1,17 +1,17 @@
 {
   "schema": "HIA_CURRENT_STATE.v1",
   "project_id": "PRJ_0001_HIA.PRODUCT",
-  "generated_local": "2026-07-13 19:49:08 -04:00",
-  "generated_utc": "2026-07-13T23:49:08.7060793Z",
-  "generator": "manual-script:PRJPB_010U_CLOSE_PHASE_B_TO_010V_R14",
-  "current_objective": "Execute the final release-candidate gate for the browser-validated read-only management demo.",
+  "generated_local": "2026-07-14 11:26:53 -04:00",
+  "generated_utc": "2026-07-14T15:26:53.2645779Z",
+  "generator": "manual-script:PRJPB_010V_CLOSE_TO_010W_R6",
+  "current_objective": "Package the validated read-only management demo release candidate and prepare its governed presentation runbook.",
   "next_action": {
-    "id": "PRJPB_010V",
-    "title": "ejecutar gate final de release candidate para demo gerencial",
+    "id": "PRJPB_010W",
+    "title": "formalizar paquete release candidate y runbook de demo gerencial",
     "status": "ready",
-    "raw": "PRJPB_010V | ejecutar gate final de release candidate para demo gerencial | ready",
-    "source": "PRJPB_010U canonical RADAR, canonical state, CLI projections, and strict validator PASS",
-    "text": "PRJPB_010V | ejecutar gate final de release candidate para demo gerencial | ready"
+    "raw": "PRJPB_010W | formalizar paquete release candidate y runbook de demo gerencial | ready",
+    "source": "PRJPB_010V technical preflight 37/37 PASS plus human browser gate 12/12 PASS",
+    "text": "PRJPB_010W | formalizar paquete release candidate y runbook de demo gerencial | ready"
   },
   "evidence": {
     "state": "FRESH",
@@ -25,9 +25,9 @@
   },
   "git": {
     "branch": "feat/20260405-console-v2-phase1-phase2",
-    "head_short": "29f2a53",
+    "head_short": "afe21c2",
     "head_message": "pre-close state for PRJPB_010U",
-    "head_before_commit": "29f2a53 pre-close PRJPB_010U"
+    "head_before_commit": "afe21c2 pre-close PRJPB_010V"
   },
   "policy": {
     "no_fake_data": true,
@@ -40,13 +40,18 @@
     "navigation": "FOUR_SCREEN_BROWSER_VALIDATED",
     "real_project_registry": "DONE_BROWSER_VALIDATED",
     "project_workspace": "DONE_MODEL_BROWSER_VALIDATED",
-    "management_demo": "END_TO_END_READ_ONLY_BROWSER_VALIDATED_RADAR_REFRESHED",
+    "management_demo": "RELEASE_CANDIDATE_VALIDATED_READ_ONLY",
     "radar": "CANONICAL_REFRESH_PASS",
     "cli_projection": "CONTINUE_STATUS_REVIEW_PASS",
-    "release_readiness_validator": "PASS_EXPECTED_PRJPB_010U"
+    "release_readiness_validator": "PASS_EXPECTED_PRJPB_010U",
+    "release_candidate_gate": "PASS",
+    "technical_preflight": "PASS_37_OF_37",
+    "human_browser_gate": "PASS_12_OF_12",
+    "refresh_scope": "HIA_REFRESH_CONTROL_ONLY_ON_CONTROL_TOWER_BROWSER_RELOAD_AVAILABLE_ALL_SCREENS",
+    "production_ready": "NOT_CLAIMED"
   },
   "close": {
-    "status": "OPEN_RC_GATE_PENDING",
+    "status": "OPEN_RC_PACKAGE_AND_RUNBOOK_PENDING",
     "technical_debt_count": 5,
     "backlog_count": 6,
     "ideas_count": 5,

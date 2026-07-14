@@ -2661,3 +2661,36 @@ PRODUCTION_READY...: NOT_CLAIMED
 NEXT...............:
 - PRJPB_010V | ejecutar gate final de release candidate para demo gerencial | ready
 ===============================================================================
+
+===============================================================================
+SESSION_UPDATE_20260714_PRJPB_010V_RC_GATE_CLOSE
+===============================================================================
+STATUS............: DONE
+FECHA_LOCAL.......: 2026-07-14 11:26:53 -04:00
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+
+01.00_TECHNICAL_GATE
+- Result: PASS.
+- Checks: 37/37.
+- HEAD validated: afe21c2.
+- Canonical generator CHECK: PASS.
+- CLI continue/status/review: PASS.
+- Strict validator expected PRJPB_010V: PASS.
+- Four-screen canonical project projection: PASS.
+- Read-only static contract: PASS.
+- RADAR Index/Core/Lite/Registry: PASS.
+
+02.00_HUMAN_BROWSER_GATE
+- Result: PASS.
+- Checklist: 12/12.
+- Observation: the HIA-specific Refresh control appears only in Control Tower.
+- Browser reload remains available on all four screens.
+- This asymmetry is a non-blocking UX enhancement, not an RC defect.
+
+03.00_READINESS_BOUNDARY
+- Management demo RC: VALIDATED.
+- Production readiness: NOT_CLAIMED.
+
+04.00_NEXT_ACTION
+- PRJPB_010W | formalizar paquete release candidate y runbook de demo gerencial | ready
+===============================================================================
