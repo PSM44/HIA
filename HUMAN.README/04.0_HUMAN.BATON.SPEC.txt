@@ -66,3 +66,22 @@ A valid BATON:
 - declares freshness/confidence;
 - does not duplicate detailed registers;
 - does not contain secrets.
+================================================================================
+08.00_B3_B2A_CONTEXT_READER_CONTRACT
+================================================================================
+
+The active context reader must resolve operational state in this order:
+
+1. <PROJECT_ROOT>\04_PROJECTS\<PROJECT_ID>\STATE\CURRENT_STATE.json
+2. <PROJECT_ROOT>\04_PROJECTS\<PROJECT_ID>\BATON\04.0_PROJECT.BATON.txt
+3. <PROJECT_ROOT>\04_PROJECTS\<PROJECT_ID>\AGILE\PROJECT.BACKLOG.txt
+
+The project session source is:
+
+<PROJECT_ROOT>\04_PROJECTS\<PROJECT_ID>\ARTIFACTS\SESSION.ACTIVE.json
+
+HUMAN.README\04.0_HUMAN.BATON.txt is historical compatibility evidence and
+must never be read as current operational state.
+
+Context build is a read operation over source state. It may write only its
+derived context package, manifest and context history outputs.

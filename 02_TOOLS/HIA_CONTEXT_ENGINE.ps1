@@ -1,4 +1,4 @@
-<#
+﻿<#
 ===============================================================================
 MODULE: HIA_CONTEXT_ENGINE.ps1
 SYSTEM: HIA - Human Intelligence Amplifier
@@ -33,7 +33,10 @@ param(
     [string]$ContextLevel = "L1",
 
     [Parameter(Mandatory = $false)]
-    [string]$ProjectRoot
+    [string]$ProjectRoot,
+
+    [Parameter(Mandatory = $false)]
+    [string]$ProjectId = "PRJ_0001_HIA.PRODUCT"
 )
 
 Set-StrictMode -Version Latest
@@ -76,12 +79,11 @@ function Get-HIAContextPaths {
         PackagePath = Join-Path $contextDir "CONTEXT.PACKAGE.ACTIVE.json"
         ManifestPath = Join-Path $contextDir "CONTEXT.MANIFEST.ACTIVE.txt"
         LiveStatePath = Join-Path $Root "01_UI\terminal\PROJECT.STATE.LIVE.txt"
-        ActiveSessionPath = Join-Path $Root "03_ARTIFACTS\sessions\SESSION.ACTIVE.json"
-        BatonCandidatePaths = @(
-            (Join-Path $Root "HUMAN.README\04.0_HUMAN.BATON.txt"),
-            (Join-Path $Root "HUMAN.BATON\04.0_HUMAN.BATON.txt"),
-            (Join-Path $Root "HUMAN.BATON\HUMAN.BATON.txt")
-        )
+        ProjectRootPath = Join-Path $Root ("04_PROJECTS\{0}" -f $script:ProjectId)
+        CurrentStatePath = Join-Path $Root ("04_PROJECTS\{0}\STATE\CURRENT_STATE.json" -f $script:ProjectId)
+        ActiveSessionPath = Join-Path $Root ("04_PROJECTS\{0}\ARTIFACTS\SESSION.ACTIVE.json" -f $script:ProjectId)
+        ProjectBatonPath = Join-Path $Root ("04_PROJECTS\{0}\BATON\04.0_PROJECT.BATON.txt" -f $script:ProjectId)
+        ProjectBacklogPath = Join-Path $Root ("04_PROJECTS\{0}\AGILE\PROJECT.BACKLOG.txt" -f $script:ProjectId)
         RadarIndexPath = Join-Path $Root "03_ARTIFACTS\RADAR\Radar.Index.ACTIVE.txt"
     }
 }
@@ -166,36 +168,76 @@ function Read-HIAActiveSession {
     }
 }
 
-function Read-HIABaton {
-    param([string[]]$CandidatePaths)
+function Read-HIAOperationalState {
+    param(
+        [string]$CurrentStatePath,
+        [string]$ProjectBatonPath,
+        [string]$ProjectBacklogPath
+    )
 
-    foreach ($path in $CandidatePaths) {
-        if (-not (Test-Path $path)) {
-            continue
+    $result = [ordered]@{
+        source = "NONE"
+        current_state_path = $CurrentStatePath
+        project_baton_path = $ProjectBatonPath
+        project_backlog_path = $ProjectBacklogPath
+        current_state_status = "MISSING"
+        project_id = $script:ProjectId
+        current_objective = "UNKNOWN"
+        next_action = "UNKNOWN"
+        baton_exists = (Test-Path -LiteralPath $ProjectBatonPath -PathType Leaf)
+        backlog_exists = (Test-Path -LiteralPath $ProjectBacklogPath -PathType Leaf)
+    }
+
+    if (Test-Path -LiteralPath $CurrentStatePath -PathType Leaf) {
+        try {
+            $state = Get-Content -LiteralPath $CurrentStatePath -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop
+            if ([string]$state.schema -eq "HIA_CURRENT_STATE.v1") {
+                $rawNext = [string]$state.next_action.raw
+                if ([string]::IsNullOrWhiteSpace($rawNext)) {
+                    $rawNext = [string]$state.next_action.id
+                }
+                if (-not [string]::IsNullOrWhiteSpace($rawNext)) {
+                    $result.source = "CURRENT_STATE"
+                    $result.current_state_status = "VALID"
+                    $result.current_objective = if ([string]::IsNullOrWhiteSpace([string]$state.current_objective)) { "UNKNOWN" } else { [string]$state.current_objective }
+                    $result.next_action = $rawNext
+                    return $result
+                }
+            }
+            $result.current_state_status = "INVALID"
         }
-
-        $firstLines = Get-Content -Path $path -TotalCount 30
-        $idLine = ($firstLines | Where-Object { $_ -match 'ID_UNICO|ID_HINT|ID\.' } | Select-Object -First 1)
-        if (-not $idLine) {
-            $idLine = "UNKNOWN"
-        }
-
-        return [ordered]@{
-            path = $path
-            exists = $true
-            last_modified_utc = (Get-Item $path).LastWriteTimeUtc.ToString("o")
-            id_hint = $idLine.Trim()
+        catch {
+            $result.current_state_status = "INVALID"
         }
     }
 
-    return [ordered]@{
-        path = $null
-        exists = $false
-        last_modified_utc = $null
-        id_hint = "UNKNOWN"
+    if ($result.baton_exists) {
+        $raw = Get-Content -LiteralPath $ProjectBatonPath -Raw -Encoding UTF8
+        $matches = [regex]::Matches($raw,'(?ms)^(?:04|05|06)\.00_(?:NEXT_ACTION|PROXIMA_ACCION|SIGUIENTE_ACCION|SIGUIENTE_MINIBATTLE|NEXT_MINIBATTLE)\s*\r?\n([^\r\n]+)')
+        if ($matches.Count -gt 0) {
+            $candidate = $matches[$matches.Count - 1].Groups[1].Value.Trim()
+            if (-not [string]::IsNullOrWhiteSpace($candidate)) {
+                $result.source = "PROJECT_BATON"
+                $result.next_action = $candidate
+                return $result
+            }
+        }
     }
+
+    if ($result.backlog_exists) {
+        foreach ($line in Get-Content -LiteralPath $ProjectBacklogPath -Encoding UTF8) {
+            if ($line -notmatch '\|') { continue }
+            $parts = @($line -split '\|' | ForEach-Object { $_.Trim() })
+            if ($parts.Count -ge 7 -and $parts[6].ToLowerInvariant() -eq 'ready') {
+                $result.source = "PROJECT_BACKLOG"
+                $result.next_action = ("{0} | {1} | {2}" -f $parts[0],$parts[3],$parts[6])
+                return $result
+            }
+        }
+    }
+
+    return $result
 }
-
 function Get-HIARadarRefs {
     param(
         [string]$Root,
@@ -264,7 +306,10 @@ function Build-HIAContextPackage {
 
     $liveState = Read-HIALiveState -LiveStatePath $Paths.LiveStatePath
     $session = Read-HIAActiveSession -SessionPath $Paths.ActiveSessionPath
-    $baton = Read-HIABaton -CandidatePaths $Paths.BatonCandidatePaths
+    $operationalState = Read-HIAOperationalState `
+        -CurrentStatePath $Paths.CurrentStatePath `
+        -ProjectBatonPath $Paths.ProjectBatonPath `
+        -ProjectBacklogPath $Paths.ProjectBacklogPath
     $radarRefs = @(Get-HIARadarRefs -Root $script:ProjectRoot -RadarIndexPath $Paths.RadarIndexPath)
 
     $packageId = (Get-Date).ToUniversalTime().ToString("yyyyMMdd_HHmmss_fff")
@@ -273,8 +318,8 @@ function Build-HIAContextPackage {
     $humanRefs = @(
         [ordered]@{ kind = "human_readme"; path = Join-Path $script:ProjectRoot "HUMAN.README"; exists = (Test-Path (Join-Path $script:ProjectRoot "HUMAN.README")) }
     )
-    if ($baton.exists) {
-        $humanRefs += [ordered]@{ kind = "baton"; path = $baton.path; exists = $true }
+    if ($operationalState.baton_exists) {
+        $humanRefs += [ordered]@{ kind = "project_baton_runtime"; path = $Paths.ProjectBatonPath; exists = $true }
     }
 
     $artifactRefs = @(
@@ -290,10 +335,10 @@ function Build-HIAContextPackage {
         task_type = $TaskTypeValue
         target_kind = $TargetKindValue
         context_level = $ContextLevelValue
-        focus_actual = $liveState.focus_actual
+        focus_actual = if ($operationalState.current_objective -ne "UNKNOWN") { $operationalState.current_objective } else { $liveState.focus_actual }
         state_snapshot = $liveState
         session_snapshot = $session
-        baton_ref = $baton
+        operational_state = $operationalState
         human_refs = $humanRefs
         radar_refs = $radarRefs
         artifact_refs = $artifactRefs
@@ -319,7 +364,10 @@ function Build-HIAContextPackage {
         "CONTEXT_LEVEL: $ContextLevelValue",
         "SOURCE_STATE: $($Paths.LiveStatePath)",
         "SOURCE_SESSION: $($Paths.ActiveSessionPath)",
-        "SOURCE_BATON: $($baton.path)",
+        "STATE_PRECEDENCE: CURRENT_STATE -> PROJECT_BATON -> PROJECT_BACKLOG",
+        "SOURCE_CURRENT_STATE: $($Paths.CurrentStatePath)",
+        "SOURCE_PROJECT_BATON: $($Paths.ProjectBatonPath)",
+        "SOURCE_PROJECT_BACKLOG: $($Paths.ProjectBacklogPath)",
         "SOURCE_RADAR_INDEX: $((($radarRefs | Select-Object -First 1).path))",
         "OUTPUT_PACKAGE: $($Paths.PackagePath)",
         "OUTPUT_HISTORY: $historyPath",
@@ -351,6 +399,7 @@ function Show-HIAContextPackage {
 }
 
 $script:ProjectRoot = Get-HIAProjectRoot -CandidateRoot $ProjectRoot
+$script:ProjectId = $ProjectId
 $paths = Get-HIAContextPaths -Root $script:ProjectRoot
 
 if ($Command -eq "build") {

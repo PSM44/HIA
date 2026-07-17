@@ -395,3 +395,17 @@ A degraded close must never be represented as clean.
 - CURRENT_STATE is the current operational truth.
 - WHOAMI is a generated human-readable projection.
 - Detailed registers remain authoritative for backlog, decisions, debt and ideas.
+================================================================================
+13.00_B3_B2A_PROJECT_SCOPED_CONTEXT
+================================================================================
+
+Session and continuity readers must be project-scoped.
+
+Operational source precedence:
+CURRENT_STATE -> project BATON -> project BACKLOG.
+
+Session source:
+04_PROJECTS\<PROJECT_ID>\ARTIFACTS\SESSION.ACTIVE.json
+
+The historical HUMAN BATON is not a valid session or current-state source.
+A context reader must not create, close or mutate a project session.
