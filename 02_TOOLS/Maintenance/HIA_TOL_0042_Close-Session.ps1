@@ -1,56 +1,78 @@
+﻿#requires -Version 5.1
 <#
 ===============================================================================
 SCRIPT: HIA_TOL_0042_Close-Session.ps1
-PURPOSE: Cierre automático de sesión HIA
-VERSION: v1.0
+SYSTEM: HIA — Human Intelligence Amplifier
+TYPE: LEGACY COMPATIBILITY ADAPTER
+PURPOSE: Delegate project-scoped session close to HIA_PROJECT_ENGINE.
+VERSION: v2.0-B3-B2B1
+===============================================================================
+
+This wrapper is retained for compatibility only.
+
+It does not:
+- execute RADAR;
+- mutate HUMAN doctrine or historical BATON;
+- stage files;
+- commit;
+- push;
+- create a global close.
+
+The authoritative runtime owner is HIA_PROJECT_ENGINE.ps1.
 ===============================================================================
 #>
 
+[CmdletBinding()]
 param(
-[string]$ProjectRoot = "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA"
+    [Parameter(Mandatory = $false)]
+    [string]$ProjectRoot = 'C:\01. GitHub\Wings3.0\01_PROJECTS\HIA',
+
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$ProjectId
 )
 
-Set-Location $ProjectRoot
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
-$now = Get-Date
-$sessionId = $now.ToString("yyyyMMdd-HHmm")
+function Resolve-HIARepositoryRoot {
+    param([string]$CandidateRoot)
 
-Write-Host ""
-Write-Host "HIA SESSION CLOSE"
-Write-Host ""
+    if ([string]::IsNullOrWhiteSpace($CandidateRoot)) {
+        throw 'ProjectRoot is required.'
+    }
 
-# ------------------------------------------------
-# Ejecutar RADAR
-# ------------------------------------------------
+    $resolved = (Resolve-Path -LiteralPath $CandidateRoot -ErrorAction Stop).Path
+    if (-not (Test-Path -LiteralPath (Join-Path $resolved '02_TOOLS') -PathType Container)) {
+        throw "INVALID_PROJECT_ROOT | $resolved"
+    }
 
-if (Test-Path ".\02_TOOLS\RADAR.ps1") {
-
-pwsh -NoProfile -File .\02_TOOLS\RADAR.ps1 -ProjectRoot $ProjectRoot
-
+    return $resolved
 }
 
-# ------------------------------------------------
-# Actualizar BATON
-# ------------------------------------------------
+$repositoryRoot = Resolve-HIARepositoryRoot -CandidateRoot $ProjectRoot
+$enginePath = Join-Path $repositoryRoot '02_TOOLS\HIA_PROJECT_ENGINE.ps1'
 
-$baton = "$ProjectRoot\HUMAN.README\04.0_HUMAN.BATON.txt"
-
-if (Test-Path $baton) {
-
-Add-Content $baton "`nSESSION CLOSED $($now.ToString("yyyy-MM-dd HH:mm"))"
-
+if (-not (Test-Path -LiteralPath $enginePath -PathType Leaf)) {
+    throw "PROJECT_ENGINE_NOT_FOUND | $enginePath"
 }
 
-# ------------------------------------------------
-# Commit final
-# ------------------------------------------------
+. $enginePath
 
-git add -A
+if (-not (Get-Command Close-HIAProjectSession -CommandType Function -ErrorAction SilentlyContinue)) {
+    throw 'PROJECT_SESSION_CLOSE_FUNCTION_NOT_AVAILABLE'
+}
 
-git commit -m "SESSION CLOSE $sessionId"
+Write-Host ''
+Write-Host 'HIA PROJECT SESSION CLOSE — COMPATIBILITY ADAPTER'
+Write-Host "PROJECT_ID=$ProjectId"
+Write-Host 'MODE=CLOSE_ONLY'
+Write-Host 'HUMAN_BATON_MUTATION=NO'
+Write-Host 'GIT_MUTATION=NO'
+Write-Host 'RADAR_EXECUTED=NO'
+Write-Host 'PUSH_EXECUTED=NO'
 
-git push
+Close-HIAProjectSession -ProjectId $ProjectId
 
-Write-Host ""
-Write-Host "SESSION CLOSED"
-Write-Host ""
+Write-Host 'FINAL_STATUS=PASS_DELEGATED_PROJECT_SESSION_CLOSE'
+$global:HIA_EXIT_CODE = 0

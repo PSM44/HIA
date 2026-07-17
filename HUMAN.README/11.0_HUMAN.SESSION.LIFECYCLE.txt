@@ -409,3 +409,30 @@ Session source:
 
 The historical HUMAN BATON is not a valid session or current-state source.
 A context reader must not create, close or mutate a project session.
+================================================================================
+14.00_B3_B2B1_MAINTENANCE_WRAPPER_POLICY
+================================================================================
+
+HIA_TOL_0041_Start-Session.ps1 and HIA_TOL_0042_Close-Session.ps1 are legacy
+compatibility adapters.
+
+They must:
+- require an explicit ProjectId;
+- delegate to HIA_PROJECT_ENGINE.ps1;
+- operate only on project-scoped session state;
+- report that Git mutation, RADAR execution and push were not performed.
+
+They must not:
+- create or switch branches;
+- execute git add, git commit or git push;
+- execute RADAR as a side effect;
+- mutate HUMAN.README doctrine;
+- mutate HUMAN.README\04.0_HUMAN.BATON.txt;
+- implement a competing global session lifecycle.
+
+The authoritative project runtime functions are:
+- Start-HIAProjectSession;
+- Get-HIAProjectSessionStatus;
+- Close-HIAProjectSession.
+
+Full SESSION.CLOSE generation remains a separate governed implementation step.

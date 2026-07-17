@@ -1,80 +1,77 @@
+﻿#requires -Version 5.1
 <#
 ===============================================================================
 SCRIPT: HIA_TOL_0041_Start-Session.ps1
-PURPOSE: Inicia sesión de desarrollo HIA
-VERSION: v1.0
+SYSTEM: HIA — Human Intelligence Amplifier
+TYPE: LEGACY COMPATIBILITY ADAPTER
+PURPOSE: Delegate project-scoped session start to HIA_PROJECT_ENGINE.
+VERSION: v2.0-B3-B2B1
+===============================================================================
+
+This wrapper is retained for compatibility only.
+
+It does not:
+- create or switch Git branches;
+- stage files;
+- commit;
+- push;
+- execute RADAR;
+- create a global session.
+
+The authoritative runtime owner is HIA_PROJECT_ENGINE.ps1.
 ===============================================================================
 #>
 
+[CmdletBinding()]
 param(
-[string]$ProjectRoot = "C:\01. GitHub\Wings3.0\01_PROJECTS\HIA"
+    [Parameter(Mandatory = $false)]
+    [string]$ProjectRoot = 'C:\01. GitHub\Wings3.0\01_PROJECTS\HIA',
+
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$ProjectId
 )
 
-Set-Location $ProjectRoot
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
-# ------------------------------------------------
-# Timestamp
-# ------------------------------------------------
+function Resolve-HIARepositoryRoot {
+    param([string]$CandidateRoot)
 
-$now = Get-Date
-$sessionId = $now.ToString("yyyyMMdd-HHmm")
+    if ([string]::IsNullOrWhiteSpace($CandidateRoot)) {
+        throw 'ProjectRoot is required.'
+    }
 
-$branch = "h1/session-$sessionId"
+    $resolved = (Resolve-Path -LiteralPath $CandidateRoot -ErrorAction Stop).Path
+    if (-not (Test-Path -LiteralPath (Join-Path $resolved '02_TOOLS') -PathType Container)) {
+        throw "INVALID_PROJECT_ROOT | $resolved"
+    }
 
-Write-Host ""
-Write-Host "HIA SESSION START"
-Write-Host "Session ID:" $sessionId
-Write-Host ""
-
-# ------------------------------------------------
-# Crear rama
-# ------------------------------------------------
-
-git checkout -b $branch
-
-git push --set-upstream origin $branch
-
-# ------------------------------------------------
-# Crear log
-# ------------------------------------------------
-
-$logDir = "$ProjectRoot\03_ARTIFACTS\LOGS\SESSIONS"
-
-if (!(Test-Path $logDir)) {
-
-New-Item -ItemType Directory -Path $logDir | Out-Null
-
+    return $resolved
 }
 
-$logFile = "$logDir\SESSION.$sessionId.txt"
+$repositoryRoot = Resolve-HIARepositoryRoot -CandidateRoot $ProjectRoot
+$enginePath = Join-Path $repositoryRoot '02_TOOLS\HIA_PROJECT_ENGINE.ps1'
 
-$log = @"
-SESSION_ID: $sessionId
-DATE: $($now.ToString("yyyy-MM-dd"))
-TIME: $($now.ToString("HH:mm"))
-CITY: Santiago, Chile
+if (-not (Test-Path -LiteralPath $enginePath -PathType Leaf)) {
+    throw "PROJECT_ENGINE_NOT_FOUND | $enginePath"
+}
 
-BRANCH
-$branch
+. $enginePath
 
-STATUS
-SESSION_STARTED
-"@
+if (-not (Get-Command Start-HIAProjectSession -CommandType Function -ErrorAction SilentlyContinue)) {
+    throw 'PROJECT_SESSION_START_FUNCTION_NOT_AVAILABLE'
+}
 
-$log | Out-File $logFile -Encoding utf8
+Write-Host ''
+Write-Host 'HIA PROJECT SESSION START — COMPATIBILITY ADAPTER'
+Write-Host "PROJECT_ID=$ProjectId"
+Write-Host 'MODE=PROJECT_SCOPED'
+Write-Host 'GIT_MUTATION=NO'
+Write-Host 'RADAR_EXECUTED=NO'
+Write-Host 'PUSH_EXECUTED=NO'
 
-# ------------------------------------------------
-# Commit inicial
-# ------------------------------------------------
+Start-HIAProjectSession -ProjectId $ProjectId
 
-git add -A
-
-git commit -m "SESSION $sessionId START"
-
-git push
-
-Write-Host ""
-Write-Host "SESSION STARTED"
-Write-Host "Branch:" $branch
-Write-Host "Log:" $logFile
-Write-Host ""
+Write-Host 'FINAL_STATUS=PASS_DELEGATED_PROJECT_SESSION_START'
+$global:HIA_EXIT_CODE = 0
