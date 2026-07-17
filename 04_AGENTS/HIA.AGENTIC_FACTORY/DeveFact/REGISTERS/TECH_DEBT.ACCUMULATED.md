@@ -92,3 +92,21 @@ SESSION_CLOSE_20260710_1853 TECH_DEBT_APPEND
 - priority: P2
 - title: Validation is custom per batch, not yet centralized.
 - next_action: create reusable DeveFact validation harness.
+
+==========
+SESSION_CLOSE_20260716_2348 TECH_DEBT_APPEND
+==========
+## TD-DEVF-20260716-001
+- status: OPEN
+- type: RADAR_GAP
+- priority: P1
+- title: Strict RADAR v1.4 not yet confirmed for DeveFact.
+- evidence: RADAR candidates found: 0.
+- next_action: BATCH-0028.
+
+## TD-DEVF-20260716-002
+- status: OPEN
+- type: PRODUCTIZATION_GAP
+- priority: P1
+- title: Management value still needs a visible artifact.
+- next_action: package demo into visible artifact.

@@ -25,3 +25,11 @@ SESSION_CLOSE_20260710_1853 IDEAS_RELATED_APPEND
 - IDEA: Add Loop Engineering vocabulary for autonomous iterative execution with human-controlled gates.
 - IDEA: Convert Context Intake Checklist into a preflight wizard.
 - IDEA: Package Management Review Bundle as single HTML/PDF/PPT with evidence links.
+
+==========
+SESSION_CLOSE_20260716_2348 IDEAS_RELATED_APPEND
+==========
+- IDEA: Context Intake Checklist as preflight wizard.
+- IDEA: single management demo artifact with evidence links.
+- IDEA: DeveFact as control plane for Codex/Claude/OpenCode.
+- IDEA: track product progress separately from governance progress.

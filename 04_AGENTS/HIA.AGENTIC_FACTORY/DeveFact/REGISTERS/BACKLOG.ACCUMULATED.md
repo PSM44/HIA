@@ -484,3 +484,27 @@ SESSION_CLOSE_20260710_1853 BACKLOG_APPEND
 - title: Implement functional loop beyond docs-first control.
 - evidence: current state controls planning/evidence/checklists but does not yet execute external agents automatically.
 - next_action: select next functionality after RADAR.
+
+==========
+SESSION_CLOSE_20260716_2348 BACKLOG_APPEND
+==========
+## BL-DEVF-20260716-001
+- status: OPEN
+- type: CONTINUITY_TOOLING
+- priority: P1
+- title: Create dedicated DeveFact RADAR.ps1.
+- evidence: RADAR candidates found: 0.
+- next_action: BATCH-0028.
+
+## BL-DEVF-20260716-002
+- status: OPEN
+- type: MANAGEMENT_DELIVERABLE
+- priority: P1
+- title: Produce one visible management deliverable.
+- next_action: package demo as HTML/PDF/PPT-ready artifact.
+
+## BL-DEVF-20260716-003
+- status: OPEN
+- type: VALIDATION
+- priority: P2
+- title: Create reusable validation harness for DeveFact batches.

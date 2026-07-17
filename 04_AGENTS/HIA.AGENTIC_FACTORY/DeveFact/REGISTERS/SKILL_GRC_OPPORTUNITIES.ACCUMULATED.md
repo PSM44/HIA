@@ -55,3 +55,15 @@ DO_NOT_CANONIZE:
 
 CANDIDATES_REGISTER_UPDATED: YES
 NEXT_GRC_OR_SKILL_ACTION: Create BATCH-0028 dedicated DeveFact RADAR.ps1.
+
+==========
+SESSION_CLOSE_20260716_2348 SKILL_GRC_OPPORTUNITIES_APPEND
+==========
+SKILL_GRC_LEARNING_REVIEW:
+- NEW_GRC_CANDIDATES: GRC.DEVEFACT_RADAR_PROFILE; GRC.MANAGEMENT_DEMO_DELIVERABLE_GATE; GRC.LOOP_ENGINEERING_HUMAN_GATE.
+- GRC_IMPROVEMENT_CANDIDATES: GRC.AI_CODE_AGENT_SEQUENTIAL_WORKFLOW; GRC.UNKNOWN_WORKTREE_STATE_HARD_STOP; GRC.DRAGONFLYFOCUS.
+- SKILL_IMPROVEMENT_CANDIDATES: Management Demo Packaging; Context Sufficiency / Intake; RADAR Profile Creation.
+- OPERATIONAL_RULES_TO_CANONIZE: accumulated registers append-only; close after batch chains reports RADAR/freshness; management deliverable must be visible and functional.
+- DO_NOT_CANONIZE: DeveFact-specific paths as global defaults; markdown docs as final UI; generated 90.USECASE manual patching.
+- CANDIDATES_REGISTER_UPDATED: YES if Apply is executed.
+- NEXT_GRC_OR_SKILL_ACTION: BATCH-0028 dedicated DeveFact RADAR.ps1.
