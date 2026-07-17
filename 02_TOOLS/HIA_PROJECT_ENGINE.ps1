@@ -2276,52 +2276,289 @@ function Get-HIAProjectSessionStatus {
 function Close-HIAProjectSession {
     param(
         [Parameter(Mandatory = $true)]
-        [string]$ProjectId
+        [string]$ProjectId,
+        [string]$Summary = "",
+        [ValidateSet("CLOSED","DEGRADED","ABORTED")]
+        [string]$FinalStatus = "CLOSED",
+        [string]$Objective = "",
+        [string]$LastValidProgress = "",
+        [string]$NextAction = "",
+        [string[]]$Blockers = @(),
+        [string[]]$Risks = @(),
+        [string[]]$Assumptions = @(),
+        [string[]]$Dependencies = @(),
+        [string[]]$DecisionRefs = @(),
+        [string[]]$EvidenceRefs = @(),
+        [string[]]$ValidationChecks = @(),
+        [string[]]$ErrorsFound = @(),
+        [string[]]$ErrorsCorrected = @(),
+        [string[]]$ErrorsPending = @(),
+        [string]$ResumeInstruction = "",
+        [string]$RecommendedTool = ""
     )
 
+    $projectRoot = Resolve-HIAProjectRoot -ProjectId $ProjectId
     $sessionPath = Get-HIAProjectSessionPath -ProjectId $ProjectId
     $closedUtc = (Get-Date).ToUniversalTime().ToString("o")
-    $sessionId = [guid]::NewGuid().ToString()
-    $startedUtc = $closedUtc
-    $createdClosedSnapshot = $false
 
-    if (Test-Path -LiteralPath $sessionPath) {
+    # --- Read source session state ---
+    $sourceSession = $null
+    $sourceSessionValid = $false
+    $sourceStatusBeforeClose = "MISSING"
+    $sourceProjectId = $null
+    $sessionId = $null
+    $startedUtc = $null
+    $degradedReason = ""
+
+    if (Test-Path -LiteralPath $sessionPath -PathType Leaf) {
         try {
-            $session = Get-Content -LiteralPath $sessionPath -Raw | ConvertFrom-Json
-
-            if (-not [string]::IsNullOrWhiteSpace([string]$session.session_id)) {
-                $sessionId = [string]$session.session_id
-            }
-            $startedUtc = Convert-HIAUtcValueToString -Value $session.started_utc -Default $closedUtc
+            $sourceSession = Get-Content -LiteralPath $sessionPath -Raw | ConvertFrom-Json
+            $sourceStatusBeforeClose = if ([string]::IsNullOrWhiteSpace([string]$sourceSession.status)) { "UNKNOWN" } else { [string]$sourceSession.status }
+            $sourceProjectId = [string]$sourceSession.project_id
+            $sessionId = [string]$sourceSession.session_id
+            $startedUtc = Convert-HIAUtcValueToString -Value $sourceSession.started_utc -Default $closedUtc
+            $sourceSessionValid = $true
         }
         catch {
-            $createdClosedSnapshot = $true
+            $sourceStatusBeforeClose = "INVALID_JSON"
+            $sourceSessionValid = $false
+            $degradedReason = "Source SESSION.ACTIVE.json could not be parsed"
         }
     }
     else {
-        $createdClosedSnapshot = $true
+        $sourceStatusBeforeClose = "MISSING"
+        $degradedReason = "Source SESSION.ACTIVE.json does not exist"
     }
 
-    $payload = [ordered]@{
+    # --- Validation rule 3: project_id match ---
+    if ($sourceSessionValid -and -not [string]::IsNullOrWhiteSpace($sourceProjectId)) {
+        if (-not $sourceProjectId.Equals($ProjectId, [System.StringComparison]::OrdinalIgnoreCase)) {
+            throw ("SESSION.CLOSE rejected: source project_id '{0}' does not match requested '{1}'." -f $sourceProjectId, $ProjectId)
+        }
+    }
+
+    # --- Validation rule 6: already closed ---
+    if ($sourceSessionValid -and $sourceStatusBeforeClose.ToLowerInvariant() -eq "closed") {
+        throw ("SESSION.CLOSE rejected: session for project '{0}' is already closed (session_id={1})." -f $ProjectId, $sessionId)
+    }
+
+    # --- Validation rule 4: normal close requires active ---
+    if ($FinalStatus -eq "CLOSED") {
+        if (-not $sourceSessionValid -or $sourceStatusBeforeClose.ToLowerInvariant() -ne "active") {
+            throw ("SESSION.CLOSE rejected: FinalStatus=CLOSED requires source status=active, but source is '{0}'. Use -FinalStatus DEGRADED for non-active sources." -f $sourceStatusBeforeClose)
+        }
+    }
+
+    # --- Validation rule 5: missing/invalid source requires DEGRADED ---
+    if (-not $sourceSessionValid -and $FinalStatus -ne "DEGRADED") {
+        throw ("SESSION.CLOSE rejected: source session is {0}. Only FinalStatus=DEGRADED is allowed. Reason: {1}" -f $sourceStatusBeforeClose, $degradedReason)
+    }
+
+    # --- Fallback values ---
+    if ([string]::IsNullOrWhiteSpace($sessionId)) {
+        $sessionId = [guid]::NewGuid().ToString()
+    }
+    if ([string]::IsNullOrWhiteSpace($startedUtc)) {
+        $startedUtc = $closedUtc
+    }
+
+    $durationSeconds = 0
+    try {
+        $dtStart = [datetime]::Parse($startedUtc, [System.Globalization.CultureInfo]::InvariantCulture, [System.Globalization.DateTimeStyles]::RoundtripKind).ToUniversalTime()
+        $dtClose = [datetime]::Parse($closedUtc, [System.Globalization.CultureInfo]::InvariantCulture, [System.Globalization.DateTimeStyles]::RoundtripKind).ToUniversalTime()
+        $durationSeconds = [math]::Max(0, [math]::Round(($dtClose - $dtStart).TotalSeconds, 0))
+    }
+    catch {
+        $durationSeconds = 0
+    }
+
+    # --- Git snapshot (read-only) ---
+    $gitBranch = "N/A"
+    $gitHead = "N/A"
+    $gitWorktree = "CLEAN"
+    try {
+        $gitBranch = (& git.exe rev-parse --abbrev-ref HEAD 2>$null)
+        if ([string]::IsNullOrWhiteSpace($gitBranch)) { $gitBranch = "N/A" }
+    }
+    catch { $gitBranch = "N/A" }
+    try {
+        $gitHead = (& git.exe rev-parse --short HEAD 2>$null)
+        if ([string]::IsNullOrWhiteSpace($gitHead)) { $gitHead = "N/A" }
+    }
+    catch { $gitHead = "N/A" }
+    try {
+        $gitStatusOut = (& git.exe status --porcelain 2>$null)
+        if (-not [string]::IsNullOrWhiteSpace($gitStatusOut)) { $gitWorktree = "DIRTY" }
+    }
+    catch { $gitWorktree = "UNKNOWN" }
+
+    # --- Safe session id for filename ---
+    $safeSessionId = ($sessionId -replace '[^A-Za-z0-9_-]', '_')
+    if ($safeSessionId.Length -gt 60) { $safeSessionId = $safeSessionId.Substring(0, 60) }
+    $utcStamp = (Get-Date).ToUniversalTime().ToString("yyyyMMddHHmmss")
+
+    # --- Ensure SESSIONS directory ---
+    $sessionsDir = Join-Path $projectRoot "ARTIFACTS\SESSIONS"
+    if (-not (Test-Path -LiteralPath $sessionsDir -PathType Container)) {
+        New-Item -ItemType Directory -Path $sessionsDir -Force | Out-Null
+    }
+
+    $closeFileName = "SESSION.CLOSE.{0}.{1}.json" -f $safeSessionId, $utcStamp
+    $closeFilePath = Join-Path $sessionsDir $closeFileName
+
+    # --- Validation rule 7: no overwrite ---
+    if (Test-Path -LiteralPath $closeFilePath -PathType Leaf) {
+        throw ("SESSION.CLOSE rejected: file already exists at '{0}'. Duplicate close records are not allowed." -f $closeFilePath)
+    }
+
+    # --- Build SESSION.CLOSE record ---
+    $closeRecord = [ordered]@{
+        schema = "HIA_SESSION_CLOSE.v1"
+        schema_version = "1.0.0"
+        record_type = "SESSION_CLOSE"
+        project_id = $ProjectId
+        session_id = $sessionId
+        generated_utc = $closedUtc
+        immutable = $true
+        close_mode = "CLOSE_ONLY"
+
+        identification = [ordered]@{
+            started_utc = $startedUtc
+            closed_utc = $closedUtc
+            duration_seconds = $durationSeconds
+            objective = if ([string]::IsNullOrWhiteSpace($Objective)) { "N/A" } else { $Objective }
+            final_status = $FinalStatus
+        }
+
+        execution = [ordered]@{
+            summary = if ([string]::IsNullOrWhiteSpace($Summary)) { "N/A" } else { $Summary }
+            last_valid_progress = if ([string]::IsNullOrWhiteSpace($LastValidProgress)) { "N/A" } else { $LastValidProgress }
+            completed_items = @()
+            incomplete_items = @()
+            files_and_outputs = @()
+            commands_and_tools = @()
+        }
+
+        decisions = [ordered]@{
+            references = @($DecisionRefs | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+            rationale = "N/A"
+            governance_status = "N/A"
+            approvals = @()
+        }
+
+        validation = [ordered]@{
+            checks = @($ValidationChecks | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+            evidence_refs = @($EvidenceRefs | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+            errors_found = @($ErrorsFound | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+            errors_corrected = @($ErrorsCorrected | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+            errors_pending = @($ErrorsPending | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+        }
+
+        current_state = [ordered]@{
+            current_focus = "N/A"
+            next_action = if ([string]::IsNullOrWhiteSpace($NextAction)) { "N/A" } else { $NextAction }
+            blockers = @($Blockers | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+            risks = @($Risks | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+            assumptions = @($Assumptions | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+            dependencies = @($Dependencies | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+            git = [ordered]@{
+                branch = $gitBranch
+                head = $gitHead
+                worktree = $gitWorktree
+            }
+            evidence = @()
+        }
+
+        work_memory = [ordered]@{
+            backlog = @()
+            technical_debt = @()
+            project_ideas = @()
+            cross_project_ideas = @()
+            unrelated_ideas = @()
+            new_project_opportunities = @()
+            reusable_learning = @()
+            skill_candidates = @()
+            grc_candidates = @()
+        }
+
+        continuity = [ordered]@{
+            resume_instruction = if ([string]::IsNullOrWhiteSpace($ResumeInstruction)) { "N/A" } else { $ResumeInstruction }
+            required_context_files = @()
+            recommended_tool = if ([string]::IsNullOrWhiteSpace($RecommendedTool)) { "N/A" } else { $RecommendedTool }
+            context_policy = "N/A"
+            sharing_policy = "N/A"
+        }
+
+        source_session = [ordered]@{
+            source_path = $sessionPath
+            source_status_before_close = $sourceStatusBeforeClose
+            source_was_valid = $sourceSessionValid
+            degraded_reason = if ([string]::IsNullOrWhiteSpace($degradedReason)) { "N/A" } else { $degradedReason }
+        }
+    }
+
+    # --- Step 2: Write SESSION.CLOSE ---
+    $closeJson = ($closeRecord | ConvertTo-Json -Depth 10)
+    Set-Content -LiteralPath $closeFilePath -Value $closeJson -Encoding UTF8
+
+    # --- Step 3: Re-read and validate SESSION.CLOSE ---
+    $reread = Get-Content -LiteralPath $closeFilePath -Raw | ConvertFrom-Json
+
+    if ([string]$reread.schema -ne "HIA_SESSION_CLOSE.v1") {
+        throw ("SESSION.CLOSE post-write validation failed: schema mismatch (got '{0}')." -f [string]$reread.schema)
+    }
+    if ([string]$reread.project_id -ne $ProjectId) {
+        throw ("SESSION.CLOSE post-write validation failed: project_id mismatch (got '{0}')." -f [string]$reread.project_id)
+    }
+    if ([string]$reread.session_id -ne $sessionId) {
+        throw ("SESSION.CLOSE post-write validation failed: session_id mismatch (got '{0}')." -f [string]$reread.session_id)
+    }
+    if (-not [bool]$reread.immutable) {
+        throw "SESSION.CLOSE post-write validation failed: immutable is not true."
+    }
+
+    # --- Step 4: Update SESSION.ACTIVE ---
+    $closeRelativePath = "ARTIFACTS\SESSIONS\{0}" -f $closeFileName
+    $activePayload = [ordered]@{
         project_id = $ProjectId
         status = "closed"
         session_id = $sessionId
         started_utc = $startedUtc
         closed_utc = $closedUtc
+        last_close_record = $closeRelativePath
+        final_status = $FinalStatus
+        summary = if ([string]::IsNullOrWhiteSpace($Summary)) { "N/A" } else { $Summary }
     }
 
-    ($payload | ConvertTo-Json -Depth 3) | Set-Content -LiteralPath $sessionPath -Encoding UTF8
+    ($activePayload | ConvertTo-Json -Depth 3) | Set-Content -LiteralPath $sessionPath -Encoding UTF8
+
+    # --- Step 5: Re-read and validate SESSION.ACTIVE ---
+    $rereadActive = Get-Content -LiteralPath $sessionPath -Raw | ConvertFrom-Json
+
+    if ([string]$rereadActive.status -ne "closed") {
+        throw ("SESSION.ACTIVE post-write validation failed: status is '{0}', expected 'closed'." -f [string]$rereadActive.status)
+    }
+    if ([string]$rereadActive.last_close_record -ne $closeRelativePath) {
+        throw ("SESSION.ACTIVE post-write validation failed: last_close_record mismatch.")
+    }
 
     Write-Host ""
     Write-Host "PROJECT SESSION CLOSED" -ForegroundColor Yellow
     Write-Host ("PROJECT_ID: {0}" -f $ProjectId)
     Write-Host ("SESSION_ID: {0}" -f $sessionId)
+    Write-Host ("FINAL_STATUS: {0}" -f $FinalStatus)
     Write-Host ("STARTED_UTC: {0}" -f $startedUtc)
     Write-Host ("CLOSED_UTC: {0}" -f $closedUtc)
-    Write-Host ("SESSION_FILE: {0}" -f $sessionPath)
-    if ($createdClosedSnapshot) {
-        Write-Host "NOTE: Session file was missing or invalid; created closed snapshot." -ForegroundColor DarkYellow
-    }
+    Write-Host ("DURATION_SECONDS: {0}" -f $durationSeconds)
+    Write-Host ("CLOSE_MODE: CLOSE_ONLY")
+    Write-Host ("SESSION.CLOSE: {0}" -f $closeFilePath)
+    Write-Host ("SESSION.ACTIVE: {0}" -f $sessionPath)
+    Write-Host ("LAST_CLOSE_RECORD: {0}" -f $closeRelativePath)
+    Write-Host ("RADAR_EXECUTED: NO")
+    Write-Host ("SYNC_EXECUTED: NO")
+    Write-Host ("GIT_MUTATED: NO")
+    Write-Host ("BATON_MUTATED: NO")
+    Write-Host ("CURRENT_STATE_REGENERATED: NO")
     Write-Host ""
 }
 

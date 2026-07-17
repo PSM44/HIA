@@ -85,3 +85,27 @@ must never be read as current operational state.
 
 Context build is a read operation over source state. It may write only its
 derived context package, manifest and context history outputs.
+================================================================================
+09.00_B3_B2B2_BATON_AND_SESSION_CLOSE_BOUNDARY
+================================================================================
+
+DOCUMENT_TYPE......: SPECIFICATION
+LIFECYCLE_STATE....: ACTIVE_DRAFT
+DOMAIN_OWNER.......: BATON_CONTRACT
+MINIBATTLE.........: B3-B2B2
+
+09.10_BATON_DOES_NOT_OWN_CLOSE_HISTORY
+BATON is a compact operational handoff. It does not contain the complete
+session close history. SESSION.CLOSE is the authoritative complete close
+record, stored under:
+
+04_PROJECTS\<PROJECT_ID>\ARTIFACTS\SESSIONS\SESSION.CLOSE.<ID>.<UTC>.json
+
+09.20_BATON_MAY_REFERENCE_SESSION_CLOSE
+BATON may reference a SESSION.CLOSE record by path or session_id.
+BATON must not duplicate or embed the full close record.
+
+09.30_CREATING_SESSION_CLOSE_DOES_NOT_MUTATE_BATON
+Close-HIAProjectSession operates in CLOSE_ONLY mode.
+Creating a SESSION.CLOSE record must not automatically mutate BATON.
+BATON updates are a separate governed operation.

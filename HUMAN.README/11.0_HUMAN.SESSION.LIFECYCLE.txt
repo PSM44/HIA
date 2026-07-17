@@ -436,3 +436,61 @@ The authoritative project runtime functions are:
 - Close-HIAProjectSession.
 
 Full SESSION.CLOSE generation remains a separate governed implementation step.
+================================================================================
+15.00_B3_B2B2_SESSION_CLOSE_GOVERNED_IMPLEMENTATION
+================================================================================
+
+DOCUMENT_TYPE......: SPECIFICATION
+LIFECYCLE_STATE....: ACTIVE_DRAFT
+DOMAIN_OWNER.......: SESSION_LIFECYCLE
+PROMOTION_TARGET...: ACTIVE_CANON after validation and explicit human approval.
+MINIBATTLE.........: B3-B2B2
+
+15.10_AUTHORITATIVE_LOCATION
+The authoritative runtime for SESSION.CLOSE is:
+
+02_TOOLS\HIA_PROJECT_ENGINE.ps1 :: Close-HIAProjectSession
+
+The authoritative close record is written to:
+
+04_PROJECTS\<PROJECT_ID>\ARTIFACTS\SESSIONS\SESSION.CLOSE.<SESSION_ID>.<UTC>.json
+
+15.20_SCHEMA
+Every close record uses schema: HIA_SESSION_CLOSE.v1
+
+The record is a single immutable JSON file with sections:
+identification, execution, decisions, validation, current_state,
+work_memory, continuity, source_session.
+
+15.30_IMMUTABLE_RECORD_VS_ACTIVE_POINTER
+SESSION.CLOSE is immutable. Once written, it must not be overwritten.
+SESSION.ACTIVE.json is a compact pointer updated after the close record is
+validated. It contains status=closed and a last_close_record path pointing to
+the immutable file.
+
+The mandatory write order is:
+1. Build SESSION.CLOSE;
+2. Write SESSION.CLOSE;
+3. Re-read and validate SESSION.CLOSE;
+4. Update SESSION.ACTIVE;
+5. Re-read and validate SESSION.ACTIVE.
+
+15.40_NORMAL_AND_DEGRADED_CLOSE
+A normal close (FinalStatus=CLOSED) requires source status=active.
+A degraded close (FinalStatus=DEGRADED) is the only option when the source
+session is missing, invalid or not active.
+
+15.50_DUPLICATE_CLOSE_REJECTION
+If the source session is already closed, a second close is rejected.
+If the target SESSION.CLOSE file already exists, writing is rejected.
+
+15.60_CLOSE_ONLY_MODE
+Close-HIAProjectSession operates in CLOSE_ONLY mode.
+It does not execute:
+- RADAR;
+- Git mutations (add, commit, push);
+- SYNC;
+- BATON mutation;
+- CURRENT_STATE regeneration.
+
+These are explicit non-side-effects of the close operation.
