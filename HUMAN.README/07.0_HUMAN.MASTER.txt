@@ -749,3 +749,33 @@ SYNC APPLY remains frozen until:
 3. target markers are validated;
 4. WhatIf passes;
 5. Pablo authorizes B4 APPLY.
+================================================================================
+14.00_B3_B1_SESSION_CONTINUITY_CONTRACTS
+================================================================================
+
+14.10_SESSION_LIFECYCLE_OWNER
+11.0_HUMAN.SESSION.LIFECYCLE.txt is the single domain owner for session start,
+CONTINUE, checkpoints, project switching, formal close, degraded close and
+handoff.
+
+14.20_BATON_CONTRACT
+04.0_HUMAN.BATON.SPEC.txt owns the BATON specification.
+Project/session BATON files are runtime instances and do not belong to HUMAN
+doctrine.
+
+Transition:
+04.0_HUMAN.BATON.txt remains temporarily present only for compatibility until
+active consumers are migrated in B3-B2.
+
+14.30_WHOAMI_CONTRACT
+04.1_HUMAN.WHOAMI.SPEC.txt owns the generated WHOAMI projection contract.
+
+WHOAMI derives from:
+PROJECT.IDENTITY + CURRENT_STATE + approved decisions + evidence status.
+
+04.00_WHOAMI.ACTIVE.txt is historical pending relocation and is not eligible
+for UI or current-state use.
+
+14.40_TRANSITION_GUARD
+No historical relocation may occur until active tool and SYNC dependencies are
+migrated and validated.

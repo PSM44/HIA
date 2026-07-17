@@ -6,9 +6,10 @@ DOCUMENT_TYPE.....: INDEX
 LIFECYCLE_STATE...: DERIVED
 SOURCE............: HUMAN.DOCUMENT.REGISTRY.json
 EDIT_POLICY.......: DO NOT EDIT MANUALLY
-VERSION...........: v2.0-GENERATED
-GENERATED_LOCAL...: 2026-07-16 14:09:20 -04:00
+VERSION...........: v2.1-GENERATED
+GENERATED_LOCAL...: 2026-07-16 22:43:37 -04:00
 OFFICIAL_NAME.....: HIA — Human Intelligence Amplifier
+DOCUMENT_COUNT....: 33
 
 01.00 ACTIVE DOMAIN OWNERS
 - 00.0_HUMAN.GENERAL.txt | Conceptual identity and foundational principles | ACTIVE_DRAFT
@@ -22,34 +23,16 @@ OFFICIAL_NAME.....: HIA — Human Intelligence Amplifier
 - 09.0_HUMAN.START.RITUAL.txt | Initial human interaction | ACTIVE_DRAFT
 - 11.0_HUMAN.SESSION.LIFECYCLE.txt | Session lifecycle | ACTIVE_DRAFT
 - HIA_HUM_0012.0_OPERATION.RUNBOOK.txt | Local command procedures | ACTIVE_DRAFT
+- 04.0_HUMAN.BATON.SPEC.txt | BATON contract | ACTIVE_DRAFT
+- 04.1_HUMAN.WHOAMI.SPEC.txt | WHOAMI generated projection | ACTIVE_DRAFT
 
-02.00 ACTIVE REFERENCES AND SUPPORT
-- 00.1_HUMAN.READING.ORDER.txt | REFERENCE | Documentation navigation
-- 00.3_HUMAN.SYSTEM.MAP.txt | REFERENCE | Structural navigation
-- 02.0_HUMAN.USE.CASE.txt | REFERENCE | Use-case examples
-- 08.0_HUMAN.SYNC.MANIFEST.txt | SPECIFICATION | Synchronization infrastructure
-- 08.1_HUMAN.DRAGNDROP.PACKAGING.txt | SPECIFICATION | Cloud packaging fallback
-- 10.0_HUMAN.HIA.TROUBLE.txt | RUNBOOK | Troubleshooting
-- CASEBOOK\HIA_HUM_0004_USECASE.TL.BOOTSTRAP_SENSITIVITY.MATRIX.txt | CASE_EVIDENCE | Training use case
-- CASEBOOK\HIA_HUM_0010.1_CONTEXT.PACKAGING.AND.HANDOFF.txt | REFERENCE | Context packaging
-- CASEBOOK\HIA_HUM_0010.2_STACK.DECISION.METHOD.txt | REFERENCE | Stack selection
-- CASEBOOK\HIA_HUM_0010.3_IA.ROLES.MODES.MATRIX.txt | REFERENCE | Multi-AI roles
-- CASEBOOK\HIA_HUM_0010.5_RESULTS.REVIEW.AND.QA.txt | REFERENCE | Quality assurance
-- HIA_DGM_0000_DIAGRAMS.README.txt | REFERENCE | Diagram governance
+02.00 TRANSITIONAL HISTORICAL FILES
+- 04.0_HUMAN.BATON.txt | HISTORICAL_PENDING_RELOCATION | UI_ELIGIBLE=False
+- 04.00_WHOAMI.ACTIVE.txt | HISTORICAL_PENDING_RELOCATION | UI_ELIGIBLE=False
 
-03.00 HISTORICAL / SUPERSEDED
-- 04.0_HUMAN.BATON.txt | HISTORICAL | BATON April 2026 Session Snapshot
-- 04.00_WHOAMI.ACTIVE.txt | HISTORICAL | WHOAMI April 2026 Snapshot
-- CASEBOOK\HIA_HUM_0003_OFFICE.CHANGELOG.txt | HISTORICAL | Office Change Log
-- CASEBOOK\HIA_HUM_0010.0_OPS.RUNTIME.MANUAL.txt | SUPERSEDED | Legacy Runtime Manual
-- CASEBOOK\HIA_HUM_0010.4_SYNC.MULTI.IA.GOVERNANCE.txt | SUPERSEDED | Legacy Multi-AI Governance
-- CASEBOOK\HIA_HUM_0011.0_CASE.REAL_GUIDE_SENSITIVITY.TIR.txt | HISTORICAL | Sensitivity TIR Case
-- CHANGELOG.md | HISTORICAL | HIA Human Changelog
-
-04.00 GOVERNANCE RULES
-- HUMAN.DOCUMENT.REGISTRY.json is the machine-readable source.
-- This index is generated and does not own classifications.
-- CASEBOOK is reference/evidence by default.
-- BATON specification and runtime instances must be separate.
-- WHOAMI is generated from project identity and current state.
+03.00 GOVERNANCE
+- SESSION.LIFECYCLE is the single session owner.
+- BATON.SPEC owns the BATON contract.
+- WHOAMI.SPEC owns the generated projection contract.
+- Historical relocation waits for B3-B2 consumer migration.
 - SYNC APPLY remains frozen.

@@ -1,6 +1,6 @@
 ﻿{
   "schema": "HIA_HUMAN_DOCUMENT_REGISTRY.v1",
-  "generated_at": "2026-07-16T18:09:20.1219564Z",
+  "generated_at": "2026-07-17T02:43:37.1277173Z",
   "source_root": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\HUMAN.README",
   "source_of_truth": true,
   "approved_name": "HIA — Human Intelligence Amplifier",
@@ -8,7 +8,7 @@
   "meta_governance_authority": "07.0_HUMAN.MASTER.txt",
   "session_lifecycle_authority": "11.0_HUMAN.SESSION.LIFECYCLE.txt",
   "sync_status": "FROZEN",
-  "document_count": 31,
+  "document_count": 33,
   "documents": [
     {
       "document_id": "HUMAN.GENERAL.0001",
@@ -108,7 +108,7 @@
       "conflicts": [],
       "recommended_action": "Generate from registry",
       "approval_status": "B2_APPROVED_CLASSIFICATION",
-      "last_validation": "2026-07-16T18:09:20.1162310Z"
+      "last_validation": "2026-07-16T18:09:20.116231Z"
     },
     {
       "document_id": "HUMAN.USER.0001",
@@ -197,8 +197,8 @@
       "document_type": "HISTORICAL_SNAPSHOT",
       "domain": "Session continuity history",
       "owner_document": "04.0_HUMAN.BATON.SPEC.txt",
-      "authority_level": "NON_AUTHORITY",
-      "lifecycle_state": "HISTORICAL",
+      "authority_level": "NON_AUTHORITY_COMPATIBILITY",
+      "lifecycle_state": "HISTORICAL_PENDING_RELOCATION",
       "current_use": "PRESENT",
       "ui_eligible": false,
       "supersedes": [],
@@ -206,9 +206,10 @@
       "derived_from": [],
       "downstream_dependencies": [],
       "conflicts": [],
-      "recommended_action": "Move to history in B3-B",
+      "recommended_action": "Migrate consumers in B3-B2, then move in B3-B3",
       "approval_status": "B2_APPROVED_CLASSIFICATION",
-      "last_validation": "2026-07-16T18:09:20.1172659Z"
+      "last_validation": "2026-07-16T18:09:20.1172659Z",
+      "compatibility_required": true
     },
     {
       "document_id": "HIA.WHOAMI.ACTIVE.0001",
@@ -218,7 +219,7 @@
       "domain": "Project status history",
       "owner_document": "PROJECT.IDENTITY + CURRENT_STATE",
       "authority_level": "NON_AUTHORITY",
-      "lifecycle_state": "HISTORICAL",
+      "lifecycle_state": "HISTORICAL_PENDING_RELOCATION",
       "current_use": "PRESENT",
       "ui_eligible": false,
       "supersedes": [],
@@ -226,7 +227,7 @@
       "derived_from": [],
       "downstream_dependencies": [],
       "conflicts": [],
-      "recommended_action": "Move to history in B3-B",
+      "recommended_action": "Move to history in B3-B3",
       "approval_status": "B2_APPROVED_CLASSIFICATION",
       "last_validation": "2026-07-16T18:09:20.1174617Z"
     },
@@ -629,6 +630,57 @@
       "recommended_action": "Correct location metadata",
       "approval_status": "B2_APPROVED_CLASSIFICATION",
       "last_validation": "2026-07-16T18:09:20.1219298Z"
+    },
+    {
+      "document_id": "HUMAN.BATON.SPEC.0001",
+      "relative_path": "04.0_HUMAN.BATON.SPEC.txt",
+      "title": "BATON Contract",
+      "document_type": "SPECIFICATION",
+      "domain": "BATON contract",
+      "owner_document": "SELF",
+      "authority_level": "DOMAIN_OWNER",
+      "lifecycle_state": "ACTIVE_DRAFT",
+      "current_use": "PRESENT_AFTER_B3_B1",
+      "ui_eligible": true,
+      "supersedes": [],
+      "superseded_by": [],
+      "derived_from": [],
+      "downstream_dependencies": [
+        "project BATON instances",
+        "SESSION.LIFECYCLE"
+      ],
+      "conflicts": [],
+      "recommended_action": "Validate then promote later",
+      "approval_status": "B2_APPROVED_CLASSIFICATION",
+      "last_validation": "2026-07-17T02:43:37.1223785Z"
+    },
+    {
+      "document_id": "HUMAN.WHOAMI.SPEC.0001",
+      "relative_path": "04.1_HUMAN.WHOAMI.SPEC.txt",
+      "title": "WHOAMI Projection Contract",
+      "document_type": "SPECIFICATION",
+      "domain": "WHOAMI generated projection",
+      "owner_document": "SELF",
+      "authority_level": "DOMAIN_OWNER",
+      "lifecycle_state": "ACTIVE_DRAFT",
+      "current_use": "PRESENT_AFTER_B3_B1",
+      "ui_eligible": true,
+      "supersedes": [],
+      "superseded_by": [],
+      "derived_from": [
+        "PROJECT.IDENTITY",
+        "CURRENT_STATE",
+        "approved decisions",
+        "evidence status"
+      ],
+      "downstream_dependencies": [
+        "WHOAMI generator",
+        "UI identity projection"
+      ],
+      "conflicts": [],
+      "recommended_action": "Validate then promote later",
+      "approval_status": "B2_APPROVED_CLASSIFICATION",
+      "last_validation": "2026-07-17T02:43:37.1262906Z"
     }
   ]
 }

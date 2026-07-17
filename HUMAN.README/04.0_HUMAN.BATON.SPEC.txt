@@ -1,0 +1,68 @@
+﻿================================================================================
+04.0_HUMAN.BATON.SPEC — BATON CONTRACT
+================================================================================
+ID_UNICO..........: HUMAN.BATON.SPEC.0001
+DOCUMENT_TYPE.....: SPECIFICATION
+LIFECYCLE_STATE...: ACTIVE_DRAFT
+DOMAIN_OWNER......: BATON_CONTRACT
+VERSION...........: v1.0-ACTIVE_DRAFT
+DATE..............: 2026-07-16
+OFFICIAL_SYSTEM...: HIA — Human Intelligence Amplifier
+
+01.00 PURPOSE
+BATON is a compact operational handoff and continuity instance for one
+project/session.
+
+02.00 BATON IS NOT
+BATON is not:
+- doctrine;
+- backlog;
+- decision register;
+- technical debt register;
+- full session history;
+- CURRENT_STATE;
+- a replacement for detailed registers.
+
+03.00 MINIMUM FIELDS
+A BATON runtime instance must contain:
+- schema/version;
+- project ID;
+- session ID;
+- generated/updated time;
+- objective;
+- last valid progress;
+- current focus;
+- next action;
+- blockers;
+- decision references;
+- evidence references;
+- confidence/freshness;
+- context policy reference;
+- exact resume instruction.
+
+04.00 PRECEDENCE
+CURRENT_STATE is the current operational truth.
+BATON provides handoff and continuity.
+Detailed registers own backlog, decisions, debt and ideas.
+SESSION.CLOSE owns the complete close record.
+
+05.00 RUNTIME LOCATION
+BATON runtime instances live under project runtime/state, not inside HUMAN
+doctrine.
+
+Recommended project pattern:
+<PROJECT_ROOT>\BATON\04.0_PROJECT.BATON.txt
+
+06.00 TRANSITION
+HUMAN.README\04.0_HUMAN.BATON.txt is an April 2026 historical snapshot kept
+temporarily for compatibility.
+It is not a valid owner of current doctrine or current state.
+
+07.00 VALIDATION
+A valid BATON:
+- references an existing project;
+- exposes an executable next action or explicit blocker;
+- references evidence;
+- declares freshness/confidence;
+- does not duplicate detailed registers;
+- does not contain secrets.

@@ -1,0 +1,53 @@
+﻿================================================================================
+04.1_HUMAN.WHOAMI.SPEC — WHOAMI PROJECTION CONTRACT
+================================================================================
+ID_UNICO..........: HUMAN.WHOAMI.SPEC.0001
+DOCUMENT_TYPE.....: SPECIFICATION
+LIFECYCLE_STATE...: ACTIVE_DRAFT
+DOMAIN_OWNER......: WHOAMI_PROJECTION
+VERSION...........: v1.0-ACTIVE_DRAFT
+DATE..............: 2026-07-16
+OFFICIAL_SYSTEM...: HIA — Human Intelligence Amplifier
+
+01.00 PURPOSE
+WHOAMI is a generated human-readable projection explaining:
+- what the project is;
+- why it exists;
+- what is happening now;
+- what was completed;
+- what remains;
+- what to do next.
+
+02.00 AUTHORITATIVE SOURCES
+WHOAMI derives from:
+- PROJECT.IDENTITY;
+- CURRENT_STATE;
+- approved decisions;
+- current evidence status.
+
+03.00 NON-AUTHORITY RULE
+WHOAMI is not:
+- an independent source of truth;
+- a manually maintained active state;
+- a replacement for CURRENT_STATE;
+- a replacement for BATON;
+- a replacement for detailed registers.
+
+04.00 REQUIRED OUTPUT
+A generated WHOAMI should show:
+- project ID and name;
+- purpose;
+- scope summary;
+- current focus;
+- last valid progress;
+- completed and pending work;
+- blockers and risks;
+- next action;
+- evidence confidence;
+- generated time;
+- source references.
+
+05.00 TRANSITION
+HUMAN.README\04.00_WHOAMI.ACTIVE.txt is an April 2026 historical snapshot
+pending relocation.
+It is UI-ineligible and must not be used as current project truth.

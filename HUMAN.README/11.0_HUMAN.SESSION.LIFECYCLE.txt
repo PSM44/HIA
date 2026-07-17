@@ -1,4 +1,4 @@
-======================================================================
+﻿======================================================================
 00.00_METADATOS_DEL_DOCUMENTO
 ======================================================================
 
@@ -269,3 +269,129 @@ El ciclo de vida de una sesión en HIA proporciona una estructura clara para tra
 Al seguir este ciclo de vida, el humano puede asegurar que el trabajo realizado es ordenado, trazable y reproducible.
 
 FIN DEL DOCUMENTO
+================================================================================
+12.00_B3_B1_SINGLE_SESSION_LIFECYCLE_AUTHORITY
+================================================================================
+
+DOCUMENT_TYPE......: SPECIFICATION
+LIFECYCLE_STATE....: ACTIVE_DRAFT
+DOMAIN_OWNER.......: SESSION_LIFECYCLE
+PROMOTION_TARGET...: ACTIVE_CANON after validation and explicit human approval.
+
+12.10_SINGLE_OWNER
+This document is the single authority for:
+- formal session start;
+- CONTINUE;
+- checkpoint;
+- project switch;
+- formal close;
+- degraded close;
+- handoff;
+- evidence and confidence status;
+- exact continuation instructions.
+
+Other HUMAN documents may reference or derive summaries from this contract but
+must not maintain competing lifecycle doctrine.
+
+12.20_FORMAL_START
+A formal session starts when the user invokes CONTINUE for a project.
+
+Default:
+- one active session per project;
+- project identity and current state are loaded before execution;
+- applicable context policy is identified;
+- evidence freshness and confidence are surfaced;
+- the next action must be executable or explicitly blocked.
+
+12.30_CHECKPOINT_AND_SWITCH
+A checkpoint records verified progress without pretending the session is closed.
+
+A project switch requires:
+- checkpoint or close of the current project;
+- explicit target project;
+- no context contamination between projects;
+- loading the target project's identity, state and context policy.
+
+12.40_CLOSE_TRIGGERS
+HIA must propose or require closure when:
+- the current action is completed;
+- the user changes project;
+- a checkpoint is reached;
+- context quality degrades;
+- the workday ends;
+- the user requests closure;
+- a blocker prevents safe continuation.
+
+12.50_REQUIRED_CLOSE_TAXONOMY
+Every formal close must classify and preserve:
+
+IDENTIFICATION
+- session ID;
+- project ID;
+- start and close time;
+- objective;
+- final status.
+
+EXECUTION
+- what was done;
+- what was not done;
+- last valid progress;
+- files and outputs;
+- commands and tools used.
+
+DECISIONS
+- decisions;
+- rationale;
+- status DRAFT/CANON;
+- approvals.
+
+VALIDATION
+- checks performed;
+- evidence;
+- errors found;
+- errors corrected;
+- errors pending.
+
+CURRENT STATE
+- current focus;
+- next action;
+- blockers;
+- risks;
+- assumptions;
+- dependencies;
+- Git state;
+- evidence freshness and confidence.
+
+WORK MEMORY
+- backlog;
+- technical debt;
+- project ideas;
+- cross-project ideas;
+- general or unrelated ideas;
+- new-project opportunities;
+- reusable learning;
+- Skill candidates;
+- GRC candidates.
+
+CONTINUITY
+- exact resume instructions;
+- required context and files;
+- recommended AI/tool;
+- context and sharing policy.
+
+12.60_DEGRADED_CLOSE
+A dirty or incomplete session may close only when:
+- changes are identified;
+- recovery or backup exists;
+- unresolved state is explicit;
+- the next action is executable;
+- final state is marked DEGRADED.
+
+A degraded close must never be represented as clean.
+
+12.70_OUTPUT_RELATIONSHIPS
+- SESSION.CLOSE is the machine-readable close record.
+- BATON is a compact operational handoff.
+- CURRENT_STATE is the current operational truth.
+- WHOAMI is a generated human-readable projection.
+- Detailed registers remain authoritative for backlog, decisions, debt and ideas.
