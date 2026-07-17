@@ -1,4 +1,4 @@
-==========
+﻿==========
 00.00_METADATOS_DEL_DOCUMENTO
 ==========
 
@@ -32,7 +32,7 @@ DEPENDENCIAS.......:
 00.10_GLOSARIO_MINIMO_(ABREVIACIONES_EXPLICADAS)
 ==========
 
-HIA (Human + IA): entorno/metodología reusable para colaboración humano + IA.
+HIA (Human Intelligence Amplifier): sistema operativo de trabajo humano + IA bajo gobierno humano.
 TL.Bootstrap (Tooling & Lifecycle Bootstrap): set transversal reusable (RADAR, BATON, CIS, PF.0, estructura, tools).
 DOC.AUTHORITY.MAP (Mapa de autoridad documental): qué archivo manda por dominio.
 CANON.REGISTRY (Registro canónico): inventario de secciones CANON vs DERIVED.
@@ -111,7 +111,7 @@ Gate (Aprobación humana): permiso explícito para APPLY.
 DOMINIO...........................: ARCHIVO_DUENO..........................: NOTA
 - Operación humana (usuario)       : 01.0_HUMAN.USER.txt                    : Cómo opera el humano, gates, rutina.
 - PF.0 método mínimo               : 06.0_HUMAN.PF0.txt                     : Ritual/MB/MVP.HIA/DoD/Sync readiness.
-- Continuidad / BATON              : 04.0_HUMAN.BATON.txt                  : Plantilla y reglas baton/handoff.
+- Continuidad / ciclo de sesión     : 11.0_HUMAN.SESSION.LIFECYCLE.txt      : Dueño único del ciclo de sesión.`r`n- Contrato BATON                   : 04.0_HUMAN.BATON.SPEC.txt          : Especificación; instancias fuera de HUMAN.
 - Inventario / RADAR               : 03.0_HUMAN.RADAR.txt                  : Definiciones niveles + exclusiones.
 - Contratos / CIS                  : 05.0_HUMAN.CIS.txt                          : Contratos de cambio + atomic apply.
 - Meta-gobernanza documental        : 07.0_HUMAN.MASTER.txt                       : Autoridad y sync.
@@ -662,6 +662,8 @@ NOTES................:
 12.00_CHANGELOG
 ==========
 
+2026-07-16, v1.4-ACTIVE_DRAFT
+- Reconciliación B3-A de autoridad, tipos, estados, CASEBOOK, BATON/WHOAMI y registry.
 2026-03-30, v1.3-DRAFT
 - Limpieza de contaminación office.
 - Corrección de referencias/rutas.
@@ -671,3 +673,79 @@ NOTES................:
 - Elimina “pendientes” y alinea a SYNC manifest de 9 entradas.
 2026-02-27, v1.0-DRAFT
 - Creación inicial.
+==========
+13.00_B3_META_GOVERNANCE_RECONCILIATION
+==========
+
+13.10_DOCUMENT_STATUS
+DOCUMENT_TYPE......: DOCTRINE
+LIFECYCLE_STATE....: ACTIVE_DRAFT
+DOMAIN_OWNER.......: DOCUMENT_META_GOVERNANCE
+PROMOTION_TARGET...: ACTIVE_CANON after validation and explicit human approval.
+
+13.20_APPROVED_AUTHORITY_MAP
+DOMAIN........................................ OWNER
+Conceptual identity, purpose and scope........ 00.0_HUMAN.GENERAL.txt
+Human daily operating model................... 01.0_HUMAN.USER.txt
+System overview and capability map............ 00.2_HUMAN.SYSTEM.OVERVIEW.txt
+Document meta-governance...................... 07.0_HUMAN.MASTER.txt
+Session lifecycle............................. 11.0_HUMAN.SESSION.LIFECYCLE.txt
+BATON specification........................... 04.0_HUMAN.BATON.SPEC.txt
+BATON runtime instance........................ Project/session runtime state outside HUMAN doctrine
+Generated WHOAMI.............................. PROJECT.IDENTITY + CURRENT_STATE
+Minimum operating method...................... 06.0_HUMAN.PF0.txt
+Operational principles........................ 02.0_HUMAN.OPERATION.txt
+Local command procedures...................... HIA_HUM_0012.0_OPERATION.RUNBOOK.txt
+Initial interaction / start ritual............ 09.0_HUMAN.START.RITUAL.txt
+Controlled changes............................ 05.0_HUMAN.CIS.txt
+Passive observation........................... 03.0_HUMAN.RADAR.txt
+Synchronization infrastructure................ 08.0_HUMAN.SYNC.MANIFEST.txt
+Cloud packaging / fallback.................... 08.1_HUMAN.DRAGNDROP.PACKAGING.txt
+Troubleshooting............................... 10.0_HUMAN.HIA.TROUBLE.txt
+Use-case registry............................. 02.1_HUMAN.USE.CASE.REGISTRY.txt
+Historical/reference cases.................... CASEBOOK
+
+13.30_DOCUMENT_TYPE_RULE
+Allowed DOCUMENT_TYPE values:
+DOCTRINE, METHOD, SPECIFICATION, RUNTIME_INSTANCE, DERIVED, REFERENCE,
+CASE_EVIDENCE, HISTORICAL_SNAPSHOT, CHANGELOG, INDEX, RUNBOOK.
+
+A document cannot simultaneously be doctrine and a runtime instance.
+
+13.40_LIFECYCLE_STATE_RULE
+Allowed LIFECYCLE_STATE values:
+ACTIVE_CANON, ACTIVE_DRAFT, ACTIVE_REFERENCE, DERIVED, HISTORICAL,
+SUPERSEDED, DEPRECATED, QUARANTINE_CANDIDATE.
+
+ACTIVE_DRAFT must never be represented as ACTIVE_CANON.
+Only Pablo can promote a document to ACTIVE_CANON.
+
+13.50_CASEBOOK_RULE
+CASEBOOK files are reference/evidence by default.
+A CASEBOOK file becomes doctrine, method, Skill or GRC only through explicit
+extraction, validation, domain-owner assignment and human approval.
+
+13.60_SPECIFICATION_INSTANCE_RULE
+A specification defines a contract.
+A runtime instance records current or historical state.
+They must be separate files and separate registry entries.
+
+13.70_WHOAMI_RULE
+WHOAMI is DERIVED.
+It must be generated from PROJECT.IDENTITY, CURRENT_STATE, approved decisions
+and current evidence status.
+It must not be maintained as an independent source of truth.
+
+13.80_REGISTRY_RULE
+HUMAN.DOCUMENT.REGISTRY.json is the machine-readable source for document
+classification and navigation.
+HUMAN.DOCUMENT.REGISTRY.txt and 00.4_HUMAN.INDEX.txt are generated projections
+and must not be manually maintained as competing sources.
+
+13.90_SYNC_FREEZE
+SYNC APPLY remains frozen until:
+1. owner documents are corrected;
+2. source IDs and WBS ranges are validated;
+3. target markers are validated;
+4. WhatIf passes;
+5. Pablo authorizes B4 APPLY.

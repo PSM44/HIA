@@ -1,4 +1,4 @@
-==========
+﻿==========
 00.00_METADATOS_DEL_DOCUMENTO
 ==========
 
@@ -32,7 +32,7 @@ DEPENDENCIAS......:
 - HUMAN.PF0 (método mínimo operativo)
 - HUMAN.CIS (contratos de cambio)
 - HUMAN.RADAR (inventario/delta + exclusiones)
-- HUMAN.BATON (continuidad/handoff)
+- HUMAN.BATON.SPEC (contrato de continuidad/handoff; las instancias runtime viven fuera de la doctrina HUMAN)
 - Git (rollback)
 
 ==========
@@ -182,7 +182,7 @@ Por eso HIA distingue entre doctrina (HUMAN), continuidad (BATON), estado operat
 00.30_DEFINICIONES_BASE_(ABREVIACIONES_EXPLICADAS)
 ==========
 
-HIA (Human + IA): entorno/metodología reusable para colaborar humano + IA.
+HIA (Human Intelligence Amplifier): sistema operativo de trabajo humano + IA para desarrollar y operar proyectos bajo gobierno humano.
 TL.Bootstrap (Tooling & Lifecycle Bootstrap): set transversal reusable (RADAR, CIS, BATON, PF.0, estructura, tools).
 Cambio: crear / editar / renombrar / mover / eliminar (archivo o carpeta).
 Gate: punto de control humano para pasar de PLAN a APPLY.
@@ -535,6 +535,8 @@ Mitigación: exclusiones + CORE por módulo.
 10.00_CHANGELOG
 ==========
 
+2026-07-16, v1.3-ACTIVE_DRAFT
+- Reconciliación doctrinal B3-A: nombre oficial, system/product/project, taxonomías documentales y capacidades.
 2026-03-30, v1.2-DRAFT
 - Se incorpora 00.25_VERSION_PEATON.
 - Se incorpora 08.40_TIPOS_DE_MEMORIA_Y_CONTROL_DE_DISPERSION.
@@ -544,3 +546,88 @@ Mitigación: exclusiones + CORE por módulo.
 - Se refuerza atomic apply por target como política de runners.
 2026-02-27, v1.0-DRAFT
 - Creación inicial.
+==========
+00.26_B3_GOVERNANCE_RECONCILIATION
+==========
+
+00.26.10_OFFICIAL_IDENTITY
+OFFICIAL_NAME:
+HIA — Human Intelligence Amplifier
+
+OFFICIAL_SHORT_DEFINITION:
+HIA is a human + AI operating system for developing and operating projects with focus, order, continuity, traceability and human control.
+
+PURPOSE:
+HIA exists to transform human intent into verifiable and auditable progress and to preserve that progress across projects, sessions, AI systems and tools without losing human governance.
+
+00.26.20_CURRENT_DEPLOYMENT_AND_GENERAL_SCOPE
+- Current primary user: Pablo.
+- Current deployment: Pablo's personal operating system for his projects.
+- "Personal" describes the current deployment; it does not restrict HIA's general doctrine.
+- HIA applies to the development and operation of any type of project when governance, context, scope, evidence and tooling are explicitly defined.
+
+00.26.30_SYSTEM_PRODUCT_PROJECT_SEPARATION
+HIA_SYSTEM:
+- The complete doctrine, governance, methods, tools and interfaces.
+
+HIA_PRODUCT:
+- The visible and executable product that operationalizes HIA.
+
+PRJ_0001_HIA.PRODUCT:
+- The project through which the HIA product itself is developed.
+
+RULE:
+- PRJ_0001_HIA.PRODUCT is governed by HIA; it is not equivalent to the complete HIA system.
+
+00.26.40_DOCUMENT_TYPES
+Every HUMAN-related document must declare one DOCUMENT_TYPE:
+- DOCTRINE
+- METHOD
+- SPECIFICATION
+- RUNTIME_INSTANCE
+- DERIVED
+- REFERENCE
+- CASE_EVIDENCE
+- HISTORICAL_SNAPSHOT
+- CHANGELOG
+- INDEX
+- RUNBOOK
+
+A document cannot simultaneously be doctrine and a runtime instance.
+
+00.26.50_DOCUMENT_LIFECYCLE_STATES
+Every HUMAN-related document must declare one LIFECYCLE_STATE:
+- ACTIVE_CANON
+- ACTIVE_DRAFT
+- ACTIVE_REFERENCE
+- DERIVED
+- HISTORICAL
+- SUPERSEDED
+- DEPRECATED
+- QUARANTINE_CANDIDATE
+
+Only Pablo can promote ACTIVE_DRAFT to ACTIVE_CANON.
+
+00.26.60_CAPABILITY_LIFECYCLE
+Every capability represented in HUMAN, APIs, UI or management material must be classified:
+- LIVE
+- PARTIAL
+- PLANNED
+- CONCEPTUAL
+- DEPRECATED
+
+PLANNED or CONCEPTUAL capabilities must never be represented as LIVE.
+
+00.26.70_AUTHORITY_AND_CONTINUITY
+- 00.0_HUMAN.GENERAL.txt owns conceptual identity, purpose, scope and foundational principles.
+- 07.0_HUMAN.MASTER.txt owns document meta-governance.
+- 11.0_HUMAN.SESSION.LIFECYCLE.txt owns the session lifecycle.
+- BATON specification and BATON runtime instances must be separate.
+- WHOAMI is a generated human-readable projection from project identity and current state.
+- CASEBOOK is reference or evidence by default and does not own doctrine without explicit promotion.
+
+00.26.80_GOVERNANCE_STATUS
+DOCUMENT_TYPE......: DOCTRINE
+LIFECYCLE_STATE....: ACTIVE_DRAFT
+PROMOTION_TARGET...: ACTIVE_CANON after validation and explicit approval.
+REGISTRY_SOURCE....: HUMAN.DOCUMENT.REGISTRY.json

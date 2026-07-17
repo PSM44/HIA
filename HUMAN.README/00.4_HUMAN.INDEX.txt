@@ -1,274 +1,55 @@
-======================================================================
-00.00_METADATOS_DEL_DOCUMENTO
-======================================================================
-
+﻿================================================================================
+00.4_HUMAN.INDEX — GENERATED NAVIGATION INDEX
+================================================================================
 ID_UNICO..........: HIA.HUMAN.INDEX.0001
-NOMBRE_SUGERIDO...: 00.4_HUMAN.INDEX.txt
-VERSION...........: v1.1-DRAFT
-FECHA.............: 2026-03-14
-HORA..............: HH:MM (America/Santiago)
-CIUDAD............: Santiago, Chile
-
-AUTOR_HUMANO......: PABLO
-AUTOR_IA..........: GPT
-
-TITULO............: HIA — Human Documentation Index
-SUBTITULO_MEDIO...: Inventario completo de documentos HUMAN
-SUBTITULO_BAJO....: Documento de referencia que enumera todos los archivos HUMAN y describe su rol dentro del sistema.
-
-UBICACION_SISTEMA.: <PROJECT_ROOT>\HUMAN.README\
-
-
-======================================================================
-01.00_PROPOSITO_DEL_DOCUMENTO
-======================================================================
-
-Este documento proporciona un inventario completo de los documentos
-contenidos en la carpeta HUMAN.README.
-
-El objetivo es permitir que un lector humano identifique rápidamente:
-
-qué documentos existen
-qué rol cumple cada documento
-cómo se relacionan entre sí
-qué nivel de autoridad posee cada documento
-
-Este documento no reemplaza otros documentos.
-
-Este documento actúa como un índice de navegación del sistema.
-
-
-======================================================================
-02.00_ESTRUCTURA_GENERAL_DE_DOCUMENTOS
-======================================================================
-
-Los documentos HUMAN se agrupan en varias categorías funcionales.
-
-DOCUMENTOS FUNDACIONALES
-DOCUMENTOS DE INTERACCION
-DOCUMENTOS DE OPERACION
-DOCUMENTOS DE INFRAESTRUCTURA
-DOCUMENTOS DE SOPORTE
-
-
-======================================================================
-03.00_DOCUMENTOS_FUNDACIONALES
-======================================================================
-
-00.0_HUMAN.GENERAL.txt
-
-Propósito:
-Explicar los principios generales del sistema HIA.
-
-Nivel de autoridad:
-Máximo nivel conceptual.
-
-
-00.1_HUMAN.READING.ORDER.txt
-
-Propósito:
-Definir el orden recomendado de lectura de los documentos HUMAN.
-
-Nivel de autoridad:
-Guía de navegación documental.
-
-
-00.2_HUMAN.SYSTEM.OVERVIEW.txt
-
-Propósito:
-Explicar el sistema HIA en su totalidad.
-
-Nivel de autoridad:
-Documento de referencia conceptual.
-
-
-00.3_HUMAN.SYSTEM.MAP.txt
-
-Propósito:
-Mostrar la estructura organizacional de los documentos HUMAN.
-
-Nivel de autoridad:
-Documento estructural.
-
-
-00.4_HUMAN.INDEX.txt
-
-Propósito:
-Inventario completo de los documentos HUMAN.
-
-Nivel de autoridad:
-Documento de referencia.
-
-
-======================================================================
-04.00_DOCUMENTOS_DE_INTERACCION
-======================================================================
-
-01.0_HUMAN.USER.txt
-
-Propósito:
-Describir el rol del usuario dentro del sistema HIA.
-
-Nivel de autoridad:
-Documento conceptual.
-
-
-09.0_HUMAN.START.RITUAL.txt
-
-Propósito:
-Definir el flujo mínimo para comenzar una sesión de trabajo.
-
-Nivel de autoridad:
-Manual operativo inicial.
-
-
-======================================================================
-05.00_DOCUMENTOS_DE_OPERACION
-======================================================================
-
-02.0_HUMAN.OPERATION.txt
-
-Propósito:
-Explicar cómo se ejecuta el trabajo dentro del sistema HIA.
-
-Nivel de autoridad:
-Documento operativo.
-
-
-02.0_HUMAN.USE.CASE.txt
-
-Propósito:
-Documentar ejemplos prácticos de uso del sistema.
-
-Nivel de autoridad:
-Documento ilustrativo.
-
-
-06.0_HUMAN.PF0.txt
-
-Propósito:
-Definir el flujo mínimo de ejecución operativa.
-
-Nivel de autoridad:
-Documento operativo técnico.
-
-
-05.0_HUMAN.CIS.txt
-
-Propósito:
-Definir el sistema de control de cambios.
-
-Nivel de autoridad:
-Documento de gobernanza técnica.
-
-
-HIA_HUM_0012_OPERATION.RUNBOOK.txt
-
-Propósito:
-Proporcionar procedimientos técnicos detallados.
-
-Nivel de autoridad:
-Manual técnico avanzado.
-
-
-======================================================================
-06.00_DOCUMENTOS_DE_INFRAESTRUCTURA
-
-03.0_HUMAN.RADAR.txt
-
-Propósito:
-Explicar el mecanismo de observabilidad del sistema.
-
-Nivel de autoridad:
-Documento de infraestructura.
-
-04.0_HUMAN.BATON.txt
-
-Propósito:
-Explicar cómo se mantiene la continuidad del contexto entre sesiones.
-
-Nivel de autoridad:
-Documento de infraestructura.
-
-07.0_HUMAN.MASTER.txt
-
-Propósito:
-Definir autoridad documental, canon y sincronización.
-
-Nivel de autoridad:
-Documento meta-gobernanza.
-
-08.0_HUMAN.SYNC.MANIFEST.txt
-
-Propósito:
-Definir derivaciones y packaging declarativo (SYNC + DragnDrop).
-
-Nivel de autoridad:
-Documento de infraestructura.
-
-08.1_HUMAN.DRAGNDROP.PACKAGING.txt
-
-Propósito:
-Definir packaging/handoff/fallback para IA cloud.
-
-Nivel de autoridad:
-Documento de infraestructura.
-
-07.00_DOCUMENTOS_DE_SOPORTE
-======================================================================
-
-10.0_HUMAN.HIA.TROUBLE.txt
-
-Propósito:
-Describir procedimientos de diagnóstico y solución de problemas.
-
-Nivel de autoridad:
-Documento de soporte técnico.
-
-
-11.0_HUMAN.SESSION.LIFECYCLE.txt
-
-Propósito:
-Describir el ciclo completo de una sesión de trabajo.
-
-Nivel de autoridad:
-Documento operativo.
-
-
-CASEBOOK/
-
-Propósito:
-Contener ejemplos reales de uso del sistema HIA.
-
-Nivel de autoridad:
-Repositorio de experiencias.
-
-
-======================================================================
-08.00_RELACION_CON_OTROS_ELEMENTOS_DEL_SISTEMA
-======================================================================
-
-Los documentos HUMAN describen el comportamiento del sistema.
-
-Las herramientas del sistema se encuentran en:
-
-02_TOOLS
-
-Los artefactos generados por el sistema se encuentran en:
-
-03_ARTIFACTS
-
-La documentación del proyecto puede encontrarse en:
-
-PROJECT.README
-
-
-======================================================================
-09.00_CONCLUSION
-======================================================================
-
-El índice HUMAN permite navegar el sistema documental HIA de manera estructurada.
-
-Al mantener este inventario actualizado, el sistema puede crecer sin perder coherencia documental.
-
-FIN DEL DOCUMENTO
+DOCUMENT_TYPE.....: INDEX
+LIFECYCLE_STATE...: DERIVED
+SOURCE............: HUMAN.DOCUMENT.REGISTRY.json
+EDIT_POLICY.......: DO NOT EDIT MANUALLY
+VERSION...........: v2.0-GENERATED
+GENERATED_LOCAL...: 2026-07-16 14:09:20 -04:00
+OFFICIAL_NAME.....: HIA — Human Intelligence Amplifier
+
+01.00 ACTIVE DOMAIN OWNERS
+- 00.0_HUMAN.GENERAL.txt | Conceptual identity and foundational principles | ACTIVE_DRAFT
+- 00.2_HUMAN.SYSTEM.OVERVIEW.txt | System overview | ACTIVE_DRAFT
+- 01.0_HUMAN.USER.txt | Human daily operating model | ACTIVE_DRAFT
+- 02.0_HUMAN.OPERATION.txt | Operational principles | ACTIVE_DRAFT
+- 03.0_HUMAN.RADAR.txt | Passive observation | ACTIVE_DRAFT
+- 05.0_HUMAN.CIS.txt | Controlled changes | ACTIVE_DRAFT
+- 06.0_HUMAN.PF0.txt | Minimum operating method | ACTIVE_DRAFT
+- 07.0_HUMAN.MASTER.txt | Document meta-governance | ACTIVE_DRAFT
+- 09.0_HUMAN.START.RITUAL.txt | Initial human interaction | ACTIVE_DRAFT
+- 11.0_HUMAN.SESSION.LIFECYCLE.txt | Session lifecycle | ACTIVE_DRAFT
+- HIA_HUM_0012.0_OPERATION.RUNBOOK.txt | Local command procedures | ACTIVE_DRAFT
+
+02.00 ACTIVE REFERENCES AND SUPPORT
+- 00.1_HUMAN.READING.ORDER.txt | REFERENCE | Documentation navigation
+- 00.3_HUMAN.SYSTEM.MAP.txt | REFERENCE | Structural navigation
+- 02.0_HUMAN.USE.CASE.txt | REFERENCE | Use-case examples
+- 08.0_HUMAN.SYNC.MANIFEST.txt | SPECIFICATION | Synchronization infrastructure
+- 08.1_HUMAN.DRAGNDROP.PACKAGING.txt | SPECIFICATION | Cloud packaging fallback
+- 10.0_HUMAN.HIA.TROUBLE.txt | RUNBOOK | Troubleshooting
+- CASEBOOK\HIA_HUM_0004_USECASE.TL.BOOTSTRAP_SENSITIVITY.MATRIX.txt | CASE_EVIDENCE | Training use case
+- CASEBOOK\HIA_HUM_0010.1_CONTEXT.PACKAGING.AND.HANDOFF.txt | REFERENCE | Context packaging
+- CASEBOOK\HIA_HUM_0010.2_STACK.DECISION.METHOD.txt | REFERENCE | Stack selection
+- CASEBOOK\HIA_HUM_0010.3_IA.ROLES.MODES.MATRIX.txt | REFERENCE | Multi-AI roles
+- CASEBOOK\HIA_HUM_0010.5_RESULTS.REVIEW.AND.QA.txt | REFERENCE | Quality assurance
+- HIA_DGM_0000_DIAGRAMS.README.txt | REFERENCE | Diagram governance
+
+03.00 HISTORICAL / SUPERSEDED
+- 04.0_HUMAN.BATON.txt | HISTORICAL | BATON April 2026 Session Snapshot
+- 04.00_WHOAMI.ACTIVE.txt | HISTORICAL | WHOAMI April 2026 Snapshot
+- CASEBOOK\HIA_HUM_0003_OFFICE.CHANGELOG.txt | HISTORICAL | Office Change Log
+- CASEBOOK\HIA_HUM_0010.0_OPS.RUNTIME.MANUAL.txt | SUPERSEDED | Legacy Runtime Manual
+- CASEBOOK\HIA_HUM_0010.4_SYNC.MULTI.IA.GOVERNANCE.txt | SUPERSEDED | Legacy Multi-AI Governance
+- CASEBOOK\HIA_HUM_0011.0_CASE.REAL_GUIDE_SENSITIVITY.TIR.txt | HISTORICAL | Sensitivity TIR Case
+- CHANGELOG.md | HISTORICAL | HIA Human Changelog
+
+04.00 GOVERNANCE RULES
+- HUMAN.DOCUMENT.REGISTRY.json is the machine-readable source.
+- This index is generated and does not own classifications.
+- CASEBOOK is reference/evidence by default.
+- BATON specification and runtime instances must be separate.
+- WHOAMI is generated from project identity and current state.
+- SYNC APPLY remains frozen.
