@@ -2794,3 +2794,49 @@ DEVELOPMENT_PATH
 NEXT_ACTION:
 - PRJPB_010Y | ejecutar revision humana del RC gerencial read-only y decidir handoff | ready
 ===============================================================================
+
+===============================================================================
+BACKLOG_UPDATE_20260718_PRJPB_010Y_B3_B2B3B
+===============================================================================
+GENERATED_LOCAL.....: 2026-07-18 12:30:10 -04:00
+HEAD................: cc56371
+SOURCE..............: repository verification + Claude caller preflight
+STATUS..............: ACTIVE
+
+READY
+- PRJPB_010Y-B3-B2B3B1 | P0 | Migrate Invoke-HIASmoke.ps1 session flow to dynamic project-scoped fixture; eliminate global active-session assertions.
+- TD_SESSION_SMOKE_PROJECT_SCOPE_001 | P0 | Smoke/deploy gate currently mismatches project-scoped runtime.
+
+READY_AFTER_B1
+- PRJPB_010Y-B3-B2B3B2 | P1 | Migrate HIA_INTERACTIVE_ENGINE.ps1 active-session summary to selected project context.
+
+READY_AFTER_B2
+- PRJPB_010Y-B3-B2B3B3 | P1 | Add project-scoped active session and SESSION.CLOSE to HIA_WEB_CONSOLE_EXPORT; preserve global sessions as archive.
+
+PLANNED
+- PRJPB_010Y-B3-B2B3C | P1 | Declare 03_ARTIFACTS/sessions read-only historical compatibility and validate no runtime writes.
+- PRJPB_010Y-B4 | P1 | Refresh CURRENT_STATE, hia.state.js and RADAR after caller convergence.
+- PRJPB_010Y-B5 | P1 | Rerun strict release-readiness, smoke and browser validations.
+- PRJPB_010Y-B6 | P1 | Human GO/NO_GO for management handoff.
+
+OPEN_TECHNICAL_DEBT
+- TD_BATON_APPEND_ONLY_STATE_001 | P1 | BATON remains oversized append-only continuity history.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001 | P1 | Remaining consumers have not fully converged.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001 | P1 | Runtime TASK/LOG retention policy needs canonical enforcement.
+- TD_EVIDENCE_ANCHOR_FRESHNESS_001 | P1 | Evidence freshness remains manual/TTL-based.
+- TD_STRUCTURAL_ONESHOT_RECOVERY_001 | P1 | One-shot mutation scripts need bounded idempotent rollback.
+- TD_POWERSHELL_OPTIONAL_PROPERTY_STRICTMODE_001 | P1 | JSON optional-property handling must be schema-safe.
+- TD_MINIBATTLE_FAILURE_BUDGET_001 | P1 | Third objective-level failure must stop local iteration and escalate.
+- TD_GENERATED_STATE_SNAPSHOT_DIRTY_001 | P2 | Generated state snapshots can create churn.
+- TD_AI_TAIL_SERIALIZATION_001 | P2 | Structured tails need safe serialization.
+- TD_LINE_ENDING_POLICY_001 | P2 | Repository LF/CRLF policy remains undefined.
+
+IDEAS
+- IDEA_MANAGEMENT_DECISION_LAYER | P1 | Add decision/owner/due-date/evidence/consequence model.
+- IDEA_EVIDENCE_PROVENANCE_UI | P1 | Show source, captured time, semantic hash and confidence in management views.
+- IDEA_AI_COST_CONTROL | P1 | Project/provider token and cost telemetry after control-plane stabilization.
+- IDEA_ARCHIVE_SESSION_TIMELINE | P2 | Read-only timeline combining project SESSION.CLOSE and legacy global archive.
+- IDEA_SKILLS_PROMOTION_PIPELINE | P1 | Promote validated HIA patterns via SkillsMachine rather than copying ad hoc.
+
+NEXT_ACTION: PRJPB_010Y-B3-B2B3B1 | migrate Invoke-HIASmoke.ps1 to a dynamic project-scoped fixture | ready
+===============================================================================

@@ -3330,3 +3330,109 @@ OPEN_TECHNICAL_DEBT
 
 NEXT_ACTION: PRJPB_010Y | ejecutar revision humana del RC gerencial read-only y decidir handoff | ready
 ==========
+
+===============================================================================
+SESSION_UPDATE_20260718_HIA_PRJPB_010Y_B3_B2B3B_STATUS_AND_CLOSE
+===============================================================================
+STATUS............: CLOSED_PENDING_COMMIT
+FECHA_LOCAL.......: 2026-07-18 12:30:10 -04:00
+PROYECTO..........: PRJ_0001_HIA.PRODUCT
+HEAD..............: cc563713b0d522ffb632f4cf41bbe8ae81eaef90
+PURPOSE...........: Corroborar estado real, consolidar deuda/backlog/ideas/Skills, definir path gerencial y cerrar sesión project-scoped.
+
+01.00_ESTADO_CORROBORADO
+- Branch: feat/20260405-console-v2-phase1-phase2.
+- HEAD: cc56371 (cc563713b0d522ffb632f4cf41bbe8ae81eaef90).
+- Upstream: origin/feat/20260405-console-v2-phase1-phase2.
+- Ahead/behind antes de cierre: 3/0.
+- Tracked worktree antes de actualización: clean.
+- Untracked preexistentes preservados: 3.
+- CURRENT_STATE, BATON y RADAR estaban fechados 2026-07-14 y no incorporaban los tres commits locales posteriores.
+- CURRENT_STATE declaraba PRJPB_010Y, pero el trabajo efectivo avanzó por B3-B2A/B2B1/B2B2/B2B3A y diseño escalado B3-B2B3B.
+
+02.00_DONE_CONFIRMED
+- HUMAN governance foundation committed: eb3fdb8.
+- Session/continuity contracts committed: 526dee8.
+- Project-scoped context reader migration committed: 630a2c0.
+- Legacy session wrappers disarmed: 59f4a23.
+- Safe immutable SESSION.CLOSE migration committed: b7eb2e9.
+- HIA_SESSION_ENGINE converted to project-scoped compatibility adapter: cc56371.
+- B3-B2B3B caller preflight completed through Claude Desktop.
+- Remaining caller migration was split into B3-B2B3B1 smoke, B2 interactive and B3 web export.
+
+03.00_CURRENT_POSITION
+- Current development position: PRJPB_010Y-B3-B2B3B1.
+- Immediate objective: migrate Invoke-HIASmoke.ps1 to a dynamic project-scoped fixture.
+- Management RC exists and remains read-only/browser-validated, but management handoff has not started.
+- Production readiness is not claimed.
+- RADAR Active is structurally available but stale relative to HEAD cc56371.
+
+04.00_ACTIVE_TECHNICAL_DEBT
+P0/P1:
+- TD_SESSION_SMOKE_PROJECT_SCOPE_001: smoke assertions still target global session paths.
+- TD_INTERACTIVE_SESSION_READER_001: interactive header still reads legacy global active-session state.
+- TD_WEB_EXPORT_SESSION_SOURCE_001: web export needs project-scoped current session plus historical archive separation.
+- TD_BATON_APPEND_ONLY_STATE_001: BATON append-only history remains large and parser-sensitive.
+- TD_CURRENT_STATE_CONSUMER_MIGRATION_001: remaining consumers must converge on CURRENT_STATE/project-scoped session sources.
+- TD_TASK_EVIDENCE_TRACKING_POLICY_001: TASK/LOG evidence retention and versioning remain partially implicit.
+- TD_EVIDENCE_ANCHOR_FRESHNESS_001: freshness remains TTL/manual-refresh dependent.
+- TD_STRUCTURAL_ONESHOT_RECOVERY_001: mutation scripts require bounded idempotent rollback/recovery.
+- TD_POWERSHELL_OPTIONAL_PROPERTY_STRICTMODE_001: optional JSON properties require schema-safe access.
+- TD_MINIBATTLE_FAILURE_BUDGET_001: stop/escalate after three objective-level failures.
+
+P2:
+- TD_GENERATED_STATE_SNAPSHOT_DIRTY_001: generated hia.state.js can create synchronization churn.
+- TD_AI_TAIL_SERIALIZATION_001: structured evidence serialization must avoid interpolation corruption.
+- TD_LINE_ENDING_POLICY_001: recurring LF/CRLF warnings require a repository-level policy.
+
+05.00_BACKLOG_ROLLOVER
+- PRJPB_010Y-B3-B2B3B1 | READY | migrate Invoke-HIASmoke.ps1 to dynamic project-scoped fixture.
+- PRJPB_010Y-B3-B2B3B2 | READY_AFTER_B1 | migrate HIA_INTERACTIVE_ENGINE active-session readers.
+- PRJPB_010Y-B3-B2B3B3 | READY_AFTER_B2 | migrate HIA_WEB_CONSOLE_EXPORT to current project session plus historical archive.
+- PRJPB_010Y-B3-B2B3C | PLANNED | formalize global 03_ARTIFACTS/sessions as read-only historical compatibility.
+- PRJPB_010Y-B4 | PLANNED | refresh CURRENT_STATE, hia.state.js and RADAR after caller convergence.
+- PRJPB_010Y-B5 | PLANNED | rerun strict RC/readiness and browser path.
+- PRJPB_010Y-B6 | PLANNED | human management handoff GO/NO_GO.
+
+06.00_IDEAS_AND_OPPORTUNITIES
+- Productize HIA as a governed Human-AI Work Operating System.
+- Separate Control Tower global, Portfolio, Project Workspace, Management Summary and AI Operating Layer.
+- Make CURRENT_STATE and project-scoped SESSION.CLOSE the machine-readable core.
+- Expose evidence provenance, freshness and confidence in every management view.
+- Add an explicit management decision layer: decision required, owner, due date, evidence and consequence.
+- Add cost/token telemetry by project and AI provider after the read-only control plane stabilizes.
+- Use Skill/GRC promotion to industrialize failure budgets, rollback, worktree gates and PowerShell safety.
+- Preserve global session artifacts as archive, never as active runtime.
+
+07.00_PATH_TO_VISIBLE_MANAGEMENT_DELIVERABLE
+1. B3-B2B3B1: restore project-scoped smoke/deploy gate.
+2. B3-B2B3B2: make interactive status project-aware.
+3. B3-B2B3B3: make web export current-project-aware while preserving archive.
+4. Refresh CURRENT_STATE, hia.state.js and RADAR from converged sources.
+5. Run strict readiness validator and four-screen browser smoke.
+6. Open Management Summary through the read-only launcher.
+7. Present bounded RC with explicit debt, evidence and required decisions.
+8. Capture human GO/NO_GO and only then authorize management handoff.
+
+08.00_SKILLS_AND_GRC_PROMOTION_RECOMMENDATION
+Priority skills to promote through SkillsMachine:
+- Critical Feedback / challenge gate.
+- Logging and Audit Evidence.
+- Checkpoint and Rollback.
+- Git Structural Change Governance.
+- PowerShell Interactive Safety and parser-first execution.
+- Temporary Artifact Management with disposable flat staging.
+- Unknown Worktree Hard Stop.
+- MiniBattle Failure Budget and mandatory escalation package.
+
+Priority GRCs:
+- Objective-level failure budget: third failure triggers STOP and escalation.
+- Exact authorized-file allowlist and pre/post hashes.
+- Separate stdout, stderr and exit code for external commands.
+- Native parser plus real fixture before apply success.
+- No commit/push/SYNC/RADAR without explicit independent authorization.
+- One consolidated AI-readable upload per minibattle.
+
+09.00_NEXT_ACTION
+NEXT_ACTION: PRJPB_010Y-B3-B2B3B1 | migrate Invoke-HIASmoke.ps1 to a dynamic project-scoped fixture | ready
+===============================================================================

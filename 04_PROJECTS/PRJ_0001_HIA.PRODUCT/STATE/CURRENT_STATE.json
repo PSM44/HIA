@@ -1,31 +1,33 @@
-{
+﻿{
   "schema": "HIA_CURRENT_STATE.v1",
   "project_id": "PRJ_0001_HIA.PRODUCT",
-  "generated_local": "2026-07-14 16:37:39 -04:00",
-  "generated_utc": "2026-07-14T20:37:39.2958918Z",
+  "generated_local": "2026-07-18 12:30:10 -04:00",
+  "generated_utc": "2026-07-18T16:30:10.4780133Z",
   "generator": "02_TOOLS/HIA_CURRENT_STATE_GENERATOR.ps1",
-  "current_objective": "Run human review of the prepared read-only management RC and decide whether to authorize management handoff.",
+  "current_objective": "Converge all remaining session callers on project-scoped runtime before refreshing the management release candidate.",
   "next_action": {
-    "id": "PRJPB_010Y",
-    "title": "ejecutar revision humana del RC gerencial read-only y decidir handoff",
+    "id": "PRJPB_010Y-B3-B2B3B1",
+    "title": "migrate Invoke-HIASmoke.ps1 to a dynamic project-scoped fixture",
     "status": "ready",
-    "raw": "PRJPB_010Y | ejecutar revision humana del RC gerencial read-only y decidir handoff | ready",
+    "raw": "PRJPB_010Y-B3-B2B3B1 | migrate Invoke-HIASmoke.ps1 to a dynamic project-scoped fixture | ready",
     "source": "CURRENT_STATE",
-    "text": "PRJPB_010Y | ejecutar revision humana del RC gerencial read-only y decidir handoff | ready"
+    "text": "PRJPB_010Y-B3-B2B3B1 | migrate Invoke-HIASmoke.ps1 to a dynamic project-scoped fixture | ready"
   },
   "evidence": {
-    "state": "FRESH",
-    "consistency": "CONSISTENT",
-    "captured_utc": "2026-07-14T20:32:44.0414734Z"
+    "state": "STALE",
+    "consistency": "CONSISTENT_BUT_REQUIRES_REFRESH",
+    "captured_utc": "2026-07-18T16:30:10.4780133Z",
+    "reason": "CURRENT_STATE and RADAR predate three local commits; refresh deferred until B3-B2B3 caller convergence."
   },
   "session": {
-    "status": "closed",
-    "last_session_id": "1009fe23-fccc-4ea9-a466-3ee2b21bf1dd"
+    "status": "active",
+    "last_session_id": "155c52e2-a276-4204-8f61-aef80e31788d"
   },
   "git": {
     "branch": "feat/20260405-console-v2-phase1-phase2",
-    "head_short": "982fdfb",
-    "head_message": "20260714.1602_PRJPB_010W-C_StateSync"
+    "head_short": "cc56371",
+    "head_message": "20260717_HIA_project_scoped_session_compatibility_adapter",
+    "head_full": "cc563713b0d522ffb632f4cf41bbe8ae81eaef90"
   },
   "policy": {
     "precedence": "CURRENT_STATE first; fallback to BATON/BACKLOG only if missing or invalid",
