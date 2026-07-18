@@ -1,4 +1,4 @@
-{
+﻿{
   "version": "1.0",
   "updated_utc": "2026-03-16T22:32:13Z",
   "tools": {
@@ -49,7 +49,7 @@
     },
     "session": {
       "script": "HIA_SESSION_ENGINE.ps1",
-      "description": "Gestiona ciclo de vida de sesiones",
+      "description": "Project-scoped session compatibility adapter. Global session runtime deprecated.",
       "category": "core"
     },
     "context": {
