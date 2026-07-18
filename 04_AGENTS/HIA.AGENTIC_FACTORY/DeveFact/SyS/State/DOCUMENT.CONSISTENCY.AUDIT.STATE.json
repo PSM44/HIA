@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "project_id": "DEVEFACT",
+  "project_root": "C:\\01. GitHub\\Wings3.0\\01_PROJECTS\\HIA\\04_AGENTS\\HIA.AGENTIC_FACTORY\\DeveFact",
+  "session_continue_count": 0,
+  "focused_audit_count": 1,
+  "full_audit_count": 2,
+  "last_focused_audit_at": "2026-07-17T16:38:13.0273129Z",
+  "last_full_audit_at": "2026-07-18T16:52:50.1275381Z",
+  "next_full_audit_due_session_number": 5,
+  "last_audit_result": "PASS",
+  "unresolved_conflict_count": 0,
+  "unresolved_doubt_count": 0,
+  "audit_trigger_history": [
+    "EXPLICIT_HUMAN_REQUEST",
+    "EXPLICIT_HUMAN_REQUEST"
+  ]
+}
