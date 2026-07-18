@@ -508,3 +508,51 @@ SESSION_CLOSE_20260716_2348 BACKLOG_APPEND
 - type: VALIDATION
 - priority: P2
 - title: Create reusable validation harness for DeveFact batches.
+
+==========
+SESSION_CLOSE_20260718_1228 BACKLOG_APPEND
+==========
+## BL-DEVF-20260718-001
+- status: OPEN
+- type: DOCUMENT_AUTHORITY_REPAIR
+- priority: P0
+- title: Independently audit STRUCTURAL_APPLY_V3.
+- evidence: Claude reports syntax PASS and bounded corrections, but the V3 file has not been independently reviewed in this session.
+- acceptance: static audit PASS; scope, rollback, Git baseline and single TOVS verified.
+- next_action: upload DEVF_CIS_HUMAN_ROOT_0001_STRUCTURAL_APPLY_V3.ps1.
+
+## BL-DEVF-20260718-002
+- status: BLOCKED
+- type: DOCUMENT_AUTHORITY_REPAIR
+- priority: P0
+- title: Apply DEVF-CIS-HUMAN-ROOT-0001.
+- blocker: BL-DEVF-20260718-001.
+- acceptance: HUMAN.README removed; HUMAN.DEVEFACT created; rollback available; no unauthorized mutation.
+- next_action: execute V3 only after independent PASS.
+
+## BL-DEVF-20260718-003
+- status: BLOCKED
+- type: VALIDATION
+- priority: P0
+- title: Re-run full DocumentConsistencyAudit after HUMAN repair.
+- blocker: structural APPLY not completed.
+- acceptance: conflicts_found=0; HUMAN, WHOAMI and BATON resolved; no HARD_CONFLICT.
+- next_action: run audit with AcceptedSessionContinue=false.
+
+## BL-DEVF-20260718-004
+- status: BLOCKED
+- type: CONTINUITY_TOOLING
+- priority: P1
+- title: Create dedicated DeveFact RADAR.ps1.
+- blocker: document authority repair not closed.
+- acceptance: RADAR v1.4-compatible deterministic outputs and readiness evidence.
+- next_action: resume as BATCH-0028 after audit PASS.
+
+## BL-DEVF-20260718-005
+- status: OPEN
+- type: MANAGEMENT_DELIVERABLE
+- priority: P1
+- title: Convert documentation-first demo into one visible functional management surface.
+- evidence: current evidence demonstrates process and controls, but management value remains distributed across documents.
+- acceptance: one local artifact with intake, workflow, evidence, result and decision request.
+- next_action: BATCH-0030 after RADAR/readiness.

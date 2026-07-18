@@ -1,34 +1,66 @@
-==========
+﻿==========
 BATON.STATE
 ==========
 PROJECT: DeveFact / PS.DeveFactory
-STATUS: SESSION_CLOSE_20260716_PREPARED
-UPDATED_LOCAL: 2026-07-16 23:48 CLT
+STATUS: SESSION_CLOSED_WITH_BLOCKERS
+UPDATED_LOCAL: 2026-07-18 12:28 CLT
 PROJECT_ROOT: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA
 MODULE_ROOT: C:\01. GitHub\Wings3.0\01_PROJECTS\HIA\04_AGENTS\HIA.AGENTIC_FACTORY\DeveFact
 TEMP_PATH: C:\Users\aazcl\Downloads\Temp.DeveFactory
+BRANCH: feat/20260405-console-v2-phase1-phase2
+LAST_COMMIT_KNOWN:
+- 2f8d0b1 20260718_HIA_continuity_update_and_session_close
+AHEAD_BEHIND:
+- AHEAD=4 | BEHIND=0
 
-CURRENT_CONFIRMED_STATE:
-- Branch: feat/20260405-console-v2-phase1-phase2
-- Git status before close update: CLEAN_OR_EMPTY
-- Last commit before close update: 630a2c0 20260716_HIA_context_reader_project_state_migration
-- Ahead/behind: UNKNOWN_OR_NO_UPSTREAM
-- RADAR candidates found: 0
+CURRENT_CORROBORATED_STATE:
+- BATCH-0021..0027 were previously completed and pushed according to repository evidence.
+- Last corroborated close commit before this session: 1b4a8d7 20260716.2348_DeveFact_SessionClose.
+- DocumentConsistencyAudit full mode found one HARD_CONFLICT in HUMAN authority.
+- Approved CIS: DEVF-CIS-HUMAN-ROOT-0001.
+- Intended repair: HUMAN/HUMAN.README.md -> HUMAN/HUMAN.DEVEFACT.md.
+- Three launcher attempts failed before canon mutation.
+- Escalation policy triggered after 3 failures.
+- Claude produced STRUCTURAL_APPLY_V3, but this session has not independently audited the V3 file.
+- HUMAN.README exists now: True
+- HUMAN.DEVEFACT exists now: False
+- Structural V3 exists in Downloads: True
+- Dedicated DeveFact RADAR.ps1 candidates found: 0
+- Git status at close: M 04_PROJECTS/PRJ_0001_HIA.PRODUCT/AGILE/PROJECT.BACKLOG.txt |  M 04_PROJECTS/PRJ_0001_HIA.PRODUCT/BATON/04.0_PROJECT.BATON.txt |  M 04_PROJECTS/PRJ_0001_HIA.PRODUCT/STATE/CURRENT_STATE.json | ?? 04_AGENTS/HIA.AGENTIC_FACTORY/DeveFact/IA.History/2026016.md | ?? 04_AGENTS/HIA.AGENTIC_FACTORY/DeveFact/SyS/ | ?? SyS/
+
+ACTIVE_BLOCKERS:
+1. STRUCTURAL_APPLY_V3 must be independently audited before execution.
+2. DEVF-CIS-HUMAN-ROOT-0001 remains unapplied unless HUMAN.DEVEFACT already exists and audit confirms it.
+3. Full DocumentConsistencyAudit must pass after APPLY with AcceptedSessionContinue=false.
+4. Session Continue remains unauthorized while HUMAN conflict is unresolved.
+5. BATCH-0028 RADAR remains blocked until document authority repair closes.
 
 ACTIVE_PRODUCT_STATE:
-DeveFact remains a controlled development governance/prototype module. Priority is to move from traceable documentation toward strict RADAR/readiness and a visible management deliverable.
+DeveFact is a governed, docs-first Development Control System prototype with:
+- product definition;
+- controlled batches;
+- context intake;
+- run creation evidence;
+- pilot and management-demo documentation;
+- accumulated registers and continuity controls.
 
-OPEN_WARNING:
-Dedicated DeveFact RADAR.ps1 missing if RADAR candidates found = 0.
+It is not yet a polished deployable product or a single visible functional management surface.
 
-NEXT_RECOMMENDED_ACTION:
-BATCH-0028: create dedicated DeveFact RADAR.ps1 aligned with RADAR v1.4.
+PATH_TO_VISIBLE_FUNCTIONAL_MANAGEMENT_DELIVERABLE:
+1. MB-R01: Audit and execute DEVF-CIS-HUMAN-ROOT-0001 structural repair.
+2. MB-R02: Re-run full DocumentConsistencyAudit and obtain HUMAN/WHOAMI/BATON RESOLVED.
+3. BATCH-0028: Create dedicated DeveFact RADAR.ps1 aligned with RADAR v1.4.
+4. BATCH-0029: Strict readiness/RADAR checkpoint with deterministic evidence.
+5. BATCH-0030: Build one visible management artifact (recommended: local HTML app/interactive report).
+6. BATCH-0031: Add reusable validation harness for the visible vertical slice.
+7. BATTLE-B03: Management Demo v0.1 using a real internal case.
+8. DELIVERABLE: Gerencia opens one artifact, understands the problem, sees the controlled workflow and evidence, and can approve a pilot/productization decision.
 
-LOAD_ORDER_NEXT_SESSION:
-1. BATON\BATON.STATE.txt
-2. BATON\SESSION_CLOSE_20260716.md
-3. WHOAMI\WHOAMI.DEVEFACT.md
-4. REGISTERS\BACKLOG.ACCUMULATED.md
-5. REGISTERS\TECH_DEBT.ACCUMULATED.md
-6. REGISTERS\IDEAS.RELATED.ACCUMULATED.md
-7. REGISTERS\SKILL_GRC_OPPORTUNITIES.ACCUMULATED.md
+SINGULAR_NEXT_ACTION:
+Upload and independently audit DEVF_CIS_HUMAN_ROOT_0001_STRUCTURAL_APPLY_V3.ps1. Do not execute it before PASS.
+
+DO_NOT_START:
+- BATCH-0028
+- Session Continue
+- commit/push of HUMAN repair
+until post-repair full audit is clean.

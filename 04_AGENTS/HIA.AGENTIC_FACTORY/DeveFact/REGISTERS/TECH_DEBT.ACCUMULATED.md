@@ -110,3 +110,48 @@ SESSION_CLOSE_20260716_2348 TECH_DEBT_APPEND
 - priority: P1
 - title: Management value still needs a visible artifact.
 - next_action: package demo into visible artifact.
+
+==========
+SESSION_CLOSE_20260718_1228 TECH_DEBT_APPEND
+==========
+## TD-DEVF-20260718-001
+- status: OPEN
+- type: DOCUMENT_AUTHORITY
+- priority: P0
+- title: HUMAN root naming and precedence conflict.
+- cause: three HUMAN documents were eligible at equal precedence; HUMAN.README was not recognized as root.
+- impact: Session Continue blocked by HARD_CONFLICT.
+- mitigation: DEVF-CIS-HUMAN-ROOT-0001.
+
+## TD-DEVF-20260718-002
+- status: OPEN
+- type: EXECUTION_TOOLING
+- priority: P0
+- title: Three failed APPLY launchers for the same objective.
+- cause: Git root/subtree assumptions and brittle dirty-set gates.
+- impact: execution delay and escalation requirement.
+- mitigation: structural launcher rebuilt from scratch; independent V3 audit pending.
+
+## TD-DEVF-20260718-003
+- status: OPEN
+- type: RADAR_GAP
+- priority: P1
+- title: No dedicated DeveFact RADAR.ps1 confirmed.
+- impact: strict close/readiness evidence is incomplete.
+- mitigation: BATCH-0028 after document repair.
+
+## TD-DEVF-20260718-004
+- status: OPEN
+- type: PRODUCTIZATION
+- priority: P1
+- title: Product value is still documentation-heavy.
+- impact: gerencia cannot yet experience a concise functional vertical slice in one surface.
+- mitigation: prioritize BATCH-0030 visible management artifact.
+
+## TD-DEVF-20260718-005
+- status: OPEN
+- type: ARCHITECTURE
+- priority: P2
+- title: HUMAN folder mixes canonical doctrine with demos, playbooks and operational artifacts.
+- impact: authority discovery and maintenance become ambiguous.
+- mitigation: separate canon, product surface and operational evidence in a later CIS; no broad restructure now.
